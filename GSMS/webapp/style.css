@@ -1,10 +1,11 @@
-
+/*--- FONT ---*/
 @font-face {
     font-family: 'Xolonium';
     src: url('fonts/Xolonium-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
 }
+/*------------*/
 
 /*---SLIDES SYSTEM---*/
 div.slide.visible{
@@ -12,11 +13,11 @@ div.slide.visible{
     z-index: 1;
 }
 
-
 div.slide.hidden{
     opacity: 0;
     z-index: -99;
 }
+/*-------------------*/
 
 body{
     position: fixed;
@@ -30,19 +31,14 @@ body{
     z-index: 0;
 }
 
-div.planet{
-    position: absolute;
-    top: 44rem;
-    left: 50%;
-    width: 33em; 
-    height: 33em;
-    background-image: url('pics/planetEarth.png');
-    background-size: cover;
-    transform: translate(-50%, -50%); 
-    animation: rotate 20s linear infinite; 
+h2 {
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    margin-left: 1em;
+    color: white;
 }
 
-  /*rotation animation */
+/*rotation animation*/
 @keyframes rotate {
     0% {
         transform: translate(-50%, -50%) rotate(0deg);
@@ -51,9 +47,21 @@ div.planet{
         transform: translate(-50%, -50%) rotate(360deg);
     }
 }
+div.planet{
+    position: absolute;
+    top: 48rem;
+    left: 50%;
+    width: 33em; 
+    height: 33em;
+    background-image: url('pics/planetEarth.png');
+    background-size: cover;
+    transform: translate(-50%, -50%); 
+    animation: rotate 100s linear infinite; 
+}
+/*------------------*/
 
 #logo{
-    height: 40em;
+    height: 45em;
     position: absolute;
     top: 30%; 
     left: 50%;
@@ -61,9 +69,9 @@ div.planet{
     z-index: 2;
 }
 
-h1 {
-    font-family: 'Xolonium', sans-serif;
-    font-weight: bold;
-    margin-left: 1em;
-    color: white;
+#landingPageText{
+    position: absolute;
+    left: 48%;
+    top: 40%;
+    transform: translate(-50%, -50%);
 }

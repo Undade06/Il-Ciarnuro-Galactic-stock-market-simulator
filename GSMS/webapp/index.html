@@ -13,10 +13,22 @@
         <div class="slide visible" id="landingPage" onclick="toSlide('login_register')">
             <img src="pics/logo.png" id="logo">
             <h2 id="landingPageText">Press anywhere to continue</h2>
-            <div class="planet"></div>
+            <div class="planet" id="planetLanding"></div>
         </div>
         <div class="slide hidden" id="login_register">
-            <div class="planet"></div>
+            <div class="planet" id="planetLogin"></div>
+            <div class="back" id="log_reg_back">
+                <div class="content">
+                    <div id="username"></div>
+                    <div id="password"></div>
+                    <h4 class="errorText">An error occurred. Please, check the fields entered </h4>
+                    <div class="buttons_log_reg">
+                        <button onclick="">Login</button>
+                        <button onclick="">Register</button>
+                    </div>
+                </div>
+                  
+            </div>
         </div>
     </body>
 </html>

@@ -18,7 +18,7 @@ div.slide.hidden{
     z-index: -99;
 }
 
-div.slide{
+body{
     position: fixed;
     top: 0;
     left: 0;
@@ -28,6 +28,28 @@ div.slide{
     background-color: black;
     background-size: cover;
     z-index: 0;
+}
+
+div.planet{
+    position: absolute;
+    top: 44rem;
+    left: 50%;
+    width: 33em; 
+    height: 33em;
+    background-image: url('pics/planetEarth.png');
+    background-size: cover;
+    transform: translate(-50%, -50%); 
+    animation: rotate 20s linear infinite; 
+}
+
+  /*rotation animation */
+@keyframes rotate {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
 
 #logo{

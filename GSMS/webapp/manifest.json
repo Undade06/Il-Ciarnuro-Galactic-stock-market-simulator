@@ -1,0 +1,17 @@
+{
+    "name": "PWA Template",
+    "short_name": "PWA",
+    "id": "pwaname",
+    "description": "Empty PWA Template",
+    "icons": [
+        {
+            "src": "pwaicon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable any"
+        }
+    ],
+    "start_url": "index.html",
+    "scope": "/pwatemplate/",
+    "display": "standalone"
+}

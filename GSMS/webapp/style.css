@@ -38,6 +38,8 @@ body{
     z-index: -10;
 }
 
+
+
 h2 {
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
@@ -81,6 +83,8 @@ div.planet{
     left: 48%;
     top: 40%;
     transform: translate(-50%, -50%);
+    opacity: 50%;
+    text-shadow: 2px 2px 2px black;
 }
 
 div.slide.hidden #planetLogin {
@@ -101,13 +105,16 @@ div.slide.visible #planetLogin {
 
 div.slide.hidden #log_reg_back {
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color:#1E1E1E;
     opacity: 0%;
     transition: 3s ease-in;
-    padding: 150px;
+    width: 25rem; /* Adjust width */
+    height: 17rem; /* Adjust height */
+    padding: 1.25rem; /* Adjust padding */
+    padding-top: 7rem;
     border-radius: 15px;
     text-align: center; 
     z-index: 0;
@@ -115,12 +122,15 @@ div.slide.hidden #log_reg_back {
 
 div.slide.visible #log_reg_back{
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color:rgba(30, 30, 30, 0.75);
+    background-color:rgba(0, 0, 0, 0.75);
     transition: 3s ease-in;
-    padding: 150px;
+    width: 25rem; /* Adjust width */
+    height: 17rem; /* Adjust height */
+    padding: 1.25rem; /* Adjust padding */
+    padding-top: 7rem;
     border-radius: 15px;
     text-align: center; 
     z-index: 0;
@@ -146,4 +156,14 @@ h4.errorText{
     font-family: 'Xolonium_regular', sans-serif;
     font-weight: bold;
     color: red;
+}
+
+input.log_reg_input{
+    font-family: 'Xolonium_regular', sans-serif;
+    font-weight: bold;
+    color: #FFFFFF;
+    font-size: 1.5em;
+    background-color: rgba(30, 30, 30, 0.85);
+    border: none;
+    border-radius: 5px;
 }

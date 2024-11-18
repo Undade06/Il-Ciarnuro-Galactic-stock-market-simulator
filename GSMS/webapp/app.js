@@ -18,8 +18,8 @@ function toSlide(id) {
 
 
 function getCurrentSlide() {
-    let s = document.getElementsByClassName("slide visible");
-    if (s.length === 0) return null; else return s[0];
+    let s = document.getElementsByClassName("slide visible")
+    if (s.length === 0) return null; else return s[0]
 }
 
 // All these are supposed
@@ -46,6 +46,7 @@ function Stock(name, description, baseValue, growth, volatility) {
 Stock.prototype = {
     constructor: Stock,
     getValue: function (t) {
+        if (t === "undefined") t = 2
         return baseValue*Math.exp((this.growth-(Math.pow(this.volatility, 2)/2))*t + this.wiener(t))
     },
     wiener: function (t) {
@@ -67,8 +68,49 @@ Stock.prototype = {
     },
     ndn: function(){                    // Generate a random number with standard normal distribution 
         let u = 0, v = 0;
-        while (u === 0) u = Math.random();              // To avoid zero zero
-        while (v === 0) v = Math.random();
+        while (u === 0) u = Math.random()               // To avoid zero
+        while (v === 0) v = Math.random()
         return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
     }
+}
+
+function prova(){
+    let v
+    for(let i =0; i < 10; i++){
+        v = getValueP(i, 100, 0.1, 0.1)
+        console.log(v)
+    }
+}
+
+function getValueP(t, b, g, v) {
+    if (t === "undefined") t = 2
+    let value, exponential, variability=((g-(Math.pow(v, 2)/2))*t), wiener = wienerP(t)
+    exponential = (Math.exp(variability + wiener))
+    console.log('Wiener: '+wiener)
+    console.log('Variability: '+variability)
+    console.log('exponential: '+exponential)
+    return b*exponential
+}
+
+function wienerP(t) {
+    let n = Math.floor(t / TIMESTEP),         // Step number
+        z,                                    // Standard normal random variable
+        dw,                                   // Process increment
+        sum = 0
+    
+    console.log(n)
+     for (let i = 0; i < n; i++) {
+        z = ndnP()
+        dw = Math.sqrt(TIMESTEP) * z
+        sum += dw
+    }
+
+    return sum
+}
+
+function ndnP(){                    // Generate a random number with standard normal distribution 
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random()               // To avoid zero
+    while (v === 0) v = Math.random()
+    return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
 }

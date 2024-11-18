@@ -75,16 +75,17 @@ Stock.prototype = {
 }
 
 function prova(){
-    let v
-    for(let i =0; i < 10; i++){
-        v = getValueP(i, 100, 0.1, 0.1)
-        console.log(v)
+    let v = []
+    for(let i = 0; i < 20; i++){
+        v.push(getValueP(i, 50, 0.01, 0.01))
+        console.log(v[i])
     }
+    console.log(v)
 }
 
 function getValueP(t, b, g, v) {
     if (t === "undefined") t = 2
-    let value, exponential, variability=((g-(Math.pow(v, 2)/2))*t), wiener = wienerP(t)
+    let exponential, variability=(g-(Math.pow(v, 2)/2))*t, wiener = v*wienerP(t)
     exponential = (Math.exp(variability + wiener))
     console.log('Wiener: '+wiener)
     console.log('Variability: '+variability)
@@ -98,14 +99,13 @@ function wienerP(t) {
         dw,                                   // Process increment
         sum = 0
     
-    console.log(n)
      for (let i = 0; i < n; i++) {
         z = ndnP()
         dw = Math.sqrt(TIMESTEP) * z
         sum += dw
     }
 
-    return sum
+    return Math.max(-3, Math.min(3, sum))           //Limit Wiener to the range -3, 3
 }
 
 function ndnP(){                    // Generate a random number with standard normal distribution 

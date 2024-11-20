@@ -19,10 +19,12 @@ div.slide.visible{
     opacity: 1;
     z-index: 1;
 }
-
 div.slide.hidden{
     opacity: 0;
     z-index: -99;
+}
+div.slide.hidden #logo{
+    display: none;
 }
 /*-------------------*/
 
@@ -119,7 +121,6 @@ div.slide.hidden #log_reg_back {
     text-align: center; 
     z-index: 0;
 }
-
 div.slide.visible #log_reg_back{
     position: absolute;
     top: 45%;
@@ -167,3 +168,44 @@ input.log_reg_input{
     border: none;
     border-radius: 5px;
 }
+div.slide.visible #saves_back{
+    position: absolute;
+    top: 30rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color:rgba(0, 0, 0, 0.75);
+/* transition: 3s ease-in; */
+    width: 25rem; /* Adjust width */
+    height: 20rem; /* Adjust height */
+    padding: 1.25rem; /* Adjust padding */
+    padding-top: 7rem;
+    border-radius: 15px;
+    text-align: center; 
+    z-index: 0;
+}
+
+.save-box {
+    width: 15rem;
+    height: 5rem;
+    margin: 1rem auto;
+    background-color: #111525;
+    opacity: 65%;
+    color: white;
+    font-family: 'Xolonium_regular', sans-serif;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid gray;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.save-box.new-save {
+    background-color: #1E1E1E;
+    opacity: 70%;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+

@@ -73,3 +73,8 @@ Stock.prototype = {
 function gameTimer(){
     return new Date(STARTDATE+(Date.now()-REALSTARTDATE)*SPEEDUP)/(1000*60*60*24)
 }
+
+function gameTimerAsDate(t){
+    if(typeof t === "undefined") t=gameTimer()
+    return new Date(t*(1000*60*60*24))
+}

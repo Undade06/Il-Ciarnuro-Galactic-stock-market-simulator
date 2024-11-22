@@ -62,8 +62,8 @@ div.planet{
     position: absolute;
     top: 48rem;
     left: 50%;
-    width: 33em; 
-    height: 33em;
+    width: 41em; 
+    height: 41em;
     background-image: url('pics/planetEarth.png');
     background-size: cover;
     transform: translate(-50%, -50%); 

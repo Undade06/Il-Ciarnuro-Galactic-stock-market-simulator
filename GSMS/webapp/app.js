@@ -22,9 +22,10 @@ function getCurrentSlide() {
     if (s.length === 0) return null; else return s[0]
 }
 
-// All these are supposed
 const MAXSTOCKVALUE = 100000
-const TIMESTEP = 0.01       // Second
+const TIMESTEP = 0.01
+const STARTDATE=new Date("2127-01-01").getTime(), REALSTARTDATE=new Date("2023-12-23").getTime()
+const SPEEDUP=60                //1 real second = 1 game minute       
 
 //mulberry32 seeded random number generator
 function mulberry32(a) {
@@ -67,4 +68,8 @@ Stock.prototype = {
         while (v === 0) v = mulberry32(Math.random())
         return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
     }
+}
+
+function gameTimer(){
+    return new Date(STARTDATE+(Date.now()-REALSTARTDATE)*SPEEDUP)/(1000*60*60*24)
 }

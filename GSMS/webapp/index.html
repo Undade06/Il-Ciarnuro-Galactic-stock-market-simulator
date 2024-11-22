@@ -15,15 +15,18 @@
             function chartTest_update(){
                 gameT.innerText=gameTimerAsDate().toGMTString()
                 stock=new Stock("TEST", "Test", Number(baseValue.value), Number(grow.value), Number(volatility.value))
-                stockValue.innerText=stock.getValue()+" Kr"
                 let ctx=document.querySelector("canvas.chart")
                 let start=~~gameTimer()-chartDays
                 let end=gameTimer()
                 let step=(end-start)/10
                 if(step<0.001) step=0.001
+                let temp = stock.getValues(start)
+                stockValue.innerText=temp[temp.length-1]+" Kr"
                 let values=[]
+                let k=0
                 for(i=start;i<=end;i+=step){
-                    values.push({x:i*(1000*60*60*24),y:stock.getValue(i)})
+                    values.push({x:i*(1000*60*60*24),y:temp[k]})
+                    k++
                 }
                 if(!ctx.chartjs){
                     let chart=new Chart(ctx,{

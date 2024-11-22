@@ -33,7 +33,8 @@ body{
     width: 100%;
     height: 100%;
     /*background-image: url(pics/back.png);*/
-    background-color: rgb(54, 41, 168);
+    background-color: rgb(49, 1, 107);
+    color: #FFFFFF;
     background-size: cover;
     z-index: -10;
 }

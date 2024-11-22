@@ -23,9 +23,10 @@ function getCurrentSlide() {
 }
 
 const MAXSTOCKVALUE = 1000000
+const MINSTOCKVALUE = 0.001
 const TIMESTEP = 0.01
-const STARTDATE=new Date("2127-01-01").getTime(), REALSTARTDATE=new Date("2024-01-01").getTime()
-const SPEEDUP=60                //1 real second = 1 game minute       
+const STARTDATE = new Date("2127-01-01").getTime(), REALSTARTDATE = new Date("2024-01-01").getTime()
+const SPEEDUP = 60                //1 real second = 1 game minute       
 
 //mulberry32 seeded random number generator
 function mulberry32(a) {
@@ -33,6 +34,13 @@ function mulberry32(a) {
     t = Math.imul(t ^ t >>> 15, t | 1)
     t ^= t + Math.imul(t ^ t >>> 7, t | 61)
     return ((t ^ t >>> 14) >>> 0) / 4294967296
+}
+
+function normalDistributedNumber() {                    // Generate a random number with standard normal distribution 
+    let u = 0, v = 0;
+    while (u === 0) u = mulberry32(Math.random() * 10000)               // To avoid zero
+    while (v === 0) v = mulberry32(Math.random() * 10000)
+    return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
 }
 
 function Stock(name, description, baseValue, growth, volatility) {
@@ -46,35 +54,26 @@ function Stock(name, description, baseValue, growth, volatility) {
 
 Stock.prototype = {
     constructor: Stock,
-    getValue: function (t) {
-        return Math.min(this._baseValue * Math.exp(((this.growth - (Math.pow(this.volatility, 2) / 2)) * t) + this.volatility * this.wiener(t)), MAXSTOCKVALUE)
-    },
-    wiener: function (t) {
-        let n = Math.floor(t / TIMESTEP),         // Step number
-            z,                                      // Standard normal random variable
-            dw,                                     // Process increment
-            sum = 0
+    getValues: function (t) {
+        if (t === 'undefined') t = gameTimer()
+        let n = Math.floor(t / TIMESTEP),           // Step number
+            w = []
 
-        for (let i = 0; i < n; i++) {
-            z = this.ndn()
-            dw = Math.sqrt(TIMESTEP) * z
-            sum += dw
+        w[0] = this._baseValue
+
+        for (let i = 1; i < n; i++) {
+            w.push(w[i - 1] + Math.sqrt(TIMESTEP) * normalDistributedNumber())
         }
-        return sum
-    },
-    ndn: function () {                    // Generate a random number with standard normal distribution 
-        let u = 0, v = 0;
-        while (u === 0) u = mulberry32(Math.random() * 10000)               // To avoid zero
-        while (v === 0) v = mulberry32(Math.random() * 10000)
-        return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
+
+        return w
     }
 }
 
-function gameTimer(){
-    return new Date(STARTDATE+(Date.now()-REALSTARTDATE)*SPEEDUP)/(1000*60*60*24)
+function gameTimer() {
+    return new Date(STARTDATE + (Date.now() - REALSTARTDATE) * SPEEDUP) / (1000 * 60 * 60 * 24)
 }
 
-function gameTimerAsDate(t){
-    if(typeof t === "undefined") t=gameTimer()
-    return new Date(t*(1000*60*60*24))
+function gameTimerAsDate(t) {
+    if (typeof t === "undefined") t = gameTimer()
+    return new Date(t * (1000 * 60 * 60 * 24))
 }

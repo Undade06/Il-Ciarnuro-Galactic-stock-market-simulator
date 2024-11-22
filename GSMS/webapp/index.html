@@ -2,32 +2,117 @@
 <html lang="it">
     <head>
         <meta charset="utf-8" />
-        <title>Il Ciarnuro : GSMS</title>
+        <title>Temp</title>
         <link rel="stylesheet" type="text/css" href="style.css" />
-        <script src="app.js" type="text/javascript"></script>
         <link rel="manifest" href="manifest.json" />
         <link rel="icon" type="image/png" href="favicon.png" />
         <meta name="viewport" content="width=device-width" />
+        <script src="lib/chart.js" type="text/javascript"></script>
+        <script src="lib/chartjs-adapter-date-fns.bundle.min.js" type="text/javascript"></script>
+        <script src="app.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            let stock=null
+            function chartTest_update(){
+                gameT.innerText=gameTimerAsDate().toGMTString()
+                stock=new Stock("TEST", "Test", Number(baseValue.value), Number(grow.value), Number(volatility.value))
+                stockValue.innerText=s.getValue().toFixed(3)+" Kr"
+                let ctx=document.querySelector("canvas.chart")
+                let start=~~gameTimer()-chartDays
+                let end=gameTimer()
+                let step=(end-start)/1000
+                if(step<0.001) step=0.001
+                let values=[]
+                for(i=start;i<=end;i+=step){
+                    values.push({x:i*(1000*60*60*24),y:s.getValue(i)})
+                }
+                if(!ctx.chartjs){
+                    let chart=new Chart(ctx,{
+                        type:"line",
+                        data:{
+                            datasets:[{
+                                label:s._name,
+                                indexAxis:'x',
+                                borderWidth:1,
+                                radius:0,
+                                data:values
+                            }]
+                        },
+                        options: {
+                            animation:false,
+                            parsing:false,
+                            //responsive:false,
+                            interaction: {
+                                mode: 'nearest',
+                                axis: 'x',
+                                intersect: false
+                            },
+                            plugins: {
+                                decimation: {
+                                    enabled: true,
+                                    samples:10
+                                },
+                                legend:{
+                                    display:false,
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    type: 'time',
+                                    time:{
+                                        unit:'day'
+                                    },
+                                    title:{
+                                        display:true,
+                                        text:'Data',
+                                    },
+                                },
+                                y:{
+                                    type:'linear',
+                                    title:{
+                                        display:true,
+                                        text:'Kr',
+                                    },
+                                    /*min:0*/
+                                }
+                            },
+                        }
+                    })
+                    ctx.chartjs=chart
+                }else{
+                    ctx.chartjs.data.datasets[0].data=values
+                    ctx.chartjs.update()
+                }
+            }
+            function initChartTest(){
+                chartDays=365
+                chartTest_update()
+            }
+        </script>
     </head>
-    <body>
-        <div class="slide visible" id="landingPage" onclick="toSlide('login_register')">
-            <img src="pics/logo.png" id="logo">
-            <h2 id="landingPageText">Press anywhere to continue</h2>
-            <div class="planet" id="planetLanding"></div>
+    <body onload="initChartTest()">
+        <div>
+            Current date: <span id="gameT"></span>
         </div>
-        <div class="slide hidden" id="login_register">
-            <div class="planet" id="planetLogin"></div>
-            <div class="back" id="log_reg_back">
-                <div class="content">
-                    <input type="text" value="Username" class="log_reg_input"><br><br>
-                    <input type="text" value="Password" class="log_reg_input"><br>
-                    <h4 class="errorText">An error occurred. Please,<br> check the fields entered </h4>
-                    <div class="buttons_log_reg">
-                        <button onclick="">Login</button>
-                        <button onclick="">Register</button>
-                    </div>
-                </div>
-            </div>
+        <div>
+            Price: <span id="stockValue"></span>
         </div>
+        <div style="width:100%; max-width:50rem; height:30rem;">
+            <canvas class="chart" id="chart"></canvas>
+        </div>
+        <div>
+            <button onclick="chartDays=1;chartTest_update()">1d</button>
+            <button onclick="chartDays=7;chartTest_update()">1w</button>
+            <button onclick="chartDays=30;chartTest_update()">1m</button>
+            <button onclick="chartDays=365;chartTest_update()">1y</button>
+            <button onclick="chartDays=3650;chartTest_update()">10y</button>
+            <button onclick="chartDays=7300;chartTest_update()">20y</button>
+            <button onclick="chartDays=18250;chartTest_update()">50y</button>
+            <button onclick="chartDays=36500;chartTest_update()">100y</button>
+        </div>
+        <table>
+            <tr><td><label for="baseValue">Base Value</label></td><td><input type="number" min="0" step="0.1" value="100" id="baseValue"></td></tr>
+            <tr><td><label for="grow">Grow</label></td><td><input type="number" min="0" step="0.01" value="1" id="grow"></td></tr>
+            <tr><td><label for="volatility">Volatility</label></td><td><input type="number" min="0" step="0.001" value="0.02" id="volatility"></td></tr>
+        </table>
     </body>
 </html>

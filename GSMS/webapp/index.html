@@ -10,12 +10,13 @@
         <script src="app.js" type="text/javascript"></script>
     </head>
     <body>
-        <div class="slide visible" id="landingPage">
+        <div class="slide visible" id="landingPage" onclick="toSlide('login_register')">
             <img src="pics/logo.png" id="logo">
             <h2 id="landingPageText">Press anywhere to continue</h2>
             <div class="planet" id="planetLanding"></div>
         </div>
         <div class="slide hidden" id="login_register">
+            <img src="pics/logo2.webp" id="logoLogin">
             <div class="planet" id="planetLogin"></div>
             <div class="back" id="log_reg_back">
                 <div class="content">
@@ -24,13 +25,27 @@
                     <h4 class="errorText">An error occurred. Please, check the fields entered</h4>
                     <div class="buttons_log_reg">
                         <button onclick="toSlide('saves')">Login</button>
-                        <button onclick="">Register</button>
+                        <button onclick="toSlide('registerPage')">Register</button>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="slide hidden" id="registerPage">
+            <div class="planet" id="planetStatic"></div>
+            <div class="back" id="reg_back"></div>
+                <div class="content">
+                    <input type="text" value="Username" class="reg_input">
+                    <input type="text" value="Password" class="reg_input">
+                    <input type="text" value="Confirm Password" class="reg_input">
+                    <h4 class="errorText">An error occurred. Please, check the fields entered</h4>
+                    <div class="buttons_reg">
+                        <button onclick="toSlide('login_register')">Login</button>
+                        <button onclick="toSlide('saves')">Register</button>
+                    </div>
+                </div>
+        </div>
         <div class="slide hidden" id="saves">
-            <div class="planet" id="planetSaves"></div>
+            <div class="planet" id="planetStatic"></div>
             <div class="back" id="saves_back">
                 <div class="content" id="save_content">
                     

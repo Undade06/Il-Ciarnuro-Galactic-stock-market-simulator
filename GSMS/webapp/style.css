@@ -80,6 +80,19 @@ div.planet{
     z-index: 2;
 }
 
+#logoLogin{
+    height: 7em;
+    position: absolute;
+    top: 15%;
+    left: 49.8%;
+    transform: translate(-50%, -50%);
+    transition: top 2s ease, left 2s ease;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.75);
+    border: none;
+    border-radius: 1rem;
+}
+
 #landingPageText{
     position: absolute;
     left: 48%;
@@ -93,7 +106,7 @@ div.slide.hidden #planetLogin {
     top: 48rem;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: top 3s ease, left 3s ease;
+    transition: top 2s ease, left 2s ease;
     z-index: -1;
 }
 
@@ -101,7 +114,14 @@ div.slide.visible #planetLogin {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: top 3s ease, left 3s ease;
+    transition: top 2s ease, left 2s ease;
+    z-index: -1;
+}
+
+div.slide.visible #planetStatic {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     z-index: -1;
 }
 
@@ -112,28 +132,43 @@ div.slide.hidden #log_reg_back {
     transform: translate(-50%, -50%);
     background-color:#1E1E1E;
     opacity: 0%;
-    transition: 3s ease-in;
+    transition: 1s ease-in;
     width: 25rem; /* Adjust width */
-    height: 17rem; /* Adjust height */
+    height: 10rem; /* Adjust height */
     padding: 1.25rem; /* Adjust padding */
     padding-top: 7rem;
-    border-radius: 15px;
-    text-align: center; 
+    border-radius: 2rem;
+    text-align: center;
     z-index: 0;
 }
 div.slide.visible #log_reg_back{
     position: absolute;
-    top: 45%;
+    top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color:rgba(0, 0, 0, 0.75);
-    transition: 3s ease-in;
+    transition: 1s ease-in;
     width: 25rem; /* Adjust width */
     height: 17rem; /* Adjust height */
     padding: 1.25rem; /* Adjust padding */
+    padding-top: 3rem;
+    border-radius: 2rem;
+    text-align: center;
+    z-index: 0;
+}
+
+div.slide.visible #reg_back{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    width: 25rem;
+    height: 17rem;
+    padding: 1.25rem;
     padding-top: 7rem;
-    border-radius: 15px;
-    text-align: center; 
+    border-radius: 2rem;
+    text-align: center;
     z-index: 0;
 }
 
@@ -142,14 +177,35 @@ div#log_reg_back .content {
     z-index: 1; 
 }
 
-.buttons_log_reg button{
+div#reg_back .content{
+    opacity: 1; 
+    z-index: 1; 
+}
+
+.buttons_reg button{
     background-color: #0A205A;
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
     font-size: 1.5em;
     border: none;
-    border-radius: 5px;
+    transition: 1.5s ease-in;
+    border-radius: 0.4rem;
+    z-index: 1;
+}
+
+.buttons_log_reg button{
+    background-color: #0A205A;
+    color: white;
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    width: 10rem;
+    height: 3rem;
+    font-size: 1.4em;
+    margin-right: 1.1rem;
+    margin-left:  1.1rem;
+    border: none;
+    border-radius: 0.4rem;
     z-index: 1;
 }
 
@@ -157,16 +213,32 @@ h4.errorText{
     font-family: 'Xolonium_regular', sans-serif;
     font-weight: bold;
     color: red;
+    opacity: 0;
 }
 
-input.log_reg_input{
+input.reg_input{
     font-family: 'Xolonium_regular', sans-serif;
     font-weight: bold;
     color: #FFFFFF;
     font-size: 1.5em;
     background-color: rgba(30, 30, 30, 0.85);
     border: none;
-    border-radius: 5px;
+    border-radius: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+input.log_reg_input{
+    font-family: 'Xolonium_regular', sans-serif;
+    font-weight: bold;
+    color: #FFFFFF;
+    font-size: 1.3em;
+    height: 2.5rem;
+    width: 22rem;
+    background-color: rgba(30, 30, 30, 0.85);
+    border: none;
+    padding-left: 1rem;
+    border-radius: 0.4rem;
+    margin-top: 1.7rem;
 }
 div.slide.visible #saves_back{
     position: absolute;
@@ -180,7 +252,7 @@ div.slide.visible #saves_back{
     padding: 1.25rem; /* Adjust padding */
     padding-top: 7rem;
     border-radius: 15px;
-    text-align: center; 
+    text-align: center;
     z-index: 0;
 }
 

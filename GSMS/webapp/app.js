@@ -61,9 +61,7 @@ Stock.prototype = {
 
         w[0] = this._baseValue
 
-        for (let i = 1; i < n; i++) {
-            w.push(w[i - 1] + Math.sqrt(TIMESTEP) * normalDistributedNumber())
-        }
+        for (let i = 1; i < n; i++) w.push(Math.min(MAXSTOCKVALUE, Math.max(MINSTOCKVALUE, w[i - 1] + Math.sqrt(TIMESTEP) * normalDistributedNumber())))
 
         return w
     }

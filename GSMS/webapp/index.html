@@ -18,7 +18,7 @@
                 let ctx=document.querySelector("canvas.chart")
                 let start=~~gameTimer()-chartDays
                 let end=gameTimer()
-                let step=(end-start)/10
+                let step=(end-start)/1000
                 if(step<0.001) step=0.001
                 let temp = stock.getValues(start)
                 stockValue.innerText=temp[temp.length-1]+" Kr"

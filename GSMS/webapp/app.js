@@ -2,8 +2,8 @@ function toSlide(id) {
     document.querySelectorAll("div.slide").forEach(function(e) {
         e.classList.add("hidden");
         e.classList.remove("visible");
-        e.querySelectorAll("*").forEach(function(e2) {
-            e2.tabIndex = "-1"; 
+        e.querySelectorAll("*").forEach(function(e1) {
+            e1.tabIndex = "-1"; 
         });
     });
     let d = document.getElementById(id);
@@ -17,13 +17,13 @@ function getCurrentSlide(){
     let s=document.getElementsByClassName("slide visible");
     if(s.length===0) return null; else return s[0];
 }
-document.getElementById("landingPage").addEventListener('click', function(event) {
+/*document.getElementById("landingPage").addEventListener('click', function(event) {
     event.stopPropagation(); // Impedisce la propagazione del click
     toSlide("login_register");
-});
-document.getElementById("saves").addEventListener('click', function(event) {
+});*/
+/*document.getElementById("saves").addEventListener('click', function(event) {
     event.stopPropagation();
-});
+});*/
 
 // Funzione per aggiornare la lista dei salvataggi
 function loadSaves() {

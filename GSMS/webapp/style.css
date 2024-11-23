@@ -26,6 +26,10 @@ div.slide.hidden{
 div.slide.hidden #logo{
     display: none;
 }
+div.slide.hidden #logoLogin{
+    display: none;
+}
+
 /*-------------------*/
 
 body{
@@ -66,7 +70,7 @@ div.planet{
     height: 41em;
     background-image: url('pics/planetEarth.png');
     background-size: cover;
-    transform: translate(-50%, -50%); 
+    transform: translate(-50%, -50%);
     animation: rotate 100s linear infinite; 
 }
 /*------------------*/
@@ -87,7 +91,7 @@ div.planet{
     left: 49.8%;
     transform: translate(-50%, -50%);
     transition: top 2s ease, left 2s ease;
-    z-index: 1;
+    z-index: 2;
     background-color: rgba(0, 0, 0, 0.75);
     border: none;
     border-radius: 1rem;
@@ -99,7 +103,7 @@ div.planet{
     top: 15%;
     left: 49.8%;
     transform: translate(-50%, -50%);
-    z-index: 1;
+    z-index: 2;
     background-color: rgba(0, 0, 0, 0.75);
     border: none;
     border-radius: 1rem;
@@ -179,7 +183,7 @@ div.slide.hidden #reg_back{
     position: absolute;
     top: 45%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%,-50%);
     background-color: rgba(0, 0, 0, 0.75);
     opacity: 0%;
     width: 25rem;
@@ -195,7 +199,7 @@ div.slide.visible #reg_back{
     position: absolute;
     top: 45%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%,-50%);
     background-color: rgba(0, 0, 0, 0.75);
     width: 25rem;
     height: 17rem;
@@ -207,13 +211,13 @@ div.slide.visible #reg_back{
 }
 
 div#log_reg_back .content {
-    opacity: 1; 
-    z-index: 1; 
+    opacity: 1;
+    z-index: 1;
 }
 
 div#reg_back .content{
-    opacity: 1; 
-    z-index: 1; 
+    opacity: 1;
+    z-index: 1;
 }
 
 .buttons_reg button{
@@ -241,6 +245,11 @@ div#reg_back .content{
     border: none;
     border-radius: 0.4rem;
     z-index: 1;
+}
+
+.button:hover{
+    transform: scale(1,2);
+    z-index: 9999;
 }
 
 h4.errorText{

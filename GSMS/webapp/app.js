@@ -24,7 +24,7 @@ function getCurrentSlide() {
 
 const MAXSTOCKVALUE = 1000000
 const MINSTOCKVALUE = 0.001
-const TIMESTEP = 0.01
+const TIMESTEP = 0.001
 const STARTDATE = new Date("2127-01-01").getTime(), REALSTARTDATE = new Date("2024-01-01").getTime()
 const SPEEDUP = 60                //1 real second = 1 game minute       
 
@@ -55,14 +55,19 @@ function Stock(name, description, baseValue, growth, volatility) {
 Stock.prototype = {
     constructor: Stock,
     getValues: function (t) {
-        if (t === 'undefined') t = gameTimer()
-        let n = Math.floor(t / TIMESTEP),           // Step number
+        if (t === 'undefined' || t < 0) t = gameTimer()
+        let n = (t / TIMESTEP),
             w = []
 
         w[0] = this._baseValue
-
-        for (let i = 1; i < n; i++) w.push(Math.min(MAXSTOCKVALUE, Math.max(MINSTOCKVALUE, w[i - 1] + Math.sqrt(TIMESTEP) * normalDistributedNumber())))
-
+        for (let i = 1; i < n; i++) w.push(Math.min(MAXSTOCKVALUE, Math.max(                            // Apply geometric Brownian motion
+                MINSTOCKVALUE, 
+                w[i - 1] * Math.exp(
+                    (this.growth - (Math.pow(this.volatility, 2) / 2)) * TIMESTEP 
+                    + 
+                    this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber()
+                )
+            )))
         return w
     }
 }

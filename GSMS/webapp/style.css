@@ -87,7 +87,19 @@ div.planet{
     left: 49.8%;
     transform: translate(-50%, -50%);
     transition: top 2s ease, left 2s ease;
-    z-index: 2;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.75);
+    border: none;
+    border-radius: 1rem;
+}
+
+#logoReg{
+    height: 7em;
+    position: absolute;
+    top: 15%;
+    left: 49.8%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
     background-color: rgba(0, 0, 0, 0.75);
     border: none;
     border-radius: 1rem;
@@ -96,9 +108,9 @@ div.planet{
 #landingPageText{
     position: absolute;
     left: 48%;
-    top: 40%;
+    top: 50%;
     transform: translate(-50%, -50%);
-    opacity: 50%;
+    opacity: 45%;
     text-shadow: 2px 2px 2px black;
 }
 
@@ -118,6 +130,13 @@ div.slide.visible #planetLogin {
     z-index: -1;
 }
 
+div.slide.hidden #planetStatic {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: -1;
+}
+
 div.slide.visible #planetStatic {
     top: 50%;
     left: 50%;
@@ -127,23 +146,23 @@ div.slide.visible #planetStatic {
 
 div.slide.hidden #log_reg_back {
     position: absolute;
-    top: 45%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color:#1E1E1E;
+    background-color:rgba(0, 0, 0, 0.75);
     opacity: 0%;
     transition: 1s ease-in;
     width: 25rem; /* Adjust width */
-    height: 10rem; /* Adjust height */
+    height: 17rem; /* Adjust height */
     padding: 1.25rem; /* Adjust padding */
-    padding-top: 7rem;
     border-radius: 2rem;
     text-align: center;
     z-index: 0;
 }
+
 div.slide.visible #log_reg_back{
     position: absolute;
-    top: 52%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color:rgba(0, 0, 0, 0.75);
@@ -151,7 +170,22 @@ div.slide.visible #log_reg_back{
     width: 25rem; /* Adjust width */
     height: 17rem; /* Adjust height */
     padding: 1.25rem; /* Adjust padding */
-    padding-top: 3rem;
+    border-radius: 2rem;
+    text-align: center;
+    z-index: 0;
+}
+
+div.slide.hidden #reg_back{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    opacity: 0%;
+    width: 25rem;
+    height: 17rem;
+    padding: 1.25rem;
+    padding-top: 7rem;
     border-radius: 2rem;
     text-align: center;
     z-index: 0;

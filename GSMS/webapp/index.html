@@ -22,7 +22,7 @@
                 <div class="content">
                     <input type="text" value="Username" class="log_reg_input">
                     <input type="text" value="Password" class="log_reg_input">
-                    <h4 class="errorText">An error occurred. Please, check the fields entered</h4>
+                    <h4 class="errorText">Username or password may not be correct, try again</h4>
                     <div class="buttons_log_reg">
                         <button onclick="toSlide('saves')">Login</button>
                         <button onclick="toSlide('registerPage')">Register</button>
@@ -31,6 +31,7 @@
             </div>
         </div>
         <div class="slide hidden" id="registerPage">
+            <img src="pics/logo2.webp" id="logoReg">
             <div class="planet" id="planetStatic"></div>
             <div class="back" id="reg_back"></div>
                 <div class="content">
@@ -40,7 +41,7 @@
                     <h4 class="errorText">An error occurred. Please, check the fields entered</h4>
                     <div class="buttons_reg">
                         <button onclick="toSlide('login_register')">Login</button>
-                        <button onclick="toSlide('saves')">Register</button>
+                        <button onclick="toSlide('saves')">Create</button>
                     </div>
                 </div>
         </div>

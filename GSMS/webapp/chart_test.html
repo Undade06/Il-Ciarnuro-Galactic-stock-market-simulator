@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="utf-8" />
+        <title>Temp</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="manifest" href="manifest.json" />
+        <link rel="icon" type="image/png" href="favicon.png" />
+        <meta name="viewport" content="width=device-width" />
+        <script src="lib/chart.js" type="text/javascript"></script>
+        <script src="lib/chartjs-adapter-date-fns.bundle.min.js" type="text/javascript"></script>
+        <script src="app.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            let stock = null
+            const PRECISION = 1000
+            function chartTest_update() {
+                gameT.innerText = gameTimerAsDate().toGMTString()
+                stock = new Stock("TEST", "Test", Number(baseValue.value), Number(grow.value), Number(volatility.value))
+                let ctx = document.querySelector("canvas.chart")
+                let start = ~~gameTimer() - chartDays
+                let end = gameTimer()
+                let step = (end - start) / PRECISION
+                let temp = stock.getValues(step * PRECISION)
+                let values = []
+                let k = 0
+                for (i = start; i < end; i += step){
+                    values.push({ x: i * (1000 * 60 * 60 * 24), y: temp[k] })
+                    k++
+                }
+                stockValue.innerText = temp[k - 1].toFixed(2) + " Kr"
+                if (!ctx.chartjs) {
+                    let chart = new Chart(ctx, {
+                        type: "line",
+                        data: {
+                            datasets: [{
+                                label: stock.name,
+                                indexAxis: 'x',
+                                borderWidth: 1,
+                                radius: 0,
+                                data: values
+                            }]
+                        },
+                        options: {
+                            animation: false,
+                            parsing: false,
+                            //responsive:false,
+                            interaction: {
+                                mode: 'nearest',
+                                axis: 'x',
+                                intersect: false
+                            },
+                            plugins: {
+                                decimation: {
+                                    enabled: true,
+                                    samples: 10
+                                },
+                                legend: {
+                                    display: false,
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    type: 'time',
+                                    time: {
+                                        unit: 'day'
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Data',
+                                    },
+                                },
+                                y: {
+                                    type: 'linear',
+                                    title: {
+                                        display: true,
+                                        text: 'Kr',
+                                    },
+                                    /*min:0*/
+                                }
+                            },
+                        }
+                    })
+                    ctx.chartjs = chart
+                } else {
+                    ctx.chartjs.data.datasets[0].data = values
+                    ctx.chartjs.update()
+                }
+            }
+            function initChartTest() {
+                chartDays = 1
+                chartTest_update()
+            }
+        </script>
+    </head>
+
+    <body onload="initChartTest()">
+        <div>
+            Current date: <span id="gameT"></span>
+        </div>
+        <div>
+            Price: <span id="stockValue"></span>
+        </div>
+        <div style="width:100%; max-width:50rem; height:30rem;">
+            <canvas class="chart" id="chart"></canvas>
+        </div>
+        <div>
+            <button onclick="chartDays=1;chartTest_update()">1d</button>
+            <button onclick="chartDays=7;chartTest_update()">1w</button>
+            <button onclick="chartDays=30;chartTest_update()">1m</button>
+            <button onclick="chartDays=365;chartTest_update()">1y</button>
+            <button onclick="chartDays=3650;chartTest_update()">10y</button>
+            <button onclick="chartDays=7300;chartTest_update()">20y</button>
+            <button onclick="chartDays=18250;chartTest_update()">50y</button>
+            <button onclick="chartDays=36500;chartTest_update()">100y</button>
+        </div>
+        <table>
+            <tr>
+                <td><label for="baseValue">Base Value</label></td>
+                <td><input type="number" min="0" step="1" value="20" id="baseValue"></td>
+            </tr>
+            <tr>
+                <td><label for="grow">Grow</label></td>
+                <td><input type="number" min="0" step="0.1" value="0.2" id="grow"></td>
+            </tr>
+            <tr>
+                <td><label for="volatility">Volatility</label></td>
+                <td><input type="number" min="0" step="0.01" value="0.2" id="volatility"></td>
+            </tr>
+        </table>
+    </body>
+</html>

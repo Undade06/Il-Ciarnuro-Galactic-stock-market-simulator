@@ -26,18 +26,15 @@ div.slide.hidden{
 }
 /*-------------------*/
 
-body{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /*background-image: url(pics/back.png);*/
+body {
+    margin: 0;
+    padding: 0;
     background-color: rgb(49, 1, 107);
     color: #FFFFFF;
     background-size: cover;
-    z-index: -10;
 }
+
+
 
 
 

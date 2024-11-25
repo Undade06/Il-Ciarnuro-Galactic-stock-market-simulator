@@ -36,18 +36,10 @@ function mulberry32(a) {
     return ((t ^ t >>> 14) >>> 0) / 4294967296
 }
 
-function normalDistributedNumber(seed) {                    // Generate a random number with standard normal distribution
-    let u = 0, v = 0
-    if (seed === 'undefined' || seed < 1) {
-        while (u === 0) u = mulberry32(Math.random() * 10000)               // To avoid zero
-        while (v === 0) v = mulberry32(Math.random() * 10000)
-    } else {
-        u = mulberry32(seed)
-        while (u === 0) u = mulberry32(Math.random() * 10000)
-        v = mulberry32(seed)
-        while (v === 0) v = mulberry32(Math.random() * 10000)
-    }
-    return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
+function normalDistributedNumber(seed = null) {                    // Generate a random number with standard normal distribution
+    let n = mulberry32(seed)
+    while (n === 0) n = mulberry32(seed * Math.random() * 10000)            //To avoid zero
+    return Math.sqrt(-2.0 * Math.log(n)) * Math.cos(2.0 * Math.PI * n)
 }
 
 function Stock(name, description, baseValue, growth, volatility, seed) {
@@ -73,7 +65,7 @@ Stock.prototype = {
             w[i - 1] * Math.exp(
                 (this.growth - (Math.pow(this.volatility, 2) / 2)) * TIMESTEP
                 +
-                this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)
+                this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)          //Add a variability to the seed to not let it grow exponentially
             )
         )))
         return w

@@ -42,32 +42,37 @@ function normalDistributedNumber(seed = null) {                    // Generate a
     return Math.sqrt(-2.0 * Math.log(n)) * Math.cos(2.0 * Math.PI * n)
 }
 
-function Stock(name, description, baseValue, growth, volatility, seed) {
+function Stock(name, description, baseValue, growth, volatility, seed, ...influencedBy) {
     this.name = name
     this.description = description
     this.type = "stock"
     this._baseValue = baseValue
+    this._baseValue = this._baseValue < MINSTOCKVALUE ? MINSTOCKVALUE : this._baseValue
+    this._baseValue = this._baseValue > MAXSTOCKVALUE ? MAXSTOCKVALUE : this._baseValue
     this.growth = growth
     this.volatility = volatility
     this.seed = seed
+    this.influencedBy = influencedBy                //Stocks that influences this stock
 }
 
 Stock.prototype = {
     constructor: Stock,
     getValues: function (t) {
         if (t === 'undefined' || t < 0) t = gameTimer()
-        let n = (t / TIMESTEP),
-            w = []
+        let n = (t / TIMESTEP), w = [], v = this._baseValue
 
         w[0] = this._baseValue
-        for (let i = 1; i < n; i++) w.push(Math.min(MAXSTOCKVALUE, Math.max(                            // Apply geometric Brownian motion
-            MINSTOCKVALUE,
-            w[i - 1] * Math.exp(
+
+        for (let i = 1; i < n; i++) {
+            v = v * Math.exp(
                 (this.growth - (Math.pow(this.volatility, 2) / 2)) * TIMESTEP
                 +
-                this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)          //Add a variability to the seed to not let it grow exponentially
+                this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i) //Add a variability to the seed to not let stock value grow exponentially
             )
-        )))
+            v = v < MINSTOCKVALUE ? MINSTOCKVALUE : v
+            v = v > MAXSTOCKVALUE ? MAXSTOCKVALUE : v
+            w.push(v)
+        }
         return w
     }
 }

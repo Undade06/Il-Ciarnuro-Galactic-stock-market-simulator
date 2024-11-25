@@ -36,20 +36,26 @@ function mulberry32(a) {
     return ((t ^ t >>> 14) >>> 0) / 4294967296
 }
 
-function normalDistributedNumber() {                    // Generate a random number with standard normal distribution 
-    let u = 0, v = 0;
-    while (u === 0) u = mulberry32(Math.random() * 10000)               // To avoid zero
-    while (v === 0) v = mulberry32(Math.random() * 10000)
+function normalDistributedNumber(seed) {                    // Generate a random number with standard normal distribution
+    let u = 0, v = 0
+    if (seed === 'undefined') {
+        while (u === 0) u = mulberry32(Math.random() * 10000)               // To avoid zero
+        while (v === 0) v = mulberry32(Math.random() * 10000)
+    } else {
+        while (u === 0) u = mulberry32(seed)
+        while (v === 0) v = mulberry32(seed)
+    }
     return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
 }
 
-function Stock(name, description, baseValue, growth, volatility) {
+function Stock(name, description, baseValue, growth, volatility, seed) {
     this.name = name
     this.description = description
     this.type = "stock"
     this._baseValue = baseValue
     this.growth = growth
     this.volatility = volatility
+    this.seed = seed
 }
 
 Stock.prototype = {
@@ -61,13 +67,13 @@ Stock.prototype = {
 
         w[0] = this._baseValue
         for (let i = 1; i < n; i++) w.push(Math.min(MAXSTOCKVALUE, Math.max(                            // Apply geometric Brownian motion
-                MINSTOCKVALUE, 
-                w[i - 1] * Math.exp(
-                    (this.growth - (Math.pow(this.volatility, 2) / 2)) * TIMESTEP 
-                    + 
-                    this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber()
-                )
-            )))
+            MINSTOCKVALUE,
+            w[i - 1] * Math.exp(
+                (this.growth - (Math.pow(this.volatility, 2) / 2)) * TIMESTEP
+                +
+                this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed)
+            )
+        )))
         return w
     }
 }

@@ -14,7 +14,7 @@
             const PRECISION = 1000
             function chartTest_update(id) {
                 document.getElementById('gameT').innerText = gameTimerAsDate().toGMTString()
-                let stock = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value))
+                let stock = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value))
                 let ctx = document.getElementById(id).querySelector("canvas.chart")
                 let start = ~~gameTimer() - chartDays1
                 if(id == '2') start = ~~gameTimer() - chartDays2
@@ -29,7 +29,7 @@
                     k++
                 }
                 document.getElementById('stockValue'+id).innerText = temp[k - 1].toFixed(2) + " Kr"
-                console.log(temp)
+                //console.log(temp)
                 if (!ctx.chartjs) {
                     let chart = new Chart(ctx, {
                         type: "line",
@@ -133,6 +133,10 @@
                     <td><label for="volatility">Volatility</label></td>
                     <td><input type="number" min="0" step="0.01" value="0.2" id="volatility1"></td>
                 </tr>
+                <tr>
+                    <td><label for="seed">Seed</label></td>
+                    <td><input type="number" min="0" step="1" value="268953" id="seed1"></td>
+                </tr>
             </table>
         </div>
         <div id="2">
@@ -165,6 +169,10 @@
                     <td><label for="volatility">Volatility</label></td>
                     <td><input type="number" min="0" step="0.01" value="0.8" id="volatility2"></td>
                 </tr>
+                <tr>
+                    <td><label for="seed">Seed</label></td>
+                    <td><input type="number" min="0" step="1" value="647852" id="seed2"></td>
+                </tr>
             </table>
         </div>
         <div id="3">
@@ -196,6 +204,10 @@
                 <tr>
                     <td><label for="volatility">Volatility</label></td>
                     <td><input type="number" min="0" step="0.01" value="0.2" id="volatility3"></td>
+                </tr>
+                <tr>
+                    <td><label for="seed">Seed</label></td>
+                    <td><input type="number" min="0" step="1" value="999999" id="seed3"></td>
                 </tr>
             </table>
         </div>

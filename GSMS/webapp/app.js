@@ -17,71 +17,91 @@ function getCurrentSlide(){
     let s=document.getElementsByClassName("slide visible");
     if(s.length===0) return null; else return s[0];
 }
-/*document.getElementById("landingPage").addEventListener('click', function(event) {
-    event.stopPropagation(); // Impedisce la propagazione del click
+document.getElementById("landingPage").addEventListener('click', function(event) {
+    event.stopPropagation(); // Prevents click propagation
     toSlide("login_register");
-});*/
-/*document.getElementById("saves").addEventListener('click', function(event) {
+});
+document.getElementById("saves").addEventListener('click', function(event) {
     event.stopPropagation();
-});*/
+});
 
-// Funzione per aggiornare la lista dei salvataggi
+// Reload saves
 function loadSaves() {
     const savesContainer = document.querySelector("#saves .content");
     savesContainer.innerHTML = "";
 
-    // Recupera i salvataggi da localStorage
     let saves = JSON.parse(localStorage.getItem("saves"));
-    if(saves==null){
-        saves=[];
+    if (saves == null) {
+        saves = [];
     }
-    // Crea un riquadro per ogni salvataggio
+    // Create a box for each of the save-box
     saves.forEach((save, index) => {
-    const saveBox = document.createElement("div");
-    saveBox.classList.add("save-box");
-    saveBox.textContent = `Save ${index + 1}`;
-    saveBox.addEventListener("click", () => loadSave(index)); // Carica il salvataggio corrispondente
-    savesContainer.appendChild(saveBox);
+        const saveBox = document.createElement("div");
+        saveBox.classList.add("save-box");
+        const img = document.createElement("img");
+        img.src = "pics/rimuoviSave.png";
+        img.alt = "Rimuovi Salvataggio";
+        img.addEventListener("click", (event) => {
+            event.stopPropagation(); // If you click on the image, you don't click also the "save-box"
+            removeSave(index);
+        });
+
+        saveBox.textContent = `Save ${index + 1}`;
+        saveBox.appendChild(img);
+        saveBox.addEventListener("click", () => loadSave(index)); // Load the specific save
+        savesContainer.appendChild(saveBox);
     });
-    
-    // Aggiungi il riquadro per creare un nuovo salvataggio
-    if(saves.length<3){
+
+    // New save-box
+    if (saves.length < 3) {
         const newSaveBox = document.createElement("div");
-    newSaveBox.classList.add("save-box", "new-save");
-    newSaveBox.textContent = "+";
-    newSaveBox.addEventListener("click", createNewSave);
-    savesContainer.appendChild(newSaveBox);
+        newSaveBox.classList.add("save-box", "new-save");
+        newSaveBox.textContent = "+";
+        newSaveBox.addEventListener("click", createNewSave);
+        savesContainer.appendChild(newSaveBox);
     }
-    
 }
-// Funzione per creare un nuovo salvataggio
+
+// Creation of a new save
 function createNewSave() {
-    // Recupera i salvataggi esistenti
     let saves = JSON.parse(localStorage.getItem("saves"));
     if(saves==null) saves=[];
     if(saves.length<3){
-        // Aggiungi un nuovo salvataggio
+        //Add new save
         saves.push({ data: `New save ${saves.length + 1}` });
-        // Salva i salvataggi in localStorage
+        // Memorize the saves in localStorage
         localStorage.setItem("saves", JSON.stringify(saves));
-        // Ricarica la lista dei salvataggi
+        // Reload saves
         loadSaves();
     }
 }
-// Funzione per caricare un salvataggio specifico
+// Function to load a specific load
 function loadSave(index) {
     let saves = JSON.parse(localStorage.getItem("saves"));
     if(saves==null) saves=[];
     let save = saves[index];
     if (save) {
-        //se si clicca il riquadro di un salvataggio esistente si passa alla schermata "market1"
+        //If you click the box of an existing save you go to the "marketHomePage" screen
         document.getElementById("saves").addEventListener('click', function(event) { 
-            toSlide("market1");
+            toSlide("marketHomePage");
         });
     } else {
-        alert("Salvataggio non trovato!"); //messaggio d'errore
+        alert("Salvataggio non trovato!");
     }
 }
 document.addEventListener("DOMContentLoaded", () => {
-    loadSaves(); //all'esecuzione carica tutti i salvataggi memorizzati nel localStorage
+    loadSaves(); //Load all the saves in the localStorage
 });
+function removeSave(index){
+    let saves = JSON.parse(localStorage.getItem("saves"));
+    if(saves==null) saves=[];
+    let save = saves[index];
+    if(save){
+        if(saves.length>0){
+            saves.splice(index, 1);
+            localStorage.setItem("saves", JSON.stringify(saves));
+            loadSaves();
+            alert("eliminato salvataggio"+(index+1));
+        }  
+    }
+}

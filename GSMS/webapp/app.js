@@ -60,10 +60,10 @@ function Stock(name, description, baseValue, growth, volatility, seed, ...influe
     this.volatility = this.volatility > 2 ? 2 : this.volatility
     this.seed = seed
     this.influencedBy = influencedBy                //Stocks that influences this stock
-    if(masterCreated == 1 && !this.influencedBy.includes(masterStock)){
+    if (masterCreated == 1 && !this.influencedBy.includes(masterStock)) {
         this.influencedBy.push(masterStock);            //Add masterstocks in the influences if not present
         flagMaster = 1
-    } 
+    }
 }
 
 Stock.prototype = {

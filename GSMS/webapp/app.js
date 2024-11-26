@@ -50,7 +50,13 @@ function Stock(name, description, baseValue, growth, volatility, seed, ...influe
     this._baseValue = this._baseValue < MINSTOCKVALUE ? MINSTOCKVALUE : this._baseValue
     this._baseValue = this._baseValue > MAXSTOCKVALUE ? MAXSTOCKVALUE : this._baseValue
     this.growth = growth
+    //Empiric tests have shown that a growth value is fairly acceptable between -1(decrease) and 1
+    this.growth = this.growth < -1 ? -1 : this.growth
+    this.growth = this.growth > 1 ? 1 : this.growth
     this.volatility = volatility
+    //Empiric tests have shown that a volatility value is fairly acceptable between 0 and 2
+    this.volatility = this.volatility < 0 ? 0 : this.volatility
+    this.volatility = this.volatility > 2 ? 2 : this.volatility
     this.seed = seed
     this.influencedBy = influencedBy                //Stocks that influences this stock
 }

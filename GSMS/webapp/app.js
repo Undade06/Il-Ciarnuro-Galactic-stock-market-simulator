@@ -26,7 +26,8 @@ const MAXSTOCKVALUE = 1000000
 const MINSTOCKVALUE = 0.001
 const TIMESTEP = 0.001
 const STARTDATE = new Date("2127-01-01").getTime(), REALSTARTDATE = new Date("2024-01-01").getTime()
-const SPEEDUP = 60                //1 real second = 1 game minute       
+const SPEEDUP = 60                //1 real second = 1 game minute
+let masterCreated = 0              //Flag to determine if masterStock is already created. Used to not let the code use masterStock before is created in the constructor
 
 //mulberry32 seeded random number generator
 function mulberry32(a) {
@@ -59,6 +60,10 @@ function Stock(name, description, baseValue, growth, volatility, seed, ...influe
     this.volatility = this.volatility > 2 ? 2 : this.volatility
     this.seed = seed
     this.influencedBy = influencedBy                //Stocks that influences this stock
+    if(masterCreated == 1 && !this.influencedBy.includes(masterStock)){
+        this.influencedBy.push(masterStock);            //Add masterstocks in the influences if not present
+        flagMaster = 1
+    } 
 }
 
 Stock.prototype = {
@@ -82,6 +87,9 @@ Stock.prototype = {
         return w
     }
 }
+
+//Hidden stock. Every other stock is influenced by it
+const masterStock = new Stock('master stock', 'master stock', MAXSTOCKVALUE / 2, 0.5, 0.2, 123456)
 
 function gameTimer() {
     return new Date(STARTDATE + (Date.now() - REALSTARTDATE) * SPEEDUP) / (1000 * 60 * 60 * 24)

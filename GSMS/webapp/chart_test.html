@@ -25,14 +25,30 @@
                 } 
                 else stock = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value))
                 let ctx = document.getElementById(id).querySelector("canvas.chart")
+                let days = chartDays1
                 let start = ~~gameTimer() - chartDays1
-                if(id == '2') start = ~~gameTimer() - chartDays2
-                if(id == '3') start = ~~gameTimer() - chartDays3
+                if(id == '2'){
+                    start = ~~gameTimer() - chartDays2
+                    days = chartDays2
+                }
+                if(id == '3'){
+                    start = ~~gameTimer() - chartDays3
+                    days = chartDays3
+                }
                 let end = gameTimer()
                 let step = (end - start) / PRECISION
-                let temp = stock.getValues(36500)
+                let temp = stock.getValues(days)
                 let values = []
                 let k = 0
+                if(temp.length > PRECISION){
+                    let interval = ~~(temp.length / PRECISION)
+                    let sampledValues = []
+                    for(i = 0; i < temp.length; i += interval){
+                        let window = temp.slice(i, i + interval)
+                        sampledValues.push(window.reduce((a, b) => a + b, 0) / window.length)
+                    }
+                    temp = sampledValues
+                }
                 console.log('Stock: ' + stock.name)
                 console.log('Start: ' + start)
                 console.log('End: ' + end)
@@ -40,17 +56,12 @@
                 console.log('Step: ' + step)
                 console.log('Temp length: ' + temp.length)
                 console.log('-------------------------------')
-                for (i = start; i < end; i += step){
-                    values.push({ x: i * (1000 * 60 * 60 * 24), y: temp[k * PRECISION] })
-                    if(k % 10 == 0){
-                        console.log('temp[' + k * PRECISION+ ']' + temp[k * PRECISION])
-                        console.log('i: ' + i)
-                        console.log('k. ' + k)
-                    }
+                for (i = start; i < end - 1; i += step){
+                    values.push({ x: i * (1000 * 60 * 60 * 24), y: temp[k] })
+                    console.log('temp[' + k + ']' + temp[k])
                     k++
                 }
-
-                document.getElementById('stockValue'+id).innerText = temp[start - 1].toFixed(2) + " Kr"
+                document.getElementById('stockValue'+id).innerText = temp[k - 1].toFixed(2) + " Kr"
                 console.log(values)
                 if (!ctx.chartjs) {
                     let chart = new Chart(ctx, {

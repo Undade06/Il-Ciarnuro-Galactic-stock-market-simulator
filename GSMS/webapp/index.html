@@ -32,7 +32,7 @@
         <div class="slide hidden" id="registerPage">
             <img src="pics/logo2.webp" id="logoReg">
             <div class="planet" id="planetStatic"></div>
-            <div class="back" id="registerPage_back"></div>
+            <div class="back" id="registerPage_back">
                 <div class="content">
                     <input type="text" value="Username" class="register_input">
                     <input type="password" value="Password" class="register_input">
@@ -40,9 +40,10 @@
                     <h4 class="errorText">A</h4>
                     <div class="register_buttons">
                         <button onclick="toSlide('login_register')">Back</button>
-                        <button onclick="toSlide('saves')">Create</button>
+                        <button onclick="if(checkPassword()) toSlide('saves')">Create</button>
                     </div>
                 </div>
+            </div>
         </div>
         <div class="slide hidden" id="saves">
             <div class="planet" id="planetStatic2"></div>

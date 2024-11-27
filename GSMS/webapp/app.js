@@ -105,3 +105,15 @@ function removeSave(index){
         }  
     }
 }
+//registerPage
+function checkPassword(){
+    let password = document.querySelectorAll('.register_input')[1].value;
+    let confirmPassword = document.querySelectorAll('.register_input')[2].value;
+    let errorText = document.querySelector('.errorText').textContent;
+    if(password === confirmPassword){
+        return true;
+    }else{
+    //    errorText.style.opacity = '1';
+        return false;
+    }
+}

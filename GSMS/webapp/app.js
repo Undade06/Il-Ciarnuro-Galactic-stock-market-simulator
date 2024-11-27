@@ -39,7 +39,7 @@ function loadSaves() {
         const saveBox = document.createElement("div");
         saveBox.classList.add("save-box");
         const img = document.createElement("img");
-        img.src = "pics/rimuoviSave.png";
+        img.src = "pics/rimuoviSave.webp";
         img.alt = "Rimuovi Salvataggio";
         img.addEventListener("click", (event) => {
             event.stopPropagation(); // If you click on the image, you don't click also the "save-box"

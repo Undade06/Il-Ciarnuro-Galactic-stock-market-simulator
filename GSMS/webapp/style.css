@@ -126,7 +126,7 @@ div.slide.hidden #planetLogin {
     top: 48rem;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: top 2s ease, left 2s ease;
+    transition: top 1.5s ease, left 1.5s ease;
     z-index: -1;
 }
 
@@ -134,7 +134,7 @@ div.slide.visible #planetLogin {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: top 2s ease, left 2s ease;
+    transition: top 1.5s ease, left 1.5s ease;
     z-index: -1;
 }
 
@@ -227,7 +227,8 @@ div.slide.visible #planetStatic {
     transform: translate(-50%,-50%);
     z-index: -1;
 }
-div.slide.hidden #planetStatic2 {
+
+/*div.slide.hidden #planetStatic2 {
     display: none;
 }
 
@@ -236,7 +237,7 @@ div.slide.visible #planetStatic2 {
     left: 50%;
     transform: translate(-50%,-50%);
     z-index: -1;
-}
+}*/
 
 div.slide.hidden #registerPage_back{
     display: none;
@@ -289,7 +290,7 @@ input.register_input{
     border: none;
     padding-left: 1rem;
     border-radius: 0.4rem;
-    margin-top: 1.7rem;
+    margin-top: 1.2rem;
 }
 
 

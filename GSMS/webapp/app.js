@@ -39,17 +39,20 @@ function mulberry32(a) {
 
 function normalDistributedNumber(seed = null) {                    // Generate a random number with standard normal distribution
     let n = mulberry32(seed)
-    while (n === 0) n = mulberry32(seed * Math.random() * 10000)            //To avoid zero
+    while (n == 0) n = mulberry32(seed * Math.random() * 10000)            //To avoid zero
     return Math.sqrt(-2.0 * Math.log(n)) * Math.cos(2.0 * Math.PI * n)
 }
 
-function Stock(name, description, baseValue, growth, volatility, seed, ...influencedBy) {
+function Stock(name, description, baseValue, stability, growth, volatility, seed, ...influencedBy) {
     this.name = name
     this.description = description
     this.type = "stock"
     this._baseValue = baseValue
     this._baseValue = this._baseValue < MINSTOCKVALUE ? MINSTOCKVALUE : this._baseValue
     this._baseValue = this._baseValue > MAXSTOCKVALUE ? MAXSTOCKVALUE : this._baseValue
+    this.stability = stability
+    this.stability = this.stability < 0 ? 0 : this.stability
+    this.stability = this.stability > 1  ? 1 : this.stability
     this.growth = growth
     //Empiric tests have shown that a growth value is fairly acceptable between -1(decrease) and 1
     this.growth = this.growth < -1 ? -1 : this.growth
@@ -71,8 +74,8 @@ Stock.prototype = {
     getValues: function (t) {
         if (t === 'undefined' || t < 0) t = gameTimer()
         let n = (t / TIMESTEP), w = [], v = this._baseValue
-
-        w[0] = this._baseValue
+        
+        w.push(this._baseValue)
 
         for (let i = 1; i < n; i++) {
             v = v * Math.exp(
@@ -83,13 +86,14 @@ Stock.prototype = {
             v = v < MINSTOCKVALUE ? MINSTOCKVALUE : v
             v = v > MAXSTOCKVALUE ? MAXSTOCKVALUE : v
             w.push(v)
+            if(Math.random() > this.stability) this.growth *= -1            //The stock invert its trend
         }
         return w
     }
 }
 
 //Hidden stock. Every other stock is influenced by it
-const masterStock = new Stock('master stock', 'master stock', 1000, 0.5, 0.2, 123456)
+const masterStock = new Stock('master stock', 'master stock', 1000, 0.5, 0.5, 0.2, 123456)
 
 function gameTimer() {
     return new Date(STARTDATE + (Date.now() - REALSTARTDATE) * SPEEDUP) / (1000 * 60 * 60 * 24)

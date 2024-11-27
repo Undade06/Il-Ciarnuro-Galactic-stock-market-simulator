@@ -45,7 +45,7 @@ body{
 }
 
 .button:hover{
-    transform: scale(1,2);
+    transform: scale(1,3);
     z-index: 9999;
 }
 
@@ -238,51 +238,58 @@ div.slide.visible #planetStatic2 {
     z-index: -1;
 }
 
-div.slide.hidden #reg_back{
+div.slide.hidden #registerPage_back{
     display: none;
 }
 
-div.slide.visible #reg_back{
+div.slide.visible #registerPage_back{
     position: absolute;
-    top: 45%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     background-color: rgba(0, 0, 0, 0.75);
+    transition: 1s ease-in;
     width: 25rem;
-    height: 17rem;
+    height: 19rem;
     padding: 1.25rem;
-    padding-top: 7rem;
     border-radius: 2rem;
     text-align: center;
     z-index: 0;
 }
 
-#reg_back .content{
+.content #registerPage_back{
     opacity: 1;
     z-index: 1;
 }
 
-.buttons_reg button{
+.register_buttons button{
     background-color: #0A205A;
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
-    font-size: 1.5em;
+    width: 10rem;
+    height: 3rem;
+    margin-left: 1.1rem;
+    margin-right: 1.1rem;
+    font-size: 1.4em;
     border: none;
     transition: 1.5s ease-in;
     border-radius: 0.4rem;
     z-index: 1;
 }
 
-input.reg_input{
+input.register_input{
     font-family: 'Xolonium_regular', sans-serif;
     font-weight: bold;
     color: #FFFFFF;
-    font-size: 1.5em;
+    font-size: 1.3em;
+    height: 2.5rem;
+    width: 22rem;
     background-color: rgba(30, 30, 30, 0.85);
     border: none;
+    padding-left: 1rem;
     border-radius: 0.4rem;
-    margin-bottom: 1rem;
+    margin-top: 1.7rem;
 }
 
 

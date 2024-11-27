@@ -14,22 +14,39 @@
             const PRECISION = 1000
             function chartTest_update(id) {
                 document.getElementById('gameT').innerText = gameTimerAsDate().toGMTString()
-                let stock = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value))
+                let stock
+                if(id == '1'){
+                    stock = masterStock
+                    document.getElementById('baseValue1').value = masterStock._baseValue
+                    document.getElementById('grow1').value = masterStock.growth
+                    document.getElementById('volatility1').value = masterStock.volatility
+                    document.getElementById('seed1').value = masterStock.seed
+                } 
+                else stock = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value))
                 let ctx = document.getElementById(id).querySelector("canvas.chart")
                 let start = ~~gameTimer() - chartDays1
                 if(id == '2') start = ~~gameTimer() - chartDays2
                 if(id == '3') start = ~~gameTimer() - chartDays3
                 let end = gameTimer()
                 let step = (end - start) / PRECISION
-                let temp = stock.getValues(step * PRECISION)
+                let temp = stock.getValues(36500)
                 let values = []
                 let k = 0
+                console.log('Stock: ' + stock.name)
+                console.log('Start: ' + start)
+                console.log('End: ' + end)
+                console.log('Day variation: ' + (end - start))
+                console.log('Step: ' + step)
+                console.log('Temp length: ' + temp.length)
+                console.log('-------------------------------')
                 for (i = start; i < end; i += step){
                     values.push({ x: i * (1000 * 60 * 60 * 24), y: temp[k] })
                     k++
+                    console.log(i)
+                    console.log(k)
                 }
-                document.getElementById('stockValue'+id).innerText = temp[k - 1].toFixed(2) + " Kr"
-                //console.log(temp)
+                //document.getElementById('stockValue'+id).innerText = temp[start - 1].toFixed(2) + " Kr"
+                console.log(values)
                 if (!ctx.chartjs) {
                     let chart = new Chart(ctx, {
                         type: "line",
@@ -110,7 +127,7 @@
         <button style="float: right;" onclick="initChartTest()">Initialize stocks</button>
         <div class="temp">
             <div id="1">
-                <h2>Stock 1</h2>
+                <h2>Master stock</h2>
                 <div>
                     Price: <span id="stockValue1"></span>
                 </div>

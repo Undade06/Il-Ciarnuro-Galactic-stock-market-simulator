@@ -89,7 +89,7 @@ Stock.prototype = {
 }
 
 //Hidden stock. Every other stock is influenced by it
-const masterStock = new Stock('master stock', 'master stock', MAXSTOCKVALUE / 2, 0.5, 0.2, 123456)
+const masterStock = new Stock('master stock', 'master stock', 1000, 0.5, 0.2, 123456)
 
 function gameTimer() {
     return new Date(STARTDATE + (Date.now() - REALSTARTDATE) * SPEEDUP) / (1000 * 60 * 60 * 24)

@@ -68,7 +68,7 @@ div.planet{
     left: 50%;
     width: 41em; 
     height: 41em;
-    background-image: url('pics/planetEarth.png');
+    background-image: url('pics/planetEarth.webp');
     background-size: cover;
     transform: translate(-50%, -50%);
     animation: rotate 100s linear infinite; 

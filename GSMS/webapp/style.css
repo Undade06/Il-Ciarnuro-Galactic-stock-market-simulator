@@ -12,9 +12,9 @@
     font-weight: bold;
     font-style: normal;
 }
-/*------------*/
 
 /*---SLIDES SYSTEM---*/
+
 div.slide.visible{
     opacity: 1;
     z-index: 1;
@@ -30,7 +30,7 @@ div.slide.hidden #logoLogin{
     display: none;
 }
 
-/*-------------------*/
+/*--- General ---*/
 
 body{
     position: fixed;
@@ -44,7 +44,17 @@ body{
     z-index: -10;
 }
 
+.button:hover{
+    transform: scale(1,2);
+    z-index: 9999;
+}
 
+h4.errorText{
+    font-family: 'Xolonium_regular', sans-serif;
+    font-weight: bold;
+    color: red;
+    opacity: 0;
+}
 
 h2 {
     font-family: 'Xolonium', sans-serif;
@@ -53,7 +63,18 @@ h2 {
     color: white;
 }
 
-/*rotation animation*/
+#logo{
+    height: 45em;
+    position: absolute;
+    top: 30%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+
+/*--- rotation animation ---*/
+
 @keyframes rotate {
     0% {
         transform: translate(-50%, -50%) rotate(0deg);
@@ -62,6 +83,7 @@ h2 {
         transform: translate(-50%, -50%) rotate(360deg);
     }
 }
+
 div.planet{
     position: absolute;
     top: 48rem;
@@ -73,16 +95,19 @@ div.planet{
     transform: translate(-50%, -50%);
     animation: rotate 100s linear infinite; 
 }
-/*------------------*/
 
-#logo{
-    height: 45em;
+/*--- Landing Page ---*/
+
+#landingPageText{
     position: absolute;
-    top: 30%; 
-    left: 50%;
+    left: 48%;
+    top: 50%;
     transform: translate(-50%, -50%);
-    z-index: 2;
+    opacity: 45%;
+    text-shadow: 2px 2px 2px black;
 }
+
+/*---LoginPage---*/
 
 #logoLogin{
     height: 7em;
@@ -95,27 +120,6 @@ div.planet{
     background-color: rgba(0, 0, 0, 0.75);
     border: none;
     border-radius: 1rem;
-}
-
-#logoReg{
-    height: 7em;
-    position: absolute;
-    top: 15%;
-    left: 49.8%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    background-color: rgba(0, 0, 0, 0.75);
-    border: none;
-    border-radius: 1rem;
-}
-
-#landingPageText{
-    position: absolute;
-    left: 48%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 45%;
-    text-shadow: 2px 2px 2px black;
 }
 
 div.slide.hidden #planetLogin {
@@ -134,20 +138,6 @@ div.slide.visible #planetLogin {
     z-index: -1;
 }
 
-div.slide.hidden #planetStatic {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    z-index: -1;
-}
-
-div.slide.visible #planetStatic {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    z-index: -1;
-}
-
 div.slide.hidden #log_reg_back {
     position: absolute;
     top: 50%;
@@ -156,9 +146,9 @@ div.slide.hidden #log_reg_back {
     background-color:rgba(0, 0, 0, 0.75);
     opacity: 0%;
     transition: 1s ease-in;
-    width: 25rem; /* Adjust width */
-    height: 17rem; /* Adjust height */
-    padding: 1.25rem; /* Adjust padding */
+    width: 25rem; 
+    height: 17rem; 
+    padding: 1.25rem; 
     border-radius: 2rem;
     text-align: center;
     z-index: 0;
@@ -179,57 +169,23 @@ div.slide.visible #log_reg_back{
     z-index: 0;
 }
 
-div.slide.hidden #reg_back{
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    background-color: rgba(0, 0, 0, 0.75);
-    opacity: 0%;
-    width: 25rem;
-    height: 17rem;
-    padding: 1.25rem;
-    padding-top: 7rem;
-    border-radius: 2rem;
-    text-align: center;
-    z-index: 0;
-}
-
-div.slide.visible #reg_back{
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    background-color: rgba(0, 0, 0, 0.75);
-    width: 25rem;
-    height: 17rem;
-    padding: 1.25rem;
-    padding-top: 7rem;
-    border-radius: 2rem;
-    text-align: center;
-    z-index: 0;
-}
-
 div#log_reg_back .content {
     opacity: 1;
     z-index: 1;
 }
 
-div#reg_back .content{
-    opacity: 1;
-    z-index: 1;
-}
-
-.buttons_reg button{
-    background-color: #0A205A;
-    color: white;
-    font-family: 'Xolonium', sans-serif;
+input.log_reg_input{
+    font-family: 'Xolonium_regular', sans-serif;
     font-weight: bold;
-    font-size: 1.5em;
+    color: #FFFFFF;
+    font-size: 1.3em;
+    height: 2.5rem;
+    width: 22rem;
+    background-color: rgba(30, 30, 30, 0.85);
     border: none;
-    transition: 1.5s ease-in;
+    padding-left: 1rem;
     border-radius: 0.4rem;
-    z-index: 1;
+    margin-top: 1.7rem;
 }
 
 .buttons_log_reg button{
@@ -247,16 +203,75 @@ div#reg_back .content{
     z-index: 1;
 }
 
-.button:hover{
-    transform: scale(1,2);
-    z-index: 9999;
+/*--- Register Page ---*/
+
+#logoReg{
+    height: 7em;
+    position: absolute;
+    top: 15%;
+    left: 49.8%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.75);
+    border: none;
+    border-radius: 1rem;
 }
 
-h4.errorText{
-    font-family: 'Xolonium_regular', sans-serif;
+div.slide.hidden #planetStatic {
+    display: none;
+}
+
+div.slide.visible #planetStatic {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: -1;
+}
+div.slide.hidden #planetStatic2 {
+    display: none;
+}
+
+div.slide.visible #planetStatic2 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: -1;
+}
+
+div.slide.hidden #reg_back{
+    display: none;
+}
+
+div.slide.visible #reg_back{
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    width: 25rem;
+    height: 17rem;
+    padding: 1.25rem;
+    padding-top: 7rem;
+    border-radius: 2rem;
+    text-align: center;
+    z-index: 0;
+}
+
+#reg_back .content{
+    opacity: 1;
+    z-index: 1;
+}
+
+.buttons_reg button{
+    background-color: #0A205A;
+    color: white;
+    font-family: 'Xolonium', sans-serif;
     font-weight: bold;
-    color: red;
-    opacity: 0;
+    font-size: 1.5em;
+    border: none;
+    transition: 1.5s ease-in;
+    border-radius: 0.4rem;
+    z-index: 1;
 }
 
 input.reg_input{
@@ -270,19 +285,10 @@ input.reg_input{
     margin-bottom: 1rem;
 }
 
-input.log_reg_input{
-    font-family: 'Xolonium_regular', sans-serif;
-    font-weight: bold;
-    color: #FFFFFF;
-    font-size: 1.3em;
-    height: 2.5rem;
-    width: 22rem;
-    background-color: rgba(30, 30, 30, 0.85);
-    border: none;
-    padding-left: 1rem;
-    border-radius: 0.4rem;
-    margin-top: 1.7rem;
-}
+
+
+/*--- Save Page ---*/
+
 div.slide.visible #saves_back{
     position: absolute;
     top: 30rem;

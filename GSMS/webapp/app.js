@@ -73,16 +73,16 @@ Stock.prototype = {
     constructor: Stock,
     getValues: function (t) {
         if (t === 'undefined' || t < 0) t = gameTimer()
-        let timeWindow = (t / TIMESTEP), w = [], v = this._baseValue
+        let timeWindow = (t / TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth)
 
         w.push(this._baseValue)
 
-        for (let i = 1; i < timeWindow; i++) {                                                  //Wiener process a.k.a. Brownian motion
-            if (this.growth > 0) v += Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)
-            else v -= Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)
+        for (let i = 1; i < timeWindow; i++) {                                                  //Wiener process with drift
+            if (rising == 1) v += this.growth * TIMESTEP + this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)
+            else v -= this.growth * TIMESTEP + this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)
             v = v < MINSTOCKVALUE ? MINSTOCKVALUE : v
             v = v > MAXSTOCKVALUE ? MAXSTOCKVALUE : v
-            if (Math.random() > this.stability) this.growth *= -1            //The stock invert its trend
+            if (mulberry32(this.seed + i) > this.stability) rising *= -1            //The stock invert its trend to simulate random real shock
             w.push(v)
         }
 

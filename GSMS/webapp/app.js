@@ -49,29 +49,33 @@ function loadSaves() {
     if (saves == null) {
         saves = [];
     }
-    // Create a box for each of the save-box
-    saves.forEach((save, index) => {
+
+    // Create a box for each save
+    saves.forEach((save) => {
         const saveBox = document.createElement("div");
         saveBox.classList.add("save-box");
-        saveBox.style.position = "relative"
+        saveBox.style.position = "relative";
+
         const img = document.createElement("img");
         img.src = "pics/rimuoviSave.webp";
-        img.style.position = "absolute"
-        img.style.top = '0.2rem';
-        img.style.right = '0.2rem';
+        img.style.position = "absolute";
+        img.style.top = "0.2rem";
+        img.style.right = "0.2rem";
         img.alt = "Rimuovi Salvataggio";
         img.addEventListener("click", (event) => {
-            event.stopPropagation(); // If you click on the image, you don't click also the "save-box"
-            removeSave(index);
+            event.stopPropagation(); // Prevent click on image from triggering saveBox click
+            removeSave(save.id);
         });
 
-        saveBox.textContent = `Save ${index + 1}`;
+        // Use the save name or default to "Save"
+        saveBox.textContent = save.name || `Save`;
         saveBox.appendChild(img);
-        saveBox.addEventListener("click", () => loadSave(index)); // Load the specific save
+
+        saveBox.addEventListener("click", () => loadSave(save.id)); // Load the specific save
         savesContainer.appendChild(saveBox);
     });
 
-    // New save-box
+    // Add a new save-box if less than 3 saves exist
     if (saves.length < 3) {
         const newSaveBox = document.createElement("div");
         newSaveBox.classList.add("save-box", "new-save");
@@ -84,46 +88,56 @@ function loadSaves() {
 // Creation of a new save
 function createNewSave() {
     let saves = JSON.parse(localStorage.getItem("saves"));
-    if(saves==null) saves=[];
-    if(saves.length<3){
-        //Add new save
-        saves.push({ data: `New save ${saves.length + 1}` });
-        // Memorize the saves in localStorage
+    if (saves == null) saves = [];
+
+    if (saves.length < 3) {
+        // Create a new save with a unique ID
+        const newSave = {
+            id: Date.now(), // Unique ID for the save
+            name: `Save ${saves.length + 1}`, // Default save name
+            data: `New save data` // Example data for the save
+        };
+        saves.push(newSave);
+
+        // Save the updated saves to localStorage
         localStorage.setItem("saves", JSON.stringify(saves));
-        // Reload saves
         loadSaves();
     }
 }
-// Function to load a specific load
-function loadSave(index) {
+
+// Function to load a specific save
+function loadSave(id) {
     let saves = JSON.parse(localStorage.getItem("saves"));
-    if(saves==null) saves=[];
-    let save = saves[index];
+    if (saves == null) saves = [];
+
+    const save = saves.find((s) => s.id === id); // Find the save by its unique ID
     if (save) {
-        //If you click the box of an existing save you go to the "marketHomePage" screen
-        document.getElementById("saves").addEventListener('click', function(event) { 
-            toSlide("marketHomePage");
-        });
+        // If the save exists, navigate to the "marketHomePage" screen
+        toSlide("marketHomePage");
     } else {
         alert("Salvataggio non trovato!");
     }
 }
-document.addEventListener("DOMContentLoaded", () => {
-    loadSaves(); //Load all the saves in the localStorage
-});
-function removeSave(index){
+
+// Function to remove a save
+function removeSave(id) {
     let saves = JSON.parse(localStorage.getItem("saves"));
-    if(saves==null) saves=[];
-    let save = saves[index];
-    if(save){
-        if(saves.length>0){
-            saves.splice(index, 1);
-            localStorage.setItem("saves", JSON.stringify(saves));
-            loadSaves();
-            alert("eliminato salvataggio"+(index+1));
-        }  
+    if (saves == null) saves = [];
+
+    const saveIndex = saves.findIndex((s) => s.id === id); // Find the index of the save by ID
+    if (saveIndex !== -1) {
+        saves.splice(saveIndex, 1); // Remove the save
+        localStorage.setItem("saves", JSON.stringify(saves)); // Update localStorage
+        loadSaves();
+        alert(`Salvataggio eliminato!`);
     }
 }
+
+// Initialize the saves on page load
+document.addEventListener("DOMContentLoaded", () => {
+    loadSaves(); // Load all the saves from localStorage
+});
+
 //registerPage
 function checkPassword(){
     let username = document.querySelectorAll('.register_input')[0].value;

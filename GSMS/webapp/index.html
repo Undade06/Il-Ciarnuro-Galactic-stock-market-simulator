@@ -20,7 +20,7 @@
             <div class="back" id="log_reg_back">
                 <div class="content">
                     <input type="text" placeholder="Username" class="log_reg_input">
-                    <input type="text" placeholder="Password" class="log_reg_input">
+                    <input type="password" placeholder="Password" class="log_reg_input">
                     <h4 class="errorText" id="loginError">Username or password may not be correct, try again</h4>
                     <div class="buttons_log_reg">
                         <button onclick="if(loginCheck()) toSlide('saves')">Login</button>
@@ -35,8 +35,31 @@
             <div class="back" id="registerPage_back">
                 <div class="content">
                     <input type="text" placeholder="Username" class="register_input">
-                    <input type="text" placeholder="Password" class="register_input">
-                    <input type="text" placeholder="Confirm Password" class="register_input">
+                    <input type="password" placeholder="Password" class="register_input">
+                    <input type="password" placeholder="Confirm Password" class="register_input">
+                    <div class="spec_gen">
+                        <label for="Species" id="spec_text">Seleziona specie e sesso:</label>
+                        <select name="Species" id="spec_type">
+                            <option value="Umani">Umani</option>
+                            <option value="Krentoriani">Krentoriani</option>
+                            <option value="Sauni Arcaici">Sauni Arcaici</option>
+                            <option value="Sauni Eletti">Sauni Eletti</option>
+                            <option value="Quark">Quark</option>
+                            <option value="Pravosiani Guerrieri">Pravosiani Guerrieri</option>
+                            <option value="Pravosiani Guide spirituali">Pravosiani Guide spirituali</option>
+                            <option value="Veri Syviar">Veri Syviar</option>
+                            <option value="Ivosiani">Ivosiani</option>
+                            <option value="Draudzart">Draudzart</option>
+                            <option value="Skity">Skity</option>
+                            <option value="Nakkiri">Nakkiri</option>
+                            <option value="Makriani">Makriani</option>
+                        </select>
+                        <select name="Sex" id="spec_sex">
+                            <option value="Male">M</option>
+                            <option value="Female">F</option>
+                            <option value="Asexual">N/A</option>
+                        </select>
+                    </div>
                     <h4 class="errorText" id="registerError">as</h4>
                     <div class="register_buttons">
                         <button onclick="toSlide('login_register')">Back</button>

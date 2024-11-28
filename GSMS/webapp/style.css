@@ -245,13 +245,13 @@ div.slide.hidden #registerPage_back{
 
 div.slide.visible #registerPage_back{
     position: absolute;
-    top: 50%;
+    top: 58%;
     left: 50%;
     transform: translate(-50%,-50%);
     background-color: rgba(0, 0, 0, 0.75);
     transition: 1s ease-in;
     width: 25rem;
-    height: 20rem;
+    height: 27rem;
     padding: 1.25rem;
     border-radius: 2rem;
     text-align: center;
@@ -270,6 +270,7 @@ div.slide.visible #registerPage_back{
     font-weight: bold;
     width: 10rem;
     height: 3rem;
+    margin-top: 1.1rem;
     margin-left: 1.1rem;
     margin-right: 1.1rem;
     font-size: 1.4em;
@@ -290,9 +291,32 @@ input.register_input{
     border: none;
     padding-left: 1rem;
     border-radius: 0.4rem;
-    margin-top: 1.7rem;
+    margin-top: 1.2rem;
 }
 
+.spec_gen{
+    color: white;
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 2rem;
+}
+
+.spec_gen #spec_type,#spec_sex{
+    color: white;
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    font-size: 1.1em;
+    background-color: #0A205A;
+    width: 10rem;
+    height: 3rem;
+    margin-top: 1.1rem;
+    margin-left: 1.1rem;
+    margin-right: 1.1rem;
+    border: none;
+    border-radius: 0.4rem;
+    z-index: 1;
+}
 
 
 /*--- Save Page ---*/

@@ -250,7 +250,7 @@ div.slide.visible #registerPage_back{
     background-color: rgba(0, 0, 0, 0.75);
     transition: 1s ease-in;
     width: 25rem;
-    height: 19rem;
+    height: 20rem;
     padding: 1.25rem;
     border-radius: 2rem;
     text-align: center;
@@ -298,15 +298,14 @@ input.register_input{
 
 div.slide.visible #saves_back{
     position: absolute;
-    top: 30rem;
+    top: 26.5rem;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color:rgba(0, 0, 0, 0.75);
-/* transition: 3s ease-in; */
-    width: 25rem; /* Adjust width */
-    height: 20rem; /* Adjust height */
-    padding: 1.25rem; /* Adjust padding */
-    padding-top: 7rem;
+    width: 18rem; 
+    height: 20rem; 
+    padding: 0.5rem;
+    padding-top: 0.5rem;
     border-radius: 15px;
     text-align: center;
     z-index: 0;
@@ -336,6 +335,7 @@ div.slide.visible #saves_back{
     font-size: 1.5rem;
     font-weight: bold;
 }
+
 div.slide.hidden #saves_back{
     display: none;
 }

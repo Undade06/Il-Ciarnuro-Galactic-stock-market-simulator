@@ -53,8 +53,12 @@ function loadSaves() {
     saves.forEach((save, index) => {
         const saveBox = document.createElement("div");
         saveBox.classList.add("save-box");
+        saveBox.style.position = "relative"
         const img = document.createElement("img");
         img.src = "pics/rimuoviSave.webp";
+        img.style.position = "absolute"
+        img.style.top = '0.2rem';
+        img.style.right = '0.2rem';
         img.alt = "Rimuovi Salvataggio";
         img.addEventListener("click", (event) => {
             event.stopPropagation(); // If you click on the image, you don't click also the "save-box"

@@ -52,7 +52,7 @@ function Stock(name, description, baseValue, stability, growth, volatility, seed
     this._baseValue = this._baseValue > MAXSTOCKVALUE ? MAXSTOCKVALUE : this._baseValue
     this.stability = stability
     this.stability = this.stability < 0 ? 0 : this.stability
-    this.stability = this.stability > 1  ? 1 : this.stability
+    this.stability = this.stability > 1 ? 1 : this.stability
     this.growth = growth
     //Empiric tests have shown that a growth value is fairly acceptable between -1(decrease) and 1
     this.growth = this.growth < -1 ? -1 : this.growth
@@ -73,21 +73,19 @@ Stock.prototype = {
     constructor: Stock,
     getValues: function (t) {
         if (t === 'undefined' || t < 0) t = gameTimer()
-        let n = (t / TIMESTEP), w = [], v = this._baseValue
-        
+        let timeWindow = (t / TIMESTEP), w = [], v = this._baseValue
+
         w.push(this._baseValue)
 
-        for (let i = 1; i < n; i++) {
-            v = v * Math.exp(
-                (this.growth - (Math.pow(this.volatility, 2) / 2)) * TIMESTEP
-                +
-                this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i) //Add a variability to the seed to not let stock value grow exponentially
-            )
+        for (let i = 1; i < timeWindow; i++) {                                                  //Wiener process a.k.a. Brownian motion
+            if (this.growth > 0) v += Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)
+            else v -= Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)
             v = v < MINSTOCKVALUE ? MINSTOCKVALUE : v
             v = v > MAXSTOCKVALUE ? MAXSTOCKVALUE : v
+            if (Math.random() > this.stability) this.growth *= -1            //The stock invert its trend
             w.push(v)
-            if(Math.random() > this.stability) this.growth *= -1            //The stock invert its trend
         }
+
         return w
     }
 }

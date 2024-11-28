@@ -58,7 +58,6 @@
                 console.log('-------------------------------')
                 for (i = start; i < end - 1; i += step){
                     values.push({ x: i * (1000 * 60 * 60 * 24), y: temp[k] })
-                    console.log('temp[' + k + ']' + temp[k])
                     k++
                 }
                 document.getElementById('stockValue'+id).innerText = temp[k - 1].toFixed(2) + " Kr"
@@ -141,7 +140,7 @@
         <div>
             Current date: <span id="gameT"></span>
         </div>
-        <button style="float: right;" onclick="initChartTest()">Initialize stocks</button>
+        <button style="position: fixed; top: 0; left: auto; right: 0;" onclick="initChartTest()">Initialize stocks</button>
         <div class="temp">
             <div id="1">
                 <h2>Master stock</h2>

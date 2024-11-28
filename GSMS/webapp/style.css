@@ -340,3 +340,51 @@ div.slide.visible #saves_back{
 div.slide.hidden #saves_back{
     display: none;
 }
+
+/*--- Market Home ---*/
+
+div.slide.hidden .market_back {
+    display: none;
+}
+
+div.slide.visible .market_back{
+    background-color: rgba(11, 21, 59, 0.75);
+    border-radius: 2rem;
+    z-index: 0;
+}
+
+div.slide.visible #best_stock {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 2rem;
+    bottom: 22.2rem;
+    transform: none;
+    margin: 0;
+    height: auto;
+    padding: 1.25rem;
+}
+
+div.slide.visible #rising_stocks {
+    position: absolute;
+    top: 22.2rem;
+    left: 1rem;
+    right: 47rem;
+    bottom: 1rem;
+    transform: none;
+    margin: 0;
+    height: auto;
+    padding: 1.25rem;
+}
+
+div.slide.visible #declining_stocks {
+    position: absolute;
+    top: 22.2rem;
+    left: 47rem;
+    right: 2rem;
+    bottom: 1rem;
+    transform: none;
+    margin: 0;
+    height: auto;
+    padding: 1.25rem;
+}

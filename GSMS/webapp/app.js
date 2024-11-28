@@ -125,16 +125,31 @@ function checkPassword(){
     let username = document.querySelectorAll('.register_input')[0].value;
     let password = document.querySelectorAll('.register_input')[1].value;
     let confirmPassword = document.querySelectorAll('.register_input')[2].value;
-    let errorText = document.querySelector('.errorText').textContent;
+    let errorText = document.querySelector('#registerError');
 
     if (password === '' || confirmPassword === '' || username==='') {
+        errorText.style.opacity = '1000000';
+        errorText.textContent="Uno dei campi è vuoto!"; 
         return false;
     }else{
         if(password === confirmPassword){
             return true;
         }else{
-        //    errorText.style.opacity = '1';
+           errorText.style.opacity = '1000000';
+           errorText.textContent="Le password non coincidono!";
             return false;
         }
     }
+}
+//loginPage
+function loginCheck(){
+    let username = document.querySelectorAll('.log_reg_input')[0].value;
+    let password = document.querySelectorAll('.log_reg_input')[1].value;
+    let errorText = document.querySelector('#loginError');
+    if (password === '' || username==='') {
+        errorText.style.opacity = '1000000';
+        errorText.textContent="Uno dei campi è vuoto!"; 
+        return false;
+    }
+    return true;
 }

@@ -94,8 +94,19 @@ div.planet{
     background-image: url('pics/planetEarth.webp');
     background-size: cover;
     transform: translate(-50%, -50%);
-    animation: rotate 100s linear infinite; 
+    animation: rotate 100s linear infinite;
 }
+
+/*div.shadow{
+    position: absolute;
+    top: 50%;
+    left: 57%;
+    width: 19em;
+    height: 19em;
+    background-image: url('pics/planetShadow.webp');
+    background-size: cover;
+    transform: translate(-50%,-50%);
+}*/
 
 /*--- Landing Page ---*/
 
@@ -324,7 +335,7 @@ input.register_input{
 div.slide.visible #saves_back{
     position: absolute;
     top: 26.5rem;
-    left: 50%;
+    left: 49.8%;
     transform: translate(-50%, -50%);
     background-color:rgba(0, 0, 0, 0.75);
     width: 18rem; 

@@ -1,4 +1,4 @@
-const cacheName='pwaname'; //PWA id here
+const cacheName='GSMS'; //PWA id here
 const appFiles=[
     'index.html',
     'app.js',
@@ -6,7 +6,15 @@ const appFiles=[
     'manifest.json',
     'pwaicon.png',
     'style.css',
-    'sw.js'
+    'sw.js',
+    'pics/back.webp',
+    'pics/logo.webp',
+    'pics/logo2.webp',
+    'pics/planetEarth.webp',
+    'pics/rimuoviSave.webp',
+    'fonts/Nunito.ttf',
+    'fonts/Xolonium-Bolf.woff2',
+    'fonts/Xolonium-Regular.woff2'
     //add all PWA files here (except pwaversion.txt)
 ];
 

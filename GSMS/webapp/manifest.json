@@ -1,8 +1,8 @@
 {
-    "name": "PWA Template",
-    "short_name": "PWA",
-    "id": "pwaname",
-    "description": "Empty PWA Template",
+    "name": "Il Ciarnuro: GSMS",
+    "short_name": "GSMS",
+    "id": "GSMS",
+    "description": "an investiment simulator",
     "icons": [
         {
             "src": "pwaicon.png",
@@ -12,6 +12,6 @@
         }
     ],
     "start_url": "index.html",
-    "scope": "/pwatemplate/",
+    "scope": "/GSMS/",
     "display": "standalone"
 }

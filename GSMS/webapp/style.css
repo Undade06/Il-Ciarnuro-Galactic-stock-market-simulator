@@ -41,7 +41,7 @@ body{
     height: 100%;
     background-image: url(pics/back.webp);
     background-color: black;
-    background-size: cover;
+    background-size: auto;
     z-index: -10;
 }
 

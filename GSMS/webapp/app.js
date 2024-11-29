@@ -63,19 +63,18 @@ function loadSaves() {
         img.style.right = "0.2rem";
         img.alt = "Rimuovi Salvataggio";
         img.addEventListener("click", (event) => {
-            event.stopPropagation(); // Prevent click on image from triggering saveBox click
+            event.stopPropagation(); // Prevent click on image 
             removeSave(save.id);
         });
 
-        // Use the save name or default to "Save"
-        saveBox.textContent = save.name || `Save`;
+        saveBox.textContent = save.name;
         saveBox.appendChild(img);
 
         saveBox.addEventListener("click", () => loadSave(save.id)); // Load the specific save
         savesContainer.appendChild(saveBox);
     });
 
-    // Add a new save-box if less than 3 saves exist
+    // Add a new save-box
     if (saves.length < 3) {
         const newSaveBox = document.createElement("div");
         newSaveBox.classList.add("save-box", "new-save");
@@ -90,16 +89,20 @@ function createNewSave() {
     let saves = JSON.parse(localStorage.getItem("saves"));
     if (saves == null) saves = [];
 
+    let saveCounter = parseInt(localStorage.getItem("saveCounter"));
+    if (isNaN(saveCounter)) saveCounter = 1;
+
     if (saves.length < 3) {
-        // Create a new save with a unique ID
+        // Create a new save with a unique ID and name
         const newSave = {
             id: Date.now(), // Unique ID for the save
-            name: `Save ${saves.length + 1}`, // Default save name
-            data: `New save data` // Example data for the save
+            name: `Save ${saveCounter}`, 
+            data: `` //data on the save
         };
         saves.push(newSave);
 
-        // Save the updated saves to localStorage
+        localStorage.setItem("saveCounter", saveCounter + 1);
+
         localStorage.setItem("saves", JSON.stringify(saves));
         loadSaves();
     }
@@ -110,9 +113,8 @@ function loadSave(id) {
     let saves = JSON.parse(localStorage.getItem("saves"));
     if (saves == null) saves = [];
 
-    const save = saves.find((s) => s.id === id); // Find the save by its unique ID
+    const save = saves.find((s) => s.id === id);
     if (save) {
-        // If the save exists, navigate to the "marketHomePage" screen
         toSlide("marketHomePage");
     } else {
         alert("Salvataggio non trovato!");
@@ -127,16 +129,16 @@ function removeSave(id) {
     const saveIndex = saves.findIndex((s) => s.id === id); // Find the index of the save by ID
     if (saveIndex !== -1) {
         saves.splice(saveIndex, 1); // Remove the save
-        localStorage.setItem("saves", JSON.stringify(saves)); // Update localStorage
+        localStorage.setItem("saves", JSON.stringify(saves));
         loadSaves();
         alert(`Salvataggio eliminato!`);
     }
 }
 
-// Initialize the saves on page load
 document.addEventListener("DOMContentLoaded", () => {
     loadSaves(); // Load all the saves from localStorage
 });
+
 
 //registerPage
 function checkPassword(){

@@ -22,8 +22,10 @@
                     document.getElementById('grow1').value = masterStock.growth
                     document.getElementById('volatility1').value = masterStock.volatility
                     document.getElementById('seed1').value = masterStock.seed
+                    document.getElementById('influencability1').value = masterStock.influencability
                 } 
-                else stock = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value))
+                else if(id == '2') stock = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value))
+                else stock = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), new Stock("TEST2", "Test2", Number(document.getElementById('baseValue2').value), Number(document.getElementById('stability2').value), Number(document.getElementById('grow2').value), Number(document.getElementById('volatility2').value), Number(document.getElementById('seed2').value)))
                 let ctx = document.getElementById(id).querySelector("canvas.chart")
                 let days = chartDays1
                 let start = ~~gameTimer() - chartDays1
@@ -50,10 +52,14 @@
                     temp = sampledValues
                 }
                 console.log('Stock: ' + stock.name)
-                console.log('Start: ' + start)
-                console.log('End: ' + end)
-                console.log('Day variation: ' + (end - start))
-                console.log('Step: ' + step)
+                console.log(stock.name + ' baseValue: ' + stock._baseValue)
+                console.log(stock.name + ' growth: ' + stock.growth)
+                console.log(stock.name + ' volatility: ' + stock.volatility)
+                console.log(stock.name + ' seed: ' + stock.seed)
+                console.log(stock.name + ' stability: ' + stock.stability)
+                console.log(stock.name + ' influencability: ' + stock.influencability)
+                console.log(stock.name + ' influencedBy: ')
+                console.log(stock.influencedBy)
                 console.log('Temp length: ' + temp.length)
                 console.log('-------------------------------')
                 for (i = start; i < end - 1; i += step){
@@ -166,6 +172,14 @@
                         <td><input type="number" min="0" step="1" value="20" id="baseValue1"></td>
                     </tr>
                     <tr>
+                        <td><label for="influencabilty">Influencability</label></td>
+                        <td><input type="number" min="0" step="0.01" value="0" id="influencability1"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="baseValue">Base Value</label></td>
+                        <td><input type="number" min="0" step="1" value="20" id="baseValue1"></td>
+                    </tr>
+                    <tr>
                         <td><label for="stability">Stability</label></td>
                         <td><input type="number" min="0" step="0.1" value="0.5" id="stability1"></td>
                     </tr>
@@ -207,6 +221,10 @@
                         <td><input type="number" min="0" step="1" value="100" id="baseValue2"></td>
                     </tr>
                     <tr>
+                        <td><label for="influencabilty">Influencability</label></td>
+                        <td><input type="number" min="0" step="0.01" value="0.5" id="influencability2"></td>
+                    </tr>
+                    <tr>
                         <td><label for="stability">Stability</label></td>
                         <td><input type="number" min="0" step="0.1" value="0.2" id="stability2"></td>
                     </tr>
@@ -246,6 +264,10 @@
                     <tr>
                         <td><label for="baseValue">Base Value</label></td>
                         <td><input type="number" min="0" step="1" value="50" id="baseValue3"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="influencabilty">Influencability</label></td>
+                        <td><input type="number" min="0" step="0.01" value="0.7" id="influencability3"></td>
                     </tr>
                     <tr>
                         <td><label for="stability">Stability</label></td>

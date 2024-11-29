@@ -43,7 +43,7 @@ function normalDistributedNumber(seed = null) {                    // Generate a
     return Math.sqrt(-2.0 * Math.log(n)) * Math.cos(2.0 * Math.PI * n)
 }
 
-function Stock(name, description, baseValue, stability, growth, volatility, seed, ...influencedBy) {
+function Stock(name, description, baseValue, stability, growth, volatility, seed, influencability, ...influencedBy) {
     this.name = name
     this.description = description
     this.type = "stock"
@@ -62,24 +62,34 @@ function Stock(name, description, baseValue, stability, growth, volatility, seed
     this.volatility = this.volatility < 0 ? 0 : this.volatility
     this.volatility = this.volatility > 2 ? 2 : this.volatility
     this.seed = seed
+    this.influencability = influencability
+    this.influencability = this.influencability < 0 ? 0 : this.influencability
+    this.influencability = this.influencability > 1 ? 1 : this.influencability
     this.influencedBy = influencedBy                //Stocks that influences this stock
     if (masterCreated == 1 && !this.influencedBy.includes(masterStock)) {
         this.influencedBy.push(masterStock);            //Add masterstocks in the influences if not present
-        flagMaster = 1
     }
+    masterCreated = 1
 }
 
 Stock.prototype = {
     constructor: Stock,
     getValues: function (t) {
         if (t === 'undefined' || t < 0) t = gameTimer()
-        let timeWindow = (t / TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth)
+        let timeWindow = (t / TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth), influences = []
 
         w.push(this._baseValue)
+        this.influencedBy.forEach((s) => {
+            let values = s.getValues(t)
+            influences.push(values[values.length -1] * this.influencability)
+        })
 
         for (let i = 1; i < timeWindow; i++) {                                                  //Wiener process with drift
             if (rising == 1) v += this.growth * TIMESTEP + this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)
             else v -= this.growth * TIMESTEP + this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)
+            influences.forEach((value) => {
+                v *= value
+            })
             v = v < MINSTOCKVALUE ? MINSTOCKVALUE : v
             v = v > MAXSTOCKVALUE ? MAXSTOCKVALUE : v
             if (mulberry32(this.seed + i) > this.stability) rising *= -1            //The stock invert its trend to simulate random real shock
@@ -91,7 +101,7 @@ Stock.prototype = {
 }
 
 //Hidden stock. Every other stock is influenced by it
-const masterStock = new Stock('master stock', 'master stock', 1000, 0.5, 0.5, 0.2, 123456)
+const masterStock = new Stock('master stock', 'master stock', 1000, 0.5, 0.5, 0.2, 123456, 0)
 
 function gameTimer() {
     return new Date(STARTDATE + (Date.now() - REALSTARTDATE) * SPEEDUP) / (1000 * 60 * 60 * 24)

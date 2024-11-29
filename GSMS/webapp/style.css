@@ -256,13 +256,13 @@ div.slide.hidden #registerPage_back{
 
 div.slide.visible #registerPage_back{
     position: absolute;
-    top: 58%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     background-color: rgba(0, 0, 0, 0.75);
     transition: 1s ease-in;
     width: 25rem;
-    height: 27rem;
+    height: 20rem;
     padding: 1.25rem;
     border-radius: 2rem;
     text-align: center;

@@ -18,15 +18,31 @@
                 let stock
                 if(id == '1'){
                     masterStock._baseValue = Number(document.getElementById('baseValue'+id).value)
+                    masterStock.influencability = Number(document.getElementById('influencability'+id).value)
                     masterStock.stability = Number(document.getElementById('stability'+id).value)
                     masterStock.growth = Number(document.getElementById('grow'+id).value)
-                    masterStock.volatility = Number(document.getElementById('volatility'+id).value)
                     masterStock.volatility = Number(document.getElementById('volatility'+id).value)
                     masterStock.seed = Number(document.getElementById('seed'+id).value)
                     stock = masterStock
                 } 
-                else if(id == '2') stock = stock2 = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value))
-                else if(id == '3') stock = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), stock2)
+                else if(id == '2'){
+                    stock = stock2 = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value))
+                    document.getElementById('baseValue'+id).value = stock._baseValue
+                    document.getElementById('influencability'+id).value = stock.influencability
+                    document.getElementById('stability'+id).value = stock.stability
+                    document.getElementById('grow'+id).value = stock.growth
+                    document.getElementById('volatility'+id).value = stock.volatility
+                    document.getElementById('seed'+id).value = stock.seed
+                }
+                else if(id == '3'){
+                    stock = stock3 = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), stock2)
+                    document.getElementById('baseValue'+id).value = stock._baseValue
+                    document.getElementById('influencability'+id).value = stock.influencability
+                    document.getElementById('stability'+id).value = stock.stability
+                    document.getElementById('grow'+id).value = stock.growth
+                    document.getElementById('volatility'+id).value = stock.volatility
+                    document.getElementById('seed'+id).value = stock.seed
+                }
                 let ctx = document.getElementById(id).querySelector("canvas.chart")
                 let days = chartDays1
                 let start = ~~gameTimer() - chartDays1
@@ -173,27 +189,27 @@
                 <table>
                     <tr>
                         <td><label for="baseValue">Base Value</label></td>
-                        <td><input type="number" min="0" step="1" value="20" id="baseValue1"></td>
+                        <td><input type="number" step="1" value="20" id="baseValue1"></td>
                     </tr>
                     <tr>
                         <td><label for="influencabilty">Influencability</label></td>
-                        <td><input type="number" min="0" step="0.01" value="0" id="influencability1"></td>
+                        <td><input type="number" step="0.01" value="0" id="influencability1"></td>
                     </tr>
                     <tr>
                         <td><label for="stability">Stability</label></td>
-                        <td><input type="number" min="0" step="0.1" value="0.5" id="stability1"></td>
+                        <td><input type="number" step="0.1" value="0.5" id="stability1"></td>
                     </tr>
                     <tr>
                         <td><label for="grow">Grow</label></td>
-                        <td><input type="number" min="0" step="0.1" value="0.7" id="grow1"></td>
+                        <td><input type="number" step="0.1" value="0.7" id="grow1"></td>
                     </tr>
                     <tr>
                         <td><label for="volatility">Volatility</label></td>
-                        <td><input type="number" min="0" step="0.01" value="0.2" id="volatility1"></td>
+                        <td><input type="number" step="0.01" value="0.2" id="volatility1"></td>
                     </tr>
                     <tr>
                         <td><label for="seed">Seed</label></td>
-                        <td><input type="number" min="0" step="1" value="268953" id="seed1"></td>
+                        <td><input type="number" step="1" value="268953" id="seed1"></td>
                     </tr>
                 </table>
             </div>
@@ -218,27 +234,27 @@
                 <table>
                     <tr>
                         <td><label for="baseValue">Base Value</label></td>
-                        <td><input type="number" min="0" step="1" value="100" id="baseValue2"></td>
+                        <td><input type="number" step="1" value="100" id="baseValue2"></td>
                     </tr>
                     <tr>
                         <td><label for="influencabilty">Influencability</label></td>
-                        <td><input type="number" min="0" step="0.0001" value="0.0005" id="influencability2"></td>
+                        <td><input type="number" step="0.0001" value="0.0005" id="influencability2"></td>
                     </tr>
                     <tr>
                         <td><label for="stability">Stability</label></td>
-                        <td><input type="number" min="0" step="0.1" value="0.2" id="stability2"></td>
+                        <td><input type="number" step="0.1" value="0.2" id="stability2"></td>
                     </tr>
                     <tr>
                         <td><label for="grow">Grow</label></td>
-                        <td><input type="number" min="0" step="0.1" value="0.1" id="grow2"></td>
+                        <td><input type="number" step="0.1" value="0.1" id="grow2"></td>
                     </tr>
                     <tr>
                         <td><label for="volatility">Volatility</label></td>
-                        <td><input type="number" min="0" step="0.01" value="0.8" id="volatility2"></td>
+                        <td><input type="number" step="0.01" value="0.8" id="volatility2"></td>
                     </tr>
                     <tr>
                         <td><label for="seed">Seed</label></td>
-                        <td><input type="number" min="0" step="1" value="647852" id="seed2"></td>
+                        <td><input type="number" step="1" value="647852" id="seed2"></td>
                     </tr>
                 </table>
             </div>
@@ -263,27 +279,27 @@
                 <table>
                     <tr>
                         <td><label for="baseValue">Base Value</label></td>
-                        <td><input type="number" min="0" step="1" value="50" id="baseValue3"></td>
+                        <td><input type="number" step="1" value="50" id="baseValue3"></td>
                     </tr>
                     <tr>
                         <td><label for="influencabilty">Influencability</label></td>
-                        <td><input type="number" min="0" step="0.01" value="0.7" id="influencability3"></td>
+                        <td><input type="number" step="0.01" value="0.7" id="influencability3"></td>
                     </tr>
                     <tr>
                         <td><label for="stability">Stability</label></td>
-                        <td><input type="number" min="0" step="0.1" value="0.8" id="stability3"></td>
+                        <td><input type="number" step="0.1" value="0.8" id="stability3"></td>
                     </tr>
                     <tr>
                         <td><label for="grow">Grow</label></td>
-                        <td><input type="number" min="0" step="0.1" value="-0.2" id="grow3"></td>
+                        <td><input type="number" step="0.1" value="-0.2" id="grow3"></td>
                     </tr>
                     <tr>
                         <td><label for="volatility">Volatility</label></td>
-                        <td><input type="number" min="0" step="0.01" value="0.2" id="volatility3"></td>
+                        <td><input type="number" step="0.01" value="0.2" id="volatility3"></td>
                     </tr>
                     <tr>
                         <td><label for="seed">Seed</label></td>
-                        <td><input type="number" min="0" step="1" value="999999" id="seed3"></td>
+                        <td><input type="number" step="1" value="999999" id="seed3"></td>
                     </tr>
                 </table>
             </div>

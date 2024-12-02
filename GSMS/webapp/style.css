@@ -99,14 +99,14 @@ div.planet{
 
 div.shadow{
     position: absolute;
-    top: 50.1%;
-    left: 49%;
-    width: 16em;
-    height: 16em;
+    top: 18.9%;
+    left: 34%;
+    width: 30rem;
+    height: 30rem;
     background-image: url('pics/planetShadow.webp');
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     transform: translate(-50%,-50%);
-    transform: rotate(183deg);
 }
 
 /*--- Landing Page ---*/
@@ -152,20 +152,20 @@ div.slide.visible #planetLogin {
 }
 
 div.slide.hidden #shadowLogin{
-    top: 48rem;
-    left: 49%;
+    top: 32.5rem;
+    left: 34%;
     transform: translate(-50%,-50%);
-    transform: rotate(183deg);
     transition: top 2s ease, left 2s ease;
+    transform: rotate(180deg);
     opacity: 0%;
     z-index: 0;
 }
 
 div.slide.visible #shadowLogin{
-    top: 50.1%;
-    left: 49%;
+    top: 18.9%;
+    left: 34%;
     transform: translate(-50%,-50%);
-    transform: rotate(183deg);
+    transform: rotate(180deg);
     transition: top 2s ease, left 2s ease;
     z-index: 0;
 }
@@ -413,7 +413,7 @@ div.slide.visible #best_stock {
     top: 1rem;
     left: 1rem;
     right: 2rem;
-    bottom: 52%;
+    bottom: 22.2rem;
     transform: none;
     margin: 0;
     height: auto;
@@ -422,22 +422,24 @@ div.slide.visible #best_stock {
 
 div.slide.visible #rising_stocks {
     position: absolute;
-    top: 52%;
+    top: 22.2rem;
     left: 1rem;
-    right: 51%;
+    right: 47rem;
     bottom: 1rem;
     transform: none;
+    margin: 0;
     height: auto;
     padding: 1.25rem;
 }
 
 div.slide.visible #declining_stocks {
     position: absolute;
-    top: 52%;
-    left: 51%;
+    top: 22.2rem;
+    left: 47rem;
     right: 2rem;
     bottom: 1rem;
     transform: none;
+    margin: 0;
     height: auto;
     padding: 1.25rem;
 }

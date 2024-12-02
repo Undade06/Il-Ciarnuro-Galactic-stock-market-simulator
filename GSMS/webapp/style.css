@@ -393,7 +393,7 @@ div.slide.visible #best_stock {
     top: 1rem;
     left: 1rem;
     right: 2rem;
-    bottom: 22.2rem;
+    bottom: 52%;
     transform: none;
     margin: 0;
     height: auto;
@@ -402,24 +402,22 @@ div.slide.visible #best_stock {
 
 div.slide.visible #rising_stocks {
     position: absolute;
-    top: 22.2rem;
+    top: 52%;
     left: 1rem;
-    right: 47rem;
+    right: 51%;
     bottom: 1rem;
     transform: none;
-    margin: 0;
     height: auto;
     padding: 1.25rem;
 }
 
 div.slide.visible #declining_stocks {
     position: absolute;
-    top: 22.2rem;
-    left: 47rem;
+    top: 52%;
+    left: 51%;
     right: 2rem;
     bottom: 1rem;
     transform: none;
-    margin: 0;
     height: auto;
     padding: 1.25rem;
 }

@@ -173,3 +173,8 @@ function loginCheck(){
     }
     return true;
 }
+
+//marketHomePage
+document.getElementById("marketHomePage").addEventListener('click', function(event) {
+    event.stopPropagation(); // Prevents click propagation
+});

@@ -441,3 +441,18 @@ div.slide.visible #declining_stocks {
     height: auto;
     padding: 1.25rem;
 }
+
+div.slide.visible #accessibility{
+    position: absolute;
+    top: 0.3%;
+    left: 70%;
+    bottom: 78%;
+    right: 1%;
+    transform: none;
+    height: auto;
+    padding: 1.25rem;
+    background-color: rgba(0,0,0,0.80);
+    border-radius: 2rem;
+    border: 0.2rem solid rgba(11, 21, 59, 0.75);
+    z-index: 1;
+}

@@ -149,14 +149,14 @@ function checkPassword(){
 
     if (password === '' || confirmPassword === '' || username==='') {
         errorText.style.opacity = '1000000';
-        errorText.textContent="Uno dei campi è vuoto!"; 
+        errorText.textContent="One of the fields is empty!"; 
         return false;
     }else{
         if(password === confirmPassword){
             return true;
         }else{
            errorText.style.opacity = '1000000';
-           errorText.textContent="Le password non coincidono!";
+           errorText.textContent="The passwords don't correspond";
             return false;
         }
     }
@@ -168,7 +168,7 @@ function loginCheck(){
     let errorText = document.querySelector('#loginError');
     if (password === '' || username==='') {
         errorText.style.opacity = '1000000';
-        errorText.textContent="Uno dei campi è vuoto!"; 
+        errorText.textContent="One of the fields is empty!"; 
         return false;
     }
     return true;

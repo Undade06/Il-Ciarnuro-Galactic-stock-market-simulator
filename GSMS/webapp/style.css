@@ -452,7 +452,32 @@ div.slide.visible #accessibility{
     height: auto;
     padding: 1.25rem;
     background-color: rgba(0,0,0,0.80);
-    border-radius: 2rem;
+    border-radius: 1.5rem;
     border: 0.2rem solid rgba(11, 21, 59, 0.75);
     z-index: 1;
+}
+
+#my_stocks{
+    position: absolute;
+    right: 0.1%;
+    bottom: 10%;
+    background-color: #0A205A;
+    color: white;
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    width: 10rem;
+    height: 2rem;
+    font-size: 1rem;
+    margin-right: 1.1rem;
+    margin-left:  1.1rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 0.4rem;
+    z-index: 2;
+}
+
+#my_stock_pic{
+    padding-left: 0.5rem;
+    width: 1rem; 
+    height: auto;
 }

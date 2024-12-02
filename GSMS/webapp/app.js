@@ -187,7 +187,7 @@ function removeDuplicatesFromArray(arr) {
 }
 
 //Hidden stock. Every other stock is influenced by it
-const masterStock = new Stock('master stock', 'master stock', 1000, 0.2, 0.5, 100, 123456, 0)
+const masterStock = new Stock('master stock', 'master stock', 100, 0.2, 0.5, 100, 123456, 0)
 
 //Function that return game time as number
 function gameTimer() {

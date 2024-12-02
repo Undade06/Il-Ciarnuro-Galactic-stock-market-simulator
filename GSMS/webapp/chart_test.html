@@ -57,7 +57,8 @@
                 let end = gameTimer()
                 let step = (end - start) / PRECISION
                 let temp = stock.initializeStock(days)
-                let values = []
+                let values = [], tempInfluence = [], tempInfluenceValues = []
+                if(id != '1') tempInfluenceValues = stock.influencedBy[0].initializeStock(days)
                 let k = 0
                 if(temp.length > PRECISION){
                     let interval = ~~(temp.length / PRECISION)
@@ -80,10 +81,12 @@
                 console.log('-------------------------------')
                 for (i = start; i < end - 1; i += step){
                     values.push({ x: i * (1000 * 60 * 60 * 24), y: temp[k] })
+                    tempInfluence.push({ x: i * (1000 * 60 * 60 * 24), y: tempInfluenceValues[k] })
                     k++
                 }
                 document.getElementById('stockValue'+id).innerText = temp[k - 1].toFixed(2) + " Kr"
                 console.log(values)
+                console.log(tempInfluence)
                 if (!ctx.chartjs) {
                     let chart = new Chart(ctx, {
                         type: "line",
@@ -94,7 +97,15 @@
                                 borderWidth: 1,
                                 radius: 0,
                                 data: values
-                            }]
+                            },
+                            {
+                                label: stock.influencedBy[0],
+                                indexAxis: 'x',
+                                borderWidth: 1,
+                                radius: 0,
+                                data: tempInfluence
+                            }
+                        ]
                         },
                         options: {
                             animation: false,

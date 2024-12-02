@@ -97,16 +97,17 @@ div.planet{
     animation: rotate 100s linear infinite;
 }
 
-/*div.shadow{
+div.shadow{
     position: absolute;
-    top: 50%;
-    left: 57%;
-    width: 19em;
-    height: 19em;
+    top: 50.1%;
+    left: 49%;
+    width: 16em;
+    height: 16em;
     background-image: url('pics/planetShadow.webp');
     background-size: cover;
     transform: translate(-50%,-50%);
-}*/
+    transform: rotate(183deg);
+}
 
 /*--- Landing Page ---*/
 
@@ -148,6 +149,25 @@ div.slide.visible #planetLogin {
     transform: translate(-50%, -50%);
     transition: top 2s ease, left 2s ease;
     z-index: -1;
+}
+
+div.slide.hidden #shadowLogin{
+    top: 48rem;
+    left: 49%;
+    transform: translate(-50%,-50%);
+    transform: rotate(183deg);
+    transition: top 2s ease, left 2s ease;
+    opacity: 0%;
+    z-index: 0;
+}
+
+div.slide.visible #shadowLogin{
+    top: 50.1%;
+    left: 49%;
+    transform: translate(-50%,-50%);
+    transform: rotate(183deg);
+    transition: top 2s ease, left 2s ease;
+    z-index: 0;
 }
 
 div.slide.hidden #log_reg_back {

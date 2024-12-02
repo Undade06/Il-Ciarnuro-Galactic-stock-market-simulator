@@ -152,7 +152,7 @@ div.slide.visible #planetLogin {
 }
 
 div.slide.hidden #shadowLogin{
-    top: 48rem;
+    top: 32.5rem;
     left: 34%;
     transform: translate(-50%,-50%);
     transition: top 2s ease, left 2s ease;

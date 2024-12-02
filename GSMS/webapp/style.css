@@ -65,14 +65,14 @@ h2 {
 }
 
 #logo{
-    height: 45em;
+    width: 50%;
+    height: auto;
     position: absolute;
     top: 30%; 
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
 }
-
 
 /*--- rotation animation ---*/
 
@@ -87,7 +87,7 @@ h2 {
 
 div.planet{
     position: absolute;
-    top: 48rem;
+    top: 110%;
     left: 50%;
     width: 41em; 
     height: 41em;
@@ -480,4 +480,16 @@ div.slide.visible #accessibility{
     padding-left: 0.5rem;
     width: 1rem; 
     height: auto;
+}
+
+
+/*
+@media screen and (max-width:45rem) {
+    #logoLogin{
+        width: 25rem;
+    }
+    #logoReg{
+        width: 25rem;
+    }
+
 }

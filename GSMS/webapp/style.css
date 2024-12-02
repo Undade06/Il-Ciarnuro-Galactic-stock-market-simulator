@@ -74,6 +74,10 @@ h2 {
     z-index: 2;
 }
 
+div.slide.hidden button{
+    display: none;
+}
+
 /*--- rotation animation ---*/
 
 @keyframes rotate {

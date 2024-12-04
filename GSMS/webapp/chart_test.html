@@ -24,7 +24,7 @@
                     masterStock.volatility = Number(document.getElementById('volatility'+id).value)
                     masterStock.seed = Number(document.getElementById('seed'+id).value)
                     stock = masterStock
-                } 
+                }
                 else if(id == '2'){
                     stock = stock2 = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value))
                     document.getElementById('baseValue'+id).value = stock._baseValue

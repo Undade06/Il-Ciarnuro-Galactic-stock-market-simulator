@@ -2,6 +2,7 @@ const cacheName='GSMS'; //PWA id here
 const appFiles=[
     'index.html',
     'app.js',
+    'gsms.js',
     'favicon.png',
     'manifest.json',
     'pwaicon.png',

@@ -113,7 +113,7 @@ function Stock(name, description, baseValue, stability, growth, volatility, seed
 Stock.prototype = {
     constructor: Stock,
     //Function called once on starting a new game. It calculate previous values to simulate stock history
-    initializeStock: function (t) {
+    initialize: function (t) {
         if (t === 'undefined' || t < 0) t = gameTimer()
         let timeWindow = (t / TIMESTEP), w = [], v = this._baseValue,
             influences = [],                 //Temporary array to store values of stock that influence this one
@@ -123,7 +123,7 @@ Stock.prototype = {
 
         if (this != masterStock) {
 
-            this.influencedBy.forEach((s) => { influences.push(s.initializeStock(t)) })            //Save stock value
+            this.influencedBy.forEach((s) => { influences.push(s.initialize(t)) })            //Save stock value
 
             influencesPerTime.push(0)                                                   //First value of stock cannot be influenced(it's its base value)
             for (let i = 1; i < timeWindow; i++) {
@@ -177,7 +177,7 @@ Stock.prototype = {
 
 //ETF doesn't have it's own attribute such as growth, stability ecc.
 //It's value is simply calculated on stock's value that compose it
-function ETF(name, description, influences, ...influencedBy) {
+function ETF(name, description, ...influencedBy) {
     
     this.name = name
 
@@ -185,79 +185,16 @@ function ETF(name, description, influences, ...influencedBy) {
 
     this.type = "ETF"
 
-    this.influences = influences                //Supposed to be an array with same dimention as influencedby
-
-    //Stocks that influences this ETF
+    //Stocks that influences this ETF, it's supposed to be a dictionary as {stock, percComposition}
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
-    if (masterCreated == 1 && !this.influencedBy.includes(masterStock)) {
-        this.influencedBy.push(masterStock);            //Add masterstocks in the influences if not present
-    }
-    masterCreated = 1
-
+    
 }
 
-Stock.prototype = {
-    constructor: Stock,
+ETF.prototype = {
+    constructor: ETF,
     //Function called once on starting a new game. It calculate previous values to simulate stock history
-    initializeStock: function (t) {
-        if (t === 'undefined' || t < 0) t = gameTimer()
-        let timeWindow = (t / TIMESTEP), w = [], v = this._baseValue,
-            influences = [],                 //Temporary array to store values of stock that influence this one
-            influencesPerTime = []           //Every average influence on this stock in every time instant
-
-        w.push(this._baseValue)
-
-        if (this != masterStock) {
-
-            this.influencedBy.forEach((s) => { influences.push(s.initializeStock(t)) })            //Save stock value
-
-            influencesPerTime.push(0)                                                   //First value of stock cannot be influenced(it's its base value)
-            for (let i = 1; i < timeWindow; i++) {
-                influencesPerTime.push(0)                                               //Push a zero to sum influence
-                influences.forEach((s) => { influencesPerTime[i] += ((s[i] - s[i - 1]) / s[i - 1]) * this.influencability })           //Sum every influence
-            }
-        }
-
-        for (let i = 1; i < timeWindow; i++) {                                                  //Wiener process with drift
-            if (this.rising == 1) v += this.growth * TIMESTEP + this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)
-            else v -= this.growth * TIMESTEP + this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + i)
-            if (this != masterStock) v += v * influencesPerTime[i]                          //Calculate influence in this time instant
-            //Check if value is legal
-            v = v < MINSTOCKVALUE ? MINSTOCKVALUE : v
-            v = v > MAXSTOCKVALUE ? MAXSTOCKVALUE : v
-            if (mulberry32(this.seed + i) > this.stability) this.rising *= -1            //The stock invert its trend to simulate random real shock
-            w.push(v)
-        }
-        this.value = w[w.length - 1]
-
-        return w
-    },
-    //Function that calculate 1 step in time of stock value
-    nextValue: function () {
-        let v = this.value, averageInfluence = 0
-
-        if (this != masterStock) {
-            this.influencedBy.forEach((s) => { averageInfluence += s.trend() * this.influencability })
-            averageInfluence /= this.influencedBy.length
-        }
-
-        if (this.rising == 1) v += this.growth * TIMESTEP + this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + gameTimer())
-        else v -= this.growth * TIMESTEP + this.volatility * Math.sqrt(TIMESTEP) * normalDistributedNumber(this.seed + gameTimer())
-
-        if (this != masterStock) v += v * averageInfluence
-
-        v = v < MINSTOCKVALUE ? MINSTOCKVALUE : v
-        v = v > MAXSTOCKVALUE ? MAXSTOCKVALUE : v
-        if (mulberry32(this.seed + gameTimer()) > this.stability) this.rising *= -1
-        this.value = v
-
-        return v
-    },
-    //Function that calculate stock trend
-    trend: function () {
-        let v1 = this.value
-        let v2 = this.nextValue()
-        return (v2 - v1) / v1
+    initialize: function (t) {
+        
     }
 }
 

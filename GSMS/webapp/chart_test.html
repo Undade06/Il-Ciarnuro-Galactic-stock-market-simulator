@@ -12,7 +12,7 @@
         <script src="app.js" type="text/javascript"></script>
         <script type="text/javascript">
             const PRECISION = 1000
-            let stock2, stock3
+            let stock2, stock3, ETF
             function chartTest_update(id) {
                 document.getElementById('gameT').innerText = gameTimerAsDate().toGMTString()
                 let stock
@@ -56,18 +56,20 @@
                 }
                 let end = gameTimer()
                 let step = (end - start) / PRECISION
-                let temp = stock.initializeStock(days)
+                let temp = stock.initialize(days)
                 let values = [], tempInfluence = [], tempInfluenceValues = []
-                if(id != '1') tempInfluenceValues = stock.influencedBy[0].initializeStock(days)
+                if(id != '1') tempInfluenceValues = stock.influencedBy[0].initialize(days)
                 let k = 0
                 if(temp.length > PRECISION){
                     let interval = ~~(temp.length / PRECISION)
-                    let sampledValues = []
+                    let sampledValues = [], sampledValuesTemp = []
                     for(i = 0; i < temp.length; i += interval){
                         let window = temp.slice(i, i + interval)
                         sampledValues.push(window.reduce((a, b) => a + b, 0) / window.length)
+                        sampledValuesTemp.push(window.reduce((a, b) => a + b, 0) / window.length)
                     }
                     temp = sampledValues
+                    tempInfluenceValues = sampledValuesTemp
                 }
                 console.log('Stock: ' + stock.name)
                 console.log(stock.name + ' baseValue: ' + stock._baseValue)
@@ -84,28 +86,28 @@
                     tempInfluence.push({ x: i * (1000 * 60 * 60 * 24), y: tempInfluenceValues[k] })
                     k++
                 }
+                let datasetsT = [{
+                    label: stock.name,
+                    indexAxis: 'x',
+                    borderWidth: 1,
+                    radius: 0,
+                    data: values
+                }]
+                if(id != '1'){
+                    datasetsT.push({                        //To do: fix bug(on updating time window tempInfluence and values take the same values)
+                        label: stock.influencedBy[0].name,
+                            indexAxis: 'x',
+                            borderWidth: 1,
+                            radius: 0,
+                            data: tempInfluence
+                    })
+                }
                 document.getElementById('stockValue'+id).innerText = temp[k - 1].toFixed(2) + " Kr"
-                console.log(values)
-                console.log(tempInfluence)
                 if (!ctx.chartjs) {
                     let chart = new Chart(ctx, {
                         type: "line",
                         data: {
-                            datasets: [{
-                                label: stock.name,
-                                indexAxis: 'x',
-                                borderWidth: 1,
-                                radius: 0,
-                                data: values
-                            },
-                            {
-                                label: stock.influencedBy[0],
-                                indexAxis: 'x',
-                                borderWidth: 1,
-                                radius: 0,
-                                data: tempInfluence
-                            }
-                        ]
+                            datasets: datasetsT
                         },
                         options: {
                             animation: false,
@@ -149,7 +151,7 @@
                     })
                     ctx.chartjs = chart
                 } else {
-                    ctx.chartjs.data.datasets[0].data = values
+                    ctx.chartjs.data.datasets = datasetsT
                     ctx.chartjs.update()
                 }
             }
@@ -157,6 +159,7 @@
                 chartDays1 = 1
                 chartDays2 = 1
                 chartDays3 = 1
+                chartETFdays = 1
                 document.getElementById('baseValue1').value = masterStock._baseValue
                 document.getElementById('stability1').value = masterStock.stability
                 document.getElementById('grow1').value = masterStock.growth
@@ -166,9 +169,12 @@
                 stock2 = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value))
                 id = 3
                 stock3 = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), stock2)
+                id = 4
+                ETF = new ETF("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), stock2)
                 chartTest_update('1')
                 chartTest_update('2')
                 chartTest_update('3')
+                chartTest_update('4')
             }
         </script>
     </head>
@@ -311,6 +317,36 @@
                     <tr>
                         <td><label for="seed">Seed</label></td>
                         <td><input type="number" step="1" value="999999" id="seed3"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+            <div id="4">
+                <h2>ETF</h2>
+                <div>
+                    Price: <span id="ETF"></span>
+                </div>
+                <div style="width:100%; max-width:50rem; height:30rem;">
+                    <canvas class="chart" id="etf"></canvas>
+                </div>
+                <div>
+                    <button onclick="chartETFdays=1;chartTest_update('4')">1d</button>
+                    <button onclick="chartETFdays=7;chartTest_update('4')">1w</button>
+                    <button onclick="chartETFdays=30;chartTest_update('4')">1m</button>
+                    <button onclick="chartETFdays=365;chartTest_update('4')">1y</button>
+                    <button onclick="chartETFdays=3650;chartTest_update('4')">10y</button>
+                    <button onclick="chartETFdays=7300;chartTest_update('4')">20y</button>
+                    <button onclick="chartETFdays=18250;chartTest_update('4')">50y</button>
+                    <button onclick="chartETFdays=36500;chartTest_update('4')">100y</button>
+                </div>
+                <table>
+                    <tr style="background:rgba(255,255,255,0.5); margin-left: 5rem;">
+                        <td>Stock 2</td>
+                        <td id="ETFstock2"></td>
+                    </tr>
+                    <tr style="background:rgba(255,255,255,0.5); margin-left: 5rem;">
+                        <td>Stock 3</td>
+                        <td id="ETFstock3"></td>
                     </tr>
                 </table>
             </div>

@@ -9,6 +9,7 @@
         <meta name="viewport" content="width=device-width"/>
     </head>
     <body>
+        <div class="bg"></div>
         <div class="slide visible" id="landingPage">
             <img src="pics/logo.webp" id="logo">
             <h2 id="landingPageText">Press anywhere to continue</h2>
@@ -58,18 +59,33 @@
         </div>
         <div class="slide hidden" id="marketHomePage">
             <div id="accessibility">
+                <img src="pics/logo3.webp" id="logoHome">
                 <h4 id="cur_date">asd</h4>
                 <h5 id="my_balance"></h5>
                 <button id="my_stocks" onclick="toSlide('profilePage')">Your stocks<img id="my_stock_pic" src="pics/myStockPic.webp"></button>
             </div>
             <div class="market_back" id="best_stock">
-            
+                <div class="bestStock_header">
+                    <h2 id="bestStock_name">*Miglior Titolo*</h2>
+                    <h1 id="bestStock_value">*Valore*</h1>
+                    <h1 id="bestStock_percentage">*Aumento%*</h1>
+                </div>
+                <div class="time_buttons">
+                    <button id="1d">1d</button>
+                    <button id="1w">1w</button>
+                    <button id="1m">1m</button>
+                    <button id="1y">1y</button>
+                    <button id="5y">5y</button>
+                </div>
+                <div class="graf">
+                    <canvas id="bestStock_graf"></canvas>
+                </div>
             </div>
             <div class="market_back" id="rising_stocks">
-
+                <h3>Rises</h3>
             </div>
             <div class="market_back" id="declining_stocks">
-
+                <h3>Falls</h3>
             </div>
         </div>
         <div class="slide hidden" id="profilePage">

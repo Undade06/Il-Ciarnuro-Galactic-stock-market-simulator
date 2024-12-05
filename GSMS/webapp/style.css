@@ -45,8 +45,9 @@ body{
     z-index: -10;
 }
 
-.button:hover{
-    transform: scale(1,3);
+button:hover{
+    transform: scale(1.05,1.05);
+    cursor: pointer;
     z-index: 9999;
 }
 
@@ -101,17 +102,17 @@ div.planet{
     animation: rotate 100s linear infinite;
 }
 
-div.shadow{
+/*div.shadow{
     position: absolute;
-    top: 18.9%;
-    left: 34%;
+    top: 0;
+    left: 0;
     width: 30rem;
     height: 30rem;
     background-image: url('pics/planetShadow.webp');
     background-size: contain;
     background-repeat: no-repeat;
     transform: translate(-50%,-50%);
-}
+}*/
 
 /*--- Landing Page ---*/
 
@@ -161,7 +162,7 @@ div.slide.hidden #shadowLogin{
     transform: translate(-50%,-50%);
     transition: top 2s ease, left 2s ease;
     transform: rotate(180deg);
-    opacity: 0%;
+    opacity: 0;
     z-index: 0;
 }
 
@@ -336,23 +337,6 @@ input.register_input{
     font-size: 1.2em;
     margin-top: 2rem;
 }
-
-.spec_gen #spec_type,#spec_sex{
-    color: white;
-    font-family: 'Xolonium', sans-serif;
-    font-weight: bold;
-    font-size: 1.1em;
-    background-color: #0A205A;
-    width: 10rem;
-    height: 3rem;
-    margin-top: 1.1rem;
-    margin-left: 1.1rem;
-    margin-right: 1.1rem;
-    border: none;
-    border-radius: 0.4rem;
-    z-index: 1;
-}
-
 
 /*--- Save Page ---*/
 

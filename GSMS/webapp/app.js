@@ -178,3 +178,6 @@ function loginCheck(){
 document.getElementById("marketHomePage").addEventListener('click', function(event) {
     event.stopPropagation(); // Prevents click propagation
 });
+document.getElementById("profilePage").addEventListener('click', function(event) {
+    event.stopPropagation(); // Prevents click propagation
+});

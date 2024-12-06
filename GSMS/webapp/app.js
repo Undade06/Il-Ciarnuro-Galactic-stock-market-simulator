@@ -45,7 +45,7 @@ function normalDistributedNumber(seed = null) {                    // Generate a
 }
 
 function Stock(name, description, baseValue, stability, growth, volatility, seed, influencability, ...influencedBy) {
-    
+
     this.name = name
 
     this.description = description
@@ -113,7 +113,7 @@ function Stock(name, description, baseValue, stability, growth, volatility, seed
 Stock.prototype = {
     constructor: Stock,
     //Function called once on starting a new game. It calculate previous values to simulate stock history
-    initialize: function (t) {
+    initialize: function (t = 0) {
         if (t === 'undefined' || t < 0) t = gameTimer()
         let timeWindow = (t / TIMESTEP), w = [], v = this._baseValue,
             influences = [],                 //Temporary array to store values of stock that influence this one
@@ -178,23 +178,49 @@ Stock.prototype = {
 //ETF doesn't have it's own attribute such as growth, stability ecc.
 //It's value is simply calculated on stock's value that compose it
 function ETF(name, description, ...influencedBy) {
-    
+
     this.name = name
 
     this.description = description
 
     this.type = "ETF"
 
-    //Stocks that influences this ETF, it's supposed to be a dictionary as {stock, percComposition}
+    //Stocks that influences this ETF, it's supposed to be a dictionary as {stock, percentual composition}
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
-    
+
+    let composition = 0
+    influencedBy.forEach((e) => {
+        composition += e.perc
+        if (composition > 1) throw 'ETF composition exceed 100%'
+    })
+
 }
 
 ETF.prototype = {
     constructor: ETF,
-    //Function called once on starting a new game. It calculate previous values to simulate stock history
-    initialize: function (t) {
+    //Function called once on starting a new game. It calculate previous values to simulate etf history
+    initialize: function (t = 0) {
+        if (t === 'undefined' || t < 0) t = gameTimer()
+        let timeWindow = (t / TIMESTEP), stocksValues = [], values, tempValue, value = []
         
+        this.influencedBy.forEach((e) => {          //Register all stock value
+            stocksValues.push(e.stock.initialize(t))
+        })
+
+        for(let i = 0; i < timeWindow; i++){          //Calculate value for each stock with relative influence
+            values = []             //Temporary array to store each stock value in 'i' time
+            tempValue = 0
+            stocksValues.forEach((e) => {
+                values.push(e[i])
+            })
+            values.forEach((e) => {
+                tempValue += e * this.influencedBy[values.indexOf(e)].perc
+            })
+
+            value.push(tempValue)
+        }
+        
+        return value
     }
 }
 

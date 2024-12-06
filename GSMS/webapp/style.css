@@ -545,8 +545,21 @@ div.bestStock_header{
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
+    width: auto;
+}
+
+#bestStock_value{
     position: absolute;
-    width: 40rem;
+    margin: 1rem;
+    top: 3.34rem;
+    left: 2.7rem;
+}
+
+#bestStock_percentage{
+    position: absolute;
+    top: 4.34rem;
+    left: 14rem;
+    color: rgb(0, 190, 0);
 }
 
 .graf #bestStock_graf{

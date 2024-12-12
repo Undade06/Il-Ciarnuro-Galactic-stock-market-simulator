@@ -88,6 +88,7 @@
                 console.log(stock.name + ' influencedBy: ')
                 console.log(stock.influencedBy)
                 console.log('-------------------------------')
+                console.log(values)
                 for (i = start; i < end - 1; i += step){
                     values.push({ x: i * (1000 * 60 * 60 * 24), y: temp[k] })
                     tempInfluence.push({ x: i * (1000 * 60 * 60 * 24), y: tempInfluenceValues[k] })
@@ -110,7 +111,11 @@
                     })
                 }*/
                 if(id != '4') document.getElementById('stockValue'+id).innerText = temp[k - 1].toFixed(2) + " Kr"
-                else document.getElementById('ETF').innerText = temp[k - 1].toFixed(2) + " Kr"
+                else{
+                    document.getElementById('ETF').innerText = temp[k - 1].toFixed(2) + " Kr"
+                    document.getElementById('ETFstock2').innerText = stock.influencedBy[0].perc
+                    document.getElementById('ETFstock3').innerText = stock.influencedBy[1].perc
+                }
                 if (!ctx.chartjs) {
                     let chart = new Chart(ctx, {
                         type: "line",

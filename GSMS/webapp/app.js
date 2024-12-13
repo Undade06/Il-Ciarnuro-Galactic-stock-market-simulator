@@ -148,7 +148,7 @@ function checkPassword(){
     let errorText = document.querySelector('#registerError');
 
     if (password === '' || confirmPassword === '' || username==='') {
-        errorText.style.opacity = '1000000';
+        errorText.style.opacity = '1000000'; //mettere una classe error, quando c'è error mettere colore rosso
         errorText.textContent="One of the fields is empty!"; 
         return false;
     }else{

@@ -628,8 +628,66 @@ div.bestStock_header{
 
 /*--- profilePage ---*/
 
+.backHome{
+    position: absolute;
+    top:0; left:0;
+    background: #0A205A;
+    width: 5rem;
+    height: 3rem;
+    border: none;
+    border-radius: 0.7rem;
+    padding: 0.5rem;
+    z-index: 1;
+}
+div.slide.hidden .profile_back {
+    display: none;
+}
 
+div.slide.visible .profile_back{
+    background-color: rgba(11, 21, 59, 0.75);
+    border-radius: 2rem;
+    z-index: 0;
+}
 
+div.slide.visible #profile {
+    display: flex;
+    transform: none;
+    margin-bottom: 1rem;
+    padding: 1.25rem;
+    margin-left: 3rem; margin-right: 3rem;
+    margin-top: 2rem; margin-bottom: 2rem;
+    height: 35vh;
+}
+
+div.slide.visible #portfolio {
+    display: flex;
+    transform: none;
+    padding: 1.25rem;
+    margin-left: 3rem; margin-right: 3rem;
+    margin-top: 2rem; margin-bottom: 2rem;
+    height: 35vh; 
+}
+div.slide.visible #accessibility_profile{
+    position: absolute;
+    top: 0.3%;
+    left: 70%;
+    bottom: 78%;
+    right: 1%;
+    transform: none;
+    height: auto;
+    padding: 1.25rem;
+    background-color: rgba(0,0,0,0.80);
+    border-radius: 1.5rem;
+    border: 0.2rem solid rgba(11, 21, 59, 0.75);
+    z-index: 1;
+}
+
+#logoProfile{
+    position: absolute;
+
+    top: 2%;
+    right: 2%;
+}
 
 
 @media screen and (max-width:45rem) {

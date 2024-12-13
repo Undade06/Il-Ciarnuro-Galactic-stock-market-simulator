@@ -83,7 +83,7 @@ Stock.prototype = {
     initialize: function (t = 0) {
         if (t === 'undefined' || t < 0) t = gameTimer()
         let timeWindow = (t / Stock.TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth)
-            influences = [],                 //Temporary array to store values of stock that influence this one
+        influences = [],                 //Temporary array to store values of stock that influence this one
             influencesPerTime = []           //Every average influence on this stock in every time instant
 
         w.push(this._baseValue)
@@ -98,7 +98,7 @@ Stock.prototype = {
                 influencesPerTime.push(0)                                               //Push a zero to sum influence
 
                 influences.forEach((s) => { influencesPerTime[i] += ((s[i] - s[i - 1]) / s[i - 1]) * this.influencability })           //Sum every influence
-                
+
             }
         }
 
@@ -131,7 +131,7 @@ Stock.prototype = {
 
             this.influencedBy.forEach((s) => { averageInfluence += s.trend() * this.influencability })
             averageInfluence /= this.influencedBy.length
-            
+
         }
 
         if (this.rising == 1) v += this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + gameTimer())
@@ -153,7 +153,7 @@ Stock.prototype = {
         let v1 = this.value
         let v2 = this.nextValue()
         return (v2 - v1) / v1
-        
+
     }
 }
 
@@ -194,12 +194,12 @@ ETF.prototype = {
     initialize: function (t = 0) {
         if (t === 'undefined' || t < 0) t = gameTimer()
         let timeWindow = (t / Stock.TIMESTEP), stocksValues = [], values, tempValue, value = []
-        
+
         this.influencedBy.forEach((e) => {          //Register all stock value
             stocksValues.push(e.stock.initialize(t))
         })
 
-        for(let i = 0; i < timeWindow; i++){          //Calculate value for each stock with relative influence
+        for (let i = 0; i < timeWindow; i++) {          //Calculate value for each stock with relative influence
             values = []             //Temporary array to store each stock value in 'i' time
             tempValue = 0
             stocksValues.forEach((e) => {
@@ -211,8 +211,57 @@ ETF.prototype = {
 
             value.push(tempValue)
         }
-        
+
         return value
+    }
+}
+
+function GameManager() {
+
+    const player = new Player()
+    player.setInizialWallet()
+
+}
+
+GameManager.prototype = {
+    constructor: GameManager,
+    initialize: function () {
+
+    },
+    // Load from local storage 
+    loadFromLS: function () {
+
+    },
+    saveLS: function () {
+
+    }
+}
+
+function Player(name, wallet = 25000) {
+
+    this.name = name
+    this.wallet = wallet
+    this.honorGrade = '0'
+    this.stocks = []
+
+}
+
+Player.prototype = {
+    constructor: Player,
+    calculateHonorGrade: function () {
+        let e = this.wallet
+        if (e <= 0) return -1
+        else if (e < 100) return 0
+        else if (e < 300) return 1
+        else if (e < 700) return 2
+        else if (e < 1500) return 3
+        else if (e < 5000) return 4
+        else if (e < 15000) return 5
+        else if (e < 50000) return 6
+        else if (e < 100000) return 7
+        else if (e < 1000000) return 8
+        else if (e < 10000000) return 9
+        else return 10
     }
 }
 
@@ -235,60 +284,3 @@ function gameTimer() {
 function gameTimerAsDate() {
     return new Date(gameTimer() * (1000 * 60 * 60 * 24))
 }
-
-//-- Load/Save game
-
-// Function to create a new game
-function newGame(name, credit) {
-    const player = new Player(); // Create a new player instance
-    player.setInizialWallet(); // Set the initial wallet to 25000
-    console.log(player.name);  // Display the player's name (from the HTML input)
-    console.log(player.wallet);  // Display the player's wallet (should be 25000)
-    console.log(player.getRank());  // Display the player's rank based on their wallet
-}
-
-// Function to load a saved game (to be implemented)
-function loadGame() {
-    // Loading game logic (not yet implemented)
-}
-
-// Function to save the game (to be implemented)
-function saveGame() {
-    // Saving game logic (not yet implemented)
-}
-
-// Player constructor and its methods
-// Constructor for creating a new player
-function Player() {
-    this.name = document.querySelectorAll('.register_input')[0].value; // Get the player's name from the HTML input
-    this.wallet = 0;  // Set initial wallet to 0 (will be updated later)
-    this.honorGrade = "0";  // Set the initial honor grade to "0"
-    this.stocks = [];  // Initialize an empty array for the player's stocks
-}
-
-// Method to set the player's initial wallet value
-Player.prototype.setInizialWallet = function() {
-    this.wallet = 25000; // Set the wallet to 25000
-};
-
-// Method to get the current value of the player's wallet
-Player.prototype.getWallet = function() {
-    return this.wallet; // Return the current wallet value
-};
-
-// Method to get the player's rank based on the wallet's value
-Player.prototype.getRank = function() {
-    let e = this.getWallet(); 
-    if (e <= 0) return -1; 
-    else if (e < 100) return 0; 
-    else if (e < 300) return 1; 
-    else if (e < 700) return 2; 
-    else if (e < 1500) return 3; 
-    else if (e < 5000) return 4;
-    else if (e < 15000) return 5;
-    else if (e < 50000) return 6;
-    else if (e < 100000) return 7;
-    else if (e < 1000000) return 8;
-    else if (e < 10000000) return 9; 
-    else return 10;
-};

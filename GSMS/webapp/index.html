@@ -60,13 +60,13 @@
         <div class="slide hidden" id="marketHomePage">
             <div id="accessibility">
                 <img src="pics/logo3.webp" id="logoHome">
-                <h4 id="cur_date">asd</h4>
+                <h4 id="cur_date"></h4>
                 <h5 id="my_balance"></h5>
                 <button id="my_stocks" onclick="toSlide('profilePage')">Your stocks<img id="my_stock_pic" src="pics/myStockPic.webp"></button>
             </div>
             <div class="market_back" id="best_stock">
                 <div class="bestStock_header">
-                    <div id="bestStock_name"><h2>*Miglior Titolo*</h2></div>
+                    <div id="bestStock_name" onclick="toSlide('stockPage')"><h2>*Miglior Titolo*</h2></div>
                     <div id="bestStock_value"><h1>*Valore*</h1></div>
                     <div id="bestStock_percentage"><h1>*Aumento%*</h1></div>
                 </div>
@@ -98,7 +98,29 @@
 
         </div>
         <div class="slide hidden" id="stockPage">
-
+            <div id="accessibility">
+                <img src="pics/logo3.webp" id="logoHome">
+                <h4 id="cur_date"></h4>
+                <h5 id="my_balance"></h5>
+            </div>
+            <div class="market_back" id="singleStock">
+                <div class="time_buttons">
+                    <button id="1d">1d</button>
+                    <button id="1w">1w</button>
+                    <button id="1m">1m</button>
+                    <button id="1y">1y</button>
+                    <button id="5y">5y</button>
+                </div>
+                <div class="graf">
+                    <canvas id="stock_graf"></canvas>
+                </div>
+                <div class="market_back" id="relativeStrenght">
+                    <h3>Relative strenght</h3>
+                    <div class="graf">
+                        <canvas id="relstrenght_graf"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
     <script src="gsms.js" type="text/javascript"></script>

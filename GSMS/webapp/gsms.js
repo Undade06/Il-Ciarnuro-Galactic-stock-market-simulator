@@ -1,17 +1,3 @@
-//mulberry32 seeded random number generator
-function mulberry32(a) {
-    let t = a += 0x6D2B79F5
-    t = Math.imul(t ^ t >>> 15, t | 1)
-    t ^= t + Math.imul(t ^ t >>> 7, t | 61)
-    return ((t ^ t >>> 14) >>> 0) / 4294967296
-}
-
-function normalDistributedNumber(seed = null) {                    // Generate a random number with standard normal distribution
-    let n = mulberry32(seed)
-    while (n == 0) n = mulberry32(seed * Math.random() * 10000)            //To avoid zero
-    return Math.sqrt(-2.0 * Math.log(n)) * Math.cos(2.0 * Math.PI * n)
-}
-
 function Stock(name, description, baseValue, stability, growth, volatility, seed, influencability, ...influencedBy) {
 
     this.name = name
@@ -84,7 +70,7 @@ Stock.prototype = {
         if (t === 'undefined' || t < 0) t = gameTimer()
         let timeWindow = (t / Stock.TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth)
         influences = [],                 //Temporary array to store values of stock that influence this one
-            influencesPerTime = []           //Every average influence on this stock in every time instant
+        influencesPerTime = []           //Every average influence on this stock in every time instant
 
         w.push(this._baseValue)
 
@@ -160,8 +146,6 @@ Stock.prototype = {
 Stock.MAXVALUE = 1000000
 Stock.MINVALUE = 0.001
 Stock.TIMESTEP = 0.001
-const STARTDATE = new Date("2127-01-01").getTime(), REALSTARTDATE = new Date("2024-01-01").getTime()
-const SPEEDUP = 60                //1 real second = 1 game minute
 Stock.MAXINFLUENCABILITY = 1 / 10000000
 Stock.masterCreated = 0              //Flag to determine if masterStock is already created. Used to not let the code use masterStock before is created in the constructor
 //Hidden stock. Every other stock is influenced by it
@@ -177,7 +161,7 @@ function ETF(name, description, ...influencedBy) {
 
     this.type = "ETF"
 
-    //Stocks that influences this ETF, it's supposed to be a dictionary as {stock, percentual composition}
+    //Stocks that compose this ETF, it's supposed to be a dictionary as {stock, percentual composition}
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
 
     let composition = 0
@@ -216,16 +200,19 @@ ETF.prototype = {
     }
 }
 
-function GameManager() {
+function GameManager(playername) {
 
-    const player = new Player()
-    player.setInizialWallet()
+    this.player = new Player(playername)
+    this.stocks = undefined
+    this.etfs = undefined
 
 }
 
 GameManager.prototype = {
     constructor: GameManager,
-    initialize: function () {
+    initializeGame: function () {
+
+        this._createMarket()
 
     },
     // Load from local storage 
@@ -234,13 +221,70 @@ GameManager.prototype = {
     },
     saveLS: function () {
 
+    },
+    // Create all stocks and etfs on a new game
+    _createMarket: function () {
+
+        let xhr = new XMLHttpRequest()
+        xhr.onload = function(){
+
+            let data = JSON.parse('./market.json')
+
+            this.stocks = {}
+            for(id in data){
+        
+                let s = data[id]
+                let tempInfl
+
+                if(s.type === 'stock'){
+
+                    tempInfl = []
+
+                    // Suppose that in market.json stocks that influence other stocks are written before those influenced stocks
+                    s.influencedBy.forEach((stockId) => tempInfl.push(this.stocks[stockId]))
+
+                    this.stocks[id] = new Stock(s.name, s.description, s.params[0], s.params[1], s.params[2], s.params[3], 647852, s.params[4], tempInfl)
+
+                }else if (s.type === 'ETF'){
+
+                    tempInfl = {}
+
+                    s.composition.forEach((stockId) => tempInfl.push({stock: this.stocks[stockId], perc: s.composition[stockId]}))
+
+                    this.etfs[id] = new ETF(s.name, s.description, tempInfl)
+
+                }else throw 'Uknown type: ' + s.type
+
+            }
+
+        }
+
+        xhr.onerror = function(){console.log('Failed to load market.json')}
+        xhr.open('GET', 'market.json')
+        xhr.send()
+
     }
 }
 
-function Player(name, wallet = 25000) {
+GameManager.yearShift = 150                      // ~2174
+GameManager.REALSTARTDATE = new Date().getTime()
+GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + (365 * 24 * 60 * 60 * 1000) * GameManager.yearShift).getTime()
+GameManager.SPEEDUP = 60                //1 real second = 1 game minute
+
+//Function that return game time as number
+GameManager.gameTimer = function () {
+    return new Date(GameManager.STARTDATE + (new Date().getTime() - GameManager.REALSTARTDATE) * GameManager.SPEEDUP) / (1000 * 60 * 60 * 24)
+}
+
+//Function that return game timer as a readable date
+GameManager.gameTimerAsDate = function () {
+    return new Date(GameManager.gameTimer() * (1000 * 60 * 60 * 24))
+}
+
+function Player(name) {
 
     this.name = name
-    this.wallet = wallet
+    this.wallet = Player.startMoney
     this.honorGrade = '0'
     this.stocks = []
 
@@ -249,6 +293,7 @@ function Player(name, wallet = 25000) {
 Player.prototype = {
     constructor: Player,
     calculateHonorGrade: function () {
+
         let e = this.wallet
         if (e <= 0) return -1
         else if (e < 100) return 0
@@ -262,7 +307,27 @@ Player.prototype = {
         else if (e < 1000000) return 8
         else if (e < 10000000) return 9
         else return 10
+
     }
+}
+
+Player.startMoney = 25000
+
+
+//      Functions outside any classess
+
+//mulberry32 seeded random number generator
+function mulberry32(a) {
+    let t = a += 0x6D2B79F5
+    t = Math.imul(t ^ t >>> 15, t | 1)
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61)
+    return ((t ^ t >>> 14) >>> 0) / 4294967296
+}
+
+function normalDistributedNumber(seed = null) {                    // Generate a random number with standard normal distribution
+    let n = mulberry32(seed)
+    while (n == 0) n = mulberry32(seed * Math.random() * 10000)            //To avoid zero
+    return Math.sqrt(-2.0 * Math.log(n)) * Math.cos(2.0 * Math.PI * n)
 }
 
 //General function that, given an array, remove duplicates in it
@@ -273,14 +338,4 @@ function removeDuplicatesFromArray(arr) {
         if (!cleanedArr.includes(e)) cleanedArr.push(e)
     })
     return cleanedArr
-}
-
-//Function that return game time as number
-function gameTimer() {
-    return new Date(STARTDATE + (Date.now() - REALSTARTDATE) * SPEEDUP) / (1000 * 60 * 60 * 24)
-}
-
-//Function that return game timer as a readable date
-function gameTimerAsDate() {
-    return new Date(gameTimer() * (1000 * 60 * 60 * 24))
 }

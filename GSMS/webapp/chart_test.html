@@ -13,9 +13,10 @@
         <script src="gsms.js" type="text/javascript"></script>
         <script type="text/javascript">
             const PRECISION = 1000
+            let gm = new GameManager('prova')
             let stock2, stock3, etf, timeStep = 0
             function chartTest_update(id) {
-                document.getElementById('gameT').innerText = gameTimerAsDate().toGMTString()
+                document.getElementById('gameT').innerText = GameManager.gameTimerAsDate().toGMTString()
                 let stock
                 if(id == '1'){
                     masterStock._baseValue = Number(document.getElementById('baseValue'+id).value)
@@ -49,20 +50,20 @@
                 }
                 let ctx = document.getElementById(id).querySelector("canvas.chart")
                 let days = chartDays1
-                let start = ~~gameTimer() - chartDays1
+                let start = ~~GameManager.gameTimer() - chartDays1
                 if(id == '2'){
-                    start = ~~gameTimer() - chartDays2
+                    start = ~~GameManager.gameTimer() - chartDays2
                     days = chartDays2
                 }
                 if(id == '3'){
-                    start = ~~gameTimer() - chartDays3
+                    start = ~~GameManager.gameTimer() - chartDays3
                     days = chartDays3
                 }
                 if(id == '4'){
-                    start = ~~gameTimer() - chartETFdays
+                    start = ~~GameManager.gameTimer() - chartETFdays
                     days = chartETFdays
                 }
-                let end = gameTimer()
+                let end = GameManager.gameTimer()
                 let step = (end - start) / PRECISION
                 let temp = stock.initialize(days)
                 let values = [], tempInfluence = [], tempInfluenceValues = []

@@ -1,6 +1,8 @@
-function Stock(name, description, baseValue, stability, growth, volatility, seed, influencability, ...influencedBy) {
+function Stock(name, acronym, description, baseValue, stability, growth, volatility, seed, influencability, ...influencedBy) {
 
     this.name = name
+
+    this.acronym = acronym
 
     this.description = description
 
@@ -153,9 +155,11 @@ const masterStock = new Stock('master stock', 'master stock', 100, 0.2, 0.5, 100
 
 //ETF doesn't have it's own attribute such as growth, stability ecc.
 //It's value is simply calculated on stock's value that compose it
-function ETF(name, description, ...influencedBy) {
+function ETF(name, acronym, description, ...influencedBy) {
 
     this.name = name
+
+    this.acronym = acronym
 
     this.description = description
 
@@ -243,7 +247,7 @@ GameManager.prototype = {
                     // Suppose that in market.json stocks that influence other stocks are written before those influenced stocks
                     s.influencedBy.forEach((stockId) => tempInfl.push(this.stocks[stockId]))
 
-                    this.stocks[id] = new Stock(s.name, s.description, s.params[0], s.params[1], s.params[2], s.params[3], 647852, s.params[4], tempInfl)
+                    this.stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], 647852, s.params[4], tempInfl)
 
                 }else if (s.type === 'ETF'){
 
@@ -251,7 +255,7 @@ GameManager.prototype = {
 
                     s.composition.forEach((stockId) => tempInfl.push({stock: this.stocks[stockId], perc: s.composition[stockId]}))
 
-                    this.etfs[id] = new ETF(s.name, s.description, tempInfl)
+                    this.etfs[id] = new ETF(s.name, id, s.description, tempInfl)
 
                 }else throw 'Uknown type: ' + s.type
 
@@ -262,6 +266,11 @@ GameManager.prototype = {
         xhr.onerror = function(){console.log('Failed to load market.json')}
         xhr.open('GET', 'market.json')
         xhr.send()
+
+        console.log('stocks:')
+        console.log(this.stocks)
+        console.log('ETFs: ')
+        console.log(this.etfs)
 
     }
 }
@@ -286,12 +295,63 @@ function Player(name) {
     this.name = name
     this.wallet = Player.startMoney
     this.honorGrade = '0'
-    this.stocks = []
+    this.stocks = {}            // Both standard stocks and etfs, supposed to be { s, amount }
 
 }
 
 Player.prototype = {
     constructor: Player,
+    buy: function(stock, amountP){
+
+        if(typeof(stock) !== 'stock' || typeof(stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
+
+        let price = stock.value * amountP
+
+        if (price > this.wallet) throw 'Player doesn\'t have enaugh money'
+
+        this.wallet -= price
+
+        this.stocks[stock.acronym] = {s: stock, amount: amountP}
+
+    },
+    allIn: function(stock){
+
+        if(typeof(stock) !== 'stock' || typeof(stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
+
+        for(let i = 0; true ; i++){
+
+            if(stock.value * i > this.wallet) break
+
+        }
+        i--
+
+        this.wallet -= stock.value * i
+
+        this.stocks[stock.acronym] = {s: stock, amount: i}
+
+    },
+    sell: function(stock, amountP){
+
+        if(typeof(stock) !== 'stock' || typeof(stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if(this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
+        if(this.stock[stock.acronym].amount > amountP) throw 'Player doesn\'t have such amount of passed stock'
+
+        this.wallet += stock.value * amountP
+
+        this.stocks[stock.acronym].amount -= amountP
+        if(this.stocks[stock.acronym].amount == 0) this.stocks[stock.acronym] = undefined
+        
+    },
+    sellAll: function(stock){
+
+        if(typeof(stock) !== 'stock' || typeof(stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if(this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
+
+        this.wallet += stock.value * this.stocks[stock.acronym].amount
+
+        this.stocks[stock.acronym] = undefined
+
+    },
     calculateHonorGrade: function () {
 
         let e = this.wallet

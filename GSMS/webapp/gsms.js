@@ -232,9 +232,10 @@ GameManager.prototype = {
         let xhr = new XMLHttpRequest()
         xhr.onload = function(){
 
-            let data = JSON.parse('./market.json')
+            let data = JSON.parse(xhr.responseText)
 
             this.stocks = {}
+            this.etfs = {}
             for(id in data){
         
                 let s = data[id]
@@ -253,7 +254,8 @@ GameManager.prototype = {
 
                     tempInfl = {}
 
-                    s.composition.forEach((stockId) => tempInfl.push({stock: this.stocks[stockId], perc: s.composition[stockId]}))
+                    for(id2 in s.composition) tempInfl[id2] = s.composition[id2]
+                    //s.composition.forEach((stockId) => tempInfl.push({stock: this.stocks[stockId], perc: s.composition[stockId]}))
 
                     this.etfs[id] = new ETF(s.name, id, s.description, tempInfl)
 
@@ -266,11 +268,6 @@ GameManager.prototype = {
         xhr.onerror = function(){console.log('Failed to load market.json')}
         xhr.open('GET', 'market.json')
         xhr.send()
-
-        console.log('stocks:')
-        console.log(this.stocks)
-        console.log('ETFs: ')
-        console.log(this.etfs)
 
     }
 }

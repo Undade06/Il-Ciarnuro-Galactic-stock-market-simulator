@@ -69,7 +69,7 @@ Stock.prototype = {
     constructor: Stock,
     //Function called once on starting a new game. It calculate previous values to simulate stock history
     initialize: function (t = 0) {
-        if (t === 'undefined' || t < 0) t = gameTimer()
+        if (t === 'undefined' || t < 0) t = GameManager.gameTimer()
         let timeWindow = (t / Stock.TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth)
         influences = [],                 //Temporary array to store values of stock that influence this one
         influencesPerTime = []           //Every average influence on this stock in every time instant
@@ -122,15 +122,15 @@ Stock.prototype = {
 
         }
 
-        if (this.rising == 1) v += this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + gameTimer())
-        else v -= this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + gameTimer())
+        if (this.rising == 1) v += this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + GameManager.gameTimer())
+        else v -= this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + GameManager.gameTimer())
 
         if (this != masterStock) v += v * averageInfluence
 
         v = v < Stock.MINVALUE ? Stock.MINVALUE : v
         v = v > Stock.MAXVALUE ? Stock.MAXVALUE : v
 
-        if (mulberry32(this.seed + gameTimer()) > this.stability) this.rising *= -1
+        if (mulberry32(this.seed + GameManager.gameTimer()) > this.stability) this.rising *= -1
         this.value = v
 
         return v
@@ -165,7 +165,7 @@ function ETF(name, acronym, description, ...influencedBy) {
 
     this.type = "ETF"
 
-    //Stocks that compose this ETF, it's supposed to be a dictionary as {stock, percentual composition}
+    //Stocks that compose this ETF, it's supposed to be an array such as {stock, percentual composition}
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
 
     let composition = 0
@@ -173,6 +173,7 @@ function ETF(name, acronym, description, ...influencedBy) {
         composition += e.perc
         if (composition > 1) throw 'ETF composition exceed 100%'
     })
+    if(composition != 1) throw 'ETF composition doesn\'t reach 100%'
 
 }
 
@@ -180,7 +181,7 @@ ETF.prototype = {
     constructor: ETF,
     //Function called once on starting a new game. It calculate previous values to simulate etf history
     initialize: function (t = 0) {
-        if (t === 'undefined' || t < 0) t = gameTimer()
+        if (t === 'undefined' || t < 0) t = GameManager.gameTimer()
         let timeWindow = (t / Stock.TIMESTEP), stocksValues = [], values, tempValue, value = []
 
         this.influencedBy.forEach((e) => {          //Register all stock value
@@ -216,11 +217,19 @@ GameManager.prototype = {
     constructor: GameManager,
     initializeGame: function () {
 
-        this._createMarket()
+        try{
+
+            this._loadFromLS()
+
+        }catch(e){
+            this._createMarket()
+        }
 
     },
     // Load from local storage 
-    loadFromLS: function () {
+    _loadFromLS: function () {
+
+        throw 'Function not supported yet'
 
     },
     saveLS: function () {
@@ -255,7 +264,6 @@ GameManager.prototype = {
                     tempInfl = {}
 
                     for(id2 in s.composition) tempInfl[id2] = s.composition[id2]
-                    //s.composition.forEach((stockId) => tempInfl.push({stock: this.stocks[stockId], perc: s.composition[stockId]}))
 
                     this.etfs[id] = new ETF(s.name, id, s.description, tempInfl)
 
@@ -292,7 +300,7 @@ function Player(name) {
     this.name = name
     this.wallet = Player.startMoney
     this.honorGrade = '0'
-    this.stocks = {}            // Both standard stocks and etfs, supposed to be { s, amount }
+    this.stocks = {}            // Both standard stocks and etfs, supposed to be s: amount 
 
 }
 

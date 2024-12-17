@@ -4,14 +4,14 @@
         "type":"stock",
         "params":[100, 0.8, 0.1, 0.8, 0.0000001],
         "influencedBy":[],
-        "description":"Fondata su Gaia nel 2058 per volere di un fiorente gruppo imprenditoriale metallurgico, acquisì in breve tempo il supporto del Governo Terrestre, che ne fece la prima azienda bellica Umana, pienamente attiva nel mercato speciale. Conosciuta in tutta la Galassia per l’efficacia e l’ottima fattura delle proprie armi, rappresenta, dopo la Chiesa Universale, la seconda azienda più temuta dalle altre GCC presenti sul mercato."
+        "description":"Founded on Gaia in 2058 at the behest of a thriving metallurgical business group, it quickly acquired the support of the Earth Government, which made it the first Human war company, fully active in the special market. Known throughout the Galaxy for the effectiveness and excellent workmanship of its weapons, it represents, after the Universal Church, the second most feared company among the other GCCs on the market."
     },
     "MTR":{
         "name":"Mantkor",
         "type":"stock",
         "params":[50, 0.2, 0.5, 0.2, 0.00000005],
         "influencedBy":["CSA"],
-        "description":"Nata agli inizi del 2062 dalla collaborazione di alcuni magnati illuminati Umani, Qüark e Guide Spirituali, si pose l’obiettivo di porre fine alle guerre, creando equipaggiamenti bellici di altissima qualità e cercando nuovi spazi colonizzabili nella Galassia."
+        "description":"Born at the beginning of 2062 from the collaboration of some enlightened Human magnates, Qüark and Spiritual Guides, it set itself the objective of putting an end to wars, creating war equipment of the highest quality and looking for new colonizing spaces in the Galaxy."
     },
     "OLS":{
         "name":"Olonovis",
@@ -20,6 +20,6 @@
             "CSA": 0.5,
             "MTR": 0.5
         },
-        "description":"La missione di questa piccola realtà si identifica nella messa a punto del sistema di protezione perfetto per ogni esigenza. Attualmente offre tecnotute di altissimo livello capaci di affrontare anche le insidie dello spazio e scudi tattici intelligenti per i congegni in grado di autoricalibrarsi in relazione ai danni subiti. I prodotti Olonovis sono molto richiesti sia in campo bellico, sotto forma di tute, sia nel settore industriale, sotto forma di DPI, al fine di prevenire gli infortuni sul lavoro."
+        "description":"The mission of this small company is identified in the development of the perfect protection system for every need. It currently offers top-level technosuits capable of facing even the dangers of space and intelligent tactical shields for devices capable of self-calibrating in relation to the damage suffered. Olonovis products are in great demand both in the war field, in the form of overalls, and in the industrial sector, in the form of PPE, in order to prevent accidents at work."
     }
 }

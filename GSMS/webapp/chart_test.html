@@ -28,7 +28,7 @@
                     stock = masterStock
                 }
                 else if(id == '2'){
-                    stock = stock2 = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value))
+                    stock = stock2 = new Stock("TEST"+id, 'ST2', "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value))
                     document.getElementById('baseValue'+id).value = stock._baseValue
                     document.getElementById('influencability'+id).value = stock.influencability
                     document.getElementById('stability'+id).value = stock.stability
@@ -37,7 +37,7 @@
                     document.getElementById('seed'+id).value = stock.seed
                 }
                 else if(id == '3'){
-                    stock = stock3 = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), stock2)
+                    stock = stock3 = new Stock("TEST"+id, 'ST3', "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), stock2)
                     document.getElementById('baseValue'+id).value = stock._baseValue
                     document.getElementById('influencability'+id).value = stock.influencability
                     document.getElementById('stability'+id).value = stock.stability
@@ -46,7 +46,10 @@
                     document.getElementById('seed'+id).value = stock.seed
                 }
                 else if(id == '4'){
-                    stock = etf = new ETF('ETF' + id, 'etf' + id, {stock: stock2, perc: 0.5}, {stock: stock3, perc: 0.5})
+                    let tempETFinfl = []
+                    tempETFinfl.push({stock: stock2, perc: 0.5})
+                    tempETFinfl.push()
+                    stock = etf = new ETF('ETF' + id, 'ETF', 'etf' + id, {stock: stock2, perc: 0.5}, {stock: stock3, perc: 0.5})
                 }
                 let ctx = document.getElementById(id).querySelector("canvas.chart")
                 let days = chartDays1

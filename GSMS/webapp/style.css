@@ -68,7 +68,9 @@ button:hover{
     z-index: 9999;
 }
 
-h4.errorText{
+.errorText{
+    width: 90%;
+    height: 10%;
     font-family: 'Xolonium_regular', sans-serif;
     font-weight: bold;
     color: red;
@@ -111,7 +113,7 @@ div.planet{
     position: absolute;
     top: 110%;
     left: 50%;
-    width: 41em; 
+    width: 41em;
     height: 41em;
     background-image: url('pics/planetEarth.webp');
     background-size: cover;
@@ -145,7 +147,7 @@ div.planet{
 /*---LoginPage---*/
 
 #logoLogin{
-    height: 7em;
+    height: 15%;
     position: absolute;
     top: 15%;
     left: 49.8%;
@@ -173,7 +175,7 @@ div.slide.visible #planetLogin {
     z-index: -1;
 }
 
-div.slide.hidden #shadowLogin{
+/*div.slide.hidden #shadowLogin{
     top: 32.5rem;
     left: 34%;
     transform: translate(-50%,-50%);
@@ -190,7 +192,7 @@ div.slide.visible #shadowLogin{
     transform: rotate(180deg);
     transition: top 2s ease, left 2s ease;
     z-index: 0;
-}
+}*/
 
 div.slide.hidden #log_reg_back {
     position: absolute;
@@ -200,9 +202,9 @@ div.slide.hidden #log_reg_back {
     background-color:rgba(0, 0, 0, 0.75);
     opacity: 0%;
     transition: 1s ease-in;
-    width: 25rem; 
-    height: 17rem; 
-    padding: 1.25rem; 
+    width: 27%; 
+    height: 35%; 
+    padding: 1.5%;
     border-radius: 2rem;
     text-align: center;
     z-index: 0;
@@ -215,9 +217,9 @@ div.slide.visible #log_reg_back{
     transform: translate(-50%, -50%);
     background-color:rgba(0, 0, 0, 0.75);
     transition: 1s ease-in;
-    width: 25rem; /* Adjust width */
-    height: 17rem; /* Adjust height */
-    padding: 1.25rem; /* Adjust padding */
+    width: 27%; /* Adjust width */
+    height: 35%; /* Adjust height */
+    padding: 1.5%; /* Adjust padding */
     border-radius: 2rem;
     text-align: center;
     z-index: 0;
@@ -233,13 +235,13 @@ input.log_reg_input{
     font-weight: bold;
     color: #FFFFFF;
     font-size: 1.3em;
-    height: 2.5rem;
-    width: 22rem;
+    height: 100%;
+    width: 90%;
     background-color: rgba(30, 30, 30, 0.85);
     border: none;
-    padding-left: 1rem;
+    padding: 2%;
     border-radius: 0.4rem;
-    margin-top: 1.7rem;
+    margin-top: 6%;
 }
 
 .buttons_log_reg button{
@@ -247,11 +249,12 @@ input.log_reg_input{
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
-    width: 10rem;
-    height: 3rem;
-    font-size: 1.4em;
-    margin-right: 1.1rem;
-    margin-left:  1.1rem;
+    width: 40%;
+    height: 20%;
+    font-size: 1.4rem;
+    padding: 3%;
+    margin-right: 4%;
+    margin-left:  4%;
     border: none;
     border-radius: 0.4rem;
     z-index: 1;
@@ -260,7 +263,7 @@ input.log_reg_input{
 /*--- Register Page ---*/
 
 #logoReg{
-    height: 7em;
+    height: 15%;
     position: absolute;
     top: 15%;
     left: 49.8%;
@@ -303,9 +306,9 @@ div.slide.visible #registerPage_back{
     transform: translate(-50%,-50%);
     background-color: rgba(0, 0, 0, 0.75);
     transition: 1s ease-in;
-    width: 25rem;
-    height: 20rem;
-    padding: 1.25rem;
+    width: 27%;
+    height: 42%;
+    padding: 1.5%;
     border-radius: 2rem;
     text-align: center;
     z-index: 0;
@@ -321,14 +324,13 @@ div.slide.visible #registerPage_back{
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
-    width: 10rem;
-    height: 3rem;
-    margin-top: 1.1rem;
-    margin-left: 1.1rem;
-    margin-right: 1.1rem;
-    font-size: 1.4em;
+    width: 40%;
+    height: 20%;
+    font-size: 1.4rem;
+    padding: 3%;
+    margin-right: 4%;
+    margin-left:  4%;
     border: none;
-    transition: 1.5s ease-in;
     border-radius: 0.4rem;
     z-index: 1;
 }
@@ -338,36 +340,28 @@ input.register_input{
     font-weight: bold;
     color: #FFFFFF;
     font-size: 1.3em;
-    height: 2.5rem;
-    width: 22rem;
+    height: 100%;
+    width: 90%;
     background-color: rgba(30, 30, 30, 0.85);
     border: none;
-    padding-left: 1rem;
+    padding: 2%;
     border-radius: 0.4rem;
-    margin-top: 1.2rem;
-}
-
-.spec_gen{
-    color: white;
-    font-family: 'Xolonium', sans-serif;
-    font-weight: bold;
-    font-size: 1.2em;
-    margin-top: 2rem;
+    margin-top: 6%;
 }
 
 /*--- Save Page ---*/
 
 div.slide.visible #saves_back{
     position: absolute;
-    top: 26.5rem;
+    top: 55%;
     left: 49.8%;
     transform: translate(-50%, -50%);
     background-color:rgba(0, 0, 0, 0.75);
-    width: 18rem; 
-    height: 20rem; 
-    padding: 0.5rem;
-    padding-top: 0.5rem;
-    border-radius: 15px;
+    width: 20%;
+    height: 44%; 
+    padding: 1%;
+    padding-top: 0.5%;
+    border-radius: 1rem;
     text-align: center;
     z-index: 0;
 }
@@ -605,6 +599,23 @@ div.bestStock_header{
     margin: 1rem;
     background-color: black;
 }
+
+div.rising{
+    width: auto;
+    margin-top: 12%;
+    border-bottom-style: solid;
+    border: #FFFFFF;
+}
+
+div.rising tr,td{
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    color: white;
+    font-size: 1.5rem;
+    padding: 0.5%;
+}
+
+/*--- stockPage ---*/
 
 .graf #stock_graf{
     position: absolute;

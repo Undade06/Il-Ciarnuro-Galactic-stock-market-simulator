@@ -155,7 +155,7 @@ const masterStock = new Stock('master stock', 'master stock', 100, 0.2, 0.5, 100
 
 //ETF doesn't have it's own attribute such as growth, stability ecc.
 //It's value is simply calculated on stock's value that compose it
-function ETF(name, acronym, description, ...influencedBy) {
+function ETF(name, acronym, description, influencedBy) {
 
     this.name = name
 
@@ -169,10 +169,7 @@ function ETF(name, acronym, description, ...influencedBy) {
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
 
     let composition = 0
-    influencedBy.forEach((e) => {
-        composition += e.perc
-        if (composition > 1) throw 'ETF composition exceed 100%'
-    })
+    influencedBy.forEach((e) => {composition += e.perc})
     if(composition != 1) throw 'ETF composition doesn\'t reach 100%'
 
 }
@@ -205,77 +202,36 @@ ETF.prototype = {
     }
 }
 
-function GameManager(playername) {
+function GameManager() {
 
-    this.player = new Player(playername)
-    this.stocks = undefined
-    this.etfs = undefined
+    // Player object to manipulate player action
+    this.player = undefined
+
+    // Index of selected save
+    this.saveSelected = undefined
+
+    // Saves array that contains each player saves with their own different market
+    this.saves = undefined
 
 }
 
 GameManager.prototype = {
     constructor: GameManager,
-    initializeGame: function () {
+    initializeGame: function (pname = undefined, saveS = undefined) {
 
-        try{
+        if(typeof(pname) === 'undefined') throw 'Undefined player name'
+        this.player = new Player(pname)
+        if(typeof(saveS) === 'undefined'){
 
-            this._loadFromLS()
+            this.saves = []
 
-        }catch(e){
-            this._createMarket()
-        }
+            for(let i = 0; i < GameManager.maxSaves; i++) this.saves.push(Save.createMarket())
 
-    },
-    // Load from local storage 
-    _loadFromLS: function () {
+        }else{
 
-        throw 'Function not supported yet'
-
-    },
-    saveLS: function () {
-
-    },
-    // Create all stocks and etfs on a new game
-    _createMarket: function () {
-
-        let xhr = new XMLHttpRequest()
-        xhr.onload = function(){
-
-            let data = JSON.parse(xhr.responseText)
-
-            this.stocks = {}
-            this.etfs = {}
-            for(id in data){
+            this.saveSelected = saveS
         
-                let s = data[id]
-                let tempInfl
-
-                if(s.type === 'stock'){
-
-                    tempInfl = []
-
-                    // Suppose that in market.json stocks that influence other stocks are written before those influenced stocks
-                    s.influencedBy.forEach((stockId) => tempInfl.push(this.stocks[stockId]))
-
-                    this.stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], 647852, s.params[4], tempInfl)
-
-                }else if (s.type === 'ETF'){
-
-                    tempInfl = {}
-
-                    for(id2 in s.composition) tempInfl[id2] = s.composition[id2]
-
-                    this.etfs[id] = new ETF(s.name, id, s.description, tempInfl)
-
-                }else throw 'Uknown type: ' + s.type
-
-            }
-
         }
-
-        xhr.onerror = function(){console.log('Failed to load market.json')}
-        xhr.open('GET', 'market.json')
-        xhr.send()
 
     }
 }
@@ -284,6 +240,7 @@ GameManager.yearShift = 150                      // ~2174
 GameManager.REALSTARTDATE = new Date().getTime()
 GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + (365 * 24 * 60 * 60 * 1000) * GameManager.yearShift).getTime()
 GameManager.SPEEDUP = 60                //1 real second = 1 game minute
+GameManager.maxSaves = 3
 
 //Function that return game time as number
 GameManager.gameTimer = function () {
@@ -338,23 +295,23 @@ Player.prototype = {
     sell: function(stock, amountP){
 
         if(typeof(stock) !== 'stock' || typeof(stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
-        if(this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
+        if(this.stocks[stock.acronym] === 'undefined') throw 'Player doesn\'t own passed stock'
         if(this.stock[stock.acronym].amount > amountP) throw 'Player doesn\'t have such amount of passed stock'
 
         this.wallet += stock.value * amountP
 
         this.stocks[stock.acronym].amount -= amountP
-        if(this.stocks[stock.acronym].amount == 0) this.stocks[stock.acronym] = undefined
+        if(this.stocks[stock.acronym].amount == 0) this.stocks[stock.acronym] = 'undefined'
         
     },
     sellAll: function(stock){
 
         if(typeof(stock) !== 'stock' || typeof(stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
-        if(this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
+        if(this.stocks[stock.acronym] === 'undefined') throw 'Player doesn\'t own passed stock'
 
         this.wallet += stock.value * this.stocks[stock.acronym].amount
 
-        this.stocks[stock.acronym] = undefined
+        this.stocks[stock.acronym] = 'undefined'
 
     },
     calculateHonorGrade: function () {
@@ -378,8 +335,71 @@ Player.prototype = {
 
 Player.startMoney = 25000
 
+function Save(stocks = undefined, etfs = undefined, saveId = undefined){
 
-//      Functions outside any classess
+    // Stocks dictionary that contains all save's stock
+    this.stocks = stocks
+
+    // ETFs dictionary that contains all save's ETF
+    this.etfs = etfs
+
+    this.saveId = saveId
+
+}
+
+Save.prototype = {
+    constructor: Save,
+}
+
+Save.createMarket = function(){
+
+    let xhr = new XMLHttpRequest()
+        xhr.onload = function(){
+
+            let data = JSON.parse(xhr.responseText)
+
+            let stocks = {}
+            let etfs = {}
+            
+            for(id in data){
+        
+                let s = data[id]
+                let tempInfl
+
+                if(s.type === 'stock'){
+
+                    tempInfl = []
+
+                    // Suppose that in market.json stocks that influence other stocks are written before those influenced stocks or etfs
+                    s.influencedBy.forEach((stockId) => tempInfl.push(stocks[stockId]))
+
+                    stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], 647852, s.params[4], tempInfl)
+
+                }else if (s.type === 'ETF'){
+
+                    tempInfl = []
+
+                    for(id2 in s.composition) tempInfl.push({stock: stocks[id2], perc: s.composition[id2]})
+                    console.log(tempInfl)
+
+                    etfs[id] = new ETF(s.name, id, s.description, tempInfl)
+
+                }else throw 'Uknown type: ' + s.type
+
+            }
+
+            return [stocks, etfs]
+
+        }
+
+        xhr.onerror = function(){console.log('Failed to load market.json')}
+        xhr.open('GET', 'market.json')
+        xhr.send()
+
+}
+
+
+//      Functions outside any classes
 
 //mulberry32 seeded random number generator
 function mulberry32(a) {

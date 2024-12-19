@@ -46,10 +46,7 @@
                     document.getElementById('seed'+id).value = stock.seed
                 }
                 else if(id == '4'){
-                    let tempETFinfl = []
-                    tempETFinfl.push({stock: stock2, perc: 0.5})
-                    tempETFinfl.push()
-                    stock = etf = new ETF('ETF' + id, 'ETF', 'etf' + id, {stock: stock2, perc: 0.5}, {stock: stock3, perc: 0.5})
+                    stock = etf = new ETF('ETF' + id, 'ETF', 'etf' + id, [{stock: stock2, perc: 0.5}, {stock: stock3, perc: 0.5}])
                 }
                 let ctx = document.getElementById(id).querySelector("canvas.chart")
                 let days = chartDays1
@@ -183,11 +180,11 @@
                 document.getElementById('volatility1').value = masterStock.volatility
                 document.getElementById('seed1').value = masterStock.seed
                 id = 2
-                stock2 = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value))
+                stock2 = new Stock("TEST"+id, "t", "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value))
                 id = 3
-                stock3 = new Stock("TEST"+id, "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), stock2)
+                stock3 = new Stock("TEST"+id, "t", "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), stock2)
                 id = 4
-                etf = new ETF('ETF' + id, 'etf' + id, [{s: stock2, perc: 0.5}, {s: stock3, perc: 0.5}])
+                etf = new ETF('ETF' + id, "e", 'etf' + id, [{s: stock2, perc: 0.5}, {s: stock3, perc: 0.5}])
                 chartTest_update('1')
                 chartTest_update('2')
                 chartTest_update('3')

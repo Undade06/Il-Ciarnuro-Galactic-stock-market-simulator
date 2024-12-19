@@ -72,7 +72,7 @@ Stock.prototype = {
         if (t === 'undefined' || t < 0) t = GameManager.gameTimer()
         let timeWindow = (t / Stock.TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth)
         influences = [],                 //Temporary array to store values of stock that influence this one
-        influencesPerTime = []           //Every average influence on this stock in every time instant
+            influencesPerTime = []           //Every average influence on this stock in every time instant
 
         w.push(this._baseValue)
 
@@ -90,7 +90,6 @@ Stock.prototype = {
             }
         }
 
-        let pos = 0, neg = 0
         for (let i = 1; i <= timeWindow; i++) {                                                  //Wiener process with drift
 
             if (rising == 1) v += this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + i)
@@ -169,8 +168,8 @@ function ETF(name, acronym, description, influencedBy) {
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
 
     let composition = 0
-    influencedBy.forEach((e) => {composition += e.perc})
-    if(composition != 1) throw 'ETF composition doesn\'t reach 100%'
+    influencedBy.forEach((e) => { composition += e.perc })
+    if (composition != 1) throw 'ETF composition doesn\'t reach 100%'
 
 }
 
@@ -217,23 +216,16 @@ function GameManager() {
 
 GameManager.prototype = {
     constructor: GameManager,
-    initializeGame: function (pname = undefined, saveS = undefined) {
+    initializeSave: function (index) {
 
-        if(typeof(pname) === 'undefined') throw 'Undefined player name'
-        this.player = new Player(pname)
-        if(typeof(saveS) === 'undefined'){
+        if (isNaN(index) || index < 0 || index > GameManager.maxSaves) throw 'Passed saves index doesn\'t corrispond to the number of saves'
 
-            this.saves = []
-
-            for(let i = 0; i < GameManager.maxSaves; i++) this.saves.push(Save.createMarket())
-
-        }else{
-
-            this.saveSelected = saveS
-        
-        }
+        this.saveSelected = index
+        this.saves[index] = Save.loadMarket()
+        this.saves[index].saveId = index
 
     }
+    // TO DO:  when db will be available, create the function to query it and load the save with the correct seed
 }
 
 GameManager.yearShift = 150                      // ~2174
@@ -263,9 +255,9 @@ function Player(name) {
 
 Player.prototype = {
     constructor: Player,
-    buy: function(stock, amountP){
+    buy: function (stock, amountP) {
 
-        if(typeof(stock) !== 'stock' || typeof(stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if (typeof (stock) !== 'stock' || typeof (stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
 
         let price = stock.value * amountP
 
@@ -273,45 +265,45 @@ Player.prototype = {
 
         this.wallet -= price
 
-        this.stocks[stock.acronym] = {s: stock, amount: amountP}
+        this.stocks[stock.acronym] = { s: stock, amount: amountP }
 
     },
-    allIn: function(stock){
+    allIn: function (stock) {
 
-        if(typeof(stock) !== 'stock' || typeof(stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if (typeof (stock) !== 'stock' || typeof (stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
 
-        for(let i = 0; true ; i++){
+        for (let i = 0; true; i++) {
 
-            if(stock.value * i > this.wallet) break
+            if (stock.value * i > this.wallet) break
 
         }
         i--
 
         this.wallet -= stock.value * i
 
-        this.stocks[stock.acronym] = {s: stock, amount: i}
+        this.stocks[stock.acronym] = { s: stock, amount: i }
 
     },
-    sell: function(stock, amountP){
+    sell: function (stock, amountP) {
 
-        if(typeof(stock) !== 'stock' || typeof(stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
-        if(this.stocks[stock.acronym] === 'undefined') throw 'Player doesn\'t own passed stock'
-        if(this.stock[stock.acronym].amount > amountP) throw 'Player doesn\'t have such amount of passed stock'
+        if (typeof (stock) !== 'stock' || typeof (stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if (this.stocks[stock.acronym] === 'undefined') throw 'Player doesn\'t own passed stock'
+        if (this.stock[stock.acronym].amount > amountP) throw 'Player doesn\'t have such amount of passed stock'
 
         this.wallet += stock.value * amountP
 
         this.stocks[stock.acronym].amount -= amountP
-        if(this.stocks[stock.acronym].amount == 0) this.stocks[stock.acronym] = 'undefined'
-        
-    },
-    sellAll: function(stock){
+        if (this.stocks[stock.acronym].amount == 0) this.stocks[stock.acronym] = undefined
 
-        if(typeof(stock) !== 'stock' || typeof(stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
-        if(this.stocks[stock.acronym] === 'undefined') throw 'Player doesn\'t own passed stock'
+    },
+    sellAll: function (stock) {
+
+        if (typeof (stock) !== 'stock' || typeof (stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if (this.stocks[stock.acronym] === 'undefined') throw 'Player doesn\'t own passed stock'
 
         this.wallet += stock.value * this.stocks[stock.acronym].amount
 
-        this.stocks[stock.acronym] = 'undefined'
+        this.stocks[stock.acronym] = undefined
 
     },
     calculateHonorGrade: function () {
@@ -335,7 +327,10 @@ Player.prototype = {
 
 Player.startMoney = 25000
 
-function Save(stocks = undefined, etfs = undefined, saveId = undefined){
+/*
+    Save is a class that represent the market for each save
+*/
+function Save(stocks = undefined, etfs = undefined, saveId = undefined) {
 
     // Stocks dictionary that contains all save's stock
     this.stocks = stocks
@@ -348,60 +343,69 @@ function Save(stocks = undefined, etfs = undefined, saveId = undefined){
 }
 
 Save.prototype = {
-    constructor: Save,
+    constructor: Save
 }
 
-Save.createMarket = function(){
+/*
+    Send an XMLHTTPREQUEST to fetch from market.json all market stocks and etfs with their parameters, 
+    except for seed, which is randomized to make each market different if seeds dict is not passed
+
+    seeds is a dictionary with index as stock acronym and the actual seed:  seeds['CFA'] = 219866
+    
+    It supposes that in market.json stocks that influence other stocks and/or compose an etf/s are written before those influenced stocks or etfs
+*/
+Save.loadMarket = function (seeds = undefined) {
 
     let xhr = new XMLHttpRequest()
-        xhr.onload = function(){
+    xhr.onload = function () {
 
-            let data = JSON.parse(xhr.responseText)
+        let data = JSON.parse(xhr.responseText)
 
-            let stocks = {}
-            let etfs = {}
-            
-            for(id in data){
-        
-                let s = data[id]
-                let tempInfl
+        let stocks = {}
+        let etfs = {}
 
-                if(s.type === 'stock'){
+        for (id in data) {
 
-                    tempInfl = []
+            let s = data[id], tempInfl, tempSeed
 
-                    // Suppose that in market.json stocks that influence other stocks are written before those influenced stocks or etfs
-                    s.influencedBy.forEach((stockId) => tempInfl.push(stocks[stockId]))
+            if (s.type === 'stock') {
 
-                    stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], 647852, s.params[4], tempInfl)
+                tempInfl = []
 
-                }else if (s.type === 'ETF'){
+                s.influencedBy.forEach((stockId) => tempInfl.push(stocks[stockId]))
 
-                    tempInfl = []
+                if(seeds[id] !== 'undefined') tempSeed = seeds[id]
+                else tempSeed = /* Temporarily fixed seed */ 648157
 
-                    for(id2 in s.composition) tempInfl.push({stock: stocks[id2], perc: s.composition[id2]})
-                    console.log(tempInfl)
+                stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], tempSeed, s.params[4], tempInfl)
 
-                    etfs[id] = new ETF(s.name, id, s.description, tempInfl)
+            } else if (s.type === 'ETF') {
 
-                }else throw 'Uknown type: ' + s.type
+                tempInfl = []
 
-            }
+                for (id2 in s.composition) tempInfl.push({ stock: stocks[id2], perc: s.composition[id2] })
+                console.log(tempInfl)
 
-            return [stocks, etfs]
+                etfs[id] = new ETF(s.name, id, s.description, tempInfl)
+
+            } else throw 'Uknown type: ' + s.type
 
         }
 
-        xhr.onerror = function(){console.log('Failed to load market.json')}
-        xhr.open('GET', 'market.json')
-        xhr.send()
+        return [stocks, etfs]
+
+    }
+
+    xhr.onerror = function () { console.log('Failed to load market.json') }
+    xhr.open('GET', 'market.json')
+    xhr.send()
 
 }
 
 
 //      Functions outside any classes
 
-//mulberry32 seeded random number generator
+// mulberry32 seeded random number generator
 function mulberry32(a) {
     let t = a += 0x6D2B79F5
     t = Math.imul(t ^ t >>> 15, t | 1)
@@ -409,15 +413,16 @@ function mulberry32(a) {
     return ((t ^ t >>> 14) >>> 0) / 4294967296
 }
 
-function normalDistributedNumber(seed = null) {                    // Generate a random number with standard normal distribution
+// Generate a random number with standard normal distribution
+function normalDistributedNumber(seed = null) {
     let n = mulberry32(seed)
-    while (n == 0) n = mulberry32(seed * Math.random() * 10000)            //To avoid zero
+    while (n == 0) n = mulberry32(seed * Math.random() * 10000)
     return Math.sqrt(-2.0 * Math.log(n)) * Math.cos(2.0 * Math.PI * n)
 }
 
-//General function that, given an array, remove duplicates in it
+// General function that, given an array, remove duplicates in it
 function removeDuplicatesFromArray(arr) {
-    if (arr == 'undefined' || arr == null) return null
+    if (arr === 'undefined' || arr === null) return null
     let cleanedArr = []
     arr.forEach((e) => {
         if (!cleanedArr.includes(e)) cleanedArr.push(e)

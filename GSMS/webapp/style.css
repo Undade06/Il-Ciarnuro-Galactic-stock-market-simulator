@@ -680,25 +680,40 @@ div.slide.visible #portfolio {
 }
 div.slide.visible #accessibility_profile{
     position: absolute;
-    top: 0.3%;
+    top: 4%;
     left: 70%;
     bottom: 78%;
-    right: 1%;
+    right: 2%;
     transform: none;
     height: auto;
     padding: 1.25rem;
-    background-color: rgba(0,0,0,0.80);
-    border-radius: 1.5rem;
-    border: 0.2rem solid rgba(11, 21, 59, 0.75);
-    z-index: 1;
+    z-index: 0;
 }
 
 #logoProfile{
-    position: absolute;
-
+    width: 95%;
+    height: auto;
     top: 2%;
-    right: 2%;
+    margin-left: 2rem;
 }
+
+
+.profile_back #riquadroInterno{
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    top: 10%;
+    bottom: 10%;
+    width: auto;
+    height: 30%;
+    background:rgba(21, 145, 234, 0.1);
+}
+#riquadroInterno img{
+    width: auto;
+    height: 90%;
+    margin:1rem;
+}
+
 
 
 @media screen and (max-width:45rem) {
@@ -709,5 +724,6 @@ div.slide.visible #accessibility_profile{
     #landingPageText{
         font-size: 1rem;
     }
+    
 
 }

@@ -41,16 +41,14 @@ document.getElementById("saves").addEventListener('click', function(event) {
 });
 
 // Reload saves
+let saves = []; // Gestione in memoria
+let saveCounter = 1; // Contatore per i salvataggi
+
 function loadSaves() {
     const savesContainer = document.querySelector("#saves .content");
     savesContainer.innerHTML = "";
 
-    let saves = JSON.parse(localStorage.getItem("saves"));
-    if (saves == null) {
-        saves = [];
-    }
-
-    // Create a box for each save
+    // Crea una box per ogni save
     saves.forEach((save) => {
         const saveBox = document.createElement("div");
         saveBox.classList.add("save-box");
@@ -63,18 +61,18 @@ function loadSaves() {
         img.style.right = "0.2rem";
         img.alt = "Rimuovi Salvataggio";
         img.addEventListener("click", (event) => {
-            event.stopPropagation(); // Prevent click on image 
+            event.stopPropagation(); // Impedisce il click sull'immagine
             removeSave(save.id);
         });
 
         saveBox.textContent = save.name;
         saveBox.appendChild(img);
 
-        saveBox.addEventListener("click", () => loadSave(save.id)); // Load the specific save
+        saveBox.addEventListener("click", () => loadSave(save.id)); // Carica il salvataggio specifico
         savesContainer.appendChild(saveBox);
     });
 
-    // Add a new save-box
+    // Aggiungi una nuova save-box
     if (saves.length < 3) {
         const newSaveBox = document.createElement("div");
         newSaveBox.classList.add("save-box", "new-save");
@@ -84,35 +82,23 @@ function loadSaves() {
     }
 }
 
-// Creation of a new save
+// Creazione di un nuovo save
 function createNewSave() {
-    let saves = JSON.parse(localStorage.getItem("saves"));
-    if (saves == null) saves = [];
-
-    let saveCounter = parseInt(localStorage.getItem("saveCounter"));
-    if (isNaN(saveCounter)) saveCounter = 1;
-
     if (saves.length < 3) {
-        // Create a new save with a unique ID and name
+        // Crea un nuovo save con un ID univoco e un nome
         const newSave = {
-            id: Date.now(), // Unique ID for the save
+            id: Date.now(), // ID univoco per il save
             name: `Save ${saveCounter}`, 
-            data: `` //data on the save
+            data: `` // Dati del salvataggio
         };
         saves.push(newSave);
-
-        localStorage.setItem("saveCounter", saveCounter + 1);
-
-        localStorage.setItem("saves", JSON.stringify(saves));
+        saveCounter++;
         loadSaves();
     }
 }
 
-// Function to load a specific save
+// Funzione per caricare uno specifico save
 function loadSave(id) {
-    let saves = JSON.parse(localStorage.getItem("saves"));
-    if (saves == null) saves = [];
-
     const save = saves.find((s) => s.id === id);
     if (save) {
         toSlide("marketHomePage");
@@ -121,24 +107,19 @@ function loadSave(id) {
     }
 }
 
-// Function to remove a save
+// Funzione per rimuovere un save
 function removeSave(id) {
-    let saves = JSON.parse(localStorage.getItem("saves"));
-    if (saves == null) saves = [];
-
-    const saveIndex = saves.findIndex((s) => s.id === id); // Find the index of the save by ID
+    const saveIndex = saves.findIndex((s) => s.id === id); // Trova l'indice del save tramite ID
     if (saveIndex !== -1) {
-        saves.splice(saveIndex, 1); // Remove the save
-        localStorage.setItem("saves", JSON.stringify(saves));
+        saves.splice(saveIndex, 1); // Rimuovi il save
         loadSaves();
         alert(`Salvataggio eliminato!`);
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    loadSaves(); // Load all the saves from localStorage
+    loadSaves(); // Carica tutti i salvataggi dalla memoria
 });
-
 
 //registerPage
 function checkPassword(){
@@ -146,7 +127,6 @@ function checkPassword(){
     let password = document.querySelectorAll('.register_input')[1].value;
     let confirmPassword = document.querySelectorAll('.register_input')[2].value;
     let errorText = document.querySelector('#registerError');
-
     if (password === '' || confirmPassword === '' || username==='') {
         errorText.style.opacity = '1000000'; //mettere una classe error, quando c'è error mettere colore rosso
         errorText.textContent="One of the fields is empty!"; 
@@ -180,4 +160,11 @@ document.getElementById("marketHomePage").addEventListener('click', function(eve
 });
 document.getElementById("profilePage").addEventListener('click', function(event) {
     event.stopPropagation(); // Prevents click propagation
+});
+
+//profilePage
+document.addEventListener("DOMContentLoaded", () => {
+    let username = document.querySelectorAll('.log_reg_input')[0].value;// Sostituisci con la tua variabile dinamica
+    const profileNameElement = document.getElementById("profileName");
+    profileNameElement.innerText = `Name: ${username}`;
 });

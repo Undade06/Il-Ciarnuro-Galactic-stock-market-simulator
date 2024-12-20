@@ -67,9 +67,11 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
 
 Stock.prototype = {
     constructor: Stock,
-    //Function called once on starting a new game. It calculate previous values to simulate stock history
-    initialize: function (t = 0) {
-        if (t === 'undefined' || t < 0) t = GameManager.gameTimer()
+    //Function called on starting the game. It calculate previous values to simulate stock history
+    simulateHistory: function (t = 0, calculatingTrend = false) {
+
+        if (t === 'undefined' || t < 0) throw 'Passed time is not valid'
+
         let timeWindow = (t / Stock.TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth)
         influences = [],                 //Temporary array to store values of stock that influence this one
             influencesPerTime = []           //Every average influence on this stock in every time instant
@@ -78,7 +80,7 @@ Stock.prototype = {
 
         if (this != masterStock) {
 
-            this.influencedBy.forEach((s) => { influences.push(s.initialize(t)) })            //Save stock value
+            this.influencedBy.forEach((s) => { influences.push(s.simulateHistory(t)) })            //Save stock value
 
             influencesPerTime.push(0)                                                   //First value of stock cannot be influenced(it's its base value)
             for (let i = 1; i <= timeWindow; i++) {
@@ -106,12 +108,13 @@ Stock.prototype = {
             w.push(v)
 
         }
-        this.value = w[w.length - 1]
+        if(!calculatingTrend) this.value = w[w.length - 1]
 
         return w
     },
     //Function that calculate 1 step in time of stock value
     nextValue: function () {
+
         let v = this.value, averageInfluence = 0
 
         if (this != masterStock) {
@@ -133,13 +136,20 @@ Stock.prototype = {
         this.value = v
 
         return v
-    },
-    //Function that calculate stock trend
-    trend: function () {
 
-        let v1 = this.value
-        let v2 = this.nextValue()
-        return (v2 - v1) / v1
+    },
+    // Function that calculate stock trend in given time expecting days
+    trend: function (timeSpan = 1) {
+
+        if(isNaN(timeSpan)) throw 'Time span must be a number'
+        if(timeSpan % 1 != 0) throw 'Time span cannot be lower than 1 day'
+
+        let t = (GameManager.MAXYEARGAP * 365  - timeSpan) * (24 * 60 * 60 * 1000)
+        if(t < 0) throw 'Time span cannot be older than game start'
+
+        let v = this.simulateHistory(t, true)
+
+        return (this.value - v[0]) / v[0]
 
     }
 }
@@ -176,12 +186,12 @@ function ETF(name, acronym, description, influencedBy) {
 ETF.prototype = {
     constructor: ETF,
     //Function called once on starting a new game. It calculate previous values to simulate etf history
-    initialize: function (t = 0) {
-        if (t === 'undefined' || t < 0) t = GameManager.gameTimer()
+    simulateHistory: function (t = 0) {
+
         let timeWindow = (t / Stock.TIMESTEP), stocksValues = [], values, tempValue, value = []
 
         this.influencedBy.forEach((e) => {          //Register all stock value
-            stocksValues.push(e.stock.initialize(t))
+            stocksValues.push(e.stock.simulateHistory(t))
         })
 
         for (let i = 0; i < timeWindow; i++) {          //Calculate value for each stock with relative influence
@@ -218,23 +228,29 @@ GameManager.prototype = {
     constructor: GameManager,
     initializeSave: function (index) {
 
-        if (isNaN(index) || index < 0 || index > GameManager.maxSaves) throw 'Passed saves index doesn\'t corrispond to the number of saves'
+        if (isNaN(index) || index < 0 || index > GameManager.MAXSAVES) throw 'Passed saves index doesn\'t corrispond to the number of saves'
 
         this.saveSelected = index
         this.saves[index] = Save.loadMarket()
         this.saves[index].saveId = index
 
+    },
+    startGame: function(){
+
+
+
     }
-    // TO DO:  when db will be available, create the function to query it and load the save with the correct seed
+    // TO DO: when db will be available, create the function to query it and load the save with the correct seed
 }
 
-GameManager.yearShift = 150                      // ~2174
-GameManager.REALSTARTDATE = new Date().getTime()
-GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + (365 * 24 * 60 * 60 * 1000) * GameManager.yearShift).getTime()
+GameManager.YEARSHIFT = 150                      // ~2174
+GameManager.MAXYEARGAP = 5              // Maximum year gap that can be simulted by stock generation
 GameManager.SPEEDUP = 60                //1 real second = 1 game minute
-GameManager.maxSaves = 3
+GameManager.REALSTARTDATE = new Date().getTime()
+GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 365 * 24 * 60 * 60 * 1000 * GameManager.YEARSHIFT).getTime()
+GameManager.MAXSAVES = 3
 
-//Function that return game time as number
+//Function that return game time as number representing the days passed since the game started
 GameManager.gameTimer = function () {
     return new Date(GameManager.STARTDATE + (new Date().getTime() - GameManager.REALSTARTDATE) * GameManager.SPEEDUP) / (1000 * 60 * 60 * 24)
 }

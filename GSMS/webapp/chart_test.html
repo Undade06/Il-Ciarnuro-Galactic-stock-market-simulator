@@ -65,9 +65,9 @@
                 }
                 let end = GameManager.gameTimer()
                 let step = (end - start) / PRECISION
-                let temp = stock.initialize(days)
+                let temp = stock.simulateHistory(days)
                 let values = [], tempInfluence = [], tempInfluenceValues = []
-                //if(id != '1') tempInfluenceValues = stock.influencedBy[0].initialize(days)
+                //if(id != '1') tempInfluenceValues = stock.influencedBy[0].simulateHistory(days)
                 let k = 0
                 if(temp.length > PRECISION){
                     let interval = ~~(temp.length / PRECISION)

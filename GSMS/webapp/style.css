@@ -87,7 +87,7 @@ h2 {
 #logo{
     width: 50%;
     height: auto;
-    position: absolute;
+    position: fixed;
     top: 30%; 
     left: 50%;
     transform: translate(-50%, -50%);
@@ -110,7 +110,7 @@ div.slide.hidden button{
 }
 
 div.planet{
-    position: absolute;
+    position: fixed;
     top: 110%;
     left: 50%;
     width: 41em;
@@ -134,9 +134,8 @@ div.planet{
 }*/
 
 /*--- Landing Page ---*/
-
 #landingPageText{
-    position: absolute;
+    position: fixed;
     left: 48%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -148,7 +147,7 @@ div.planet{
 
 #logoLogin{
     height: 15%;
-    position: absolute;
+    position: fixed;
     top: 15%;
     left: 49.8%;
     transform: translate(-50%, -50%);
@@ -195,7 +194,7 @@ div.slide.visible #shadowLogin{
 }*/
 
 div.slide.hidden #log_reg_back {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -211,7 +210,7 @@ div.slide.hidden #log_reg_back {
 }
 
 div.slide.visible #log_reg_back{
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -264,7 +263,7 @@ input.log_reg_input{
 
 #logoReg{
     height: 15%;
-    position: absolute;
+    position: fixed;
     top: 15%;
     left: 49.8%;
     transform: translate(-50%, -50%);
@@ -300,7 +299,7 @@ div.slide.hidden #registerPage_back{
 }
 
 div.slide.visible #registerPage_back{
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
@@ -352,7 +351,7 @@ input.register_input{
 /*--- Save Page ---*/
 
 div.slide.visible #saves_back{
-    position: absolute;
+    position: fixed;
     top: 55%;
     left: 49.8%;
     transform: translate(-50%, -50%);
@@ -367,7 +366,7 @@ div.slide.visible #saves_back{
 }
 
 .save-box {
-    width: 15rem;
+    width: auto;
     height: 5rem;
     margin: 1rem auto;
     background-color: #111525;

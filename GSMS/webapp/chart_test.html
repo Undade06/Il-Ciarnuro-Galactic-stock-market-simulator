@@ -14,7 +14,7 @@
         <script type="text/javascript">
             const PRECISION = 1000
             let gm = new GameManager('prova')
-            let stock2, stock3, etf, timeStep = 0
+            let stock2, stock3, etf
             function chartTest_update(id) {
                 document.getElementById('gameT').innerText = GameManager.gameTimerAsDate().toGMTString()
                 let stock
@@ -29,21 +29,9 @@
                 }
                 else if(id == '2'){
                     stock = stock2 = new Stock("TEST"+id, 'ST2', "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value))
-                    document.getElementById('baseValue'+id).value = stock._baseValue
-                    document.getElementById('influencability'+id).value = stock.influencability
-                    document.getElementById('stability'+id).value = stock.stability
-                    document.getElementById('grow'+id).value = stock.growth
-                    document.getElementById('volatility'+id).value = stock.volatility
-                    document.getElementById('seed'+id).value = stock.seed
                 }
                 else if(id == '3'){
                     stock = stock3 = new Stock("TEST"+id, 'ST3', "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), stock2)
-                    document.getElementById('baseValue'+id).value = stock._baseValue
-                    document.getElementById('influencability'+id).value = stock.influencability
-                    document.getElementById('stability'+id).value = stock.stability
-                    document.getElementById('grow'+id).value = stock.growth
-                    document.getElementById('volatility'+id).value = stock.volatility
-                    document.getElementById('seed'+id).value = stock.seed
                 }
                 else if(id == '4'){
                     stock = etf = new ETF('ETF' + id, 'ETF', 'etf' + id, [{stock: stock2, perc: 0.5}, {stock: stock3, perc: 0.5}])
@@ -69,17 +57,6 @@
                 let values = [], tempInfluence = [], tempInfluenceValues = []
                 //if(id != '1') tempInfluenceValues = stock.influencedBy[0].simulateHistory(days)
                 let k = 0
-                if(temp.length > PRECISION){
-                    let interval = ~~(temp.length / PRECISION)
-                    let sampledValues = [], sampledValuesTemp = []
-                    for(i = 0; i < temp.length; i += interval){
-                        let window = temp.slice(i, i + interval)
-                        sampledValues.push(window.reduce((a, b) => a + b, 0) / window.length)
-                        sampledValuesTemp.push(window.reduce((a, b) => a + b, 0) / window.length)
-                    }
-                    temp = sampledValues
-                    tempInfluenceValues = sampledValuesTemp
-                }
                 console.log('Stock: ' + stock.name)
                 console.log(stock.name + ' baseValue: ' + stock._baseValue)
                 console.log(stock.name + ' growth: ' + stock.growth)
@@ -89,6 +66,8 @@
                 console.log(stock.name + ' influencability: ' + stock.influencability)
                 console.log(stock.name + ' influencedBy: ')
                 console.log(stock.influencedBy)
+                console.log('values: ')
+                console.log(temp)
                 console.log('-------------------------------')
                 for (i = start; i < end - 1; i += step){
                     values.push({ x: i * (1000 * 60 * 60 * 24), y: temp[k] })
@@ -111,9 +90,9 @@
                             data: tempInfluence
                     })
                 }*/
-                if(id != '4') document.getElementById('stockValue'+id).innerText = temp[k - 1].toFixed(2) + " Kr"
+                if(id != '4') document.getElementById('stockValue'+id).innerText = stock.value.toFixed(2) + " Kr"
                 else{
-                    document.getElementById('ETF').innerText = temp[k - 1].toFixed(2) + " Kr"
+                    document.getElementById('ETF').innerText = stock.value.toFixed(2) + " Kr"
                     document.getElementById('ETFstock2').innerText = stock.influencedBy[0].perc
                     document.getElementById('ETFstock3').innerText = stock.influencedBy[1].perc
                 }
@@ -322,7 +301,7 @@
                     </tr>
                     <tr>
                         <td><label for="grow">Grow</label></td>
-                        <td><input type="number" step="0.1" value="-0.2" id="grow3"></td>
+                        <td><input type="number" step="0.1" value="0.2" id="grow3"></td>
                     </tr>
                     <tr>
                         <td><label for="volatility">Volatility</label></td>

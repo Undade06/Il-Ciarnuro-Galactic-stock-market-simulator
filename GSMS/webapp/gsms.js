@@ -67,23 +67,24 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
 
 Stock.prototype = {
     constructor: Stock,
-    //Function called on starting the game. It calculate previous values to simulate stock history
+    //Function called on starting the game. It calculate previous values to simulate stock history in t time in the past
+    //CalculatingTrend is a flag used to not let the function reduce the array size in order to make trend calculation more accurate and not update stock value
     simulateHistory: function (t = 0, calculatingTrend = false) {
 
         if (t === 'undefined' || t < 0) throw 'Passed time is not valid'
 
-        let timeWindow = (t / Stock.TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth)
+        let timeWindow = (t / Stock.TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth),
         influences = [],                 //Temporary array to store values of stock that influence this one
-            influencesPerTime = []           //Every average influence on this stock in every time instant
+        influencesPerTime = []           //Every average influence on this stock in every time instant
 
         w.push(this._baseValue)
 
         if (this != masterStock) {
 
-            this.influencedBy.forEach((s) => { influences.push(s.simulateHistory(t)) })            //Save stock value
+            this.influencedBy.forEach((s) => { influences.push(s.simulateHistory(t, true)) })            //Save stock value
 
             influencesPerTime.push(0)                                                   //First value of stock cannot be influenced(it's its base value)
-            for (let i = 1; i <= timeWindow; i++) {
+            for (let i = 1; i < timeWindow; i++) {
 
                 influencesPerTime.push(0)                                               //Push a zero to sum influence
 
@@ -92,7 +93,7 @@ Stock.prototype = {
             }
         }
 
-        for (let i = 1; i <= timeWindow; i++) {                                                  //Wiener process with drift
+        for (let i = 1; i < timeWindow; i++) {                                                  //Wiener process with drift
 
             if (rising == 1) v += this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + i)
             else v -= this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + i)
@@ -106,6 +107,23 @@ Stock.prototype = {
             if (mulberry32(this.seed + i) > this.stability) rising *= -1            //The stock invert its trend to simulate random real shock
 
             w.push(v)
+
+        }
+
+        // Reduce the array if it's larger than GameManager.MAXVISUALIZABLEVALUES
+        // It helps game's realism limiting Wiener's process self-similarity
+        while (!calculatingTrend && w.length > GameManager.MAXVISUALIZABLEVALUES) {
+
+            let interval = ~~(w.length / GameManager.MAXVISUALIZABLEVALUES)
+            let sampledValues = [], tempW = w
+            let window
+
+            for(i = 0; i < tempW.length; i += interval){
+                window = tempW.slice(i, i + interval)
+                sampledValues.push(window.reduce((a, b) => a + b, 0) / window.length)
+            }
+
+            w = sampledValues
 
         }
         if(!calculatingTrend) this.value = w[w.length - 1]
@@ -144,12 +162,15 @@ Stock.prototype = {
         if(isNaN(timeSpan)) throw 'Time span must be a number'
         if(timeSpan % 1 != 0) throw 'Time span cannot be lower than 1 day'
 
-        let t = (GameManager.MAXYEARGAP * 365  - timeSpan) * (24 * 60 * 60 * 1000)
-        if(t < 0) throw 'Time span cannot be older than game start'
+        let t = (GameManager.MAXYEARGAP * 365  - timeSpan)
+        if(t < 0) throw 'Time span cannot be older than ' + GameManager.MAXYEARGAP + ' years'
+
+        //Simulate history to GAMEMANAGER.MAXYEARGAP years ago to update stock value and calculate correct trend. TO BE REMOVED, just for development purposes
+        this.simulateHistory(GameManager.MAXYEARGAP * 365)
 
         let v = this.simulateHistory(t, true)
 
-        return (this.value - v[0]) / v[0]
+        return (this.value - v[v.length - 1]) / v[v.length - 1]
 
     }
 }
@@ -160,7 +181,7 @@ Stock.TIMESTEP = 0.001
 Stock.MAXINFLUENCABILITY = 1 / 10000000
 Stock.masterCreated = 0              //Flag to determine if masterStock is already created. Used to not let the code use masterStock before is created in the constructor
 //Hidden stock. Every other stock is influenced by it
-const masterStock = new Stock('master stock', 'master stock', 100, 0.2, 0.5, 100, 123456, 0)
+const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 100, 123456, 0)
 
 //ETF doesn't have it's own attribute such as growth, stability ecc.
 //It's value is simply calculated on stock's value that compose it
@@ -173,6 +194,8 @@ function ETF(name, acronym, description, influencedBy) {
     this.description = description
 
     this.type = "ETF"
+    
+    this.value = undefined
 
     //Stocks that compose this ETF, it's supposed to be an array such as {stock, percentual composition}
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
@@ -191,7 +214,7 @@ ETF.prototype = {
         let timeWindow = (t / Stock.TIMESTEP), stocksValues = [], values, tempValue, value = []
 
         this.influencedBy.forEach((e) => {          //Register all stock value
-            stocksValues.push(e.stock.simulateHistory(t))
+            stocksValues.push(e.stock.simulateHistory(t, true))
         })
 
         for (let i = 0; i < timeWindow; i++) {          //Calculate value for each stock with relative influence
@@ -206,8 +229,26 @@ ETF.prototype = {
 
             value.push(tempValue)
         }
+        this.value = value[value.length - 1]
 
         return value
+    },
+    // Function that calculate ETF trend in given time expecting days
+    trend: function (timeSpan = 1) {
+
+        if(isNaN(timeSpan)) throw 'Time span must be a number'
+        if(timeSpan % 1 != 0) throw 'Time span cannot be lower than 1 day'
+
+        let t = (GameManager.MAXYEARGAP * 365  - timeSpan)
+        if(t < 0) throw 'Time span cannot be older than ' + GameManager.MAXYEARGAP + ' years'
+
+        //Simulate history to GAMEMANAGER.MAXYEARGAP years ago to update stock value and calculate correct trend. TO BE REMOVED, just for development purposes
+        this.simulateHistory(GameManager.MAXYEARGAP * 365)
+
+        let v = this.simulateHistory(t, true)
+
+        return (this.value - v[v.length - 1]) / v[v.length - 1]
+
     }
 }
 
@@ -249,6 +290,7 @@ GameManager.SPEEDUP = 60                //1 real second = 1 game minute
 GameManager.REALSTARTDATE = new Date().getTime()
 GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 365 * 24 * 60 * 60 * 1000 * GameManager.YEARSHIFT).getTime()
 GameManager.MAXSAVES = 3
+GameManager.MAXVISUALIZABLEVALUES = 1000
 
 //Function that return game time as number representing the days passed since the game started
 GameManager.gameTimer = function () {

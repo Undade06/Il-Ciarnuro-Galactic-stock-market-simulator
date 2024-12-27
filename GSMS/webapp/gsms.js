@@ -59,7 +59,7 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     //Stocks that influences this stock
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
     if (Stock.masterCreated == 1 && !this.influencedBy.includes(masterStock)) {
-        this.influencedBy.push(masterStock);            //Add masterstocks in the influences if not present
+        this.influencedBy.push(masterStock)            //Add masterstocks in the influences if not present
     }
     Stock.masterCreated = 1
 
@@ -118,6 +118,7 @@ Stock.prototype = {
             let sampledValues = [], tempW = w
             let window
 
+            // Calculate average value in each interval, which is calculated to reach GameManager.MAXVISUALIZABLEVALUES
             for(i = 0; i < tempW.length; i += interval){
                 window = tempW.slice(i, i + interval)
                 sampledValues.push(window.reduce((a, b) => a + b, 0) / window.length)
@@ -277,16 +278,21 @@ GameManager.prototype = {
     },
     startGame: function(saveIndex){
 
-        if(this.player === 'undefined') throw 'Player not created'
-        if(this.saves[saveIndex] === 'undefined') throw 'Save not initialized'
+        if(this.player === undefined) throw 'Player not created'
+        if(this.saves[saveIndex] === undefined) throw 'Save not initialized'
 
-        this.saves[saveIndex].stocks.forEach((s) => { s.simulateHistory(GameManager.MAXYEARGAP * 365) })
+        for(s in this.saves[saveIndex].stocks) this.saves[saveIndex].stocks[s].simulateHistory(GameManager.MAXYEARGAP * 365)
 
     },
+    // Function called to get values to generate stock chart expecting days
     getHistory: function (sAcronym, timeSpan = 1) {
 
-        console.log(this.saves)
-        
+        if (this.saveSelected === undefined) throw 'Save not initialized'
+        if (timeSpan < 1) throw 'Time span cannot be lower than 1 day'
+
+        let v = this.saves[this.saveSelected].stocks[sAcronym].simulateHistory(GameManager.MAXYEARGAP * 365)
+
+        return v.splice(v.length - Math.ceil((timeSpan / stock.TIMESTEP) / GameManager.MAXVISUALIZABLEVALUES))
 
     }
     // TO DO: when db will be available, create the function to query it and load or save the save with the correct seed
@@ -353,7 +359,7 @@ Player.prototype = {
     sell: function (stock, amountP) {
 
         if (typeof (stock) !== 'stock' || typeof (stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
-        if (this.stocks[stock.acronym] === 'undefined') throw 'Player doesn\'t own passed stock'
+        if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
         if (this.stock[stock.acronym].amount > amountP) throw 'Player doesn\'t have such amount of passed stock'
 
         this.wallet += stock.value * amountP
@@ -365,7 +371,7 @@ Player.prototype = {
     sellAll: function (stock) {
 
         if (typeof (stock) !== 'stock' || typeof (stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
-        if (this.stocks[stock.acronym] === 'undefined') throw 'Player doesn\'t own passed stock'
+        if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
 
         this.wallet += stock.value * this.stocks[stock.acronym].amount
 
@@ -438,10 +444,14 @@ Save.loadMarket = function (seeds = undefined) {
 
                         s.influencedBy.forEach((stockId) => tempInfl.push(stocks[stockId]))
 
-                        if(seeds !== undefined && seeds[id] !== 'undefined') tempSeed = seeds[id]
+                        if(seeds !== undefined && seeds[id] !== undefined) tempSeed = seeds[id]
                         else tempSeed = /* Temporarily fixed seed */ 648157
 
-                        stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], tempSeed, s.params[4], tempInfl)
+                        stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], tempSeed, s.params[4])
+
+                        tempInfl.forEach(e => {
+                            stocks[id].influencedBy.push(e)
+                        })
 
                     } else if (s.type === 'ETF') {
 
@@ -490,7 +500,7 @@ function normalDistributedNumber(seed = null) {
 
 // General function that, given an array, remove duplicates in it
 function removeDuplicatesFromArray(arr) {
-    if (arr === 'undefined' || arr === null) return null
+    if (arr === undefined || arr === null) return null
     let cleanedArr = []
     arr.forEach((e) => {
         if (!cleanedArr.includes(e)) cleanedArr.push(e)

@@ -276,12 +276,20 @@ GameManager.prototype = {
         this.saves[index].saveId = index
 
     },
-    startGame: function(){
+    startGame: function(saveIndex){
 
+        if(this.player === 'undefined') throw 'Player not created'
+        if(this.saves[saveIndex] === 'undefined') throw 'Save not initialized'
 
+        this.saves[saveIndex].stocks.forEach((s) => { s.simulateHistory(GameManager.MAXYEARGAP * 365) })
+
+    },
+    getValues: function (sAcronym) {
+
+        this.saves[this.saveSelected]
 
     }
-    // TO DO: when db will be available, create the function to query it and load the save with the correct seed
+    // TO DO: when db will be available, create the function to query it and load or save the save with the correct seed
 }
 
 GameManager.YEARSHIFT = 150                      // ~2174
@@ -390,11 +398,8 @@ Player.startMoney = 25000
 */
 function Save(stocks = undefined, etfs = undefined, saveId = undefined) {
 
-    // Stocks dictionary that contains all save's stock
+    // Stocks dictionary that contains all save's stocks and ETFs
     this.stocks = stocks
-
-    // ETFs dictionary that contains all save's ETF
-    this.etfs = etfs
 
     this.saveId = saveId
 
@@ -420,7 +425,6 @@ Save.loadMarket = function (seeds = undefined) {
         let data = JSON.parse(xhr.responseText)
 
         let stocks = {}
-        let etfs = {}
 
         for (id in data) {
 
@@ -432,7 +436,7 @@ Save.loadMarket = function (seeds = undefined) {
 
                 s.influencedBy.forEach((stockId) => tempInfl.push(stocks[stockId]))
 
-                if(seeds[id] !== 'undefined') tempSeed = seeds[id]
+                if(seeds !== undefined && seeds[id] !== 'undefined') tempSeed = seeds[id]
                 else tempSeed = /* Temporarily fixed seed */ 648157
 
                 stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], tempSeed, s.params[4], tempInfl)
@@ -442,15 +446,14 @@ Save.loadMarket = function (seeds = undefined) {
                 tempInfl = []
 
                 for (id2 in s.composition) tempInfl.push({ stock: stocks[id2], perc: s.composition[id2] })
-                console.log(tempInfl)
 
-                etfs[id] = new ETF(s.name, id, s.description, tempInfl)
+                stocks[id] = new ETF(s.name, id, s.description, tempInfl)
 
             } else throw 'Uknown type: ' + s.type
 
         }
 
-        return [stocks, etfs]
+        return [stocks]
 
     }
 

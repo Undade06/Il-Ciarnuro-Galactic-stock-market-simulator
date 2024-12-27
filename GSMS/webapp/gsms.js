@@ -261,7 +261,7 @@ function GameManager() {
     this.saveSelected = undefined
 
     // Saves array that contains each player saves with their own different market
-    this.saves = undefined
+    this.saves = []
 
 }
 
@@ -269,11 +269,10 @@ GameManager.prototype = {
     constructor: GameManager,
     initializeSave: function (index) {
 
-        if (isNaN(index) || index < 0 || index > GameManager.MAXSAVES) throw 'Passed saves index doesn\'t corrispond to the number of saves'
+        if (isNaN(index) || index < 0 || index > GameManager.MAXSAVES) throw 'Passed saves index doesn\'t isn\'t valid'
 
         this.saveSelected = index
-        this.saves[index] = Save.loadMarket()
-        this.saves[index].saveId = index
+        Save.loadMarket().then(save => { this.saves[index] = save; this.saves[index].saveId = index })
 
     },
     startGame: function(saveIndex){
@@ -284,9 +283,10 @@ GameManager.prototype = {
         this.saves[saveIndex].stocks.forEach((s) => { s.simulateHistory(GameManager.MAXYEARGAP * 365) })
 
     },
-    getValues: function (sAcronym) {
+    getHistory: function (sAcronym, timeSpan = 1) {
 
-        this.saves[this.saveSelected]
+        console.log(this.saves)
+        
 
     }
     // TO DO: when db will be available, create the function to query it and load or save the save with the correct seed
@@ -396,7 +396,7 @@ Player.startMoney = 25000
 /*
     Save is a class that represent the market for each save
 */
-function Save(stocks = undefined, etfs = undefined, saveId = undefined) {
+function Save(stocks = undefined, saveId = undefined) {
 
     // Stocks dictionary that contains all save's stocks and ETFs
     this.stocks = stocks
@@ -419,47 +419,54 @@ Save.prototype = {
 */
 Save.loadMarket = function (seeds = undefined) {
 
-    let xhr = new XMLHttpRequest()
-    xhr.onload = function () {
+    return new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest()
+        xhr.onload = function () {
+            try {
+                
+                let data = JSON.parse(xhr.responseText)
 
-        let data = JSON.parse(xhr.responseText)
+                let stocks = {}
 
-        let stocks = {}
+                for (id in data) {
 
-        for (id in data) {
+                    let s = data[id], tempInfl, tempSeed
 
-            let s = data[id], tempInfl, tempSeed
+                    if (s.type === 'stock') {
 
-            if (s.type === 'stock') {
+                        tempInfl = []
 
-                tempInfl = []
+                        s.influencedBy.forEach((stockId) => tempInfl.push(stocks[stockId]))
 
-                s.influencedBy.forEach((stockId) => tempInfl.push(stocks[stockId]))
+                        if(seeds !== undefined && seeds[id] !== 'undefined') tempSeed = seeds[id]
+                        else tempSeed = /* Temporarily fixed seed */ 648157
 
-                if(seeds !== undefined && seeds[id] !== 'undefined') tempSeed = seeds[id]
-                else tempSeed = /* Temporarily fixed seed */ 648157
+                        stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], tempSeed, s.params[4], tempInfl)
 
-                stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], tempSeed, s.params[4], tempInfl)
+                    } else if (s.type === 'ETF') {
 
-            } else if (s.type === 'ETF') {
+                        tempInfl = []
 
-                tempInfl = []
+                        for (id2 in s.composition) tempInfl.push({ stock: stocks[id2], perc: s.composition[id2] })
 
-                for (id2 in s.composition) tempInfl.push({ stock: stocks[id2], perc: s.composition[id2] })
+                        stocks[id] = new ETF(s.name, id, s.description, tempInfl)
 
-                stocks[id] = new ETF(s.name, id, s.description, tempInfl)
+                    } else throw 'Uknown type: ' + s.type
 
-            } else throw 'Uknown type: ' + s.type
+                }
 
+                resolve(new Save(stocks))
+
+            } catch (e) {
+                reject(e)
+            }
         }
 
-        return [stocks]
+        xhr.onerror = function () { reject('Failed to load market.json') }
+        xhr.open('GET', 'market.json')
+        xhr.send()
 
-    }
-
-    xhr.onerror = function () { console.log('Failed to load market.json') }
-    xhr.open('GET', 'market.json')
-    xhr.send()
+    })
 
 }
 

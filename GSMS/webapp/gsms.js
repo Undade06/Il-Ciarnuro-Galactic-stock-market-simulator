@@ -67,13 +67,14 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
 
 Stock.prototype = {
     constructor: Stock,
-    //Function called on starting the game. It calculate previous values to simulate stock history in t time in the past
+    //Function that calculate previous values to simulate stock history in GameManager.MAXYEARGAP time in the past returning values ​​from (today - t time) to today
+    //expecting t in days
     //CalculatingTrend is a flag used to not let the function reduce the array size in order to make trend calculation more accurate and not update stock value
-    simulateHistory: function (t = 0, calculatingTrend = false) {
+    simulateHistory: function (t = 1, calculatingTrend = false) {
 
-        if (t === 'undefined' || t < 0) throw 'Passed time is not valid'
+        if (t === undefined || t < 0 || t % 1 != 0) throw 'Passed time is not valid'
 
-        let timeWindow = (t / Stock.TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth),
+        let timeWindow = (GameManager.MAXYEARGAP * 365 / Stock.TIMESTEP), w = [], v = this._baseValue, rising = Math.sign(this.growth),
         influences = [],                 //Temporary array to store values of stock that influence this one
         influencesPerTime = []           //Every average influence on this stock in every time instant
 
@@ -109,6 +110,9 @@ Stock.prototype = {
             w.push(v)
 
         }
+
+        //Reduce the array to just today - t time window
+        if(!calculatingTrend) w = w.splice(w.length - (t / Stock.TIMESTEP), t / Stock.TIMESTEP)
 
         // Reduce the array if it's larger than GameManager.MAXVISUALIZABLEVALUES
         // It helps game's realism limiting Wiener's process self-similarity
@@ -253,10 +257,10 @@ ETF.prototype = {
     }
 }
 
-function GameManager() {
+function GameManager(pName = undefined) {
 
     // Player object to manipulate player action
-    this.player = undefined
+    this.player = pName
 
     // Index of selected save
     this.saveSelected = undefined
@@ -290,9 +294,7 @@ GameManager.prototype = {
         if (this.saveSelected === undefined) throw 'Save not initialized'
         if (timeSpan < 1) throw 'Time span cannot be lower than 1 day'
 
-        let v = this.saves[this.saveSelected].stocks[sAcronym].simulateHistory(GameManager.MAXYEARGAP * 365)
-
-        return v.splice(v.length - Math.ceil((timeSpan / stock.TIMESTEP) / GameManager.MAXVISUALIZABLEVALUES))
+        return this.saves[this.saveSelected].stocks[sAcronym].simulateHistory(timeSpan)
 
     }
     // TO DO: when db will be available, create the function to query it and load or save the save with the correct seed
@@ -433,6 +435,8 @@ Save.loadMarket = function (seeds = undefined) {
                 let data = JSON.parse(xhr.responseText)
 
                 let stocks = {}
+
+                stocks[masterStock.acronym] = masterStock
 
                 for (id in data) {
 

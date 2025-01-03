@@ -260,7 +260,7 @@ ETF.prototype = {
 function GameManager(pName = undefined) {
 
     // Player object to manipulate player action
-    this.player = pName
+    this.player = new Player(pName)
 
     // Index of selected save
     this.saveSelected = undefined
@@ -295,6 +295,30 @@ GameManager.prototype = {
         if (timeSpan < 1) throw 'Time span cannot be lower than 1 day'
 
         return this.saves[this.saveSelected].stocks[sAcronym].simulateHistory(timeSpan)
+
+    },
+    PlayerPurchase: function(sAcronym, amount){
+
+        if(this.player === undefined) throw 'Player not created'
+        if(this.saveSelected === undefined) throw 'Save not initialized'
+
+        try {
+            this.player.buy(this.saves[this.saveSelected].stocks[sAcronym], amount)
+        } catch (error) {
+            console.error(error)
+        }
+
+    },
+    PlayerSell: function(sAcronym, amount){
+
+        if(this.player === undefined) throw 'Player not created'
+        if(this.saveSelected === undefined) throw 'Save not initialized'
+
+        try {
+            this.player.sell(sAcronym, amount)
+        } catch (error) {
+            console.error(error)
+        }
 
     }
     // TO DO: when db will be available, create the function to query it and load or save the save with the correct seed
@@ -331,7 +355,7 @@ Player.prototype = {
     constructor: Player,
     buy: function (stock, amountP) {
 
-        if (typeof (stock) !== 'stock' || typeof (stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if ((stock instanceof Stock && stock instanceof ETF) || isNaN(Number(amountP))) throw 'Parameters not supported'
 
         let price = stock.value * amountP
 
@@ -344,7 +368,7 @@ Player.prototype = {
     },
     allIn: function (stock) {
 
-        if (typeof (stock) !== 'stock' || typeof (stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if ((stock instanceof Stock && stock instanceof ETF) || isNaN(Number(amountP))) throw 'Parameters not supported'
 
         for (let i = 0; true; i++) {
 
@@ -358,26 +382,26 @@ Player.prototype = {
         this.stocks[stock.acronym] = { s: stock, amount: i }
 
     },
-    sell: function (stock, amountP) {
+    sell: function (stockAcronym, amountP) {
 
-        if (typeof (stock) !== 'stock' || typeof (stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
-        if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
-        if (this.stock[stock.acronym].amount > amountP) throw 'Player doesn\'t have such amount of passed stock'
+        if (stockAcronym === undefined || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if (this.stocks[stockAcronym] === undefined) throw 'Player doesn\'t own passed stock'
+        if (this.stocks[stockAcronym].amount < amountP) throw 'Player doesn\'t have such amount of passed stock'
 
-        this.wallet += stock.value * amountP
+        this.wallet += this.stocks[stockAcronym].s.value * amountP
 
-        this.stocks[stock.acronym].amount -= amountP
-        if (this.stocks[stock.acronym].amount == 0) this.stocks[stock.acronym] = undefined
+        this.stocks[stockAcronym].amount -= amountP
+        if (this.stocks[stockAcronym].amount == 0) this.stocks[stockAcronym] = undefined
 
     },
-    sellAll: function (stock) {
+    sellAll: function (stockAcronym) {
 
-        if (typeof (stock) !== 'stock' || typeof (stock) !== 'ETF' || isNaN(Number(amountP))) throw 'Parameters not supported'
-        if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
+        if (stockAcronym === undefined || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if (this.stocks[stockAcronym] === undefined) throw 'Player doesn\'t own passed stock'
 
-        this.wallet += stock.value * this.stocks[stock.acronym].amount
+        this.wallet += this.stocks[stockAcronym].s.value * this.stocks[stockAcronym].amount
 
-        this.stocks[stock.acronym] = undefined
+        this.stocks[stockAcronym] = undefined
 
     },
     calculateHonorGrade: function () {

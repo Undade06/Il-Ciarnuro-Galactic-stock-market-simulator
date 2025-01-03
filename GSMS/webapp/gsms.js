@@ -1,3 +1,30 @@
+/**
+ * Stock constructor
+ * 
+ * Stock is a class that simulate real stock market securities using Wiener process with drift.
+ * In this simulation the stock behavior, given same parameters, is deterministic. Same parameters will result in the same behavior.
+ * 
+ * @param {String} name complete name of the stock
+ * @param {String} acronym abbreviation acronym of the stock
+ * @param {String} description description of the stock
+ * @param {Number} baseValue value of the stock at the start of the game simulation (GameManager.STARTDATE)
+ * @param {Number} stability stability is a variable that introduces random shock as a real world random event.
+        Due to the implementation of this simulation, its values are set between 0 and 1:
+        0 make the stock extremely sensible, changing its trend continuosly
+        1 make the stock not too realistically stable, so it's recommended to not set it above 0.9
+ * @param {Number} growth growth is an index of how much the stock changes over time, both in rising and falling time.
+        Actually, even if it's equal to 0 there's enaugh variables to not let stock value be constant, but its behavior won't be directed
+ * @param {Number} volatility volatility is the 'drift' in Wiener process, it makes the stock value change in a random way. 
+        The higher the value, the higher the variation.
+        tests have shown that a volatility value is fairly acceptable between 0 and 100.
+        0 - 0.99 will actually decrease variation between values;
+        100 is super volatile, it's not recommended to set it above 20, especially on long term simulation
+ * @param {Number} seed seed of the stock, used to differentiate stock with same parameters.
+        It doesn't have particular restriction, apart from being an integer
+ * @param {Number} influencability Influencability is a variable that makes the stock value change according to other stocks.
+        It's an extremely delicate variable, it makes the stock behave exponentially.
+ * @param  {...any} influencedBy Stocks that influences this stock according to this stock's influencability
+ */
 function Stock(name, acronym, description, baseValue, stability, growth, volatility, seed, influencability, ...influencedBy) {
 
     this.name = name
@@ -14,49 +41,26 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
 
     this.value = this.baseValue
 
-    /*
-        Stability is a variable that introduces random shock as a real world random event.
-        Due to the implementation of this simulation, its values are set between 0 and 1:
-        0 make the stock extremely sensible, changing its trend continuosly
-        1 make the stock not too realistically stable, so it's recommended to not set it above 0.9
-    */
     this.stability = 1 - stability
     this.stability = this.stability < 0 ? 0 : this.stability
     this.stability = this.stability > 1 ? 1 : this.stability
 
-    /*
-        Growth is an index of how much the stock changes over time, both in rising and falling time.
-        But even if it's equal to 0 there's enaugh variables to not let stock value be constant
-    */
     this.growth = growth
     this.growth = this.growth < 0 ? 0 : this.growth
     this.growth = this.growth > 10 ? 10 : this.growth
 
-    /*  
-        Tests have shown that a volatility value is fairly acceptable between 0 and 100
-        0 - 0.99 will actually decrease variation between values
-        100 is super volatile, it's not recommended to set it above 20, especially on long term simulation
-    */
     this.volatility = volatility
     this.volatility = this.volatility < 0 ? 0 : this.volatility
     this.volatility = this.volatility > 100 ? 100 : this.volatility
 
-    /*
-        Seed doesn't have particular restriction, apart from being an integer
-    */
     this.seed = seed
     this.seed = typeof this.seed !== 'number' ? Math.random() * 10000 : this.seed
     this.seed = this.seed < 1 ? this.seed * 10000 : this.seed
 
-    /*  
-       Influencability it's an extremely delicate variable
-       It makes the stock behave exponentially
-   */
     this.influencability = influencability
     this.influencability = this.influencability < 0 ? 0 : this.influencability
     this.influencability = this.influencability > Stock.MAXINFLUENCABILITY ? Stock.MAXINFLUENCABILITY : this.influencability
 
-    //Stocks that influences this stock
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
     if (Stock.masterCreated == 1 && !this.influencedBy.includes(masterStock)) {
         this.influencedBy.push(masterStock)            //Add masterstocks in the influences if not present
@@ -67,9 +71,13 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
 
 Stock.prototype = {
     constructor: Stock,
-    //Function that calculate previous values to simulate stock history in GameManager.MAXYEARGAP time in the past returning values ​​from (today - t time) to today
-    //expecting t in days
-    //CalculatingTrend is a flag used to not let the function reduce the array size in order to make trend calculation more accurate and not update stock value
+    /**
+     * Function that calculate previous values to simulate stock history in GameManager.MAXYEARGAP time in the past returning values ​​from (today - t time) to today
+     * 
+     * @param {Number} t Time window in the past in which values are returned
+     * @param {Boolean} calculatingTrend Flag used to not let the function reduce the array size in order to make trend calculation more accurate and not update stock value
+     * @returns Arrays of values(Number)
+     */
     simulateHistory: function (t = 1, calculatingTrend = false) {
 
         if (t === undefined || t < 0 || t % 1 != 0) throw 'Passed time is not valid'
@@ -94,7 +102,7 @@ Stock.prototype = {
             }
         }
 
-        for (let i = 1; i < timeWindow; i++) {                                                  //Wiener process with drift
+        for (let i = 1; i < timeWindow; i++) {           //Wiener process with drift
 
             if (rising == 1) v += this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + i)
             else v -= this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + i)
@@ -161,7 +169,12 @@ Stock.prototype = {
         return v
 
     },
-    // Function that calculate stock trend in given time expecting days
+    /**
+     * Calculate stock trend in given time
+     * 
+     * @param {Number} timeSpan Days in the past from which to calculate the trend
+     * @returns trend value(Number, not a percentage)
+     */
     trend: function (timeSpan = 1) {
 
         if(isNaN(timeSpan)) throw 'Time span must be a number'
@@ -183,8 +196,17 @@ Stock.masterCreated = 0              //Flag to determine if masterStock is alrea
 //Hidden stock. Every other stock is influenced by it
 const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 100, 123456, 0)
 
-//ETF doesn't have it's own attribute such as growth, stability ecc.
-//It's value is simply calculated on stock's value that compose it
+/**
+ * ETF constructor
+ * 
+ * ETFs are a class that simulate Exchange Traded Funds, a type of security that involves a collection of securities.
+ * Since is value is then calculated on the stock's value that compose it, it doesn't have its own parameters such as growth, stability ecc.
+ * 
+ * @param {String} name complete name of the ETF
+ * @param {String} acronym abbreviation acronym of the ETF
+ * @param {String} description description of the ETF
+ * @param {Stock} influencedBy arrays of stocks that compose this ETF
+ */
 function ETF(name, acronym, description, influencedBy) {
 
     this.name = name
@@ -208,7 +230,12 @@ function ETF(name, acronym, description, influencedBy) {
 
 ETF.prototype = {
     constructor: ETF,
-    //Function called once on starting a new game. It calculate previous values to simulate etf history
+    /**
+     * Function that calculate previous values to simulate ETF history in GameManager.MAXYEARGAP time in the past returning values ​​from (today - t time) to today
+     * 
+     * @param {Number} t Time window in the past in which values are returned
+     * @returns arrays of values(Number)
+     */
     simulateHistory: function (t = 0) {
 
         let timeWindow = (t / Stock.TIMESTEP), stocksValues = [], values, tempValue, value = []
@@ -233,7 +260,12 @@ ETF.prototype = {
 
         return value
     },
-    // Function that calculate ETF trend in given time expecting days
+    /**
+     * Calculate stock trend in given time
+     * 
+     * @param {Number} timeSpan Days in the past from which to calculate the trend
+     * @returns trend value(Number, not a percentage)
+     */
     trend: function (timeSpan = 1) {
 
         if(isNaN(timeSpan)) throw 'Time span must be a number'
@@ -247,6 +279,14 @@ ETF.prototype = {
     }
 }
 
+/**
+ * GameManager constructor
+ * 
+ * GammeManager is a class that manage the game. It's supposed to be connected to the GUI in order to properly manage player actions.
+ * It's also in charge of managing all backend functions, such as DB query, new save loading, stock generation, etc.
+ * 
+ * @param {String} pName player name
+ */
 function GameManager(pName = undefined) {
 
     // Player object to manipulate player action
@@ -262,23 +302,49 @@ function GameManager(pName = undefined) {
 
 GameManager.prototype = {
     constructor: GameManager,
+    /**
+     * Function that initialize a new save with a new market
+     * 
+     * @param {Number} index index of the save to initialize
+     */
     initializeSave: function (index) {
 
-        if (isNaN(index) || index < 0 || index > GameManager.MAXSAVES) throw 'Passed saves index doesn\'t isn\'t valid'
+        if (isNaN(index) || index < 0 || index > GameManager.MAXSAVES) throw 'Passed saves index isn\'t valid'
 
         this.saveSelected = index
         Save.loadMarket().then(save => { this.saves[index] = save; this.saves[index].saveId = index })
 
     },
-    startGame: function(saveIndex){
+    /**
+     * Function that delete a save
+     * 
+     * @param {Number} index index of the save to delete
+     */
+    deleteSave: function(index){
 
-        if(this.player === undefined) throw 'Player not created'
-        if(this.saves[saveIndex] === undefined) throw 'Save not initialized'
+        if(this.saveSelected === index) throw 'Cannot delete selected save'
 
-        for(s in this.saves[saveIndex].stocks) this.saves[saveIndex].stocks[s].simulateHistory(GameManager.MAXYEARGAP * 365)
+        this.saves[index] = undefined
 
     },
-    // Function called to get values to generate stock chart expecting days
+    /**
+     * Function that initialize all stocks in the market
+     */
+    startGame: function(){
+
+        if(this.player === undefined) throw 'Player not created'
+        if(this.saves[this.saveSelected] === undefined) throw 'Save not initialized'
+
+        for(s in this.saves[this.saveSelected].stocks) this.saves[this.saveSelected].stocks[s].simulateHistory(GameManager.MAXYEARGAP * 365)
+
+    },
+    /**
+     * Function called to get stock values to generate it's chart
+     * 
+     * @param {String} sAcronym acronym of the stock(index of stock dictionary)
+     * @param {Number} timeSpan time window in the past in which values are returned
+     * @returns 
+     */
     getHistory: function (sAcronym, timeSpan = 1) {
 
         if (this.saveSelected === undefined) throw 'Save not initialized'
@@ -287,6 +353,12 @@ GameManager.prototype = {
         return this.saves[this.saveSelected].stocks[sAcronym].simulateHistory(timeSpan)
 
     },
+    /**
+     * Function to manage player purchase action
+     * 
+     * @param {String} sAcronym acronym of the stock(index of stock dictionary)
+     * @param {Number} amount amount of stock to buy
+     */
     PlayerPurchase: function(sAcronym, amount){
 
         if(this.player === undefined) throw 'Player not created'
@@ -299,6 +371,12 @@ GameManager.prototype = {
         }
 
     },
+    /**
+     * Function to manage player sell action
+     * 
+     * @param {String} sAcronym acronym of the stock(index of stock dictionary)
+     * @param {Number} amount amount of stock to sell
+     */
     PlayerSell: function(sAcronym, amount){
 
         if(this.player === undefined) throw 'Player not created'
@@ -332,17 +410,33 @@ GameManager.gameTimerAsDate = function () {
     return new Date(GameManager.gameTimer() * (1000 * 60 * 60 * 24))
 }
 
+/**
+ * Player constructor
+ * 
+ * Player is a class that represent the player. It contains all player's data, such as wallet, honor grade, stocks owned, etc.
+ * 
+ * @param {String} name name of the player
+ */
 function Player(name) {
 
     this.name = name
+
     this.wallet = Player.startMoney
+
     this.honorGrade = '0'
+
     this.stocks = {}            // Both standard stocks and etfs, supposed to be s: amount 
 
 }
 
 Player.prototype = {
     constructor: Player,
+    /**
+     * Make the player buy passed amount of the passed stock
+     * 
+     * @param {Stock} stock stock to buy
+     * @param {Number} amountP amount of stock to buy
+     */
     buy: function (stock, amountP) {
 
         if ((stock instanceof Stock && stock instanceof ETF) || isNaN(Number(amountP))) throw 'Parameters not supported'
@@ -356,6 +450,11 @@ Player.prototype = {
         this.stocks[stock.acronym] = { s: stock, amount: amountP }
 
     },
+    /**
+     * Make the player go all in(buy as much as he can) with the passed stock
+     * 
+     * @param {Stock} stock stock to go all in
+     */
     allIn: function (stock) {
 
         if ((stock instanceof Stock && stock instanceof ETF) || isNaN(Number(amountP))) throw 'Parameters not supported'
@@ -372,6 +471,12 @@ Player.prototype = {
         this.stocks[stock.acronym] = { s: stock, amount: i }
 
     },
+    /**
+     * Make the player sell passed amount of the passed stock
+     * 
+     * @param {String} stockAcronym acronym of the stock(index of stock dictionary)
+     * @param {Number} amountP amount to sell
+     */
     sell: function (stockAcronym, amountP) {
 
         if (stockAcronym === undefined || isNaN(Number(amountP))) throw 'Parameters not supported'
@@ -384,6 +489,11 @@ Player.prototype = {
         if (this.stocks[stockAcronym].amount == 0) this.stocks[stockAcronym] = undefined
 
     },
+    /**
+     * Make the player sell all of the passed stock
+     * 
+     * @param {String} stockAcronym acronym of the stock(index of stock dictionary)
+     */
     sellAll: function (stockAcronym) {
 
         if (stockAcronym === undefined || isNaN(Number(amountP))) throw 'Parameters not supported'
@@ -415,12 +525,16 @@ Player.prototype = {
 
 Player.startMoney = 25000
 
-/*
-    Save is a class that represent the market for each save
-*/
+/**
+ * Save contructor
+ * 
+ * Save is a class that represent the market for each save. It contains all stocks and ETFs that compose the market.
+ * 
+ * @param {Array} stocks dictionary that contains all save's stocks and ETFs
+ * @param {Number} saveId id of the save
+ */
 function Save(stocks = undefined, saveId = undefined) {
 
-    // Stocks dictionary that contains all save's stocks and ETFs
     this.stocks = stocks
 
     this.saveId = saveId
@@ -431,14 +545,14 @@ Save.prototype = {
     constructor: Save
 }
 
-/*
-    Send an XMLHTTPREQUEST to fetch from market.json all market stocks and etfs with their parameters, 
-    except for seed, which is randomized to make each market different if seeds dict is not passed
-
-    seeds is a dictionary with index as stock acronym and the actual seed:  seeds['CFA'] = 219866
-    
-    It supposes that in market.json stocks that influence other stocks and/or compose an etf/s are written before those influenced stocks or etfs
-*/
+/**
+ * Function that send an XMLHTTPREQUEST to fetch from market.json all market stocks and etfs with their parameters,
+ * except for seed, which is randomized to make each market different if seeds dictionary is not passed
+ * It supposes that in market.json stocks that influence other stocks and/or compose an etf/s are written before those influenced stocks or etfs
+ * 
+ * @param {*} seeds dictionary with index as stock acronym and the actual seed:  seeds['CFA'] = 219866
+ * @returns a promise that resolve with a Save object
+ */
 Save.loadMarket = function (seeds = undefined) {
 
     return new Promise((resolve, reject) => {
@@ -501,7 +615,12 @@ Save.loadMarket = function (seeds = undefined) {
 
 //      Functions outside any classes
 
-// mulberry32 seeded random number generator
+/**
+ * mulberry32 seeded random number generator
+ * 
+ * @param {Number} a seed
+ * @returns random seed based number
+ */
 function mulberry32(a) {
     let t = a += 0x6D2B79F5
     t = Math.imul(t ^ t >>> 15, t | 1)
@@ -509,14 +628,24 @@ function mulberry32(a) {
     return ((t ^ t >>> 14) >>> 0) / 4294967296
 }
 
-// Generate a random number with standard normal distribution
+/**
+ * Generate a random number with standard normal distribution
+ * 
+ * @param {Number} seed seed
+ * @returns random number
+ */
 function normalDistributedNumber(seed = null) {
     let n = mulberry32(seed)
     while (n == 0) n = mulberry32(seed * Math.random() * 10000)
     return Math.sqrt(-2.0 * Math.log(n)) * Math.cos(2.0 * Math.PI * n)
 }
 
-// General function that, given an array, remove duplicates in it
+/**
+ * Function that, given an array, remove duplicates in it
+ * 
+ * @param {Array} arr 
+ * @returns array withour duplicates
+ */
 function removeDuplicatesFromArray(arr) {
     if (arr === undefined || arr === null) return null
     let cleanedArr = []

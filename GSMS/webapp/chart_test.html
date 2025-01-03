@@ -80,11 +80,15 @@
                             data: tempInfluence
                     })
                 }*/
-                if(id != '4') document.getElementById('stockValue'+id).innerText = gm.saves[1].stocks[stock.acronym].value.toFixed(2) + " Kr"
+                if(id != '4') {
+                    document.getElementById('stockValue'+id).innerText = gm.saves[1].stocks[stock.acronym].value.toFixed(2) + " Kr"
+                    document.getElementById('stockRate'+id).innerText = (gm.saves[1].stocks[stock.acronym].trend(days) * 100).toFixed(2) + " %"
+                }
                 else{
                     document.getElementById('ETF').innerText = gm.saves[1].stocks[stock.acronym].value.toFixed(2) + " Kr"
                     document.getElementById('ETFstock2').innerText = stock.influencedBy[0].perc
                     document.getElementById('ETFstock3').innerText = stock.influencedBy[1].perc
+                    document.getElementById('ETFRate').innerText = (gm.saves[1].stocks[stock.acronym].trend(days) * 100).toFixed(2) + " %"
                 }
                 if (!ctx.chartjs) {
                     let chart = new Chart(ctx, {
@@ -173,6 +177,9 @@
                 <div>
                     Price: <span id="stockValue1"></span>
                 </div>
+                <div>
+                    Rate: <span id="stockRate1"></span>
+                </div>
                 <div style="width:100%; max-width:50rem; height:30rem;">
                     <canvas class="chart" id="chart1"></canvas>
                 </div>
@@ -181,7 +188,7 @@
                     <button onclick="chartDays1=7;chartTest_update('1')">1w</button>
                     <button onclick="chartDays1=30;chartTest_update('1')">1m</button>
                     <button onclick="chartDays1=365;chartTest_update('1')">1y</button>
-                    <button onclick="chartDays1=3650;chartTest_update('1')">10y</button>
+                    <button onclick="chartDays1=1825;chartTest_update('1')">5y</button>
                     <button onclick="chartDays1=7300;chartTest_update('1')">20y</button>
                     <button onclick="chartDays1=18250;chartTest_update('1')">50y</button>
                     <button onclick="chartDays1=36500;chartTest_update('1')">100y</button>
@@ -218,6 +225,9 @@
                 <div>
                     Price: <span id="stockValue2"></span>
                 </div>
+                <div>
+                    Rate: <span id="stockRate2"></span>
+                </div>
                 <div style="width:100%; max-width:50rem; height:30rem;">
                     <canvas class="chart" id="chart2"></canvas>
                 </div>
@@ -226,7 +236,7 @@
                     <button onclick="chartDays2=7;chartTest_update('2')">1w</button>
                     <button onclick="chartDays2=30;chartTest_update('2')">1m</button>
                     <button onclick="chartDays2=365;chartTest_update('2')">1y</button>
-                    <button onclick="chartDays2=3650;chartTest_update('2')">10y</button>
+                    <button onclick="chartDays2=1825;chartTest_update('2')">5y</button>
                     <button onclick="chartDays2=7300;chartTest_update('2')">20y</button>
                     <button onclick="chartDays2=18250;chartTest_update('2')">50y</button>
                     <button onclick="chartDays2=36500;chartTest_update('2')">100y</button>
@@ -263,6 +273,9 @@
                 <div>
                     Price: <span id="stockValue3"></span>
                 </div>
+                <div>
+                    Rate: <span id="stockRate3"></span>
+                </div>
                 <div style="width:100%; max-width:50rem; height:30rem;">
                     <canvas class="chart" id="chart3"></canvas>
                 </div>
@@ -271,7 +284,7 @@
                     <button onclick="chartDays3=7;chartTest_update('3')">1w</button>
                     <button onclick="chartDays3=30;chartTest_update('3')">1m</button>
                     <button onclick="chartDays3=365;chartTest_update('3')">1y</button>
-                    <button onclick="chartDays3=3650;chartTest_update('3')">10y</button>
+                    <button onclick="chartDays3=1825;chartTest_update('3')">5y</button>
                     <button onclick="chartDays3=7300;chartTest_update('3')">20y</button>
                     <button onclick="chartDays3=18250;chartTest_update('3')">50y</button>
                     <button onclick="chartDays3=36500;chartTest_update('3')">100y</button>
@@ -308,6 +321,9 @@
                 <div>
                     Price: <span id="ETF"></span>
                 </div>
+                <div>
+                    Rate: <span id="ETFRate"></span>
+                </div>
                 <div style="width:100%; max-width:50rem; height:30rem;">
                     <canvas class="chart" id="etf"></canvas>
                 </div>
@@ -316,7 +332,7 @@
                     <button onclick="chartETFdays=7;chartTest_update('4')">1w</button>
                     <button onclick="chartETFdays=30;chartTest_update('4')">1m</button>
                     <button onclick="chartETFdays=365;chartTest_update('4')">1y</button>
-                    <button onclick="chartETFdays=3650;chartTest_update('4')">10y</button>
+                    <button onclick="chartETFdays=1825;chartTest_update('4')">5y</button>
                     <button onclick="chartETFdays=7300;chartTest_update('4')">20y</button>
                     <button onclick="chartETFdays=18250;chartTest_update('4')">50y</button>
                     <button onclick="chartETFdays=36500;chartTest_update('4')">100y</button>

@@ -166,16 +166,11 @@ Stock.prototype = {
 
         if(isNaN(timeSpan)) throw 'Time span must be a number'
         if(timeSpan % 1 != 0) throw 'Time span cannot be lower than 1 day'
+        if(GameManager.MAXYEARGAP * 365  - timeSpan < 0) throw 'Time span cannot be older than ' + GameManager.MAXYEARGAP + ' years'
 
-        let t = (GameManager.MAXYEARGAP * 365  - timeSpan)
-        if(t < 0) throw 'Time span cannot be older than ' + GameManager.MAXYEARGAP + ' years'
+        let v = this.simulateHistory(timeSpan, true)
 
-        //Simulate history to GAMEMANAGER.MAXYEARGAP years ago to update stock value and calculate correct trend. TO BE REMOVED, just for development purposes
-        this.simulateHistory(GameManager.MAXYEARGAP * 365)
-
-        let v = this.simulateHistory(t, true)
-
-        return (this.value - v[v.length - 1]) / v[v.length - 1]
+        return (this.value - v[v.length - (timeSpan / Stock.TIMESTEP)]) / v[v.length - (timeSpan / Stock.TIMESTEP)]
 
     }
 }
@@ -243,16 +238,11 @@ ETF.prototype = {
 
         if(isNaN(timeSpan)) throw 'Time span must be a number'
         if(timeSpan % 1 != 0) throw 'Time span cannot be lower than 1 day'
+        if(GameManager.MAXYEARGAP * 365  - timeSpan < 0) throw 'Time span cannot be older than ' + GameManager.MAXYEARGAP + ' years'
 
-        let t = (GameManager.MAXYEARGAP * 365  - timeSpan)
-        if(t < 0) throw 'Time span cannot be older than ' + GameManager.MAXYEARGAP + ' years'
+        let v = this.simulateHistory(timeSpan, true)
 
-        //Simulate history to GAMEMANAGER.MAXYEARGAP years ago to update stock value and calculate correct trend. TO BE REMOVED, just for development purposes
-        this.simulateHistory(GameManager.MAXYEARGAP * 365)
-
-        let v = this.simulateHistory(t, true)
-
-        return (this.value - v[v.length - 1]) / v[v.length - 1]
+        return (this.value - v[v.length - (timeSpan / Stock.TIMESTEP)]) / v[v.length - (timeSpan / Stock.TIMESTEP)]
 
     }
 }
@@ -330,7 +320,7 @@ GameManager.SPEEDUP = 60                //1 real second = 1 game minute
 GameManager.REALSTARTDATE = new Date().getTime()
 GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 365 * 24 * 60 * 60 * 1000 * GameManager.YEARSHIFT).getTime()
 GameManager.MAXSAVES = 3
-GameManager.MAXVISUALIZABLEVALUES = 1000
+GameManager.MAXVISUALIZABLEVALUES = 1 / Stock.TIMESTEP
 
 //Function that return game time as number representing the days passed since the game started
 GameManager.gameTimer = function () {

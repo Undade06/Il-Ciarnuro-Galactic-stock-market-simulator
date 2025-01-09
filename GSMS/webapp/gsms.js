@@ -51,7 +51,7 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
 
     this.volatility = volatility
     this.volatility = this.volatility < 0 ? 0 : this.volatility
-    this.volatility = this.volatility > 100 ? 100 : this.volatility
+    this.volatility = this.volatility > 10 ? 10 : this.volatility
 
     this.seed = seed
     this.seed = typeof this.seed !== 'number' ? Math.random() * 10000 : this.seed
@@ -100,6 +100,7 @@ Stock.prototype = {
                 influences.forEach((s) => { influencesPerTime[i] += ((s[i] - s[i - 1]) / s[i - 1]) * this.influencability })           //Sum every influence
 
             }
+
         }
 
         for (let i = 1; i < timeWindow; i++) {           //Wiener process with drift
@@ -191,10 +192,9 @@ Stock.prototype = {
 Stock.MAXVALUE = 1000000
 Stock.MINVALUE = 0.001
 Stock.TIMESTEP = 0.001
-Stock.MAXINFLUENCABILITY = 1 / 10000000
 Stock.masterCreated = 0              //Flag to determine if masterStock is already created. Used to not let the code use masterStock before is created in the constructor
 //Hidden stock. Every other stock is influenced by it
-const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 100, 123456, 0)
+const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 1, 123456, 0)
 
 /**
  * ETF constructor

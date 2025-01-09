@@ -2,14 +2,14 @@
     "CSA":{
         "name":"Cosmic Arsenal",
         "type":"stock",
-        "params":[100, 0.8, 0.1, 0.8, 0.0000001],
+        "params":[100, 0.8, 0.1, 0.8, 1],
         "influencedBy":[],
         "description":"Founded on Gaia in 2058 at the behest of a thriving metallurgical business group, it quickly acquired the support of the Earth Government, which made it the first Human war company, fully active in the special market. Known throughout the Galaxy for the effectiveness and excellent workmanship of its weapons, it represents, after the Universal Church, the second most feared company among the other GCCs on the market."
     },
     "MTR":{
         "name":"Mantkor",
         "type":"stock",
-        "params":[50, 0.2, 0.5, 0.2, 0.00000005],
+        "params":[50, 0.2, 0.5, 0.2, 0.5],
         "influencedBy":["CSA"],
         "description":"Born at the beginning of 2062 from the collaboration of some enlightened Human magnates, Qüark and Spiritual Guides, it set itself the objective of putting an end to wars, creating war equipment of the highest quality and looking for new colonizing spaces in the Galaxy."
     },

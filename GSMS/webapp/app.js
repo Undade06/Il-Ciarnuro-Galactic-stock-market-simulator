@@ -133,6 +133,7 @@ function checkPassword(){
         return false;
     }else{
         if(password === confirmPassword){
+            errorText.style.opacity = '0';
             return true;
         }else{
            errorText.style.opacity = '1000000';
@@ -151,6 +152,7 @@ function loginCheck(){
         errorText.textContent="One of the fields is empty!"; 
         return false;
     }
+    errorText.style.opacity = '0';
     return true;
 }
 

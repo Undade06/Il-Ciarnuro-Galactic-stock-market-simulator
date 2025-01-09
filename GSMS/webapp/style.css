@@ -74,6 +74,7 @@ button:hover{
     font-family: 'Xolonium_regular', sans-serif;
     font-weight: bold;
     color: red;
+    margin-top: 1rem;
     opacity: 0;
 }
 
@@ -243,7 +244,18 @@ input.log_reg_input{
     margin-top: 6%;
 }
 
+.buttons_log_reg{
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    width: 100%;
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
 .buttons_log_reg button{
+    position: relative;
     background-color: #0A205A;
     color: white;
     font-family: 'Xolonium', sans-serif;
@@ -315,6 +327,16 @@ div.slide.visible #registerPage_back{
 
 .content #registerPage_back{
     opacity: 1;
+    z-index: 1;
+}
+
+.register_buttons{
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    width: 100%;
+    height: auto;
+    transform: translate(-50%, -50%);
     z-index: 1;
 }
 
@@ -481,7 +503,7 @@ div.slide.visible #accessibility{
     background-color: rgba(0,0,0,0.80);
     border-radius: 1.5rem;
     border: 0.2rem solid rgba(11, 21, 59, 0.75);
-    z-index: 1;
+    z-index: 9999;
 }
 
 #my_stocks{
@@ -568,7 +590,7 @@ div.slide.visible #accessibility{
     top: 0%;
 }
 
-div.bestStock_header{
+div.stock_header{
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
@@ -614,7 +636,13 @@ div.rising tr,td{
     padding: 0.5%;
 }
 
-/*--- stockPage ---*/
+/*--- StockPage ---*/
+
+#stockPage .market_back{
+    background-color: rgba(11, 21, 59, 0.75);
+    border-radius: 2rem;
+    z-index: 1;
+}
 
 .graf #stock_graf{
     position: absolute;
@@ -647,13 +675,15 @@ div.rising tr,td{
     border: none;
     border-radius: 0.7rem;
     padding: 0.5rem;
-    z-index: 1;
+    z-index: 9999;
 }
 div.slide.hidden .profile_back {
     display: none;
 }
 
 div.slide.visible .profile_back{
+    width: 92%;
+    height: 40%;
     background-color: rgba(11, 21, 59, 0.75);
     border-radius: 2rem;
     z-index: 0;
@@ -661,6 +691,9 @@ div.slide.visible .profile_back{
 
 div.slide.visible #profile {
     display: flex;
+    position: absolute;
+    top: 5%;
+    left: 0;
     transform: none;
     margin-bottom: 1rem;
     padding: 1.25rem;
@@ -672,6 +705,9 @@ div.slide.visible #profile {
 div.slide.visible #portfolio {
     display: flex;
     transform: none;
+    position: absolute;
+    top: 50%;
+    left: 0;
     padding: 1.25rem;
     margin-left: 3rem; margin-right: 3rem;
     margin-top: 2rem; margin-bottom: 2rem;
@@ -686,11 +722,11 @@ div.slide.visible #accessibility_profile{
     transform: none;
     height: auto;
     padding: 1.25rem;
-    z-index: 0;
+    z-index: 9999;
 }
 
 #logoProfile{
-    width: 95%;
+    width: 100%;
     height: auto;
     top: 2%;
     margin-left: 2rem;
@@ -699,12 +735,12 @@ div.slide.visible #accessibility_profile{
 
 .profile_back #riquadroInterno{
     position: absolute;
-    left: 20%;
+    left: 10%;
     right: 20%;
     top: 10%;
     bottom: 10%;
-    width: auto;
-    height: 30%;
+    width: 80%;
+    height: 80%;
     background:rgba(21, 145, 234, 0.1);
 }
 #riquadroInterno img{

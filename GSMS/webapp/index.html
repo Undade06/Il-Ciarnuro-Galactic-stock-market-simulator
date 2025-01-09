@@ -24,7 +24,7 @@
                 <div class="content">
                     <input type="text" placeholder="Username" class="log_reg_input">
                     <input type="password" placeholder="Password" class="log_reg_input">
-                    <h4 class="errorText" id="loginError">Username or password may not be correct, try again</h4>
+                    <div class="errorText" id="loginError"></div>
                     <div class="buttons_log_reg">
                         <button onclick="if(loginCheck()) toSlide('saves')">Login</button>
                         <button onclick="toSlide('registerPage')">Register</button>
@@ -40,7 +40,7 @@
                     <input type="text" placeholder="Username" class="register_input">
                     <input type="password" placeholder="Password" class="register_input">
                     <input type="password" placeholder="Confirm Password" class="register_input">
-                    <h4 class="errorText" id="registerError">as</h4>
+                    <div class="errorText" id="registerError"></div>
                     <div class="register_buttons">
                         <button onclick="toSlide('login_register')">Back</button>
                         <button onclick="if(checkPassword()) toSlide('saves')">Create</button>
@@ -65,7 +65,7 @@
                 <button id="my_stocks" onclick="toSlide('profilePage')">Your stocks<img id="my_stock_pic" src="pics/myStockPic.webp"></button>
             </div>
             <div class="market_back" id="best_stock">
-                <div class="bestStock_header">
+                <div class="stock_header">
                     <div id="bestStock_name" onclick="toSlide('stockPage')"><h2>*Miglior Titolo*</h2></div>
                     <div id="bestStock_value"><h1>*Valore*</h1></div>
                     <div id="bestStock_percentage"><h1>*Aumento%*</h1></div>
@@ -105,6 +105,13 @@
             </div>
         </div>
         <div class="slide hidden" id="profilePage">
+            <button class="backHome" onclick="toSlide('marketHomePage')">
+                <img src="pics/vector.webp">
+                <img src="pics/home.webp">
+            </button>
+            <div id="accessibility_profile">
+                <img src="pics/logo2.webp" id="logoProfile">
+            </div>
             <div class="profile_back" id="profile">
                 <div id="riquadroInterno">
                     <img src="pics/profileImage.webp">
@@ -112,23 +119,25 @@
                 </div>
             </div>
             <div class="profile_back" id="portfolio">
-                <button class="backHome" onclick="toSlide('marketHomePage')">
-                    <img src="pics/vector.webp">
-                    <img src="pics/home.webp">
-                </button>
-                <div id="accessibility_profile">
-                    <img src="pics/logo2.webp" id="logoProfile">
-                </div>
             </div>
         </div>
 
         <div class="slide hidden" id="stockPage">
+            <button class="backHome" onclick="toSlide('marketHomePage')">
+                <img src="pics/vector.webp">
+                <img src="pics/home.webp">
+            </button>
             <div id="accessibility">
                 <img src="pics/logo3.webp" id="logoHome">
                 <h4 id="cur_date"></h4>
                 <h5 id="my_balance"></h5>
             </div>
             <div class="market_back" id="singleStock">
+                <div class="stock_header">
+                    <div id="bestStock_name" onclick="toSlide('stockPage')"><h2>*Miglior Titolo*</h2></div>
+                    <div id="bestStock_value"><h1>*Valore*</h1></div>
+                    <div id="bestStock_percentage"><h1>*Aumento%*</h1></div>
+                </div>
                 <div class="time_buttons">
                     <button id="1d">1d</button>
                     <button id="1w">1w</button>

@@ -22,7 +22,6 @@
  * @param {Number} seed seed of the stock, used to differentiate stock with same parameters.
         It doesn't have particular restriction, apart from being an integer
  * @param {Number} influencability Influencability is a variable that makes the stock value change according to other stocks.
-        It's an extremely delicate variable, it makes the stock behave exponentially.
  * @param  {...any} influencedBy Stocks that influences this stock according to this stock's influencability
  */
 function Stock(name, acronym, description, baseValue, stability, growth, volatility, seed, influencability, ...influencedBy) {
@@ -59,7 +58,7 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
 
     this.influencability = influencability
     this.influencability = this.influencability < 0 ? 0 : this.influencability
-    this.influencability = this.influencability > Stock.MAXINFLUENCABILITY ? Stock.MAXINFLUENCABILITY : this.influencability
+    this.influencability = this.influencability > 1 ? 1 : this.influencability
 
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
     if (Stock.masterCreated == 1 && !this.influencedBy.includes(masterStock)) {

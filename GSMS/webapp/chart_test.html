@@ -12,7 +12,7 @@
         <script src="app.js" type="text/javascript"></script>
         <script src="gsms.js" type="text/javascript"></script>
         <script type="text/javascript">
-            const PRECISION = 1000
+            const PRECISION = 250
             let gm = new GameManager('prova')
             let stock2, stock3, etf
             gm.initializeSave(1)
@@ -52,14 +52,12 @@
                     start = ~~GameManager.gameTimer() - chartETFdays
                     days = chartETFdays
                 }
-                stock.simulateHistory(days)
                 let end = GameManager.gameTimer()
-                let step = (end - start) / PRECISION
                 let temp = gm.getHistory(stock.acronym, days)
                 let values = [], tempInfluence = [], tempInfluenceValues = []
                 //if(id != '1') tempInfluenceValues = stock.influencedBy[0].simulateHistory(days)
                 let k = 0
-                for (i = start; i < end - 1; i += step){
+                for (i = 0; i < PRECISION; i += 1){
                     values.push({ x: i * (1000 * 60 * 60 * 24), y: temp[k] })
                     tempInfluence.push({ x: i * (1000 * 60 * 60 * 24), y: tempInfluenceValues[k] })
                     k++

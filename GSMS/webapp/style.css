@@ -17,6 +17,7 @@
 *{
     -webkit-user-drag: none;
 }
+
 /*---SLIDES SYSTEM---*/
 
 div.slide.visible{
@@ -37,6 +38,7 @@ div.slide.hidden #logoLogin{
 /*--- General ---*/
 
 body{
+    overflow-x: hidden;
     position: absolute;
     top: 0;
     left: 0;
@@ -431,7 +433,7 @@ div.slide.visible #singleStock {
 }
 
 div.slide.visible #rising_stocks {
-    overflow: auto;
+    overflow-y: auto;
     position: absolute;
     top: 35.2rem;
     left: 1rem;
@@ -444,7 +446,7 @@ div.slide.visible #rising_stocks {
 }
 
 div.slide.visible #declining_stocks {
-    overflow: auto;
+    overflow-y: auto;
     position: absolute;
     top: 35.2rem;
     left: 47rem;
@@ -457,7 +459,7 @@ div.slide.visible #declining_stocks {
 }
 
 div.slide.visible #relativeStrenght {
-    overflow: auto;
+    overflow-y: auto;
     position: absolute;
     top: 35.2rem;
     left: 1rem;
@@ -724,5 +726,63 @@ div.slide.visible #accessibility_profile{
         font-size: 1rem;
     }
     
+    div.slide.visible #saves_back{
+        margin:0;
+        width:fit-content;
+        height: fit-content;
+    }
+    .save-box {
+        height: auto;
+        font-size: 1.0em;
+        padding: 2rem;
+    }
+    .save-box.new-save {
+        font-size: 1.0rem;
+        font-weight: bold;
+    }
+    .save-box img{
+        width: 1rem;
+        height: auto;
+    }
 
+
+    div.slide.hidden #log_reg_back {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 27%; 
+        height: 35%; 
+        padding: 1.5%;
+        text-align: center;
+    }
+    div.slide.visible #log_reg_back{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 27%; /* Adjust width */
+        height: 35%; /* Adjust height */
+        padding: 1.5%; /* Adjust padding */
+        text-align: center;
+    }
+    input.log_reg_input{
+        font-size: 1.0em;
+        height: 100%;
+        width: 90%;
+        border: none;
+        padding: 2%;
+        margin-top: 6%;
+    }
+    .buttons_log_reg button{
+        display: block;
+        width: 100%;
+        height: 20%;
+        font-size: 1.1rem;
+        margin-right: none;
+        margin-left: none;
+        margin-bottom:0.7rem;
+    }
+    .errorText{
+        margin: 0;
+        font-size: 1rem;
+    }
 }

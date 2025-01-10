@@ -25,7 +25,11 @@
         It doesn't have particular restriction, apart from being an integer
  * @param {Number} influencability Influencability is a variable that makes the stock value change according to other stocks.
         If the parameters of the stock/s that influences this stock aren't set properly, this stock will not behave realistically
- * @param  {...any} influencedBy Stocks that influences this stock according to this stock's influencability
+ * @param {Number} dividendsPercentage Percentage of dividends of this stock
+ * @param {Number} daysDividendsFrequency Frequency of dividends payment in days of this stock
+ * @param {Number} commPerOperation Commission per operation of this stock
+ * @param {Number} earningTax Earnign tax which weighs on this stock sales
+ * @param  {...Stock} influencedBy Stocks that influences this stock according to this stock's influencability
  */
 function Stock(name, acronym, description, baseValue, stability, growth, volatility, seed, influencability, dividendsPercentage, daysDividendsFrequency, commPerOperation, earningTax, ...influencedBy) {
 
@@ -69,17 +73,17 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     }
     Stock.masterCreated = 1
 
-    let dividendsPercentage = dividendsPercentage
+    this.dividendsPercentage = dividendsPercentage
 
-    let daysDividendsFrequency = daysDividendsFrequency
+    this.daysDividendsFrequency = daysDividendsFrequency
 
-    let commPerOperation = commPerOperation
+    this.commPerOperation = commPerOperation
 
-    let earningTax = earningTax
+    this.earningTax = earningTax
 
-    let krolikRating
+    this.krolikRating = undefined
 
-    let FQRating
+    this.FQRating = undefined
 
 }
 
@@ -216,12 +220,14 @@ const masterStock = new Stock('master stock', 'master stock', 'master stock', 10
  * ETFs are a class that simulate Exchange Traded Funds, a type of security that involves a collection of securities.
  * Since is value is then calculated on the stock's value that compose it, it doesn't have its own parameters such as growth, stability ecc.
  * 
- * @param {String} name complete name of the ETF
- * @param {String} acronym abbreviation acronym of the ETF
- * @param {String} description description of the ETF
- * @param {Stock} influencedBy arrays of stocks that compose this ETF
+ * @param {String} name Complete name of the ETF
+ * @param {String} acronym Abbreviation acronym of the ETF
+ * @param {String} description Description of the ETF
+ * @param {Stock[]} influencedBy Arrays of stocks that compose this ETF
+ * @param {Number} commPerOperation Commission per operation of this ETF
+ * @param {Number} earningTax Earnign tax which weighs on this ETF sales
  */
-function ETF(name, acronym, description, commPerOperation, earningtax, influencedBy) {
+function ETF(name, acronym, description, influencedBy, commPerOperation, earningTax) {
 
     this.name = name
 
@@ -240,13 +246,13 @@ function ETF(name, acronym, description, commPerOperation, earningtax, influence
     influencedBy.forEach((e) => { composition += e.perc })
     if (composition != 1) throw 'ETF composition doesn\'t reach 100%'
 
-    let commPerOperation = commPerOperation
+    this.commPerOperation = commPerOperation
 
-    let earningTax = earningTax
+    this.earningTax = earningTax
 
-    let krolikRating
+    this.krolikRating = undefined
 
-    let FQRating
+    this.FQRating = undefined
 
 }
 
@@ -613,7 +619,7 @@ Save.loadMarket = function (seeds = undefined) {
 
                         for (id2 in s.composition) tempInfl.push({ stock: stocks[id2], perc: s.composition[id2] })
 
-                        stocks[id] = new ETF(s.name, id, s.description, s.commissionPerOperation, s.earningTax, tempInfl)
+                        stocks[id] = new ETF(s.name, id, s.description, tempInfl, s.commissionPerOperation, s.earningTax)
 
                     } else throw 'Uknown type: ' + s.type
 

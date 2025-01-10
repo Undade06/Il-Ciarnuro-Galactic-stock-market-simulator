@@ -27,7 +27,7 @@
         If the parameters of the stock/s that influences this stock aren't set properly, this stock will not behave realistically
  * @param  {...any} influencedBy Stocks that influences this stock according to this stock's influencability
  */
-function Stock(name, acronym, description, baseValue, stability, growth, volatility, seed, influencability, ...influencedBy) {
+function Stock(name, acronym, description, baseValue, stability, growth, volatility, seed, influencability, dividendsPercentage, daysDividendsFrequency, commPerOperation, earningTax, ...influencedBy) {
 
     this.name = name
 
@@ -68,6 +68,18 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
         this.influencedBy.push(masterStock)            //Add masterstocks in the influences if not present
     }
     Stock.masterCreated = 1
+
+    let dividendsPercentage = dividendsPercentage
+
+    let daysDividendsFrequency = daysDividendsFrequency
+
+    let commPerOperation = commPerOperation
+
+    let earningTax = earningTax
+
+    let krolikRating
+
+    let FQRating
 
 }
 
@@ -196,7 +208,7 @@ Stock.MINVALUE = 0.001
 Stock.TIMESTEP = 1 / 250             // 250 step per day
 Stock.masterCreated = 0              //Flag to determine if masterStock is already created. Used to not let the code use masterStock before is created in the constructor
 //Hidden stock. Every other stock is influenced by it
-const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 1, 123456, 0)
+const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 1, 123456, 0, 0.5, '', 0.5, '')
 
 /**
  * ETF constructor
@@ -209,7 +221,7 @@ const masterStock = new Stock('master stock', 'master stock', 'master stock', 10
  * @param {String} description description of the ETF
  * @param {Stock} influencedBy arrays of stocks that compose this ETF
  */
-function ETF(name, acronym, description, influencedBy) {
+function ETF(name, acronym, description, commPerOperation, earningtax, influencedBy) {
 
     this.name = name
 
@@ -227,6 +239,14 @@ function ETF(name, acronym, description, influencedBy) {
     let composition = 0
     influencedBy.forEach((e) => { composition += e.perc })
     if (composition != 1) throw 'ETF composition doesn\'t reach 100%'
+
+    let commPerOperation = commPerOperation
+
+    let earningTax = earningTax
+
+    let krolikRating
+
+    let FQRating
 
 }
 
@@ -581,7 +601,7 @@ Save.loadMarket = function (seeds = undefined) {
                         if (seeds !== undefined && seeds[id] !== undefined) tempSeed = seeds[id]
                         else tempSeed = /* Temporarily fixed seed */ 648157
 
-                        stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], tempSeed, s.params[4])
+                        stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], tempSeed, s.params[4], s.dividendsPercentage, s.daysDividendsFrequency, s.commissionPerOperation, s.earningTax)
 
                         tempInfl.forEach(e => {
                             stocks[id].influencedBy.push(e)
@@ -593,7 +613,7 @@ Save.loadMarket = function (seeds = undefined) {
 
                         for (id2 in s.composition) tempInfl.push({ stock: stocks[id2], perc: s.composition[id2] })
 
-                        stocks[id] = new ETF(s.name, id, s.description, tempInfl)
+                        stocks[id] = new ETF(s.name, id, s.description, s.commissionPerOperation, s.earningTax, tempInfl)
 
                     } else throw 'Uknown type: ' + s.type
 

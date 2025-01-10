@@ -29,10 +29,10 @@
                     stock = masterStock
                 }
                 else if(id == '2'){
-                    stock = stock2 = new Stock("TEST"+id, 'CSA', "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value))
+                    stock = stock2 = new Stock("TEST"+id, 'CSA', "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), 0.5, '', 0.5, '')
                 }
                 else if(id == '3'){
-                    stock = stock3 = new Stock("TEST"+id, 'MTR', "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), stock2)
+                    stock = stock3 = new Stock("TEST"+id, 'MTR', "Test"+id, Number(document.getElementById('baseValue'+id).value), Number(document.getElementById('stability'+id).value), Number(document.getElementById('grow'+id).value), Number(document.getElementById('volatility'+id).value), Number(document.getElementById('seed'+id).value), Number(document.getElementById('influencability'+id).value), 0.5, '', 0.5, '', stock2)
                 }
                 else if(id == '4'){
                     stock = etf = new ETF('ETF' + id, 'OLS', 'etf' + id, [{stock: stock2, perc: 0.5}, {stock: stock3, perc: 0.5}])

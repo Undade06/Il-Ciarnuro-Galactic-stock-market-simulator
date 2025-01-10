@@ -207,7 +207,7 @@ Stock.prototype = {
     }
 }
 
-Stock.MAXVALUE = 1000000
+Stock.MAXVALUE = 100000000
 Stock.MINVALUE = 0.001
 Stock.TIMESTEP = 1 / 250             // 250 step per day
 Stock.masterCreated = 0              //Flag to determine if masterStock is already created. Used to not let the code use masterStock before is created in the constructor

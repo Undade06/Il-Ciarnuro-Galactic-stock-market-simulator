@@ -387,7 +387,7 @@ GameManager.prototype = {
      * @param {String} sAcronym acronym of the stock(index of stock dictionary)
      * @param {Number} amount amount of stock to buy
      */
-    PlayerPurchase: function (sAcronym, amount) {
+    playerPurchase: function (sAcronym, amount) {
 
         if (this.player === undefined) throw 'Player not created'
         if (this.saveSelected === undefined) throw 'Save not initialized'
@@ -405,7 +405,7 @@ GameManager.prototype = {
      * @param {String} sAcronym acronym of the stock(index of stock dictionary)
      * @param {Number} amount amount of stock to sell
      */
-    PlayerSell: function (sAcronym, amount) {
+    playerSell: function (sAcronym, amount) {
 
         if (this.player === undefined) throw 'Player not created'
         if (this.saveSelected === undefined) throw 'Save not initialized'
@@ -570,7 +570,27 @@ function Save(stocks = undefined, saveId = undefined) {
 }
 
 Save.prototype = {
-    constructor: Save
+    constructor: Save,
+    /**
+     * Function that generates save seed, a string composed by all stocks's seeds(not ETFs's one) divided by '-'
+     * 
+     * @returns A string representing save seed
+     */
+    generateSaveSeed: function () {
+        
+        let s = ''
+
+        for(k in this.stocks){
+
+            if(this.stocks[k].type === 'stock') s += this.stocks[k].seed + '-'
+
+        }
+
+        s = s.substring(0, s.length - 1)      // Remove last '-'
+
+        return s
+
+    }
 }
 
 /**

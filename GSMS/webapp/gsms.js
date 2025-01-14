@@ -68,10 +68,9 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     this.influencability = this.influencability > 1 ? 1 : this.influencability
 
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
-    if (Stock.masterCreated == 1 && !this.influencedBy.includes(masterStock)) {
+    if (Stock.masterCreated === 1 && !this.influencedBy.includes(masterStock)) {
         this.influencedBy.push(masterStock)            //Add masterstocks in the influences if not present
     }
-    Stock.masterCreated = 1
 
     this.dividendsPercentage = dividendsPercentage
 
@@ -81,9 +80,11 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
 
     this.earningTax = earningTax
 
-    this.krolikRating = undefined
+    this.krolikRating = this._calculateLongTermInvestmentRating()
 
-    this.FQRating = undefined
+    if(Stock.masterCreated === 1) this.FQRating = this._calculateSpeculativeInvestmentRating()          // Nobody cares if masterstock doesn't have a FQRating
+
+    Stock.masterCreated = 1
 
 }
 
@@ -204,6 +205,66 @@ Stock.prototype = {
 
         return (this.value - v[v.length - (timeSpan / Stock.TIMESTEP)]) / v[v.length - (timeSpan / Stock.TIMESTEP)]
 
+    },
+    /**
+     * Calculate long term investment rating of this stock
+     * 
+     * @returns an number representing the score 
+     */
+    _calculateLongTermInvestmentRating: function () {
+
+        let score = 0
+        let n = Math.log(this._baseValue * 0.05 + 1)
+        score += n > 3 ? 3 : n
+
+        n = Math.log(this.stability * 1.5 + 1)
+        score += n > 3 ? 3 : n
+
+        n = 0.2 / this.volatility
+        score += n > 2 ? 2 : n
+
+        n = Math.log(Math.abs(this.influencability) + 1)
+        score += n > 2 ? 2 : n
+
+        score = Math.pow(Math.abs(score), 0.9)
+        score *= 1 - this.earningTax
+
+        return score
+
+    },
+    /**
+     * Calculate speculative investment rating of this stock basing on its last year behavior
+     * 
+     * @returns 
+     */
+    _calculateSpeculativeInvestmentRating: function () {
+
+        let score = 0
+        let n = Math.log(this.stability + 1)
+        score += n > 2 ? 2 : n
+
+        n = Math.log(this.volatility + 1)
+        score += n > 2 ? 2 : n
+
+        n = Math.log(Math.abs(normalDistributedNumber(this.seed)) + 1)
+        score += n > 2 ? 2 : n
+
+        let min = 9999999, max = 0
+        let values = this.simulateHistory(365 * 4, true)
+        values = values.splice(values.length - 365 / Stock.TIMESTEP, 365 / Stock.TIMESTEP)
+
+        for (let i = 0; i < 365 / Stock.TIMESTEP; i++) {
+            if (values[i] < min) min = values[i]
+            if (values[i] > max) max = values[i]
+        }
+
+        score += (max - min) / min
+
+        score = Math.pow(Math.abs(score), 1.1)
+        score *= 1 - this.earningTax
+
+        return score
+
     }
 }
 
@@ -250,9 +311,9 @@ function ETF(name, acronym, description, influencedBy, commPerOperation, earning
 
     this.earningTax = earningTax
 
-    this.krolikRating = undefined
+    this.krolikRating = this._calculateLongTermInvestmentRating()
 
-    this.FQRating = undefined
+    this.FQRating = this._calculateSpeculativeInvestmentRating()
 
 }
 
@@ -303,6 +364,38 @@ ETF.prototype = {
         let v = this.simulateHistory(timeSpan, true)
 
         return (this.value - v[v.length - (timeSpan / Stock.TIMESTEP)]) / v[v.length - (timeSpan / Stock.TIMESTEP)]
+
+    },
+    /**
+     * Calculate long term investment rating of this ETF basing on its components long term rating
+     * 
+     * @returns an number representing the score 
+     */
+    _calculateLongTermInvestmentRating: function () {
+
+        let score = 0
+
+        this.influencedBy.forEach((e) => {
+            score += e.stock.krolikRating * e.perc
+        })
+
+        return score
+
+    },
+    /**
+     * Calculate speculative investment rating of this ETF basing on its components speculative rating
+     * 
+     * @returns 
+     */
+    _calculateSpeculativeInvestmentRating: function () {
+
+        let score = 0
+
+        this.influencedBy.forEach((e) => {
+            score += e.stock.FQRating * e.perc
+        })
+
+        return score
 
     }
 }
@@ -577,12 +670,12 @@ Save.prototype = {
      * @returns A string representing save seed
      */
     generateSaveSeed: function () {
-        
+
         let s = ''
 
-        for(k in this.stocks){
+        for (k in this.stocks) {
 
-            if(this.stocks[k].type === 'stock') s += this.stocks[k].seed + '-'
+            if (this.stocks[k].type === 'stock') s += this.stocks[k].seed + '-'
 
         }
 

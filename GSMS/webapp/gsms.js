@@ -376,7 +376,7 @@ ETF.prototype = {
         let score = 0
 
         this.influencedBy.forEach((e) => {
-            score += e.stock.krolikRating * e.perc
+            score += e.krolikRating * e.perc
         })
 
         return score
@@ -392,7 +392,7 @@ ETF.prototype = {
         let score = 0
 
         this.influencedBy.forEach((e) => {
-            score += e.stock.FQRating * e.perc
+            score += e.FQRating * e.perc
         })
 
         return score

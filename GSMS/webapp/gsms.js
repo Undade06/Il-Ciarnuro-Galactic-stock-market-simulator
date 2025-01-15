@@ -45,7 +45,10 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     this._baseValue = this._baseValue < Stock.MINVALUE ? Stock.MINVALUE : this._baseValue
     this._baseValue = this._baseValue > Stock.MAXVALUE ? Stock.MAXVALUE : this._baseValue
 
-    this.value = this.baseValue
+    // Variable to store this stock trend from last Stock.TIMESTEP in order to lighten the calculation
+    this._trend = undefined
+
+    this.value = this._baseValue
 
     this.stability = 1 - stability
     this.stability = this.stability < 0 ? 0 : this.stability
@@ -60,8 +63,8 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     this.volatility = this.volatility > 5 ? 5 : this.volatility
 
     this.seed = seed
-    this.seed = typeof this.seed !== 'number' ? Math.random() * 10000 : this.seed
-    this.seed = this.seed < 1 ? this.seed * 10000 : this.seed
+    this.seed = typeof this.seed !== 'number' ? ~~Math.random() * 10000 : this.seed
+    this.seed = this.seed < 1 ? ~~this.seed * 10000 : this.seed
 
     this.influencability = influencability
     this.influencability = this.influencability < 0 ? 0 : this.influencability
@@ -82,7 +85,7 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
 
     this.krolikRating = this._calculateLongTermInvestmentRating()
 
-    if(Stock.masterCreated === 1) this.FQRating = this._calculateSpeculativeInvestmentRating()          // Nobody cares if masterstock doesn't have a FQRating
+    if (Stock.masterCreated === 1) this.FQRating = this._calculateSpeculativeInvestmentRating()          // Nobody cares if masterstock doesn't have a FQRating
 
     Stock.masterCreated = 1
 
@@ -140,37 +143,48 @@ Stock.prototype = {
         }
 
         //Reduce the array to just today - t time window
-        if (!calculatingTrend) w = w.splice(w.length - (t / Stock.TIMESTEP), t / Stock.TIMESTEP)
+        if (!calculatingTrend) {
 
-        // Reduce the array if it's larger than GameManager.MAXVISUALIZABLEVALUES
-        // It helps game's realism limiting Wiener's process self-similarity
-        while (!calculatingTrend && w.length > GameManager.MAXVISUALIZABLEVALUES) {
+            w = w.splice(w.length - (t / Stock.TIMESTEP), t / Stock.TIMESTEP)
 
-            let interval = ~~(w.length / GameManager.MAXVISUALIZABLEVALUES)
-            let sampledValues = [], tempW = w
-            let window
+            // Reduce the array if it's larger than GameManager.MAXVISUALIZABLEVALUES
+            // It helps game's realism limiting Wiener's process self-similarity
+            while (w.length > GameManager.MAXVISUALIZABLEVALUES) {
 
-            // Calculate average value in each interval, which is calculated to reach GameManager.MAXVISUALIZABLEVALUES
-            for (i = 0; i < tempW.length; i += interval) {
-                window = tempW.slice(i, i + interval)
-                sampledValues.push(window.reduce((a, b) => a + b, 0) / window.length)
+                let interval = ~~(w.length / GameManager.MAXVISUALIZABLEVALUES)
+                let sampledValues = [], tempW = w
+                let window
+
+                // Calculate average value in each interval, which is calculated to reach GameManager.MAXVISUALIZABLEVALUES
+                for (i = 0; i < tempW.length; i += interval) {
+                    window = tempW.slice(i, i + interval)
+                    sampledValues.push(window.reduce((a, b) => a + b, 0) / window.length)
+                }
+
+                w = sampledValues
+
             }
 
-            w = sampledValues
+            this.value = w[w.length - 1]
+            this._trend = (w[w.length - 1] - w[w.length - 2]) / w[w.length - 2]
 
         }
-        if (!calculatingTrend) this.value = w[w.length - 1]
 
         return w
     },
-    //Function that calculate 1 step in time of stock value
+    /**
+     * Update stock value basing it on last value(Wiener process)
+     * 
+     * @returns New generated value 
+     */
     nextValue: function () {
 
         let v = this.value, averageInfluence = 0
 
         if (this != masterStock) {
 
-            this.influencedBy.forEach((s) => { averageInfluence += s.trend() * this.influencability })
+            // Average influence is calculated on last trend of each unfluencing stock
+            this.influencedBy.forEach((s) => { averageInfluence += s._trend * this.influencability })
             averageInfluence /= this.influencedBy.length
 
         }
@@ -184,6 +198,7 @@ Stock.prototype = {
         v = v > Stock.MAXVALUE ? Stock.MAXVALUE : v
 
         if (mulberry32(this.seed + GameManager.gameTimer()) > this.stability) this.rising *= -1
+        this._trend = (v - this.value) / this.value
         this.value = v
 
         return v
@@ -300,6 +315,9 @@ function ETF(name, acronym, description, influencedBy, commPerOperation, earning
 
     this.value = undefined
 
+    // Variable to store this stock trend from last Stock.TIMESTEP in order to lighten the calculation
+    this._trend = undefined
+
     //Stocks that compose this ETF, it's supposed to be an array such as {stock, percentual composition}
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
 
@@ -311,9 +329,13 @@ function ETF(name, acronym, description, influencedBy, commPerOperation, earning
 
     this.earningTax = earningTax
 
-    this.krolikRating = this._calculateLongTermInvestmentRating()
+    try {            // Temporary try catch to let test etf be created even without ratings
 
-    this.FQRating = this._calculateSpeculativeInvestmentRating()
+        this.krolikRating = this._calculateLongTermInvestmentRating()
+
+        this.FQRating = this._calculateSpeculativeInvestmentRating()
+
+    } catch (ex) { console.log(ex) }
 
 }
 
@@ -323,14 +345,20 @@ ETF.prototype = {
      * Function that calculate previous values to simulate ETF history in GameManager.MAXYEARGAP time in the past returning values ​​from (today - t time) to today
      * 
      * @param {Number} t Time window in the past in which values are returned
+     * @param {Boolean} calculatingTrend Flag used to not let the function reduce the array size in order to make trend calculation more accurate and not update stock value
      * @returns arrays of values(Number)
      */
-    simulateHistory: function (t = 0) {
+    simulateHistory: function (t = 1, calculatingTrend = false) {
 
-        let timeWindow = (t / Stock.TIMESTEP), stocksValues = [], values, tempValue, value = []
+        if (t === undefined || t < 0 || t % 1 != 0) throw 'Passed time is not valid'
+
+        let timeWindow
+        if (calculatingTrend) timeWindow = (GameManager.MAXYEARGAP * 365 / Stock.TIMESTEP)
+        else timeWindow = GameManager.MAXVISUALIZABLEVALUES
+        let stocksValues = [], values, tempValue, value = []
 
         this.influencedBy.forEach((e) => {          //Register all stock value
-            stocksValues.push(e.stock.simulateHistory(t, true))
+            stocksValues.push(e.stock.simulateHistory(t, calculatingTrend))
         })
 
         for (let i = 0; i < timeWindow; i++) {          //Calculate value for each stock with relative influence
@@ -345,9 +373,32 @@ ETF.prototype = {
 
             value.push(tempValue)
         }
-        this.value = value[value.length - 1]
+
+        if (!calculatingTrend) {
+
+            this.value = value[value.length - 1]
+            this._trend = (value[value.length - 1] - value[value.length - 2]) / value[value.length - 1]
+
+        }
 
         return value
+    },
+    /**
+     * Update ETF value basing it on each current stock value that compose it
+     * 
+     * @returns New calculated value
+     */
+    nextValue: function () {
+
+        let v = 0
+
+        this.influencedBy.forEach((e) => { v += e.stock.value * e.perc })
+
+        this._trend = (v - this.value) / this.value
+        this.value = v
+
+        return v
+
     },
     /**
      * Calculate stock trend in given time
@@ -376,7 +427,7 @@ ETF.prototype = {
         let score = 0
 
         this.influencedBy.forEach((e) => {
-            score += e.krolikRating * e.perc
+            score += e.stock.krolikRating * e.perc
         })
 
         return score
@@ -392,7 +443,7 @@ ETF.prototype = {
         let score = 0
 
         this.influencedBy.forEach((e) => {
-            score += e.FQRating * e.perc
+            score += e.stock.FQRating * e.perc
         })
 
         return score

@@ -23,15 +23,15 @@
         it's not recommended to set it above 3 if this stock is influencying other stock(it make those influenced stock behave not realistically)
  * @param {Number} seed seed of the stock, used to differentiate stock with same parameters.
         It doesn't have particular restriction, apart from being an integer
- * @param {Number} influencability Influencability is a variable that makes the stock value change according to other stocks.
+ * @param {Number} influenceability Influenceability is a variable that makes the stock value change according to other stocks.
         If the parameters of the stock/s that influences this stock aren't set properly, this stock will not behave realistically
  * @param {Number} dividendsPercentage Percentage of dividends of this stock
  * @param {Number} daysDividendsFrequency Frequency of dividends payment in days of this stock
  * @param {Number} commPerOperation Commission per operation of this stock
  * @param {Number} earningTax Earnign tax which weighs on this stock sales
- * @param  {...Stock} influencedBy Stocks that influences this stock according to this stock's influencability
+ * @param  {...Stock} influencedBy Stocks that influences this stock according to this stock's influenceability
  */
-function Stock(name, acronym, description, baseValue, stability, growth, volatility, seed, influencability, dividendsPercentage, daysDividendsFrequency, commPerOperation, earningTax, ...influencedBy) {
+function Stock(name, acronym, description, baseValue, stability, growth, volatility, seed, influenceability, dividendsPercentage, daysDividendsFrequency, commPerOperation, earningTax, ...influencedBy) {
 
     this.name = name
 
@@ -66,9 +66,9 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     this.seed = typeof this.seed !== 'number' ? ~~Math.random() * 10000 : this.seed
     this.seed = this.seed < 1 ? ~~this.seed * 10000 : this.seed
 
-    this.influencability = influencability
-    this.influencability = this.influencability < 0 ? 0 : this.influencability
-    this.influencability = this.influencability > 1 ? 1 : this.influencability
+    this.influenceability = influenceability
+    this.influenceability = this.influenceability < 0 ? 0 : this.influenceability
+    this.influenceability = this.influenceability > 1 ? 1 : this.influenceability
 
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
     if (Stock.masterCreated === 1 && !this.influencedBy.includes(masterStock)) {
@@ -119,7 +119,7 @@ Stock.prototype = {
 
                 influencesPerTime.push(0)                                               //Push a zero to sum influence
 
-                influences.forEach((s) => { influencesPerTime[i] += ((s[i] - s[i - 1]) / s[i - 1]) * this.influencability })           //Sum every influence
+                influences.forEach((s) => { influencesPerTime[i] += ((s[i] - s[i - 1]) / s[i - 1]) * this.influenceability })           //Sum every influence
 
             }
 
@@ -184,7 +184,7 @@ Stock.prototype = {
         if (this != masterStock) {
 
             // Average influence is calculated on last trend of each unfluencing stock
-            this.influencedBy.forEach((s) => { averageInfluence += s._trend * this.influencability })
+            this.influencedBy.forEach((s) => { averageInfluence += s._trend * this.influenceability })
             averageInfluence /= this.influencedBy.length
 
         }
@@ -238,7 +238,7 @@ Stock.prototype = {
         n = 0.2 / this.volatility
         score += n > 2 ? 2 : n
 
-        n = Math.log(Math.abs(this.influencability) + 1)
+        n = Math.log(Math.abs(this.influenceability) + 1)
         score += n > 2 ? 2 : n
 
         score = Math.pow(Math.abs(score), 0.9)

@@ -526,6 +526,19 @@ GameManager.prototype = {
 
     },
     /**
+     * Simple function to avoid typing a long string to access a stock
+     * 
+     * @param {String} sAcronym 
+     * @returns Stock selected
+     */
+    getStock: function(sAcronym){
+
+        if(this.saves[this.saveSelected].stocks[sAcronym] === undefined) throw 'Stock does\'t exists'
+
+        return this.saves[this.saveSelected].stocks[sAcronym]
+
+    },
+    /**
      * Function to manage player purchase action
      * 
      * @param {String} sAcronym acronym of the stock(index of stock dictionary)

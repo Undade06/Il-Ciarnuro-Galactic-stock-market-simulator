@@ -18,23 +18,11 @@
             function chartTest_update(id, days) {
                 document.getElementById('gameT').innerText = GameManager.gameTimerAsDate().toGMTString()
                 let stock
-                if(id == '1'){
-                    masterStock._baseValue = Number(document.getElementById('baseValue'+id).value)
-                    masterStock.influencability = Number(document.getElementById('influencability'+id).value)
-                    masterStock.stability = Number(document.getElementById('stability'+id).value)
-                    masterStock.growth = Number(document.getElementById('grow'+id).value)
-                    masterStock.volatility = Number(document.getElementById('volatility'+id).value)
-                    masterStock.seed = Number(document.getElementById('seed'+id).value)
-                    stock = masterStock
-                }
-                else {
-                    try {
-                        stock = gm.getStock(id)
-                    } catch (error) {
-                        console.log(error)
-                        return
-                    }
-                    
+                try {
+                    stock = gm.getStock(id)
+                } catch (error) {
+                    console.log(error)
+                    return
                 }
                 let ctx = document.getElementById(id).querySelector("canvas.chart")
                 let end = GameManager.gameTimer()
@@ -63,16 +51,8 @@
                             data: tempInfluence
                     })
                 }*/
-                if(id != '4') {
-                    document.getElementById('stockValue'+id).innerText = gm.saves[1].stocks[stock.acronym].value.toFixed(2) + " Kr"
-                    document.getElementById('stockRate'+id).innerText = (gm.saves[1].stocks[stock.acronym].trend(days) * 100).toFixed(2) + " %"
-                }
-                else{
-                    document.getElementById('ETF').innerText = gm.saves[1].stocks[stock.acronym].value.toFixed(2) + " Kr"
-                    document.getElementById('ETFstock2').innerText = stock.influencedBy[0].perc
-                    document.getElementById('ETFstock3').innerText = stock.influencedBy[1].perc
-                    document.getElementById('ETFRate').innerText = (gm.saves[1].stocks[stock.acronym].trend(days) * 100).toFixed(2) + " %"
-                }
+                document.getElementById('stockValue'+id).innerText = gm.saves[saveSelected].stocks[stock.acronym].value.toFixed(2) + " Kr"
+                document.getElementById('stockRate'+id).innerText = (gm.saves[saveSelected].stocks[stock.acronym].trend(days) * 100).toFixed(2) + " %"
                 if (!ctx.chartjs) {
                     let chart = new Chart(ctx, {
                         type: "line",
@@ -152,10 +132,10 @@
                     const table = document.createElement("table")
                     stock.influencedBy.forEach(({ stock: componentStock, perc }) => {
                         const row = document.createElement("tr")
-                        row.style.background = "rgba(255,255,255,0.5)"
+                        row.style.background = "rgba(255,255,255,0.2)"
                         row.innerHTML = `
                             <td>${stock.acronym + "-" + componentStock.acronym}</td>
-                            <td>${(perc * 100).toFixed(2)}</td>`
+                            <td>${(perc * 100).toFixed(2)} %</td>`
                         table.appendChild(row)
                     })
                     container.appendChild(table)
@@ -163,35 +143,35 @@
                     const table = document.createElement("table")
                     table.innerHTML = `
                         <tr>
-                            <td><label>Base Value:</label></td>
-                            <td><input type="number" value="${stock._baseValue}"></td>
+                            <td><label>Base value:</label></td>
+                            <td><input id="${stockId}baseValue" type="number" value="${stock._baseValue}" onchange="gm.saves[saveSelected].stocks['${stockId}']._baseValue=Number(document.getElementById('${stockId}baseValue').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>
                         <tr>
-                            <td><label>Influencability:</label></td>
-                            <td><input type="number" step="0.01" value="${stock.influenceability}"></td>
+                            <td><label>Influenceability:</label></td>
+                            <td><input id="${stockId}influenceability" type="number" step="0.01" value="${stock.influenceability}" onchange="gm.saves[saveSelected].stocks['${stockId}'].influenceability=Number(document.getElementById('${stockId}influenceability').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>
                         <tr>
                             <td><label>Stability:</label></td>
-                            <td><input type="number" step="0.1" value="${stock.stability}"></td>
+                            <td><input id="${stockId}stability" type="number" step="0.1" value="${stock.stability}" onchange="gm.saves[saveSelected].stocks['${stockId}'].stability=Number(document.getElementById('${stockId}stability').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>
                         <tr>
-                            <td><label>Grow:</label></td>
-                            <td><input type="number" step="0.1" value="${stock.growth}"></td>
+                            <td><label>Growth:</label></td>
+                            <td><input id="${stockId}growth" type="number" step="0.1" value="${stock.growth}" onchange="gm.saves[saveSelected].stocks['${stockId}'].growth=Number(document.getElementById('${stockId}growth').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>
                         <tr>
                             <td><label>Volatility:</label></td>
-                            <td><input type="number" step="0.01" value="${stock.volatility}"></td>
+                            <td><input id="${stockId}volatility" type="number" step="0.01" value="${stock.volatility}" onchange="gm.saves[saveSelected].stocks['${stockId}'].volatility=Number(document.getElementById('${stockId}volatility').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>
                         <tr>
                             <td><label>Seed:</label></td>
-                            <td><input type="number" value="${stock.seed}"></td>
+                            <td><input id="${stockId}seed" type="number" value="${stock.seed}" onchange="gm.saves[saveSelected].stocks['${stockId}'].seed=Number(document.getElementById('${stockId}seed').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>`
                     container.appendChild(table)
                 }
 
                 document.getElementById("stocks").appendChild(container)
 
-                chartTest_update(stockId)
+                chartTest_update(stockId, 365 * 5)
             }
             function initChartTest() {
                 for(s in gm.saves[saveSelected].stocks){

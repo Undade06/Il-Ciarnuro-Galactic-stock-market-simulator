@@ -533,7 +533,7 @@ GameManager.prototype = {
      */
     getStock: function(sAcronym){
 
-        if(this.saves[this.saveSelected].stocks[sAcronym] === undefined) throw 'Stock does\'t exists'
+        if(this.saves[this.saveSelected].stocks[sAcronym] === undefined) throw 'Stock doesn\'t exists'
 
         return this.saves[this.saveSelected].stocks[sAcronym]
 

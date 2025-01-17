@@ -738,7 +738,7 @@ Player.prototype = {
 
         for (acr in this.stocks) {
 
-            eq += this.stocks[acr].value * this.stocks[acr].amount
+            eq += this.stocks[acr].s.value * this.stocks[acr].amount
 
         }
 
@@ -764,7 +764,7 @@ Player.prototype = {
     }
 }
 
-Player.startMoney = 25000
+Player.startMoney = 25
 
 /**
  * Save contructor

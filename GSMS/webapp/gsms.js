@@ -646,7 +646,7 @@ function Player(name) {
 
     this.honorGrade = '0'
 
-    this.stocks = {}            // Both standard stocks and etfs, supposed to be stocks[stock acronym] = s, amount 
+    this.stocks = {}            // Both standard stocks and etfs, supposed to be stocks[stock acronym] = purchaseValue, amount, 
 
 }
 
@@ -665,11 +665,19 @@ Player.prototype = {
 
         let price = stock.value * amountP
 
-        if (price > this.wallet) throw 'Player doesn\'t have enaugh money'
+        if (price > this.wallet) throw 'Player doesn\'t have enough money'
 
         this.wallet -= price
 
-        this.stocks[stock.acronym] = { s: stock, amount: amountP }
+        let pv = stock.value, newAmount = amountP
+        if (this.stocks[stock.acronym] !== undefined) {
+
+            newAmount = this.stocks[stock.acronym].amount + amountP
+            pv = ((this.stocks[stock.acronym].purchaseValue * this.stocks[stock.acronym].amount) + price) / newAmount
+
+        }
+
+        this.stocks[stock.acronym] = { purchaseValue: pv, amount: newAmount }
 
     },
     /**
@@ -680,18 +688,19 @@ Player.prototype = {
     allIn: function (stock) {
 
         if (!(stock instanceof Stock) && !(stock instanceof ETF)) throw 'Stock not defined'
-        if (isNaN(Number(amountP) || amountP % 1 !== 0)) throw 'Amount not supported'
 
-        for (let i = 0; true; i++) {
+        let n = Math.floor(this.wallet / stock.value)
+        this.wallet -= stock.value * n
 
-            if (stock.value * i > this.wallet) break
+        let pv = stock.value, newAmount = n
+        if (this.stocks[stock.acronym] !== undefined) {
+
+            newAmount = this.stocks[stock.acronym].amount + n
+            pv = ((this.stocks[stock.acronym].purchaseValue * this.stocks[stock.acronym].amount) + stock.value * n) / newAmount
 
         }
-        i--
 
-        this.wallet -= stock.value * i
-
-        this.stocks[stock.acronym] = { s: stock, amount: i }
+        this.stocks[stock.acronym] = { purchaseValue: pv, amount: newAmount }
 
     },
     /**
@@ -706,10 +715,10 @@ Player.prototype = {
         if (this.stocks[stockAcronym] === undefined) throw 'Player doesn\'t own passed stock'
         if (this.stocks[stockAcronym].amount < amountP) throw 'Player doesn\'t have such amount of passed stock'
 
-        this.wallet += this.stocks[stockAcronym].s.value * amountP
+        this.wallet += this.stocks[stockAcronym].purchaseValue * amountP
 
         this.stocks[stockAcronym].amount -= amountP
-        if (this.stocks[stockAcronym].amount == 0) delete(this.stocks[stockAcronym])
+        if (this.stocks[stockAcronym].amount === 0) delete (this.stocks[stockAcronym])
 
     },
     /**
@@ -719,12 +728,12 @@ Player.prototype = {
      */
     sellAll: function (stockAcronym) {
 
-        if (stockAcronym === undefined || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if (stockAcronym === undefined) throw 'Parameters not supported'
         if (this.stocks[stockAcronym] === undefined) throw 'Player doesn\'t own passed stock'
 
-        this.wallet += this.stocks[stockAcronym].s.value * this.stocks[stockAcronym].amount
+        this.wallet += this.stocks[stockAcronym].purchaseValue * this.stocks[stockAcronym].amount
 
-        delete(this.stocks[stockAcronym])
+        delete (this.stocks[stockAcronym])
 
     },
     /**
@@ -738,7 +747,7 @@ Player.prototype = {
 
         for (acr in this.stocks) {
 
-            eq += this.stocks[acr].s.value * this.stocks[acr].amount
+            eq += gm.getStock(acr).value * this.stocks[acr].amount
 
         }
 

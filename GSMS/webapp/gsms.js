@@ -539,6 +539,42 @@ GameManager.prototype = {
 
     },
     /**
+     * Function that return every rising stock/ETF basing on its _trend
+     * 
+     * @returns Array with every rising stock/ETF
+     */
+    getRisings : function(){
+
+        let risings = []
+
+        for(acr in this.saves[this.saveSelected].stocks){
+            if(this.getStock(acr)._trend > 0){
+                risings.push(this.getStock(acr))
+            }
+        }
+
+        return risings
+
+    },
+    /**
+     * Function that return every falling stock/ETF basing on its _trend
+     * 
+     * @returns Array with every falling stock/ETF
+     */
+    getFallings : function(){
+
+        let fallings = []
+
+        for(acr in this.saves[this.saveSelected].stocks){
+            if(this.getStock(acr)._trend < 0){
+                fallings.push(this.getStock(acr))
+            }
+        }
+
+        return fallings
+
+    },
+    /**
      * Function to manage player purchase action
      * 
      * @param {String} sAcronym acronym of the stock(index of stock dictionary)
@@ -755,7 +791,7 @@ Save.prototype = {
  * except for seed, which is randomized to make each market different if seeds dictionary is not passed
  * It supposes that in market.json stocks that influence other stocks and/or compose an etf/s are written before those influenced stocks or etfs
  * 
- * @param {*} seeds dictionary with index as stock acronym and the actual seed:  seeds['CFA'] = 219866
+ * @param {Array} seeds dictionary with index as stock acronym and the actual seed:  seeds['CFA'] = 219866
  * @returns a promise that resolve with a Save object
  */
 Save.loadMarket = function (seeds = undefined) {
@@ -769,7 +805,7 @@ Save.loadMarket = function (seeds = undefined) {
 
                 let stocks = {}
 
-                stocks[masterStock.acronym] = masterStock
+                stocks[masterStock.acronym] = masterStock           // To be removed
 
                 for (id in data) {
 
@@ -798,7 +834,7 @@ Save.loadMarket = function (seeds = undefined) {
 
                         stocks[id] = new ETF(s.name, id, s.description, tempInfl, s.commissionPerOperation, s.earningTax)
 
-                    } else throw 'Uknown type: ' + s.type
+                    } else throw 'Unkown type: ' + s.type
 
                 }
 

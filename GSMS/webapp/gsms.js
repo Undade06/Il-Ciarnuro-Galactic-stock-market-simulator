@@ -531,9 +531,9 @@ GameManager.prototype = {
      * @param {String} sAcronym 
      * @returns Stock selected
      */
-    getStock: function(sAcronym){
+    getStock: function (sAcronym) {
 
-        if(this.saves[this.saveSelected].stocks[sAcronym] === undefined) throw 'Stock doesn\'t exists'
+        if (this.saves[this.saveSelected].stocks[sAcronym] === undefined) throw 'Stock doesn\'t exists'
 
         return this.saves[this.saveSelected].stocks[sAcronym]
 
@@ -543,12 +543,12 @@ GameManager.prototype = {
      * 
      * @returns Array with every rising stock/ETF
      */
-    getRisings : function(){
+    getRisings: function () {
 
         let risings = []
 
-        for(acr in this.saves[this.saveSelected].stocks){
-            if(this.getStock(acr)._trend > 0){
+        for (acr in this.saves[this.saveSelected].stocks) {
+            if (this.getStock(acr)._trend > 0) {
                 risings.push(this.getStock(acr))
             }
         }
@@ -561,12 +561,12 @@ GameManager.prototype = {
      * 
      * @returns Array with every falling stock/ETF
      */
-    getFallings : function(){
+    getFallings: function () {
 
         let fallings = []
 
-        for(acr in this.saves[this.saveSelected].stocks){
-            if(this.getStock(acr)._trend < 0){
+        for (acr in this.saves[this.saveSelected].stocks) {
+            if (this.getStock(acr)._trend < 0) {
                 fallings.push(this.getStock(acr))
             }
         }
@@ -646,7 +646,7 @@ function Player(name) {
 
     this.honorGrade = '0'
 
-    this.stocks = {}            // Both standard stocks and etfs, supposed to be s: amount 
+    this.stocks = {}            // Both standard stocks and etfs, supposed to be stocks[stock acronym] = s, amount 
 
 }
 
@@ -660,7 +660,8 @@ Player.prototype = {
      */
     buy: function (stock, amountP) {
 
-        if ((stock instanceof Stock && stock instanceof ETF) || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if (!(stock instanceof Stock) && !(stock instanceof ETF)) throw 'Stock not defined'
+        if (isNaN(Number(amountP) || amountP % 1 !== 0)) throw 'Amount not supported'
 
         let price = stock.value * amountP
 
@@ -678,7 +679,8 @@ Player.prototype = {
      */
     allIn: function (stock) {
 
-        if ((stock instanceof Stock && stock instanceof ETF) || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if (!(stock instanceof Stock) && !(stock instanceof ETF)) throw 'Stock not defined'
+        if (isNaN(Number(amountP) || amountP % 1 !== 0)) throw 'Amount not supported'
 
         for (let i = 0; true; i++) {
 
@@ -707,7 +709,7 @@ Player.prototype = {
         this.wallet += this.stocks[stockAcronym].s.value * amountP
 
         this.stocks[stockAcronym].amount -= amountP
-        if (this.stocks[stockAcronym].amount == 0) this.stocks[stockAcronym] = undefined
+        if (this.stocks[stockAcronym].amount == 0) delete(this.stocks[stockAcronym])
 
     },
     /**
@@ -722,7 +724,25 @@ Player.prototype = {
 
         this.wallet += this.stocks[stockAcronym].s.value * this.stocks[stockAcronym].amount
 
-        this.stocks[stockAcronym] = undefined
+        delete(this.stocks[stockAcronym])
+
+    },
+    /**
+     * Function that calculate player's equity(wallet + value of each sum invested)
+     * 
+     * @returns 
+     */
+    getEquity: function () {
+
+        let eq = this.wallet
+
+        for (acr in this.stocks) {
+
+            eq += this.stocks[acr].value * this.stocks[acr].amount
+
+        }
+
+        return eq
 
     },
     calculateHonorGrade: function () {

@@ -13,7 +13,7 @@
     "Ti":{
         "name":"Titanium",
         "type":"stock",
-        "params":[176, 0.8, 0.1, 0.8, 0.5],
+        "params":[176, 0.7, 5, 0.1, 0.25],
         "influencedBy":[],
         "description":"The product replicates the price of titanium perceived by the markets in the Krok area.",
         "dividendsPercentage": 0,

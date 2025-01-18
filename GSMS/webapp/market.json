@@ -24,7 +24,7 @@
     "Nb":{
         "name":"Niobium",
         "type":"stock",
-        "params":[4500, 0.8, 0.1, 0.8, 0.5],
+        "params":[4500, 0.9995, 0.002, 0.5, 0.05],
         "influencedBy":[],
         "description":"The product replicates the price of niobium perceived by the markets in the Krok area.",
         "dividendsPercentage": 0,

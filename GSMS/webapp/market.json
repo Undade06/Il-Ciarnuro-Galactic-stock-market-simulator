@@ -90,7 +90,7 @@
     "U":{
         "name":"Uranium",
         "type":"stock",
-        "params":[7, 0.8, 0.1, 0.8, 0.5],
+        "params":[7, 0.01, -0.001, 0.01, 0.001],
         "influencedBy":[],
         "description":"The product replicates the price of uranium perceived by the markets in the Krok area.",
         "dividendsPercentage": 0,

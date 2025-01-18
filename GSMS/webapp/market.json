@@ -112,7 +112,7 @@
     "Gra-310":{
         "name":"E-134 Grain",
         "type":"stock",
-        "params":[5000000, 0.8, 0.1, 0.8, 0.5],
+        "params":[5000000, 0.15, 0.65, 2, 0],
         "influencedBy":[],
         "description":"The product replicates the price of non-radioactive grain perceived by the markets of the Krok area.",
         "dividendsPercentage": 0,

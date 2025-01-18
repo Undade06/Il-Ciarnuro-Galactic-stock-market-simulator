@@ -46,7 +46,7 @@
     "Rh":{
         "name":"Rhodium",
         "type":"stock",
-        "params":[10000, 0.8, 0.1, 0.8, 0.5],
+        "params":[10000, 0.9995, 0.002, 0.5, 0.05],
         "influencedBy":[],
         "description":"The product replicates the price of rhodium perceived by the markets in the Krok area.",
         "dividendsPercentage": 0,

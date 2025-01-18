@@ -431,14 +431,11 @@ div.slide.visible .market_back{
 }
 
 div.slide.visible #best_stock {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    right: 2rem;
-    bottom: 22.2rem;
     transform: none;
-    margin-bottom: 1rem;
-    height: 64%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    height: 36rem;
+    width: 96%;
     padding: 1.25rem;
 }
 
@@ -454,29 +451,26 @@ div.slide.visible #singleStock {
     padding: 1.25rem;
 }
 
+div.slide.visible #rises_and_falls{
+    display: flex;
+    gap: 3rem;
+}
+
 div.slide.visible #rising_stocks {
     overflow-y: auto;
-    position: absolute;
-    top: 35.2rem;
-    left: 1rem;
-    right: 47rem;
-    bottom: 1rem;
     transform: none;
     margin: 0;
-    height: 58%;
+    height: 27rem;
+    width: 46%;
     padding-left: 1.25rem;
 }
 
 div.slide.visible #declining_stocks {
     overflow-y: auto;
-    position: absolute;
-    top: 35.2rem;
-    left: 47rem;
-    right: 2rem;
-    bottom: 1rem;
     transform: none;
     margin: 0;
     height: 58%;
+    width: 46%;
     padding-left: 1.25rem;
 }
 
@@ -500,18 +494,28 @@ div.slide.visible #accessibility{
     bottom: 78%;
     right: 1%;
     transform: none;
-    height: auto;
-    padding: 1.25rem;
+    height: 10rem;
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
+    padding-bottom: 1.1rem;
     background-color: rgba(0,0,0,0.80);
     border-radius: 1.5rem;
     border: 0.2rem solid rgba(11, 21, 59, 0.75);
     z-index: 9999;
 }
 
+div.slide.visible #sessionInfo{
+    display: flex;
+    width: 100%;
+}
+
+div.slide.visible #accessibility h4,h5{
+    margin: 1rem;
+    font-family: "Xolonium-Regular";
+    font-weight: normal;
+}
+
 #my_stocks{
-    position: absolute;
-    right: 0.1%;
-    bottom: 10%;
     background-color: #0A205A;
     color: white;
     font-family: 'Xolonium', sans-serif;
@@ -519,8 +523,7 @@ div.slide.visible #accessibility{
     width: 10rem;
     height: 2rem;
     font-size: 1rem;
-    margin-right: 1.1rem;
-    margin-left:  1.1rem;
+    margin: 1.1rem;
     border: none;
     cursor: pointer;
     border-radius: 0.4rem;
@@ -534,16 +537,14 @@ div.slide.visible #accessibility{
 }
 
 #logoHome{
-    position: absolute;
+    margin-top: 0.5rem;
     width: 24rem;
     top: 2%;
 }
 
 .time_buttons{
+    margin-left: 4rem;
     position: absolute;
-    top: 30%;
-    left: 5%;
-    width: auto;
 }
 
 .time_buttons button{
@@ -570,7 +571,6 @@ div.slide.visible #accessibility{
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
     font-size: 2.5rem;
-    position: absolute;
     top: 0%;
 }
 
@@ -579,7 +579,6 @@ div.slide.visible #accessibility{
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
     font-size: 2.5rem;
-    position: absolute;
     top: 0%;
 }
 
@@ -588,8 +587,11 @@ div.slide.visible #accessibility{
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
     font-size: 2.5rem;
-    position: absolute;
     top: 0%;
+}
+
+#stock_info{
+    display: flex;
 }
 
 div.stock_header{
@@ -600,26 +602,19 @@ div.stock_header{
 }
 
 #bestStock_value{
-    position: absolute;
     margin: 1rem;
-    top: 3.34rem;
-    left: 2.7rem;
 }
 
 #bestStock_percentage{
-    position: absolute;
-    top: 4.34rem;
-    left: 14rem;
+    margin: 1rem;
     color: rgb(0, 190, 0);
 }
 
 .graf #bestStock_graf{
-    position: absolute;
-    top: 40%;
-    left: 5%;
-    width: 92%;
-    height: 16rem;
+    width: 98%;
+    height: 20rem;
     margin: 1rem;
+    margin-top: 4rem;
     background-color: black;
 }
 

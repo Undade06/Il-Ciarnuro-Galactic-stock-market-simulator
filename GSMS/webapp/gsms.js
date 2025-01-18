@@ -646,7 +646,7 @@ function Player(name) {
 
     this.honorGrade = '0'
 
-    this.stocks = {}            // Both standard stocks and etfs, supposed to be stocks[stock acronym] = purchaseValue, amount, 
+    this.stocks = {}            // Both standard stocks and etfs, supposed to be stocks[stock acronym] = purchaseValue, amount
 
 }
 
@@ -849,6 +849,8 @@ Save.loadMarket = function (seeds = undefined) {
                         if (seeds !== undefined && seeds[id] !== undefined) tempSeed = seeds[id]
                         else tempSeed = /* Temporarily fixed seed */ 648157
 
+                        // Stock{name, acronym, description, base value, stability, growth, volatility, seed, influenceability, dividends percentage, days dividends frequency, commission per operation, earning tax}
+                        // params[base value, stability, growth, volatility, influenceability]
                         stocks[id] = new Stock(s.name, id, s.description, s.params[0], s.params[1], s.params[2], s.params[3], tempSeed, s.params[4], s.dividendsPercentage, s.daysDividendsFrequency, s.commissionPerOperation, s.earningTax)
 
                         tempInfl.forEach(e => {

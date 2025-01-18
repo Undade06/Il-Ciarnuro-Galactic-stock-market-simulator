@@ -1,4 +1,125 @@
 {
+    "Li":{
+        "name":"Lithium",
+        "type":"stock",
+        "params":[3.2, 0.8, 0.1, 0.8, 1],
+        "influencedBy":[],
+        "description":"The product replicates the price of lithium perceived by the markets in the Krok area.",
+        "dividendsPercentage": 0,
+        "daysDividendsFrequency": 0,
+        "commissionPerOperation": 0.05,
+        "earningTax": 0.05
+    },
+    "Ti":{
+        "name":"Titanium",
+        "type":"stock",
+        "params":[176, 0.8, 0.1, 0.8, 1],
+        "influencedBy":[],
+        "description":"The product replicates the price of titanium perceived by the markets in the Krok area.",
+        "dividendsPercentage": 0,
+        "daysDividendsFrequency": 0,
+        "commissionPerOperation": 0.05,
+        "earningTax": 0.05
+    },
+    "Nb":{
+        "name":"Niobium",
+        "type":"stock",
+        "params":[4500, 0.8, 0.1, 0.8, 1],
+        "influencedBy":[],
+        "description":"The product replicates the price of niobium perceived by the markets in the Krok area.",
+        "dividendsPercentage": 0,
+        "daysDividendsFrequency": 0,
+        "commissionPerOperation": 0.05,
+        "earningTax": 0.05
+    },
+    "W":{
+        "name":"Tungsten",
+        "type":"stock",
+        "params":[1100, 0.8, 0.1, 0.8, 1],
+        "influencedBy":[],
+        "description":"The product replicates the price of tungsten perceived by the markets in the Krok area.",
+        "dividendsPercentage": 0,
+        "daysDividendsFrequency": 0,
+        "commissionPerOperation": 0.05,
+        "earningTax": 0.05
+    },
+    "Rh":{
+        "name":"Rhodium",
+        "type":"stock",
+        "params":[10000, 0.8, 0.1, 0.8, 1],
+        "influencedBy":[],
+        "description":"The product replicates the price of rhodium perceived by the markets in the Krok area.",
+        "dividendsPercentage": 0,
+        "daysDividendsFrequency": 0,
+        "commissionPerOperation": 0.05,
+        "earningTax": 0.05
+    },
+    "Au":{
+        "name":"Gold",
+        "type":"stock",
+        "params":[1900, 0.8, 0.1, 0.8, 1],
+        "influencedBy":[],
+        "description":"The product replicates the price of gold perceived by the markets in the Krok area.",
+        "dividendsPercentage": 0,
+        "daysDividendsFrequency": 0,
+        "commissionPerOperation": 0.05,
+        "earningTax": 0.05
+    },
+    "Si":{
+        "name":"Silicon",
+        "type":"stock",
+        "params":[98, 0.8, 0.1, 0.8, 1],
+        "influencedBy":[],
+        "description":"The product replicates the price of silicon perceived by the markets in the Krok area.",
+        "dividendsPercentage": 0,
+        "daysDividendsFrequency": 0,
+        "commissionPerOperation": 0.05,
+        "earningTax": 0.05
+    },
+    "O":{
+        "name":"Oxygen",
+        "type":"stock",
+        "params":[770, 0.8, 0.1, 0.8, 1],
+        "influencedBy":[],
+        "description":"The product replicates the price of oxygen perceived by the markets in the Krok area.",
+        "dividendsPercentage": 0,
+        "daysDividendsFrequency": 0,
+        "commissionPerOperation": 0.05,
+        "earningTax": 0.05
+    },
+    "U":{
+        "name":"Uranium",
+        "type":"stock",
+        "params":[7, 0.8, 0.1, 0.8, 1],
+        "influencedBy":[],
+        "description":"The product replicates the price of uranium perceived by the markets in the Krok area.",
+        "dividendsPercentage": 0,
+        "daysDividendsFrequency": 0,
+        "commissionPerOperation": 0.05,
+        "earningTax": 0.05
+    },
+    "P-310":{
+        "name":"E-126 Paletium",
+        "type":"stock",
+        "params":[100000, 0.8, 0.1, 0.8, 1],
+        "influencedBy":[],
+        "description":"The product replicates the price of non-radioactive paletium perceived by the markets of the Krok area.",
+        "dividendsPercentage": 0,
+        "daysDividendsFrequency": 0,
+        "commissionPerOperation": 100,
+        "earningTax": 0.5
+    },
+    "Gra-310":{
+        "name":"E-134 Grain",
+        "type":"stock",
+        "params":[5000000, 0.8, 0.1, 0.8, 1],
+        "influencedBy":[],
+        "description":"The product replicates the price of non-radioactive grain perceived by the markets of the Krok area.",
+        "dividendsPercentage": 0,
+        "daysDividendsFrequency": 0,
+        "commissionPerOperation": 500,
+        "earningTax": 0.5
+    },
     "CSA":{
         "name":"Cosmic Arsenal",
         "type":"stock",

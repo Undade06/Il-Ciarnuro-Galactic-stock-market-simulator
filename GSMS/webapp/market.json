@@ -57,7 +57,7 @@
     "Au":{
         "name":"Gold",
         "type":"stock",
-        "params":[1900, 0.8, 0.1, 0.8, 0.5],
+        "params":[1900, 0.9, 0.002, 0.05, 0.05],
         "influencedBy":[],
         "description":"The product replicates the price of gold perceived by the markets in the Krok area.",
         "dividendsPercentage": 0,

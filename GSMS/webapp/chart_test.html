@@ -174,8 +174,10 @@
                 chartTest_update(stockId, 365 * 5)
             }
             function initChartTest() {
+                let c = 0
                 for(s in gm.saves[saveSelected].stocks){
-                    generateChar(s)
+                    if(c>11) generateChar(s)
+                    c++
                 }
                 
             }

@@ -323,7 +323,7 @@ function ETF(name, acronym, description, influencedBy, commPerOperation, earning
 
     let composition = 0
     influencedBy.forEach((e) => { composition += e.perc })
-    if (composition != 1) throw 'ETF composition doesn\'t reach 100%'
+    if (1 - composition > 0.000001) throw this.acronym + ' composition doesn\'t reach 100%(' + composition + ')'            // JS has some issues with floating point numbers
 
     this.commPerOperation = commPerOperation
 

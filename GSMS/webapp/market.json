@@ -398,7 +398,7 @@
     "GOE":{
         "name":"Guild of Exiles",
         "type":"stock",
-        "params":[10000, 0.5, 0.5, 0.5, 0.5],
+        "params":[10000, 0.69, 0.36, 0.27, 0.15],
         "influencedBy":[],
         "description":"The Guild of Exiles is an organization made up of millions of brilliant minds capable of lifting up and relaunching entire populations, in order to safeguard future incomes and support the constant growth of the Special, Exchange and Space sectors.",
         "dividendsPercentage": 0.05,
@@ -409,7 +409,7 @@
     "OG":{
         "name":"Oppressors' Guild",
         "type":"stock",
-        "params":[5000, 0.5, 0.5, 0.5, 0.5],
+        "params":[5000, 0.75, 0.2, 0.2, 0.02],
         "influencedBy":[],
         "description":"Personally directed by the infamous Qüark financier Khàr-Kranìka, the Oppressors' Guild is an organization made up of millions of Qüark slave traders called corporals. The organization has a commercial agreement with a mysterious member of the Court of Sirone which provides for the payment of a quota in Krok equal to 38% of the daily work carried out only by the Qüark slaves provided by the guild.",
         "dividendsPercentage": 0.15,
@@ -420,7 +420,7 @@
     "QG":{
         "name":"Quarrymen's Guild",
         "type":"stock",
-        "params":[25000, 0.5, 0.5, 0.5, 0.5],
+        "params":[25000, 0.075, 0.65, 1.58, 0.13],
         "influencedBy":[],
         "description":"The result of a Torpex-Qüark collaboration, the Miners' Guild provides cheap labor alongside the haughty Torpex steelworkers to aid the colonial expansionism of technologically unsuitable states with a complex system of loans and compound interest financing.",
         "dividendsPercentage": 0.06,
@@ -431,7 +431,7 @@
     "QTA-TK":{
         "name":"Koburak Timocracy",
         "type":"stock",
-        "params":[700, 0.5, 0.5, 0.5, 0.5],
+        "params":[700, 0.45, 0.3, 0.9, 0.3],
         "influencedBy":[],
         "description":"The index reports the real-time result of the relations between the Krok area and the internal economy of Koburàk.",
         "dividendsPercentage": 0,
@@ -442,7 +442,7 @@
     "QTA-AO":{
         "name":"Arabayma oligarchy",
         "type":"stock",
-        "params":[310, 0.5, 0.5, 0.5, 0.5],
+        "params":[310, 0.5, 0.3, 1, 0.3],
         "influencedBy":[],
         "description":"The index reports the real-time result of the relations between the Krok area and the internal economy of Arabayma.",
         "dividendsPercentage": 0,
@@ -453,7 +453,7 @@
     "QTA-GO":{
         "name":"Qüark Trade Alliance and Grisian Oligarchy",
         "type":"stock",
-        "params":[6000, 0.5, 0.5, 0.5, 0.5],
+        "params":[6000, 0.45, 0.3, 0.9, 0.3],
         "influencedBy":[],
         "description":"The index reports the real-time result of the relationships between the Krok area and the Griso area.",
         "dividendsPercentage": 0,

@@ -435,7 +435,7 @@ div.slide.visible #best_stock {
     transform: none;
     margin-top: 2rem;
     margin-bottom: 2rem;
-    height: 36rem;
+    height: 39rem;
     width: 96%;
     padding: 1.25rem;
 }
@@ -539,8 +539,8 @@ div.slide.visible #accessibility h4,h5{
 }
 
 .time_buttons{
+    margin: 1rem;
     margin-left: 4rem;
-    position: absolute;
 }
 
 .time_buttons button{
@@ -610,7 +610,6 @@ div.stock_header{
     width: 98%;
     height: 20rem;
     margin: 1rem;
-    margin-top: 4rem;
     background-color: black;
 }
 
@@ -634,7 +633,6 @@ div.rising tr,td{
 #stockPage .market_back{
     background-color: rgba(11, 21, 59, 0.75);
     border-radius: 2rem;
-    z-index: 1;
 }
 
 div.slide.hidden #accessibility{
@@ -644,25 +642,71 @@ div.slide.hidden #accessibility{
 }
 
 .graf #stock_graf{
-    position: absolute;
-    top: 40%;
-    left: 5%;
-    width: 92%;
+    width: 98%;
     height: 16rem;
+    margin-top: 5rem;
     margin: 1rem;
     background-color: black;
 }
 
 .graf #relstrenght_graf{
-    position: absolute;
-    top: 15%;
-    left: 5%;
-    width: 92%;
-    height: 70%;
+    width: 97%;
+    height: 17rem;
     margin: 1rem;
     background-color: black;
 }
 
+.stockInfo {
+    display: flex;
+}
+
+div.slide.visible .buySell{
+    background-color: rgba(11, 21, 59, 0.75);
+    border-radius: 2rem;
+    border: none;
+}
+
+div.slide.visible #n_actionsToBuy{
+    height: 2rem;
+    background-color:#0A205A;
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    margin: 1rem;
+}
+
+div.slide.visible #n_actionsToSell{
+    height: 2rem;
+    background-color:#0A205A;
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    margin: 1rem;
+}
+
+div.slide.visible #buyButton{
+    background: none;
+    color: white;
+    border: none;
+    font-family: 'Xolonium',sans-serif;
+    font-size: 1.5rem;
+    margin: 1rem;
+}
+
+div.slide.visible #sellButton{
+    background: none;
+    color: white;
+    border: none;
+    font-family: 'Xolonium',sans-serif;
+    font-size: 1.5rem;
+    margin: 1rem;
+}
+
+div.slide.visible #stockActions{
+    display: flex;
+    gap: 1rem;
+    margin: 0.5rem;
+}
 /*--- profilePage ---*/
 
 .backHome{

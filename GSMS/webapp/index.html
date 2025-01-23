@@ -67,8 +67,10 @@
             <div class="market_back" id="best_stock">
                 <div class="stock_header">
                     <div class="bestStock_name" id="bestStockName" onclick="toSlide('stockPage')"><h2>*Miglior Titolo*</h2></div>
-                    <div class="bestStock_value" id="bestStockValue"><h1>*Valore*</h1></div>
+                    <div class="stockInfo">
+                        <div class="bestStock_value" id="bestStockValue"><h1>*Valore*</h1></div>
                     <div class="bestStock_percentage" id="bestStockRise"><h1>*Aumento%*</h1></div>
+                    </div>
                 </div>
                 <div class="time_buttons">
                     <button id="1d">1d</button>
@@ -138,8 +140,10 @@
             <div class="market_back" id="singleStock">
                 <div class="stock_header">
                     <div class="bestStock_name" id="singleStockName" onclick="toSlide('stockPage')"><h2>*Miglior Titolo*</h2></div>
-                    <div class="bestStock_value" id="singleStockValue"><h1>*Valore*</h1></div>
-                    <div class="bestStock_percentage" id="singleStockRise"><h1>*Aumento%*</h1></div>
+                    <div class="stockInfo">
+                        <div class="bestStock_value" id="singleStockValue"><h1>*Valore*</h1></div>
+                        <div class="bestStock_percentage" id="singleStockRise"><h1>*Aumento%*</h1></div>
+                    </div>
                 </div>
                 <div class="time_buttons">
                     <button id="1d">1d</button>
@@ -151,11 +155,23 @@
                 <div class="graf">
                     <canvas id="stock_graf"></canvas>
                 </div>
-                <div class="market_back" id="relativeStrenght">
-                    <h3>Relative strenght</h3>
-                    <div class="graf">
-                        <canvas id="relstrenght_graf"></canvas>
-                    </div>
+                
+            </div>
+            <div class="market_back" id="relativeStrenght">
+                <h3>Relative strenght</h3>
+                <div class="graf">
+                    <canvas id="relstrenght_graf"></canvas>
+                </div>
+            </div>
+            <div id="stockActions">
+                <div class="buySell" id="buy">
+                    <input type="number" id="n_actionsToBuy">
+                    <button id="buyButton" onclick="">Buy</button>
+                </div>
+                <button id="all_in" onclick="">All in</button>
+                <div class="buySell" id="sell">
+                    <input type="number" id="n_actionsToSell">
+                    <button id="sellButton" onclick="">Sell</button>
                 </div>
             </div>
         </div>

@@ -51,27 +51,26 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     this.value = this._baseValue
 
     this.stability = 1 - stability
-    this.stability = this.stability < 0 ? 0 : this.stability
-    this.stability = this.stability > 1 ? 1 : this.stability
+    this.stability = this.stability < Stock.MINSTABILITY ? Stock.MINSTABILITY : this.stability
+    this.stability = this.stability > Stock.MAXSTABILITY ? Stock.MAXSTABILITY : this.stability
 
     this.growth = growth
-    this.growth = this.growth < 0 ? 0 : this.growth
-    this.growth = this.growth > 10 ? 10 : this.growth
+    this.growth = this.growth < Stock.MINGROWTH ? Stock.MINGROWTH : this.growth
+    this.growth = this.growth > Stock.MAXGROWTH ? Stock.MAXGROWTH : this.growth
 
     this.volatility = volatility
-    this.volatility = this.volatility < 0 ? 0 : this.volatility
-    this.volatility = this.volatility > 5 ? 5 : this.volatility
+    this.volatility = this.volatility < Stock.MINVOLATILITY ? Stock.MINVOLATILITY : this.volatility
+    this.volatility = this.volatility > Stock.MAXVOLATILITY ? Stock.MAXVOLATILITY : this.volatility
 
-    this.seed = seed
-    this.seed = typeof this.seed !== 'number' ? ~~Math.random() * 10000 : this.seed
-    this.seed = this.seed < 1 ? ~~this.seed * 10000 : this.seed
+    this.seed = ~~seed
+    this.seed = typeof this.seed !== 'number' || isNaN(this.seed) || ('' + this.seed).length !== 6 ? ~~(Math.random() * 1000000) : this.seed
 
     this.influenceability = influenceability
-    this.influenceability = this.influenceability < 0 ? 0 : this.influenceability
-    this.influenceability = this.influenceability > 1 ? 1 : this.influenceability
+    this.influenceability = this.influenceability < Stock.MININFLUENCEABILITY ? Stock.MININFLUENCEABILITY : this.influenceability
+    this.influenceability = this.influenceability > Stock.MAXINFLUENCEABILITY ? Stock.MAXINFLUENCEABILITY : this.influenceability
 
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
-    if (Stock.masterCreated === 1 && !this.influencedBy.includes(masterStock)) {
+    if (Stock.masterCreated && !this.influencedBy.includes(masterStock)) {
         this.influencedBy.push(masterStock)            //Add masterstocks in the influences if not present
     }
 
@@ -85,9 +84,9 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
 
     this.krolikRating = this._calculateLongTermInvestmentRating()
 
-    if (Stock.masterCreated === 1) this.FQRating = this._calculateSpeculativeInvestmentRating()          // Nobody cares if masterstock doesn't have a FQRating
+    if (Stock.masterCreated) this.FQRating = this._calculateSpeculativeInvestmentRating()          // Nobody cares if masterstock doesn't have a FQRating
 
-    Stock.masterCreated = 1
+    Stock.masterCreated = true
 
 }
 
@@ -281,27 +280,39 @@ Stock.prototype = {
         return score
 
     },
-    getCommissionsCost: function(operations){
+    getCommissionsCost: function (operations) {
 
-        if(isNaN(operations) || operations < 0) throw 'Invalid operations number'
+        if (isNaN(operations) || operations < 0) throw 'Invalid operations number'
 
         return operations * this.commPerOperation
 
     }
 }
 
+// Stock's parameters limits
 Stock.MAXVALUE = 100000000
 Stock.MINVALUE = 0.001
+Stock.MINSTABILITY = 0
+Stock.MAXSTABILITY = 1
+Stock.MINGROWTH = 0
+Stock.MAXGROWTH = 10
+Stock.MINVOLATILITY = 0
+Stock.MAXVOLATILITY = 5
+Stock.MININFLUENCEABILITY = 0
+Stock.MAXINFLUENCEABILITY = 1
+Stock.SEEDDIGITS = 6
+
+// General Stock constants/variables
 Stock.TIMESTEP = 1 / 250             // 250 step per day
-Stock.masterCreated = 0              //Flag to determine if masterStock is already created. Used to not let the code use masterStock before is created in the constructor
+Stock.masterCreated = false              //Flag to determine if masterStock is already created. Used to not let the code use masterStock before is created in the constructor
 //Hidden stock. Every other stock is influenced by it
 const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 1, 123456, 0, 0.5, '', 0.5, '')
 
 /**
  * ETF constructor
  * 
- * ETFs are a class that simulate Exchange Traded Funds, a type of security that involves a collection of securities.
- * Since is value is then calculated on the stock's value that compose it, it doesn't have its own parameters such as growth, stability ecc.
+ * ETF is a class that simulate Exchange Traded Funds, a type of security that involves a collection of securities.
+ * Since is value is then calculated on the stock's value that compose it, it doesn't have its own parameters such as growth, stability etc.
  * 
  * @param {String} name Complete name of the ETF
  * @param {String} acronym Abbreviation acronym of the ETF
@@ -336,14 +347,9 @@ function ETF(name, acronym, description, influencedBy, commPerOperation, earning
 
     this.earningTax = earningTax
 
-    try {            // Temporary try catch to let test etf be created even without ratings
+    this.krolikRating = this._calculateLongTermInvestmentRating()
 
-        this.krolikRating = this._calculateLongTermInvestmentRating()
-
-        this.FQRating = this._calculateSpeculativeInvestmentRating()
-
-    } catch (ex) { console.log(ex) }
-
+    this.FQRating = this._calculateSpeculativeInvestmentRating()
 }
 
 ETF.prototype = {
@@ -456,9 +462,9 @@ ETF.prototype = {
         return score
 
     },
-    getCommissionsCost: function(operations){
+    getCommissionsCost: function (operations) {
 
-        if(isNaN(operations) || operations < 0) throw 'Invalid operations number'
+        if (isNaN(operations) || operations < 0) throw 'Invalid operations number'
 
         return operations * this.commPerOperation
 
@@ -704,7 +710,7 @@ Player.prototype = {
         if (!(stock instanceof Stock) && !(stock instanceof ETF)) throw 'Stock not defined'
 
         let n = Math.floor(this.wallet / stock.value)
-        while(stock.value * n + stock.getCommissionsCost(n) > this.wallet) n--
+        while (stock.value * n + stock.getCommissionsCost(n) > this.wallet) n--
         this.wallet -= stock.value * n + stock.getCommissionsCost(n)
 
         let pv = stock.value, newAmount = n

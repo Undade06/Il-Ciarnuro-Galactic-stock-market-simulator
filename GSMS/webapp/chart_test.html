@@ -134,7 +134,7 @@
                         const row = document.createElement("tr")
                         row.style.background = "rgba(255,255,255,0.2)"
                         row.innerHTML = `
-                            <td>${stock.acronym + "-" + componentStock.acronym}</td>
+                            <td>${componentStock.acronym}</td>
                             <td>${(perc * 100).toFixed(2)} %</td>`
                         table.appendChild(row)
                     })

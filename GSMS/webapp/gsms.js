@@ -280,6 +280,13 @@ Stock.prototype = {
 
         return score
 
+    },
+    getCommissionsCost: function(operations){
+
+        if(isNaN(operations) || operations < 0) throw 'Invalid operations number'
+
+        return operations * this.commPerOperation
+
     }
 }
 
@@ -447,6 +454,13 @@ ETF.prototype = {
         })
 
         return score
+
+    },
+    getCommissionsCost: function(operations){
+
+        if(isNaN(operations) || operations < 0) throw 'Invalid operations number'
+
+        return operations * this.commPerOperation
 
     }
 }
@@ -663,7 +677,7 @@ Player.prototype = {
         if (!(stock instanceof Stock) && !(stock instanceof ETF)) throw 'Stock not defined'
         if (isNaN(Number(amountP) || amountP % 1 !== 0)) throw 'Amount not supported'
 
-        let price = stock.value * amountP
+        let price = stock.value * amountP + stock.getCommissionsCost(amountP)
 
         if (price > this.wallet) throw 'Player doesn\'t have enough money'
 
@@ -690,7 +704,8 @@ Player.prototype = {
         if (!(stock instanceof Stock) && !(stock instanceof ETF)) throw 'Stock not defined'
 
         let n = Math.floor(this.wallet / stock.value)
-        this.wallet -= stock.value * n
+        while(stock.value * n + stock.getCommissionsCost(n) > this.wallet) n--
+        this.wallet -= stock.value * n + stock.getCommissionsCost(n)
 
         let pv = stock.value, newAmount = n
         if (this.stocks[stock.acronym] !== undefined) {
@@ -715,7 +730,7 @@ Player.prototype = {
         if (this.stocks[stockAcronym] === undefined) throw 'Player doesn\'t own passed stock'
         if (this.stocks[stockAcronym].amount < amountP) throw 'Player doesn\'t have such amount of passed stock'
 
-        this.wallet += this.stocks[stockAcronym].purchaseValue * amountP
+        this.wallet += this.stocks[stockAcronym].purchaseValue * amountP - gm.getStock(stockAcronym).getCommissionsCost(amountP)
 
         this.stocks[stockAcronym].amount -= amountP
         if (this.stocks[stockAcronym].amount === 0) delete (this.stocks[stockAcronym])
@@ -731,7 +746,7 @@ Player.prototype = {
         if (stockAcronym === undefined) throw 'Parameters not supported'
         if (this.stocks[stockAcronym] === undefined) throw 'Player doesn\'t own passed stock'
 
-        this.wallet += this.stocks[stockAcronym].purchaseValue * this.stocks[stockAcronym].amount
+        this.wallet += this.stocks[stockAcronym].purchaseValue * this.stocks[stockAcronym].amount - gm.getStock(stockAcronym).getCommissionsCost(this.stocks[stockAcronym].amount)
 
         delete (this.stocks[stockAcronym])
 

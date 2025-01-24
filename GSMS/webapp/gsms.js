@@ -6,23 +6,24 @@
  * To keep stock behavior real it's recommended to not set all of the stock parameters(stability, growth and volatility) at their maximum nor minimum, 
  * especially not all together
  * 
- * @param {String} name complete name of the stock
- * @param {String} acronym abbreviation acronym of the stock
- * @param {String} description description of the stock
- * @param {Number} baseValue value of the stock at the start of the game simulation (GameManager.STARTDATE)
- * @param {Number} stability stability is a variable that introduces random shock as a real world random event.
+ * @param {String} name Complete name of the stock
+ * @param {String} acronym Abbreviation acronym of the stock
+ * @param {String} description Description of the stock
+ * @param {Number} baseValue Value of the stock at the start of the game simulation (GameManager.STARTDATE).
+        NOTE: stock base value will NOT be the one passed, but another one randomized value based on it
+ * @param {Number} stability Stability is a variable that introduces random shock as a real world random event.
         Due to the implementation of this simulation, its values are set between 0 and 1:
         0 make the stock extremely sensible, changing its trend continuosly
         1 make the stock not too realistically stable, so it's recommended to not set it above 0.9
- * @param {Number} growth growth is an index of how much the stock changes over time, both in rising and falling time.
+ * @param {Number} growth Growth is an index of how much the stock changes over time, both in rising and falling time.
         Actually, even if it's equal to 0 there's enaugh variables to not let stock value be constant, but its behavior won't be directed
- * @param {Number} volatility volatility is the 'drift' in Wiener process, it makes the stock value change in a random way. 
+ * @param {Number} volatility Volatility is the 'drift' in Wiener process, it makes the stock value change in a random way. 
         The higher the value, the higher the variation.
         tests have shown that a volatility value is fairly acceptable between 0 and 5.
         0 - 0.99 will actually decrease variation between values
         it's not recommended to set it above 3 if this stock is influencying other stock(it make those influenced stock behave not realistically)
- * @param {Number} seed seed of the stock, used to differentiate stock with same parameters.
-        It doesn't have particular restriction, apart from being an integer
+ * @param {Number} seed Seed of the stock, used to differentiate stock with same parameters.
+        Due to implementation assumptions it has to be a Stock.SEEDDIGITS(6 digit) integer
  * @param {Number} influenceability Influenceability is a variable that makes the stock value change according to other stocks.
         If the parameters of the stock/s that influences this stock aren't set properly, this stock will not behave realistically
  * @param {Number} dividendsPercentage Percentage of dividends of this stock
@@ -63,7 +64,7 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     this.volatility = this.volatility > Stock.MAXVOLATILITY ? Stock.MAXVOLATILITY : this.volatility
 
     this.seed = ~~seed
-    this.seed = typeof this.seed !== 'number' || isNaN(this.seed) || ('' + this.seed).length !== 6 ? ~~(Math.random() * 1000000) : this.seed
+    this.seed = typeof this.seed !== 'number' || isNaN(this.seed) || ('' + this.seed).length !== Stock.SEEDDIGITS ? ~~(Math.random() * 1000000) : this.seed
 
     this.influenceability = influenceability
     this.influenceability = this.influenceability < Stock.MININFLUENCEABILITY ? Stock.MININFLUENCEABILITY : this.influenceability
@@ -87,6 +88,10 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     if (Stock.masterCreated) this.FQRating = this._calculateSpeculativeInvestmentRating()          // Nobody cares if masterstock doesn't have a FQRating
 
     Stock.masterCreated = true
+
+    this._baseValue += Math.sqrt(~~(Math.random() * 1000)) * normalDistributedNumber(this.seed)         // Simulate passed time of stock history
+    this._baseValue = this._baseValue < Stock.MINVALUE ? Stock.MINVALUE : this._baseValue
+    this._baseValue = this._baseValue > Stock.MAXVALUE ? Stock.MAXVALUE : this._baseValue
 
 }
 

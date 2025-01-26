@@ -49,7 +49,8 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     // Variable to store this stock trend from last Stock.TIMESTEP in order to lighten the calculation
     this._trend = undefined
 
-    this.value = this._baseValue
+    // Array to store last day values in order to simplify the calculation of last day variation
+    this._lastDayValues = []
 
     this.stability = 1 - stability
     this.stability = this.stability < Stock.MINSTABILITY ? Stock.MINSTABILITY : this.stability
@@ -92,6 +93,8 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     this._baseValue += Math.sqrt(~~(Math.random() * 1000)) * normalDistributedNumber(this.seed)         // Simulate passed time of stock history
     this._baseValue = this._baseValue < Stock.MINVALUE ? Stock.MINVALUE : this._baseValue
     this._baseValue = this._baseValue > Stock.MAXVALUE ? Stock.MAXVALUE : this._baseValue
+
+    this.value = this._baseValue
 
 }
 
@@ -146,9 +149,13 @@ Stock.prototype = {
 
         }
 
-        //Reduce the array to just today - t time window
+        this._lastDayValues = w.slice(w.length - (1 / Stock.TIMESTEP))
+
         if (!calculatingTrend) {
 
+            this.value = w[w.length - 1]
+
+            //Reduce the array to just today - t time window
             w = w.splice(w.length - (t / Stock.TIMESTEP), t / Stock.TIMESTEP)
 
             // Reduce the array if it's larger than GameManager.MAXVISUALIZABLEVALUES
@@ -169,7 +176,6 @@ Stock.prototype = {
 
             }
 
-            this.value = w[w.length - 1]
             this._trend = (w[w.length - 1] - w[w.length - 2]) / w[w.length - 2]
 
         }
@@ -203,6 +209,8 @@ Stock.prototype = {
 
         if (mulberry32(this.seed + GameManager.gameTimer()) > this.stability) this.rising *= -1
         this._trend = (v - this.value) / this.value
+        this._lastDayValues.push(v)
+        this._lastDayValues.shift()
         this.value = v
 
         return v
@@ -228,7 +236,7 @@ Stock.prototype = {
     /**
      * Calculate long term investment rating of this stock
      * 
-     * @returns an number representing the score
+     * @returns a number representing the score
      */
     _calculateLongTermInvestmentRating: function () {
 
@@ -296,6 +304,16 @@ Stock.prototype = {
         if (isNaN(sAmount) || sAmount < 0) throw 'Invalid stock\'s amount number'
 
         return sAmount * this.value * this.earningTax
+
+    },
+    /**
+     * Get stock's daily variation
+     * 
+     * @returns Number representing the daily variation(NOT percentage)
+     */
+    getDailyTrend: function () {
+
+        return (this.value - this._lastDayValues[0]) / this._lastDayValues[0]
 
     }
 }
@@ -484,6 +502,22 @@ ETF.prototype = {
         if (isNaN(sAmount) || sAmount < 0) throw 'Invalid ETF\'s amount number'
 
         return sAmount * this.value * this.earningTax
+
+    },
+    /**
+     * Get the daily variation of this ETF based on the daily variation of the stocks that compose it
+     * 
+     * @returns Number representing the daily variation(NOT percentage)
+     */
+    getDailyTrend: function () {
+
+        let avgVariation = 0
+
+        this.influencedBy.forEach((e) => {
+            avgVariation += e.stock.getDailyTrend() * e.perc
+        })
+
+        return avgVariation
 
     }
 }

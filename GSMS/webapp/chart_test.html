@@ -51,8 +51,9 @@
                             data: tempInfluence
                     })
                 }*/
-                document.getElementById('stockValue'+id).innerText = gm.saves[saveSelected].stocks[stock.acronym].value.toFixed(2) + " Kr"
-                document.getElementById('stockRate'+id).innerText = (gm.saves[saveSelected].stocks[stock.acronym].trend(days) * 100).toFixed(2) + " %"
+                document.getElementById('stockValue'+id).innerText = gm.getStock(id).value.toFixed(2) + " Kr"
+                document.getElementById('dailyRate'+id).innerText = (gm.getStock(id).getDailyTrend(days) * 100).toFixed(2) + " %"
+                document.getElementById('rate'+id).innerText = (gm.getStock(id).trend(days) * 100).toFixed(2) + " %"
                 if (!ctx.chartjs) {
                     let chart = new Chart(ctx, {
                         type: "line",
@@ -116,7 +117,8 @@
                         Price: <span id="stockValue${stockId}"></span>
                     </div>
                     <div>
-                        Rate: <span id="stockRate${stockId}"></span>
+                        Daily rate: <span id="dailyRate${stockId}"></span><br>
+                        Selected rate: <span id="rate${stockId}"></span><br>
                     </div>
                     <div style="width:100%; max-width:50rem; height:30rem;">
                         <canvas class="chart" id="chart${stockId}"></canvas>

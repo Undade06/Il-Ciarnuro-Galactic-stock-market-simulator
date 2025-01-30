@@ -8,7 +8,7 @@
         <link rel="icon" type="image/png" href="favicon.png"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
-    <body onload="">
+    <body onload="toSlide('stockPage')">
         <div class="bg"></div>
         <div class="slide visible" id="landingPage">
             <img src="pics/logo.webp" id="logo">
@@ -173,9 +173,9 @@
                     <input type="number" id="n_actionsToSell">
                     <button id="sellButton" onclick="">Sell</button>
                 </div>
-                <button class="openbtn" onclick="openNav()">Info</button>
+                <button class="infoButton" onclick="toggleNav()">Info</button>
             </div>
-            <div id="mySidepanel" class="sidepanel">
+            <div id="infoPanel" class="sidepanel">
                 
             </div>
         </div>

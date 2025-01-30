@@ -170,3 +170,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const profileNameElement = document.getElementById("profileName");
     profileNameElement.innerText = `Name: ${username}`;
 });
+
+//Sidepanel
+function openNav() {
+    document.getElementById("mySidepanel").style.width = "20rem";
+  }
+  
+  /* Set the width of the sidebar to 0 (hide it) */
+  function closeNav() {
+    document.getElementById("mySidepanel").style.width = "0";
+  }
+
+function toggleNav(){
+    if(document.getElementById("infoPanel").style.width==="0rem"){
+        openNav()
+    }else{
+        closeNav()
+    }
+}

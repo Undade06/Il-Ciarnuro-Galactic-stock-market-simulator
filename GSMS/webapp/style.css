@@ -39,7 +39,6 @@ div.slide.hidden #logoLogin{
 
 body{
     overflow-x: hidden;
-    position: absolute;
 }
 
 .bg{
@@ -144,24 +143,17 @@ div.planet{
 /*---LoginPage---*/
 
 #logoLogin{
-    height: 15%;
-    position: fixed;
-    top: 15%;
-    left: 49.8%;
-    transform: translate(-50%, -50%);
-    transition: top 2s ease, left 2s ease;
-    z-index: 2;
-    background-color: rgba(0, 0, 0, 0.75);
-    border: none;
-    border-radius: 1rem;
-}
 
-div.slide.hidden #planetLogin {
-    top: 48rem;
+    max-width: 50rem;
+    height: auto;
+    position: fixed;
+    top: 9rem; 
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 2;
     transition: top 2s ease, left 2s ease;
-    z-index: -1;
+    background-color: rgba(0, 0, 0, 0.75);
+    border-radius: 1rem;
 }
 
 div.slide.visible #planetLogin {
@@ -190,22 +182,6 @@ div.slide.visible #shadowLogin{
     transition: top 2s ease, left 2s ease;
     z-index: 0;
 }*/
-
-div.slide.hidden #log_reg_back {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color:rgba(0, 0, 0, 0.75);
-    opacity: 0%;
-    transition: 1s ease-in;
-    width: 27%; 
-    height: 35%; 
-    padding: 1.5%;
-    border-radius: 2rem;
-    text-align: center;
-    z-index: 0;
-}
 
 div.slide.visible #log_reg_back{
     position: fixed;
@@ -632,8 +608,6 @@ div.rising tr,td{
 
 div.slide.hidden #accessibility{
     display: none;
-    width: 0;
-    height: 0;
 }
 
 .graf #stock_graf{
@@ -836,8 +810,6 @@ div.slide.visible #logoProfile{
 }
 
 div.slide.hidden #logoProfile{
-    width: 0;
-    height: 0;
     display: none;
 }
 
@@ -887,16 +859,6 @@ div.slide.hidden #logoProfile{
         height: auto;
     }
 
-
-    div.slide.hidden #log_reg_back {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        width: 27%; 
-        height: 35%; 
-        padding: 1.5%;
-        text-align: center;
-    }
     div.slide.visible #log_reg_back{
         position: fixed;
         top: 50%;

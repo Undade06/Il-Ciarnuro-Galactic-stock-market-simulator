@@ -65,7 +65,7 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     this.volatility = this.volatility > Stock.MAXVOLATILITY ? Stock.MAXVOLATILITY : this.volatility
 
     this.seed = ~~seed
-    this.seed = typeof this.seed !== 'number' || isNaN(this.seed) || ('' + this.seed).length !== Stock.SEEDDIGITS ? ~~(Math.random() * 1000000) : this.seed
+    this.seed = typeof this.seed !== 'number' || isNaN(this.seed) || ('' + this.seed).length !== Stock.SEEDDIGITS ? ~~(Math.random() * Math.pow(10, Stock.SEEDDIGITS)) : this.seed
 
     this.influenceability = influenceability
     this.influenceability = this.influenceability < Stock.MININFLUENCEABILITY ? Stock.MININFLUENCEABILITY : this.influenceability
@@ -541,6 +541,9 @@ function GameManager(pName = undefined) {
     // Saves array that contains each player saves with their own different market
     this.saves = []
 
+    // Last time player accessed the game in game time
+    this.lastAccess = GameManager.gameTimer()
+
 }
 
 GameManager.prototype = {
@@ -646,7 +649,7 @@ GameManager.prototype = {
 
     },
     /**
-     * Function to manage player purchase action
+     * Function to manage player purchase action. It makes the player buy passed stock and set interval to pay dividends
      * 
      * @param {String} sAcronym acronym of the stock(index of stock dictionary)
      * @param {Number} amount amount of stock to buy
@@ -657,7 +660,10 @@ GameManager.prototype = {
         if (this.saveSelected === undefined) throw 'Save not initialized'
 
         try {
+
             this.player.buy(this.saves[this.saveSelected].stocks[sAcronym], amount)
+            this.setDividendsPayment(sAcronym)
+
         } catch (error) {
             console.error(error)
         }
@@ -680,24 +686,107 @@ GameManager.prototype = {
             console.error(error)
         }
 
+    },
+    /**
+     * Set when the dividends of passed stock will be paid to player
+     * 
+     * @param {String} sAcr Acronym of stock to set dividends payment
+     */
+    setDividendsPayment: function (sAcr) {
+
+        let s = this.getStock(sAcr)
+        if (s === undefined) throw 'Stock doesn\'t exists'
+        if (s.dividendsPercentage === 0) throw 'Stock doesn\'t pay dividends'
+        if (this.player.stocks[sAcr] === undefined) throw 'Player doesn\'t own passed stock'
+
+        // Next payment day couldn't be exaclty in stock daysDividendsFrequency from now
+        setTimeout(() => {
+
+            if (this.player.stocks[sAcr] === undefined) return
+
+            this.player.wallet += this.getStock(sAcr).dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount
+            alert(sAcr + ' dividends payment: ' + this.getStock(sAcr).dividendsPercentage * 100 + ' * ' + this.getStock(sAcr).value + ' * ' + this.player.stocks[sAcr].amount + ' = ' + s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount + 'Kr')
+
+            // But now it will
+            let id = setInterval(() => {
+
+                if (this.player.stocks[sAcr] === undefined) {
+                    clearInterval(id)
+                    return
+                }
+
+                this.player.wallet += s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount
+                alert(sAcr + ' dividends payment: ' + s.dividendsPercentage * 100 + ' * ' + this.getStock(sAcr).value + ' * ' + this.player.stocks[sAcr].amount + ' = ' + s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount + 'Kr')
+
+            }, s.daysDividendsFrequency * (((24 * 60 * 60) / GameManager.SECSPEEDUP) * 1000))
+
+        }, ((GameManager.gameTimer() - GameManager.STARTDATE) % (this.getStock(sAcr).daysDividendsFrequency * 24 * 60 * 60 / GameManager.SECSPEEDUP)) * 1000)
+
+    },
+    /**
+     * Function to determine from what stock and how much the player must be paid from dividends from its last access to the game.
+     * Since it consider current player owned stock, it's supposed to be called before player can buy or sell any stocks when accessing the game
+     * 
+     * @returns Array(dictionary) with every stock and amount paid to player, nothing if player didn't own any stock or no dividends has to be paid
+     */
+    checkDividendsPayment: function () {
+
+        if (Object.keys(this.player.stocks).length === 0) return
+        let now = GameManager.gameTimer(), payments = {}, interval
+
+        for (acr in this.player.stocks) {
+
+            interval = this.getStock(acr).daysDividendsFrequency * 24 * 60 * 60 / GameManager.SECSPEEDUP
+
+            if (this.getStock(acr).dividendsPercentage !== 0 && this.lastAccess + interval < now) {
+
+                payments[acr] = 0
+
+                // Values to find what was the stock value when the dividends has been paid
+                let values = this.getStock(acr).simulateHistory(365 * 5, true)
+
+                // Determine when the dividends has been paid and store that stock value
+                for (let i = now; i > this.lastAccess; i -= interval) {
+
+                    payments[acr] += values[~~(values.length - (now - i) - 1)] * this.getStock(acr).dividendsPercentage * this.player.stocks[acr].amount
+
+                }
+
+                this.player.wallet += payments[acr]
+
+            }
+
+        }
+
+        return payments
+
     }
     // TO DO: when db will be available, create the function to query it and load or save the save with the correct seed
 }
 
-GameManager.YEARSHIFT = 150                      // ~2174
-GameManager.MAXYEARGAP = 5              // Maximum year gap that can be simulted by stock generation
-GameManager.SPEEDUP = 60                //1 real second = 1 game minute
+GameManager.YEARSHIFT = 150             // ~2175
+GameManager.MAXYEARGAP = 5              // Maximum year gap that can be simulated by stock generation
+GameManager.SECSPEEDUP = 60             // 1 real second = 1 game minute
 GameManager.REALSTARTDATE = new Date().getTime()
-GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 365 * 24 * 60 * 60 * 1000 * GameManager.YEARSHIFT).getTime()
+GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 1000 * 24 * 60 * 60 * 365 * GameManager.YEARSHIFT).getTime()
 GameManager.MAXSAVES = 3
 GameManager.MAXVISUALIZABLEVALUES = 1 / Stock.TIMESTEP
+GameManager.TIMESTEPPERREALDAY = (1 / Stock.TIMESTEP) * GameManager.SECSPEEDUP
 
-//Function that return game time as number representing the days passed since the game started
+/**
+ * Function that return game time as number representing the days passed since the game started
+ * 
+ * @returns Number representing the game's days passed since the game started
+ */
 GameManager.gameTimer = function () {
-    return new Date(GameManager.STARTDATE + (new Date().getTime() - GameManager.REALSTARTDATE) * GameManager.SPEEDUP) / (1000 * 60 * 60 * 24)
+    return new Date(GameManager.STARTDATE + (new Date().getTime() - GameManager.REALSTARTDATE) * GameManager.SECSPEEDUP) / (1000 * 60 * 60 * 24)
 }
 
-//Function that return game timer as a readable date
+/**
+ * Function that return game timer as a readable date
+ * 
+ * @returns Date object representing the game's date
+ */
 GameManager.gameTimerAsDate = function () {
     return new Date(GameManager.gameTimer() * (1000 * 60 * 60 * 24))
 }

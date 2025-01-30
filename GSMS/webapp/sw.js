@@ -31,7 +31,7 @@ self.addEventListener('install', (e) => {
   };
   e.waitUntil(caches.open(cacheName).then(filesUpdate));
 });
-
+/*
 // Called when the app fetches a resource like an image, caches it automatically except for pwaversion.txt, which is always fetched
 self.addEventListener('fetch', (e) => {
   e.respondWith(
@@ -54,7 +54,7 @@ self.addEventListener('fetch', (e) => {
       }
     })()
   );
-});
+});*/
 
 // Called when the service worker is started
 self.addEventListener('activate', (e) => {

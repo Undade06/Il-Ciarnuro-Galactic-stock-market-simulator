@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="utf-8" />
+        <title>Temp</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="manifest" href="manifest.json" />
+        <link rel="icon" type="image/png" href="favicon.png" />
+        <meta name="viewport" content="width=device-width" />
+        <script src="lib/chart.js" type="text/javascript"></script>
+        <script src="lib/chartjs-adapter-date-fns.bundle.min.js" type="text/javascript"></script>
+        <script src="app.js" type="text/javascript"></script>
+        <script src="gsms.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            let gm = new GameManager('prova')
+            let saveSelected = 1
+            gm.initializeSave(saveSelected)
+            function chartTest_update(id, days) {
+                document.getElementById('gameT').innerText = GameManager.gameTimerAsDate().toGMTString()
+                let stock
+                try {
+                    stock = gm.getStock(id)
+                } catch (error) {
+                    console.log(error)
+                    return
+                }
+                let ctx = document.getElementById(id).querySelector("canvas.chart")
+                let end = GameManager.gameTimer()
+                let temp = gm.getHistory(stock.acronym, days)
+                let values = [], tempInfluence = [], tempInfluenceValues = []
+                //if(id != '1') tempInfluenceValues = stock.influencedBy[0].simulateHistory(days)
+                let k = 0
+                for (i = 0; i < GameManager.MAXVISUALIZABLEVALUES; i += 1){
+                    values.push({ x: i * (1000 * 60 * 60 * 24), y: temp[k] })
+                    tempInfluence.push({ x: i * (1000 * 60 * 60 * 24), y: tempInfluenceValues[k] })
+                    k++
+                }
+                let datasetsT = [{
+                    label: stock.name,
+                    indexAxis: 'x',
+                    borderWidth: 1,
+                    radius: 0,
+                    data: values
+                }]
+                /*if(id != '1'){
+                    datasetsT.push({                        //To do: fix bug(on updating time window tempInfluence and values take the same values)
+                        label: stock.influencedBy[0].name,
+                            indexAxis: 'x',
+                            borderWidth: 1,
+                            radius: 0,
+                            data: tempInfluence
+                    })
+                }*/
+                document.getElementById('stockValue'+id).innerText = gm.getStock(id).value.toFixed(2) + " Kr"
+                document.getElementById('dailyRate'+id).innerText = (gm.getStock(id).getDailyTrend(days) * 100).toFixed(2) + " %"
+                document.getElementById('rate'+id).innerText = (gm.getStock(id).trend(days) * 100).toFixed(2) + " %"
+                if (!ctx.chartjs) {
+                    let chart = new Chart(ctx, {
+                        type: "line",
+                        data: {
+                            datasets: datasetsT
+                        },
+                        options: {
+                            animation: false,
+                            parsing: false,
+                            //responsive:false,
+                            interaction: {
+                                mode: 'nearest',
+                                axis: 'x',
+                                intersect: false
+                            },
+                            plugins: {
+                                decimation: {
+                                    enabled: true,
+                                    samples: 10
+                                },
+                                legend: {
+                                    display: false,
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    type: 'time',
+                                    time: {
+                                        unit: 'day'
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Data',
+                                    },
+                                },
+                                y: {
+                                    type: 'linear',
+                                    title: {
+                                        display: true,
+                                        text: 'Kr',
+                                    },
+                                    /*min:0*/
+                                }
+                            },
+                        }
+                    })
+                    ctx.chartjs = chart
+                } else {
+                    ctx.chartjs.data.datasets = datasetsT
+                    ctx.chartjs.update()
+                }
+            }
+            function generateChar(stockId){
+                const stock = gm.getStock(stockId)
+                const container = document.createElement("div")
+                container.id = stockId
+
+                container.innerHTML = `
+                    <h2>${stock.acronym}</h2>
+                    <div>
+                        Price: <span id="stockValue${stockId}"></span>
+                    </div>
+                    <div>
+                        Daily rate: <span id="dailyRate${stockId}"></span><br>
+                        Selected rate: <span id="rate${stockId}"></span><br>
+                    </div>
+                    <div style="width:100%; max-width:50rem; height:30rem;">
+                        <canvas class="chart" id="chart${stockId}"></canvas>
+                    </div>
+                    <div>
+                        <button onclick="chartTest_update('${stockId}', 1)">1d</button>
+                        <button onclick="chartTest_update('${stockId}', 7)">1w</button>
+                        <button onclick="chartTest_update('${stockId}', 30)">1m</button>
+                        <button onclick="chartTest_update('${stockId}', 365)">1y</button>
+                        <button onclick="chartTest_update('${stockId}', 1825)">5y</button>
+                    </div>`
+                if (stock.type === "ETF") {
+                    const table = document.createElement("table")
+                    stock.influencedBy.forEach(({ stock: componentStock, perc }) => {
+                        const row = document.createElement("tr")
+                        row.style.background = "rgba(255,255,255,0.2)"
+                        row.innerHTML = `
+                            <td>${componentStock.acronym}</td>
+                            <td>${(perc * 100).toFixed(2)} %</td>`
+                        table.appendChild(row)
+                    })
+                    container.appendChild(table)
+                } else if (stock.type === "stock") {
+                    const table = document.createElement("table")
+                    table.innerHTML = `
+                        <tr>
+                            <td><label>Base value:</label></td>
+                            <td><input id="${stockId}baseValue" type="number" value="${stock._baseValue}" onchange="gm.saves[saveSelected].stocks['${stockId}']._baseValue=Number(document.getElementById('${stockId}baseValue').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Influenceability:</label></td>
+                            <td><input id="${stockId}influenceability" type="number" step="0.01" value="${stock.influenceability}" onchange="gm.saves[saveSelected].stocks['${stockId}'].influenceability=Number(document.getElementById('${stockId}influenceability').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Stability:</label></td>
+                            <td><input id="${stockId}stability" type="number" step="0.1" value="${stock.stability}" onchange="gm.saves[saveSelected].stocks['${stockId}'].stability=Number(document.getElementById('${stockId}stability').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Growth:</label></td>
+                            <td><input id="${stockId}growth" type="number" step="0.1" value="${stock.growth}" onchange="gm.saves[saveSelected].stocks['${stockId}'].growth=Number(document.getElementById('${stockId}growth').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Volatility:</label></td>
+                            <td><input id="${stockId}volatility" type="number" step="0.01" value="${stock.volatility}" onchange="gm.saves[saveSelected].stocks['${stockId}'].volatility=Number(document.getElementById('${stockId}volatility').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Seed:</label></td>
+                            <td><input id="${stockId}seed" type="number" value="${stock.seed}" onchange="gm.saves[saveSelected].stocks['${stockId}'].seed=Number(document.getElementById('${stockId}seed').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                        </tr>`
+                    container.appendChild(table)
+                }
+
+                document.getElementById("stocks").appendChild(container)
+
+                chartTest_update(stockId, 365 * 5)
+            }
+            function initChartTest() {
+                for(s in gm.saves[saveSelected].stocks){
+                    generateChar(s)
+                }
+                
+            }
+        </script>
+    </head>
+
+    <body>
+        <div>
+            Current date: <span id="gameT"></span>
+        </div>
+        <button style="position: fixed; top: 0; left: auto; right: 0;" onclick="initChartTest()">Initialize stocks</button>
+        <div class="temp" id="stocks">
+        </div>
+    </body>
+</html>

@@ -173,18 +173,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //Sidepanel
 function openNav() {
-    document.getElementById("mySidepanel").style.width = "20rem";
-  }
+    const panel = document.getElementById("infoPanel");
+    panel.style.display = "block";
+    // Piccolo delay per permettere al display:block di attivarsi prima dell'animazione
+    setTimeout(() => {
+        panel.style.width = "20rem";
+    }, 10);
+}
   
-  /* Set the width of the sidebar to 0 (hide it) */
-  function closeNav() {
-    document.getElementById("mySidepanel").style.width = "0";
-  }
+function closeNav() {
+    const panel = document.getElementById("infoPanel");
+    panel.style.width = "0";
+}
 
-function toggleNav(){
-    if(document.getElementById("infoPanel").style.width==="0rem"){
-        openNav()
-    }else{
-        closeNav()
+function toggleNav() {
+    const panel = document.getElementById("infoPanel");
+    if (panel.style.width === "20rem") {
+        closeNav();
+    } else {
+        openNav();
     }
 }

@@ -142,7 +142,7 @@ div.planet{
 
 /*---LoginPage---*/
 
-#logoLogin{
+div.slide.visible #logoLogin{
 
     max-width: 50rem;
     height: auto;
@@ -198,12 +198,12 @@ div.slide.visible #log_reg_back{
     z-index: 0;
 }
 
-div#log_reg_back .content {
+div.slide.visible #log_reg_back .content {
     opacity: 1;
     z-index: 1;
 }
 
-input.log_reg_input{
+div.slide.visible input.log_reg_input{
     font-family: 'Xolonium_regular', sans-serif;
     font-weight: bold;
     color: #FFFFFF;
@@ -217,7 +217,7 @@ input.log_reg_input{
     margin-top: 6%;
 }
 
-.buttons_log_reg{
+div.slide.visible .buttons_log_reg{
     position: absolute;
     top: 85%;
     left: 50%;
@@ -227,7 +227,7 @@ input.log_reg_input{
     z-index: 1;
 }
 
-.buttons_log_reg button{
+div.slide.visible .buttons_log_reg button{
     position: relative;
     background-color: #0A205A;
     color: white;
@@ -688,56 +688,56 @@ div.slide.visible #all_in{
     width: 7rem;
     opacity: 0.8;
 }
+
 /*--- Sidepannel ---*/
 
-.sidepanel {
-    height: 250px; /* Specify a height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
+#infoPanel, .sidepanel {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1000;
     top: 0;
-    left: 0;
-    background-color: #111; /* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidepanel */
-  }
-  
-  /* The sidepanel links */
-  .sidepanel a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 1.5rem;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-  }
-  
-  /* Style the button that is used to open the sidepanel */
-  .openbtn {
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #111;
+    right: 0;
+    background-color: #0A205A;
+    overflow-x: hidden;
+    transition: width 0.5s ease;
     color: white;
-    padding: 10px 15px;
-    border: none;
-  }
-  
-  .openbtn:hover {
-    background-color: #444;
-  }
+    font-family: 'Xolonium', sans-serif;
+    display: none;
+}
+
+.infoButton {
+    background-color: #0A205A;
+    color: white;
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    width: 6rem;
+    height: 3rem;
+    margin-top: 1.1rem;
+    margin-left: 1.1rem;
+    margin-right: 1.1rem;
+    font-size: 1.5em;
+    border-style: solid;
+    border-width: 0.1rem;
+    transition: 1.5s ease-in;
+    border-radius: 0.6rem;
+    z-index: 1;
+    opacity: 0.8;
+}
 
 /*--- profilePage ---*/
 
 .backHome{
     position: absolute;
-    top:0; left:0;
+    top:0; 
+    left:0;
     background: #0A205A;
     width: 5rem;
     height: 3rem;
     border: none;
     border-radius: 0.7rem;
     padding: 0.5rem;
+    margin: 0.5rem;
     z-index: 9999;
 }
 div.slide.hidden .profile_back {
@@ -745,7 +745,7 @@ div.slide.hidden .profile_back {
 }
 
 div.slide.visible .profile_back{
-    width: 92%;
+    width: 85rem;
     height: 40%;
     background-color: rgba(11, 21, 59, 0.75);
     border-radius: 2rem;
@@ -801,12 +801,14 @@ div.slide.hidden #logoProfile{
 
 .profile_back #riquadroInterno{
     position: absolute;
-    left: 10%;
+    left: 5%;
     right: 20%;
     top: 10%;
     bottom: 10%;
-    width: 80%;
+    width: 90%;
     height: 80%;
+    border: none;
+    border-radius: 1rem;
     background:rgba(21, 145, 234, 0.1);
 }
 #riquadroInterno img{
@@ -815,6 +817,14 @@ div.slide.hidden #logoProfile{
     margin:1rem;
 }
 
+div.slide.visible #profileInfo{
+    position: absolute;
+    top: 0;
+    left: 20rem;
+    font-family: 'Xolonium', sans-serif;
+    color: white;
+    font-size: 1.5rem;
+}
 
 
 @media screen and (max-width:45rem) {

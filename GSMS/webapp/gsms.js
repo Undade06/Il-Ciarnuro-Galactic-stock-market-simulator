@@ -155,7 +155,7 @@ Stock.prototype = {
 
             this.value = w[w.length - 1]
 
-            //Reduce the array to just today - t time window
+            // Reduce the array to just today - t time window
             w = w.splice(w.length - (t / Stock.TIMESTEP), t / Stock.TIMESTEP)
 
             // Reduce the array if it's larger than GameManager.MAXVISUALIZABLEVALUES
@@ -759,6 +759,118 @@ GameManager.prototype = {
         }
 
         return payments
+
+    },
+    /**
+    * Function called to create and update in time a stock graph
+    * 
+    * @param {String} sAcronym acronym of the stock(index of stock dictionary)
+    * @param {Number} timeSpan time window in the past in which values are displayed
+    * @param {String} id DOM id to manage updates in time
+    */
+    setGraph: function (sAcronym, timeSpan = 1, id) {
+
+        if (this.saveSelected === undefined) throw 'Save not initialized'
+        if (timeSpan < 1) throw 'Time span cannot be lower than 1 day'
+        if (document.getElementById(id) === undefined) throw 'Undefined graph'
+
+        let g = document.getElementById(id)
+        if (!(g instanceof HTMLCanvasElement)) g = g.querySelector('canvas.chart')
+        if (!(g instanceof HTMLCanvasElement)) throw 'Couldn\'t find a graph'
+
+        let s = this.getStock(sAcronym)
+        let history = s.simulateHistory(timeSpan), values = []
+        let date = GameManager.gameTimer() - timeSpan
+        let step = timeSpan / GameManager.MAXVISUALIZABLEVALUES
+
+        for (let i = 0; i < GameManager.MAXVISUALIZABLEVALUES; i++) {
+            values.push({ x: (date * (1000 * 60 * 60 * 24)), y: history[i] })
+            date += step
+        }
+
+        if (g.chartjs === undefined) {
+
+            g.chartjs = new Chart(g, {
+                type: "line",
+                data: {
+                    datasets: [{
+                        label: s.name,
+                        indexAxis: 'x',
+                        borderWidth: 1,
+                        radius: 0,
+                        data: values
+                    }]
+                },
+                options: {
+                    animation: false,
+                    parsing: false,
+                    //responsive:false,
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    },
+                    plugins: {
+                        decimation: {
+                            enabled: true,
+                            samples: 10
+                        },
+                        legend: {
+                            display: false,
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day',
+                                displayFormats: {
+                                    day: 'yyyy-MM-dd'
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Data',
+                            },
+                        },
+                        y: {
+                            type: 'linear',
+                            title: {
+                                display: true,
+                                text: 'Kr',
+                            },
+                            /*min:0*/
+                        }
+                    },
+                }
+            })
+
+        } else {
+
+            g.chartjs.data.datasets[0].data = values
+            g.chartjs.update()
+
+        }
+
+        // Variable to track stock value in order to calculate avg value before add another point to graph
+        let firstValueNotDisplayed = s.nextValue(), lastValueNotDisplayed, counter = 0
+
+        setInterval(() => {
+
+            lastValueNotDisplayed = s.nextValue()
+
+            if (counter % timeSpan === 0) {
+
+                values.push({ x: (date * (1000 * 60 * 60 * 24)), y: (firstValueNotDisplayed + lastValueNotDisplayed) / 2 })
+                date += step
+                g.chartjs.data.datasets[0].data = values
+                g.chartjs.update()
+
+            }
+
+            counter++
+
+        }, 1000)
 
     }
     // TO DO: when db will be available, create the function to query it and load or save the save with the correct seed

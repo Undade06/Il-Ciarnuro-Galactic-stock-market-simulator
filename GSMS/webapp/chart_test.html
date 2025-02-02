@@ -16,7 +16,7 @@
             let saveSelected = 1
             gm.initializeSave(saveSelected)
             function chartTest_update(id, days) {
-                document.getElementById('gameT').innerText = GameManager.gameTimerAsDate().toGMTString()
+                document.getElementById('gameT').innerText = new Date(GameManager.gameTimer()).toGMTString()
                 let stock
                 try {
                     stock = gm.getStock(id)
@@ -99,10 +99,11 @@
                 chartTest_update(stockId, 365 * 5)
             }
             function initChartTest() {
-                for(s in gm.saves[saveSelected].stocks){
+                /*for(s in gm.saves[saveSelected].stocks){
                     generateChar(s)
-                }
-                
+                }*/
+                gm.startGame()
+                generateChar('master stock')
             }
         </script>
     </head>

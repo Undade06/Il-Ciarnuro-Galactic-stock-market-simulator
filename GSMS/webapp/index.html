@@ -27,8 +27,8 @@
             <div class="planet" id="planetLogin"></div>
             <div class="back" id="log_reg_back">
                 <div class="content">
-                    <input type="text" placeholder="Username" class="log_reg_input">
-                    <input type="password" placeholder="Password" class="log_reg_input">
+                    <input type="text" placeholder="Username" class="log_reg_input" id="usernameAccedi">
+                    <input type="password" placeholder="Password" class="log_reg_input" id="passwordAccedi">
                     <div class="errorText" id="loginError"></div>
                     <div class="buttons_log_reg">
                         <button onclick="if(loginCheck()) toSlide('saves')">Login</button>
@@ -42,10 +42,10 @@
             <div class="planet" id="planetStatic"></div>
             <div class="back" id="registerPage_back">
                 <div class="content">
-                    <input type="text" placeholder="Username" class="register_input">
-                    <input type="email" placeholder="Email" class="register_input">
-                    <input type="password" placeholder="Password" class="register_input">
-                    <input type="password" placeholder="Confirm Password" class="register_input">
+                    <input type="text" placeholder="Username" class="register_input" id="username">
+                    <input type="text" placeholder="Email" class="register_input" id="email">
+                    <input type="password" placeholder="Password" class="register_input" id="password">
+                    <input type="password" placeholder="Confirm Password" class="register_input" id="confirmPassword">
                     <div class="errorText" id="registerError"></div>
                     <div class="register_buttons">
                         <button onclick="toSlide('login_register')">Back</button>
@@ -192,3 +192,4 @@
         </div>
     </body>
 </html>
+

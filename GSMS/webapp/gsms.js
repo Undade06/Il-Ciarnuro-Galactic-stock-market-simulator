@@ -831,6 +831,7 @@ GameManager.prototype = {
         let g = document.getElementById(id)
         if (!(g instanceof HTMLCanvasElement)) g = g.querySelector('canvas.chart')
         if (!(g instanceof HTMLCanvasElement)) throw 'Couldn\'t find a graph'
+        console.log(g)
 
         let s = this.getStock(sAcronym)
         let history = s.simulateHistory(timeSpan, true), values = []

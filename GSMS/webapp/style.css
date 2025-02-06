@@ -282,14 +282,14 @@ div.slide.hidden #registerPage_back{
 
 div.slide.visible #registerPage_back{
     position: fixed;
-    top: 55%;
+    top: 62%;
     left: 50%;
     transform: translate(-50%,-50%);
     background-color: rgba(0, 0, 0, 0.75);
     width: 100%;
     max-width: 30rem;
     height: 90%;
-    max-height: 20rem;
+    max-height: 25rem;
     padding: 1rem;
     border-radius: 2rem;
     text-align: center;

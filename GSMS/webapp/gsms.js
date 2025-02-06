@@ -73,18 +73,22 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     this.influenceability = this.influenceability < Stock.MININFLUENCEABILITY ? Stock.MININFLUENCEABILITY : this.influenceability
     this.influenceability = this.influenceability > Stock.MAXINFLUENCEABILITY ? Stock.MAXINFLUENCEABILITY : this.influenceability
 
+    if (dividendsPercentage === undefined || isNaN(dividendsPercentage) || dividendsPercentage < 0 || dividendsPercentage > 1) throw this.acronym + ': undefined or illegal dividends percentage(' + dividendsPercentage + ')'
+    this.dividendsPercentage = dividendsPercentage
+
+    if (daysDividendsFrequency === undefined || isNaN(daysDividendsFrequency) || daysDividendsFrequency < 0) throw this.acronym + ': undefined or illegal dividends frequency in days(' + daysDividendsFrequency + ')'
+    this.daysDividendsFrequency = daysDividendsFrequency
+
+    if (commPerOperation === undefined || isNaN(commPerOperation) || commPerOperation < 0) throw this.acronym + ': undefined or illegal commissions per operation(' + commPerOperation + ')'
+    this.commPerOperation = commPerOperation
+
+    if (earningTax === undefined || isNaN(earningTax) || earningTax < 0 || earningTax > 1) throw this.acronym + ': undefined or illegal tax over earnings(' + daysDividendsFrequency + ')'
+    this.earningTax = earningTax
+
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
     if (Stock.masterCreated && !this.influencedBy.includes(masterStock)) {
         this.influencedBy.push(masterStock)            //Add masterstocks in the influences if not present
     }
-
-    this.dividendsPercentage = dividendsPercentage
-
-    this.daysDividendsFrequency = daysDividendsFrequency
-
-    this.commPerOperation = commPerOperation
-
-    this.earningTax = earningTax
 
     //this.krolikRating = this._calculateLongTermInvestmentRating()
 
@@ -333,7 +337,7 @@ Stock.SEEDDIGITS = 6
 Stock.TIMESTEP = 1 / 250             // 250 step per day
 Stock.masterCreated = false              //Flag to determine if masterStock is already created. Used to not let the code use masterStock before is created in the constructor
 //Hidden stock. Every other stock is influenced by it
-const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 1, 123456, 0, 0.5, '', 0.5, '')
+const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 1, 123456, 0, 0.5, 0, 0.5, 0)
 
 /**
  * Function to reduce an array of number(stock history) in order to fit GameManager.MAXVISUALIZABLEVALUES
@@ -831,7 +835,6 @@ GameManager.prototype = {
         let g = document.getElementById(id)
         if (!(g instanceof HTMLCanvasElement)) g = g.querySelector('canvas.chart')
         if (!(g instanceof HTMLCanvasElement)) throw 'Couldn\'t find a graph'
-        console.log(g)
 
         let s = this.getStock(sAcronym)
         let history = s.simulateHistory(timeSpan, true), values = []

@@ -99,11 +99,11 @@
                 chartTest_update(stockId, 365 * 5)
             }
             function initChartTest() {
-                /*for(s in gm.saves[saveSelected].stocks){
-                    generateChar(s)
-                }*/
                 gm.startGame()
-                generateChar('master stock')
+                for(s in gm.saves[saveSelected].stocks){
+                    generateChar(s)
+                }
+                //generateChar('Li')
             }
         </script>
     </head>

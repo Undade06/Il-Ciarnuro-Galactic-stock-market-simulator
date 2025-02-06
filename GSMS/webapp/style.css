@@ -143,8 +143,8 @@ div.planet{
 /*---LoginPage---*/
 
 div.slide.visible #logoLogin{
-
     max-width: 50rem;
+    width: 100%;
     height: auto;
     position: fixed;
     top: 9rem; 
@@ -185,16 +185,18 @@ div.slide.visible #shadowLogin{
 
 div.slide.visible #log_reg_back{
     position: fixed;
-    top: 50%;
     left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
     background-color:rgba(0, 0, 0, 0.75);
-    transition: 1s ease-in;
-    width: 27%; /* Adjust width */
-    height: 35%; /* Adjust height */
-    padding: 1.5%; /* Adjust padding */
-    border-radius: 2rem;
+    width: 100%;
+    max-width: 30rem;
+    height: 90%;
+    max-height: 15rem;
+    padding: 1rem;
+    border-radius: 1.5rem;
     text-align: center;
+    margin: 1rem;
     z-index: 0;
 }
 
@@ -221,24 +223,30 @@ div.slide.visible .buttons_log_reg{
     position: absolute;
     top: 85%;
     left: 50%;
-    width: 100%;
-    height: auto;
     transform: translate(-50%, -50%);
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
     z-index: 1;
 }
 
+div.slide.visible .buttons_log_reg button {
+    flex: 0 1 auto;
+    min-width: fit-content;
+}
+
 div.slide.visible .buttons_log_reg button{
-    position: relative;
     background-color: #0A205A;
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
-    width: 40%;
-    height: 20%;
     font-size: 1.4rem;
-    padding: 3%;
-    margin-right: 4%;
-    margin-left:  4%;
+    padding: 1rem;
+    padding-right: 2.5rem;
+    padding-left: 2.5rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
     border: none;
     border-radius: 0.4rem;
     z-index: 1;
@@ -828,10 +836,10 @@ div.slide.visible #profileInfo{
 
 
 @media screen and (max-width:45rem) {
-    #logoReg,#logo,#logoLogin{
+    /*#logoReg,#logo,#logoLogin{
         width: 25rem;
         height: auto;
-    }
+    }*/
     #landingPageText{
         font-size: 1rem;
     }
@@ -856,13 +864,8 @@ div.slide.visible #profileInfo{
     }
 
     div.slide.visible #log_reg_back{
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        width: 27%; /* Adjust width */
-        height: 35%; /* Adjust height */
-        padding: 1.5%; /* Adjust padding */
-        text-align: center;
+        margin-left: 0;
+        width: calc(100% - 2rem);
     }
     input.log_reg_input{
         font-size: 1.0em;
@@ -872,15 +875,13 @@ div.slide.visible #profileInfo{
         padding: 2%;
         margin-top: 6%;
     }
+    /*
     .buttons_log_reg button{
-        display: block;
-        width: 100%;
-        height: 20%;
         font-size: 1.1rem;
         margin-right: none;
         margin-left: none;
         margin-bottom:0.7rem;
-    }
+    }*/
     .errorText{
         margin: 0;
         font-size: 1rem;

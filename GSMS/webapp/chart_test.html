@@ -16,7 +16,7 @@
             let saveSelected = 1
             gm.initializeSave(saveSelected)
             function chartTest_update(id, days) {
-                document.getElementById('gameT').innerText = GameManager.gameTimerAsDate().toGMTString()
+                document.getElementById('gameT').innerText = new Date(GameManager.gameTimer()).toGMTString()
                 let stock
                 try {
                     stock = gm.getStock(id)
@@ -24,87 +24,10 @@
                     console.log(error)
                     return
                 }
-                let ctx = document.getElementById(id).querySelector("canvas.chart")
-                let end = GameManager.gameTimer()
-                let temp = gm.getHistory(stock.acronym, days)
-                let values = [], tempInfluence = [], tempInfluenceValues = []
-                //if(id != '1') tempInfluenceValues = stock.influencedBy[0].simulateHistory(days)
-                let k = 0
-                for (i = 0; i < GameManager.MAXVISUALIZABLEVALUES; i += 1){
-                    values.push({ x: i * (1000 * 60 * 60 * 24), y: temp[k] })
-                    tempInfluence.push({ x: i * (1000 * 60 * 60 * 24), y: tempInfluenceValues[k] })
-                    k++
-                }
-                let datasetsT = [{
-                    label: stock.name,
-                    indexAxis: 'x',
-                    borderWidth: 1,
-                    radius: 0,
-                    data: values
-                }]
-                /*if(id != '1'){
-                    datasetsT.push({                        //To do: fix bug(on updating time window tempInfluence and values take the same values)
-                        label: stock.influencedBy[0].name,
-                            indexAxis: 'x',
-                            borderWidth: 1,
-                            radius: 0,
-                            data: tempInfluence
-                    })
-                }*/
+                gm.setGraph(id, days, id)
                 document.getElementById('stockValue'+id).innerText = gm.getStock(id).value.toFixed(2) + " Kr"
                 document.getElementById('dailyRate'+id).innerText = (gm.getStock(id).getDailyTrend(days) * 100).toFixed(2) + " %"
                 document.getElementById('rate'+id).innerText = (gm.getStock(id).trend(days) * 100).toFixed(2) + " %"
-                if (!ctx.chartjs) {
-                    let chart = new Chart(ctx, {
-                        type: "line",
-                        data: {
-                            datasets: datasetsT
-                        },
-                        options: {
-                            animation: false,
-                            parsing: false,
-                            //responsive:false,
-                            interaction: {
-                                mode: 'nearest',
-                                axis: 'x',
-                                intersect: false
-                            },
-                            plugins: {
-                                decimation: {
-                                    enabled: true,
-                                    samples: 10
-                                },
-                                legend: {
-                                    display: false,
-                                }
-                            },
-                            scales: {
-                                x: {
-                                    type: 'time',
-                                    time: {
-                                        unit: 'day'
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: 'Data',
-                                    },
-                                },
-                                y: {
-                                    type: 'linear',
-                                    title: {
-                                        display: true,
-                                        text: 'Kr',
-                                    },
-                                    /*min:0*/
-                                }
-                            },
-                        }
-                    })
-                    ctx.chartjs = chart
-                } else {
-                    ctx.chartjs.data.datasets = datasetsT
-                    ctx.chartjs.update()
-                }
             }
             function generateChar(stockId){
                 const stock = gm.getStock(stockId)
@@ -176,10 +99,11 @@
                 chartTest_update(stockId, 365 * 5)
             }
             function initChartTest() {
-                for(s in gm.saves[saveSelected].stocks){
+                /*for(s in gm.saves[saveSelected].stocks){
                     generateChar(s)
-                }
-                
+                }*/
+                gm.startGame()
+                generateChar('master stock')
             }
         </script>
     </head>

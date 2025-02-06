@@ -294,7 +294,6 @@ div.slide.visible #registerPage_back{
     border-radius: 2rem;
     text-align: center;
     margin: 1rem;
-
     z-index: 0;
 }
 
@@ -345,19 +344,33 @@ input.register_input{
 
 /*--- Save Page ---*/
 
-div.slide.visible #saves_back{
+div.slide.visible #saves {
     position: fixed;
-    top: 55%;
-    left: 49.8%;
-    transform: translate(-50%, -50%);
-    background-color:rgba(0, 0, 0, 0.75);
-    width: 20%;
-    height: 44%; 
-    padding: 1%;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5rem;
+}
+
+div.slide.visible #saves_back {
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    width: 100%;
+    max-width: 15rem;
+    height: 90%;
+    max-height: 19.5rem;
+    padding: 1rem;
     padding-top: 0.5%;
     border-radius: 1rem;
     text-align: center;
-    z-index: 0;
+    z-index: 1;
 }
 
 .save-box {
@@ -835,35 +848,12 @@ div.slide.visible #profileInfo{
 
 
 @media screen and (max-width:45rem) {
-    /*#logoReg,#logo,#logoLogin{
-        width: 25rem;
-        height: auto;
-    }*/
     #landingPageText{
         font-size: 1rem;
     }
     div.slide.visible #registerPage_back{
         margin:0;
     }
-    div.slide.visible #saves_back{
-        margin:0;
-        width:fit-content;
-        height: fit-content;
-    }
-    .save-box {
-        height: auto;
-        font-size: 1.0em;
-        padding: 2rem;
-    }
-    .save-box.new-save {
-        font-size: 1.0rem;
-        font-weight: bold;
-    }
-    .save-box img{
-        width: 1rem;
-        height: auto;
-    }
-
     div.slide.visible #log_reg_back{
         margin-left: 0;
         width: calc(100% - 2rem);
@@ -876,13 +866,6 @@ div.slide.visible #profileInfo{
         padding: 2%;
         margin-top: 6%;
     }
-    /*
-    .buttons_log_reg button{
-        font-size: 1.1rem;
-        margin-right: none;
-        margin-left: none;
-        margin-bottom:0.7rem;
-    }*/
     .errorText{
         margin: 0;
         font-size: 1rem;

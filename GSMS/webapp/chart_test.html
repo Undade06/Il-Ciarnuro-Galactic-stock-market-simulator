@@ -12,9 +12,6 @@
         <script src="app.js" type="text/javascript"></script>
         <script src="gsms.js" type="text/javascript"></script>
         <script type="text/javascript">
-            let gm = new GameManager('prova')
-            let saveSelected = 1
-            gm.initializeSave(saveSelected)
             function chartTest_update(id, days) {
                 document.getElementById('gameT').innerText = new Date(GameManager.gameTimer()).toGMTString()
                 let stock
@@ -100,7 +97,7 @@
             }
             function initChartTest() {
                 gm.startGame()
-                for(s in gm.saves[saveSelected].stocks){
+                for(s in gm.saves[0].stocks){
                     generateChar(s)
                 }
                 //generateChar('Li')

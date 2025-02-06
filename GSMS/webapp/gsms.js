@@ -336,8 +336,6 @@ Stock.SEEDDIGITS = 6
 // General Stock constants/variables
 Stock.TIMESTEP = 1 / 250             // 250 step per day
 Stock.masterCreated = false              //Flag to determine if masterStock is already created. Used to not let the code use masterStock before is created in the constructor
-//Hidden stock. Every other stock is influenced by it
-const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 1, 123456, 0, 0.5, 0, 0.5, 0)
 
 /**
  * Function to reduce an array of number(stock history) in order to fit GameManager.MAXVISUALIZABLEVALUES
@@ -940,8 +938,31 @@ GameManager.prototype = {
 
         }, GameManager.VALUESPERREALSECONDS * 1000)
 
+    },
+    login: function () {
+
+        let x = new XMLHttpRequest()
+
+        x.onload = function () {
+            try {
+                let j = JSON.parse(x.responseText)
+                if (j.error !== 0) throw alert("Server error: "+j.msg)
+                else alert('Login successful')
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        x.onerror = function () {
+            alert('Error')
+        }
+
+        let data = 'username=test&password=0000&email=test@gm.com'
+        
+        x.open('POST', 'api.php?op=login')
+        x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        x.send(dati)
+
     }
-    // TO DO: when db will be available, create the function to query it and load or save the save with the correct seed
 }
 
 GameManager.YEARSHIFT = 150             // ~2175
@@ -1268,3 +1289,12 @@ function removeDuplicatesFromArray(arr) {
     })
     return cleanedArr
 }
+
+
+//      Fundamental entities of the game
+
+// Hidden stock. Every other stock is influenced by it
+const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 1, 123456, 0, 0.5, 0, 0.5, 0)
+
+let gm = new GameManager('test')
+gm.initializeSave(0)

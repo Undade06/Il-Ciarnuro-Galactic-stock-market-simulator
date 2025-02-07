@@ -91,8 +91,10 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
         this.influencedBy.push(masterStock)            //Add masterstocks in the influences if not present
     }
 
+    this.krolikRating = undefined
     //this.krolikRating = this._calculateLongTermInvestmentRating()
 
+    this.FQRating = undefined
     //if (Stock.masterCreated) this.FQRating = this._calculateSpeculativeInvestmentRating()          // Nobody cares if masterstock doesn't have a FQRating
 
     Stock.masterCreated = true
@@ -296,7 +298,7 @@ Stock.prototype = {
     /**
      * Calculate speculative investment rating of this stock basing on its last year behavior
      * 
-     * @returns 
+     * @returns a number representing the score
      */
     _calculateSpeculativeInvestmentRating: function () {
 
@@ -389,6 +391,43 @@ Stock.reduceHistory = function (w) {
 
     return sampledValues
 
+}
+
+/**
+ * Function to convert a score(speculative) into a string
+ * 
+ * @param {Number} score 
+ * @returns String(max 3 chars) representing the score
+ */
+Stock.convertSpeculativeScore = function (score) {
+
+    if (score < 1) return 'F'
+    if (score >= 1 && score < 1.5) return 'D'
+    if (score >= 1.5 && score < 2) return 'C'
+    if (score >= 2 && score < 2.25) return 'BBB'
+    if (score >= 2.25 && score < 2.5) return 'BB'
+    if (score >= 2.5 && score < 2.75) return 'B'
+    if (score >= 2.75 && score < 3) return 'B+'
+    if (score >= 3 && score < 3.5) return 'A--'
+    if (score >= 3.5 && score < 3.75) return 'A-'
+    if (score >= 3.75 && score < 4) return 'A'
+    if (score >= 4 && score < 4.5) return 'A+'
+    if (score >= 4.5 && score < 5) return 'A++'
+    if (score >= 5) return 'S'
+}
+
+/**
+ * Function to convert a score(long term) into a string
+ * 
+ * @param {Number} score 
+ * @returns String(max 3 chars) representing the score
+ */
+Stock.convertLongTermScore = function (score) {
+
+    score = (score * 20).toFixed(0)
+    score = score > 100 ? 100 : score < 1 ? 1 : score
+
+    return score + '-' + String.fromCharCode(69 - Math.round(score / 25))
 }
 
 /**
@@ -680,9 +719,8 @@ GameManager.prototype = {
         let date = new Date(GameManager.gameTimer())
         document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
         setInterval(() => {
-
             date = new Date(GameManager.gameTimer())
-            document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())        
+            document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
         }, GameManager.VALUESPERREALSECONDS * 1000)
 
         document.getElementById('my_balance').innerText = 'Bilancio: ' + this.player.wallet
@@ -907,6 +945,8 @@ GameManager.prototype = {
     updateBestStock: function () {
 
         let s = this.getBestStock()
+        if (s === this.best) return
+
         this.best = s
 
         document.getElementById('bestStockName').innerText = s.name
@@ -1417,21 +1457,24 @@ Player.prototype = {
         return eq
 
     },
-    calculateHonorGrade: function () {
+    /**
+     * Updates player honor grade basing on its wallet
+     */
+    updateHonorGrade: function () {
 
         let e = this.wallet
-        if (e <= 0) return -1
-        else if (e < 100) return 0
-        else if (e < 300) return 1
-        else if (e < 700) return 2
-        else if (e < 1500) return 3
-        else if (e < 5000) return 4
-        else if (e < 15000) return 5
-        else if (e < 50000) return 6
-        else if (e < 100000) return 7
-        else if (e < 1000000) return 8
-        else if (e < 10000000) return 9
-        else return 10
+        if (e <= 0) this.honorGrade = 'Bancarotta'
+        else if (e < 100) this.honorGrade = 'Piccolo risparmiatore'
+        else if (e < 300) this.honorGrade = 'Investitore'
+        else if (e < 700) this.honorGrade = 'Consulente finanziario'
+        else if (e < 1500) this.honorGrade = 'Grande investitore'
+        else if (e < 5000) this.honorGrade = 'Capitalista di ventura'
+        else if (e < 15000) this.honorGrade = 'Banchiere'
+        else if (e < 50000) this.honorGrade = 'Agente di Commercio'
+        else if (e < 100000) this.honorGrade = 'Finanziere'
+        else if (e < 1000000) this.honorGrade = 'Agente corporativo'
+        else if (e < 10000000) this.honorGrade = 'Presidente di corporazione'
+        else this.honorGrade = 'Grande Signore di Gaia'
 
     }
 }

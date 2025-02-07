@@ -1,3 +1,4 @@
+let stet = 'Li'
 /**
  * Stock constructor
  * 
@@ -139,8 +140,10 @@ Stock.prototype = {
 
         }
 
+        let T_T = []
         for (let i = 1; i < timeWindow; i++) {           //Wiener process with drift
 
+            if (this.acronym === stet) T_T.push({ i: i, info: { lastV: v, rising: rising, formule: this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + i), infl: influencesPerTime[i], nextV: 0 } })
             if (rising === 1) {
                 v += this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + i)
             }
@@ -149,6 +152,8 @@ Stock.prototype = {
             }
 
             if (this != masterStock) v += v * influencesPerTime[i]                          //Calculate influence in this time instant
+
+            if (this.acronym === stet) T_T[i - 1].info.nextV = v
 
             //Check if value is legal
             v = v < Stock.MINVALUE ? Stock.MINVALUE : v
@@ -162,11 +167,22 @@ Stock.prototype = {
 
         this._lastDayValues = w.slice(w.length - (1 / Stock.TIMESTEP))
 
+        if (this.acronym === stet) console.log(T_T.splice(T_T.length - 50, 50))
+
         if (!calculatingTrend) {
 
             this.value = w[w.length - 1]
             this._trend = (w[w.length - 1] - w[w.length - 2]) / w[w.length - 2]
             this.rising = rising
+
+            if (this.acronym === stet) {
+
+                console.log('Last history       ' + (timeWindow-1))
+                console.log('Value: ' + v)
+                console.log('Rising: ' + rising)
+                console.log('Formule: ' + (this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + timeWindow -1)))
+
+            }
 
             // Reduce the array to just today - t time window
             w = w.splice(w.length - (t / Stock.TIMESTEP), t / Stock.TIMESTEP)
@@ -197,6 +213,16 @@ Stock.prototype = {
 
         }
 
+        if (this.acronym === stet) {
+
+            console.log(this.acronym + ' last params nextV()                 ' + offSet)
+            console.log('LastV: ' + v)
+            console.log('Rising: ' + this.rising)
+            console.log('Formule: ' + (this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + offSet)))
+            console.log('avgInfl: ' + averageInfluence)
+
+        }
+
         if (this.rising === 1) {
             v += this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + offSet)
         }
@@ -209,6 +235,12 @@ Stock.prototype = {
         v = v > Stock.MAXVALUE ? Stock.MAXVALUE : v
 
         if (mulberry32(this.seed + offSet) > this.stability) this.rising *= -1
+
+        if (this.acronym === stet) {
+
+            console.log('Result: ' + v)
+
+        }
 
         this._trend = (v - this.value) / this.value
         this._lastDayValues.push(v)
@@ -606,16 +638,16 @@ GameManager.prototype = {
         if (this.saves[this.saveSelected] === undefined) throw 'Save not initialized'
 
 
-        let lastTimeUpdated
+        let lastTimeUpdated = GameManager.currentNumberValue()
         for (let acr in this.saves[this.saveSelected].stocks) {
 
-            lastTimeUpdated = GameManager.currentNumberValue()
             this.getStock(acr).simulateHistory(GameManager.MAXYEARGAP * 365)
+            if(lastTimeUpdated !== GameManager.currentNumberValue()){
+                this._syncStocks(lastTimeUpdated)
+            }
+            lastTimeUpdated = GameManager.currentNumberValue()
 
         }
-
-        this._syncStocks(lastTimeUpdated)
-        lastTimeUpdated = GameManager.currentNumberValue()
 
         setInterval(() => {
 
@@ -641,6 +673,7 @@ GameManager.prototype = {
         let now = GameManager.currentNumberValue(), diff = now - lastTimeUpdated
         if (diff < 0) throw 'Passed param > GameManager.currentNumberValue()'
 
+        console.log('_syncStocks - lastTimeUpdated: ' + lastTimeUpdated + ' now: ' + now)
 
         // Workaround to avoid skipping some values due to the execution of the function being overshadowed by other processes
         // generation with nextValue() must be strictly dependant from game's timer
@@ -946,7 +979,7 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error !== 0) throw alert("Server error: "+j.msg)
+                if (j.error !== 0) throw alert("Server error: " + j.msg)
                 else alert('Login successful')
             } catch (e) {
                 console.log(e)
@@ -957,10 +990,10 @@ GameManager.prototype = {
         }
 
         let data = 'username=test&password=0000&email=test@gm.com'
-        
+
         x.open('POST', 'api.php?op=login')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-        x.send(dati)
+        x.send(data)
 
     }
 }

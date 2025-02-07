@@ -983,6 +983,8 @@ GameManager.prototype = {
     },
     login: function () {
 
+        let usrn = document.getElementById('usernameAccedi').value, pasw = document.getElementById('passwordAccedi').value
+
         let x = new XMLHttpRequest()
 
         x.onload = function () {
@@ -990,15 +992,16 @@ GameManager.prototype = {
                 let j = JSON.parse(x.responseText)
                 if (j.error !== 0) throw alert("Server error: " + j.msg)
                 else alert('Login successful')
+                toSlide('saves')
             } catch (e) {
                 console.log(e)
             }
         }
         x.onerror = function () {
-            alert('Error')
+            alert('Server error')
         }
 
-        let data = 'username=test&password=0000&email=test@gm.com'
+        let data = 'username=' + usrn + '&password=' + pasw
 
         x.open('POST', 'api.php?op=login')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -1018,7 +1021,8 @@ GameManager.prototype = {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) throw alert("Server error: " + j.msg)
-                else alert('Login successful')
+                else alert('Registered successfully')
+                toSlide('saves')
             } catch (e) {
                 console.log(e)
             }

@@ -33,8 +33,8 @@ function getCurrentSlide(){
     if(s.length===0) return null; else return s[0];
 }
 document.getElementById("landingPage").addEventListener('click', function(event) {
-    event.stopPropagation(); // Prevents click propagation
     toSlide("login_register");
+    event.stopPropagation(); // Prevents click propagation
 });
 document.getElementById("saves").addEventListener('click', function(event) {
     event.stopPropagation();

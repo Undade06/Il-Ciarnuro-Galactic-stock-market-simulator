@@ -716,7 +716,7 @@ GameManager.prototype = {
         let risings = []
 
         for (acr in this.saves[this.saveSelected].stocks) {
-            if (this.getStock(acr)._trend > 0) {
+            if (this.getStock(acr).getDailyTrend() > 0) {
                 risings.push(this.getStock(acr))
             }
         }
@@ -735,7 +735,7 @@ GameManager.prototype = {
 
         for (acr in this.saves[this.saveSelected].stocks) {
 
-            if (this.getStock(acr)._trend > best._trend) {
+            if (this.getStock(acr).getDailyTrend() > best.getDailyTrend()) {
                 if (this.getStock(acr) !== masterStock) {
                     best = this.getStock(acr)
                 }
@@ -756,7 +756,7 @@ GameManager.prototype = {
         let fallings = []
 
         for (acr in this.saves[this.saveSelected].stocks) {
-            if (this.getStock(acr)._trend < 0) {
+            if (this.getStock(acr).getDailyTrend() < 0) {
                 fallings.push(this.getStock(acr))
             }
         }
@@ -1226,7 +1226,7 @@ GameManager.parseSave = function (s) {
 
     let stocks = {}, tempInfl
 
-    for(let acr in s) {
+    for (let acr in s) {
 
         tempInfl = []
 
@@ -1246,7 +1246,7 @@ GameManager.parseSave = function (s) {
 
             stocks[acr] = new ETF(s[acr].name, acr, s[acr].description, tempInfl, s[acr].commissionPerOperation, s[acr].earningTax)
 
-        } else throw acr+' Unkown type: ' + s[acr].type
+        } else throw acr + ' Unkown type: ' + s[acr].type
 
     }
 

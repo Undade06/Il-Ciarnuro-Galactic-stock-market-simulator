@@ -15,7 +15,7 @@
         <div class="bg"></div>
         <div class="slide visible" id="landingPage">
             <img src="pics/logo.webp" id="logo">
-            <h2 id="landingPageText">Press anywhere to continue</h2>
+            <h2 id="landingPageText">Clicca lo schermo per continuare</h2>
             <div class="planet" id="planetLanding"></div>
             <div class="shadow" id="shadowLogin"></div>
         </div>
@@ -29,8 +29,8 @@
                     <input type="password" placeholder="Password" class="log_reg_input" id="passwordAccedi">
                     <div class="errorText" id="loginError"></div>
                     <div class="buttons_log_reg">
-                        <button onclick="gm.login()">Login</button>
-                        <button onclick="toSlide('registerPage')">Register</button>
+                        <button onclick="gm.login()">Accedi</button>
+                        <button onclick="toSlide('registerPage')">Registrati</button>
                     </div>
                 </div>
             </div>
@@ -46,8 +46,8 @@
                     <input type="password" placeholder="Confirm Password" class="register_input" id="confirmPassword">
                     <div class="errorText" id="registerError"></div>
                     <div class="register_buttons">
-                        <button onclick="toSlide('login_register')">Back</button>
-                        <button onclick="gm.register()">Create</button>
+                        <button onclick="toSlide('login_register')">Indietro</button>
+                        <button onclick="gm.register()">Crea account</button>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                 <img src="pics/logo3.webp" id="logoHome">
                 <h4 id="cur_date"></h4>
                 <h5 id="my_balance"></h5>
-                <button id="my_stocks" onclick="toSlide('profilePage')">Your stocks<img id="my_stock_pic" src="pics/myStockPic.webp"></button>
+                <button id="my_stocks" onclick="toSlide('profilePage')">Le tue azioni<img id="my_stock_pic" src="pics/myStockPic.webp"></button>
             </div>
             <div class="market_back" id="best_stock">
                 <div class="stock_header">
@@ -77,11 +77,11 @@
                     </div>
                 </div>
                 <div class="time_buttons">
-                    <button id="1d" onclick="gm.setGraph('master stock',1,'bestStock_graf')">1d</button>
-                    <button id="1w" onclick="gm.setGraph('master stock',7,'bestStock_graf')">1w</button>
+                    <button id="1d" onclick="gm.setGraph('master stock',1,'bestStock_graf')">1g</button>
+                    <button id="1w" onclick="gm.setGraph('master stock',7,'bestStock_graf')">1s</button>
                     <button id="1m" onclick="gm.setGraph('master stock',30,'bestStock_graf')">1m</button>
-                    <button id="1y" onclick="gm.setGraph('master stock',365,'bestStock_graf')">1y</button>
-                    <button id="5y" onclick="gm.setGraph('master stock',(365*5),'bestStock_graf')">5y</button>
+                    <button id="1y" onclick="gm.setGraph('master stock',365,'bestStock_graf')">1a</button>
+                    <button id="5y" onclick="gm.setGraph('master stock',(365*5),'bestStock_graf')">5a</button>
                 </div>
                 <div class="graf">
                     <canvas id="bestStock_graf"></canvas>
@@ -89,12 +89,12 @@
             </div>
             <div id="rises_falls">
                 <div class="market_back" id="rising_stocks">
-                    <h3>Rises</h3>
+                    <h3>In rialzo</h3>
                     <div class="rising">
                     </div>
                 </div>
                 <div class="market_back" id="declining_stocks">
-                    <h3>Falls</h3>
+                    <h3>In ribasso</h3>
                     <div class="falling">
 
                     </div>
@@ -113,10 +113,10 @@
                 <div id="riquadroInterno">
                     <img src="pics/profileImage.webp">
                     <div id="profileInfo">
-                        <p id="profileName">Name:</p>
-                        <p id="honorGrade">Grade:</p>
-                        <p id="balance">Balance:</p>
-                        <p id="equity">Equity:</p>
+                        <p id="profileName">Nome:</p>
+                        <p id="honorGrade">Onore:</p>
+                        <p id="balance">Bilancio:</p>
+                        <p id="equity">Equità:</p>
                     </div>
                 </div>
             </div>
@@ -133,7 +133,7 @@
                 <img src="pics/logo3.webp" id="logoHome">
                 <h4 id="cur_date"></h4>
                 <h5 id="my_balance"></h5>
-                <button id="my_stocks" onclick="toSlide('profilePage')">Your stocks<img id="my_stock_pic" src="pics/myStockPic.webp"></button>
+                <button id="my_stocks" onclick="toSlide('profilePage')">Le tue azioni<img id="my_stock_pic" src="pics/myStockPic.webp"></button>
             </div>
             <div class="market_back" id="singleStock">
                 <div class="stock_header">
@@ -144,11 +144,11 @@
                     </div>
                 </div>
                 <div class="time_buttons">
-                    <button id="1d" onclick="gm.setGraph('master stock',1,'bestStock_graf')">1d</button>
-                    <button id="1w" onclick="gm.setGraph('master stock',7,'bestStock_graf')">1w</button>
+                    <button id="1d" onclick="gm.setGraph('master stock',1,'bestStock_graf')">1g</button>
+                    <button id="1w" onclick="gm.setGraph('master stock',7,'bestStock_graf')">1s</button>
                     <button id="1m" onclick="gm.setGraph('master stock',30,'bestStock_graf')">1m</button>
-                    <button id="1y" onclick="gm.setGraph('master stock',365,'bestStock_graf')">1y</button>
-                    <button id="5y" onclick="gm.setGraph('master stock',(365*5),'bestStock_graf')">5y</button>
+                    <button id="1y" onclick="gm.setGraph('master stock',365,'bestStock_graf')">1a</button>
+                    <button id="5y" onclick="gm.setGraph('master stock',(365*5),'bestStock_graf')">5a</button>
                 </div>
                 <div class="graf">
                     <canvas id="stock_graf"></canvas>
@@ -156,7 +156,7 @@
                 
             </div>
             <div class="market_back" id="relativeStrenght">
-                <h3>Relative strenght</h3>
+                <h3>Forza relativa</h3>
                 <div class="graf">
                     <canvas id="relstrenght_graf"></canvas>
                 </div>
@@ -164,12 +164,12 @@
             <div id="stockActions">
                 <div class="buySell" id="buy">
                     <input type="number" id="n_actionsToBuy">
-                    <button id="buyButton" onclick="">Buy</button>
+                    <button id="buyButton" onclick="">Compra</button>
                 </div>
                 <button id="all_in" onclick="">All in</button>
                 <div class="buySell" id="sell">
                     <input type="number" id="n_actionsToSell">
-                    <button id="sellButton" onclick="">Sell</button>
+                    <button id="sellButton" onclick="">Vendi</button>
                 </div>
                 <button class="infoButton" onclick="toggleNav()">Info</button>
             </div>

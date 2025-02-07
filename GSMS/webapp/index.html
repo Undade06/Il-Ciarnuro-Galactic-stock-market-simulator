@@ -70,7 +70,7 @@
             </div>
             <div class="market_back" id="best_stock">
                 <div class="stock_header">
-                    <div class="bestStock_name" id="bestStockName" onclick="gm.stock = gm.best; gm.setGraph(gm.stock, gm.stockTimeSpan,'stock_graf');toSlide('stockPage')"><h2>*Miglior Titolo*</h2></div>
+                    <div class="bestStock_name" id="bestStockName" onclick="gm.stock = gm.best; gm.prepareStockPage(); toSlide('stockPage')"><h2>*Miglior Titolo*</h2></div>
                     <div class="stockInfo">
                         <div class="bestStock_value" id="bestStockValue"><h1>*Valore*</h1></div>
                     <div class="bestStock_percentage" id="bestStockRise"><h1>*Aumento%*</h1></div>
@@ -137,18 +137,18 @@
             </div>
             <div class="market_back" id="singleStock">
                 <div class="stock_header">
-                    <div class="bestStock_name" id="singleStockName" onclick="toSlide('stockPage')"><h2>*Miglior Titolo*</h2></div>
+                    <div class="bestStock_name" id="singleStockName"><h2>*Titolo azione*</h2></div>
                     <div class="stockInfo">
                         <div class="bestStock_value" id="singleStockValue"><h1>*Valore*</h1></div>
                         <div class="bestStock_percentage" id="singleStockRise"><h1>*Aumento%*</h1></div>
                     </div>
                 </div>
                 <div class="time_buttons">
-                    <button id="1d" onclick="">1g</button>
-                    <button id="1w" onclick="">1s</button>
-                    <button id="1m" onclick="">1m</button>
-                    <button id="1y" onclick="">1a</button>
-                    <button id="5y" onclick="">5a</button>
+                    <button id="1d" onclick="gm.stockTimeSpan = 1;gm.setGraph(gm.stock.acronym,gm.stockTimeSpan,'stock_graf')">1g</button>
+                    <button id="1w" onclick="gm.stockTimeSpan = 7;gm.setGraph(gm.stock.acronym,gm.stockTimeSpan,'stock_graf')">1s</button>
+                    <button id="1m" onclick="gm.stockTimeSpan = 30;gm.setGraph(gm.stock.acronym,gm.stockTimeSpan,'stock_graf')">1m</button>
+                    <button id="1y" onclick="gm.stockTimeSpan = 365;gm.setGraph(gm.stock.acronym,gm.stockTimeSpan,'stock_graf')">1a</button>
+                    <button id="5y" onclick="gm.stockTimeSpan = 365*5;gm.setGraph(gm.stock.acronym,gm.stockTimeSpan,'stock_graf')">5a</button>
                 </div>
                 <div class="graf">
                     <canvas id="stock_graf"></canvas>
@@ -164,12 +164,12 @@
             <div id="stockActions">
                 <div class="buySell" id="buy">
                     <input type="number" id="n_actionsToBuy">
-                    <button id="buyButton" onclick="gm.playerBuy()">Compra</button>
+                    <button id="buyButton" onclick="gm.playerPurchase(gm.stock, Number(document.getElementById('n_actionsToBuy').value))">Compra</button>
                 </div>
-                <button id="all_in" onclick="">All in</button>
+                <button id="all_in" onclick="gm.playerPurchase(gm.stock, -1)">All in</button>
                 <div class="buySell" id="sell">
                     <input type="number" id="n_actionsToSell">
-                    <button id="sellButton" onclick="">Vendi</button>
+                    <button id="sellButton" onclick="gm.playerSell(gm.stock, Number(document.getElementById('n_actionsToSell').value))">Vendi</button>
                 </div>
                 <button class="infoButton" onclick="toggleNav()">Info</button>
             </div>

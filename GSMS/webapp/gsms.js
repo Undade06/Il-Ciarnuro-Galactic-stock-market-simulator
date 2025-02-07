@@ -723,12 +723,12 @@ GameManager.prototype = {
             document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
         }, GameManager.VALUESPERREALSECONDS * 1000)
 
-        document.getElementById('my_balance').innerText = 'Bilancio: ' + this.player.wallet
+        document.getElementById('my_balance').innerText = 'Bilancio: ' + this.player.wallet + ' Kr'
         document.getElementById('profileName').innerText = 'Nome: ' + this.player.name
         document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
-        document.getElementById('balance').innerText = 'Bilancio: ' + this.player.wallet
-        document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity()
-        setInterval(() => { document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity() }, GameManager.VALUESPERREALSECONDS * 1000)
+        document.getElementById('balance').innerText = 'Bilancio: ' + this.player.wallet + ' Kr'
+        document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity() + ' Kr'
+        setInterval(() => { document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity() + ' Kr' }, GameManager.VALUESPERREALSECONDS * 1000)
 
     },
     /**
@@ -832,18 +832,19 @@ GameManager.prototype = {
     /**
      * Function to manage player purchase action. It makes the player buy passed stock and set interval to pay dividends
      * 
-     * @param {String} sAcronym acronym of the stock(index of stock dictionary)
-     * @param {Number} amount amount of stock to buy
+     * @param {Stock} stock to buy
+     * @param {Number} amount amount of stock to buy(-1 to go all in)
      */
-    playerPurchase: function (sAcronym, amount) {
+    playerPurchase: function (stock, amount) {
 
         if (this.player === undefined) throw 'Player not created'
         if (this.saveSelected === undefined) throw 'Save not initialized'
 
         try {
 
-            this.player.buy(this.saves[this.saveSelected].stocks[sAcronym], amount)
-            this.setDividendsPayment(sAcronym)
+            if (amount === -1) this.player.allIn(stock)
+            else this.player.buy(stock, amount)
+            this.setDividendsPayment(stock.acronym)
 
         } catch (error) {
             console.error(error)
@@ -853,16 +854,19 @@ GameManager.prototype = {
     /**
      * Function to manage player sell action
      * 
-     * @param {String} sAcronym acronym of the stock(index of stock dictionary)
-     * @param {Number} amount amount of stock to sell
+     * @param {Stock} stock to sell
+     * @param {Number} amount amount of stock to sell(-1 to sell all)
      */
-    playerSell: function (sAcronym, amount) {
+    playerSell: function (stock, amount) {
 
         if (this.player === undefined) throw 'Player not created'
         if (this.saveSelected === undefined) throw 'Save not initialized'
 
         try {
-            this.player.sell(sAcronym, amount)
+
+            if (amount === -1) this.player.sellAll(stock.acronym)
+            else this.player.sell(stock.acronym, amount)
+
         } catch (error) {
             console.error(error)
         }
@@ -949,11 +953,34 @@ GameManager.prototype = {
 
         this.best = s
 
-        document.getElementById('bestStockName').innerText = s.name
+        document.getElementById('bestStockName').innerText = s.acronym + ': ' + s.name
         document.getElementById('bestStockValue').innerText = s.value.toFixed(3) + ' Kr'
         document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
 
         this.setGraph(s.acronym, this.bestTimeSpan, 'bestStock_graf')
+
+    },
+    prepareStockPage: function () {
+
+        document.getElementById('singleStockName').innerText = this.stock.acronym + ': ' + this.stock.name
+        document.getElementById('singleStockValue').innerText = this.stock.value.toFixed(3) + ' Kr'
+        let trend = this.stock.getDailyTrend()
+        if (trend > 0) trend = '+' + (trend * 100).toFixed(3) + '%'
+        else if (trend < 0) trend = '-' + (trend * 100).toFixed(3) + '%'
+        else trend = (trend * 100).toFixed(3) + '%'
+        document.getElementById('singleStockRise').innerText = trend
+
+        this.setGraph(this.stock.acronym, this.stockTimeSpan, 'stock_graf')
+        setInterval(() => {
+
+            document.getElementById('singleStockValue').innerText = this.stock.value.toFixed(3) + ' Kr'
+            trend = this.stock.getDailyTrend()
+            if (trend > 0) trend = '+' + (trend * 100).toFixed(3) + '%'
+            else if (trend < 0) trend = '-' + (trend * 100).toFixed(3) + '%'
+            else trend = (trend * 100).toFixed(3) + '%'
+            document.getElementById('singleStockRise').innerText = trend
+
+        }, GameManager.VALUESPERREALSECONDS * 1000)
 
     },
     /**

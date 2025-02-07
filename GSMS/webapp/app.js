@@ -177,6 +177,20 @@ document.getElementById("profilePage").addEventListener('click', function(event)
     event.stopPropagation(); // Prevents click propagation
 });
 
+
+function risesAndFalls(){
+    document.getElementById("rising").innerText=""
+    document.getElementById("falling").innerText=""
+    let t= document.createElement("table")
+
+    for( let k in arr){
+        let r=document.createElement("tr")
+        let c=document.createElement("td")
+        c.innerText=k
+        r.appendChild(c)
+    }
+}
+
 //profilePage
 document.addEventListener("DOMContentLoaded", () => {
     let username = document.querySelectorAll('.log_reg_input')[0].value;// Sostituisci con la tua variabile dinamica

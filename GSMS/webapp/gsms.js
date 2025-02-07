@@ -1,4 +1,4 @@
-let stet = 'Li'
+//let stet = 'Li'
 /**
  * Stock constructor
  * 
@@ -140,10 +140,10 @@ Stock.prototype = {
 
         }
 
-        let T_T = []
+        //let T_T = []
         for (let i = 1; i < timeWindow; i++) {           //Wiener process with drift
 
-            if (this.acronym === stet) T_T.push({ i: i, info: { lastV: v, rising: rising, formule: this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + i), infl: influencesPerTime[i], nextV: 0 } })
+            //if (this.acronym === stet) T_T.push({ i: i, info: { lastV: v, rising: rising, formule: this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + i), infl: influencesPerTime[i], nextV: 0 } })
             if (rising === 1) {
                 v += this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + i)
             }
@@ -153,7 +153,7 @@ Stock.prototype = {
 
             if (this != masterStock) v += v * influencesPerTime[i]                          //Calculate influence in this time instant
 
-            if (this.acronym === stet) T_T[i - 1].info.nextV = v
+            //if (this.acronym === stet) T_T[i - 1].info.nextV = v
 
             //Check if value is legal
             v = v < Stock.MINVALUE ? Stock.MINVALUE : v
@@ -167,7 +167,7 @@ Stock.prototype = {
 
         this._lastDayValues = w.slice(w.length - (1 / Stock.TIMESTEP))
 
-        if (this.acronym === stet) console.log(T_T.splice(T_T.length - 50, 50))
+        //if (this.acronym === stet) console.log(T_T.splice(T_T.length - 50, 50))
 
         if (!calculatingTrend) {
 
@@ -175,14 +175,14 @@ Stock.prototype = {
             this._trend = (w[w.length - 1] - w[w.length - 2]) / w[w.length - 2]
             this.rising = rising
 
-            if (this.acronym === stet) {
+            /*if (this.acronym === stet) {
 
                 console.log('Last history       ' + (timeWindow - 1))
                 console.log('Value: ' + v)
                 console.log('Rising: ' + rising)
                 console.log('Formule: ' + (this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + timeWindow - 1)))
 
-            }
+            }*/
 
             // Reduce the array to just today - t time window
             w = w.splice(w.length - (t / Stock.TIMESTEP), t / Stock.TIMESTEP)
@@ -213,7 +213,7 @@ Stock.prototype = {
 
         }
 
-        if (this.acronym === stet) {
+        /*if (this.acronym === stet) {
 
             console.log(this.acronym + ' last params nextV()                 ' + offSet)
             console.log('LastV: ' + v)
@@ -221,7 +221,7 @@ Stock.prototype = {
             console.log('Formule: ' + (this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + offSet)))
             console.log('avgInfl: ' + averageInfluence)
 
-        }
+        }*/
 
         if (this.rising === 1) {
             v += this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + offSet)
@@ -236,11 +236,11 @@ Stock.prototype = {
 
         if (mulberry32(this.seed + offSet) > this.stability) this.rising *= -1
 
-        if (this.acronym === stet) {
+        /*if (this.acronym === stet) {
 
             console.log('Result: ' + v)
 
-        }
+        }*/
 
         this._trend = (v - this.value) / this.value
         this._lastDayValues.push(v)
@@ -673,7 +673,7 @@ GameManager.prototype = {
         let now = GameManager.currentNumberValue(), diff = now - lastTimeUpdated
         if (diff < 0) throw 'Passed param > GameManager.currentNumberValue()'
 
-        console.log('_syncStocks - lastTimeUpdated: ' + lastTimeUpdated + ' now: ' + now)
+        //console.log('_syncStocks - lastTimeUpdated: ' + lastTimeUpdated + ' now: ' + now)
 
         // Workaround to avoid skipping some values due to the execution of the function being overshadowed by other processes
         // generation with nextValue() must be strictly dependant from game's timer
@@ -717,6 +717,28 @@ GameManager.prototype = {
         }
 
         return risings
+
+    },
+    /**
+     * 
+     * 
+     * @returns 
+     */
+    getBestStock: function () {
+
+        let best = this.getStock('Li')          // Random stock
+
+        for (acr in this.saves[this.saveSelected].stocks) {
+
+            if (this.getStock(acr)._trend > best._trend) {
+                if (this.getStock(acr) !== masterStock) {
+                    best = this.getStock(acr)
+                }
+            }
+
+        }
+
+        return best
 
     },
     /**

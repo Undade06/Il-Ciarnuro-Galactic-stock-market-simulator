@@ -29,7 +29,7 @@
                             $_SESSION["user_id"] = $username;
                             $ret = ["error" => 0, "msg" => "Logged in successfully"];
                         } else {
-                            $ret = ["error" => 1, "msg" => "incorrect username or password"];
+                            $ret = ["error" => 1, "msg" => "Incorrect username or password"];
                         }
                     }
                 } break;
@@ -51,7 +51,7 @@
                         $q->execute();
                         $ret = ["error" => 0, "msg" => "Registered successfully"];
                     } else {
-                        $ret = ["error" => 1, "msg" => "Missing fields"];
+                        $ret = ["error" => 1, "msg" => "Missing field/s"];
                         break;
                     }
                 } break;

@@ -596,6 +596,7 @@ div.stock_header{
     width: 98% !important;
     height: 20rem;
     margin: 1rem;
+    max-height: 30rem;
     background-color: black;
 }
 

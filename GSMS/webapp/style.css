@@ -420,7 +420,7 @@ div.slide.visible #best_stock {
     transform: none;
     margin-top: 2rem;
     margin-bottom: 2rem;
-    height: 39rem;
+    height: auto;
     max-width: 96%;
     width: 90%;
     padding: 1.25rem;
@@ -593,7 +593,7 @@ div.stock_header{
 }
 
 .graf #bestStock_graf{
-    width: 98%;
+    width: 98% !important;
     height: 20rem;
     margin: 1rem;
     max-height: 30rem;

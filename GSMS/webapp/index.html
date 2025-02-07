@@ -11,7 +11,7 @@
         <link rel="icon" type="image/png" href="favicon.png"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
-    <body onload="toSlide('stockPage'); ">
+    <body onload=" ">
         <div class="bg"></div>
         <div class="slide visible" id="landingPage">
             <img src="pics/logo.webp" id="logo">
@@ -77,11 +77,11 @@
                     </div>
                 </div>
                 <div class="time_buttons">
-                    <button id="1d">1d</button>
-                    <button id="1w">1w</button>
-                    <button id="1m">1m</button>
-                    <button id="1y">1y</button>
-                    <button id="5y">5y</button>
+                    <button id="1d" onclick="gm.setGraph('master stock',1,'bestStock_graf')">1d</button>
+                    <button id="1w" onclick="gm.setGraph('master stock',7,'bestStock_graf')">1w</button>
+                    <button id="1m" onclick="gm.setGraph('master stock',30,'bestStock_graf')">1m</button>
+                    <button id="1y" onclick="gm.setGraph('master stock',365,'bestStock_graf')">1y</button>
+                    <button id="5y" onclick="gm.setGraph('master stock',(365*5),'bestStock_graf')">5y</button>
                 </div>
                 <div class="graf">
                     <canvas id="bestStock_graf"></canvas>
@@ -91,24 +91,13 @@
                 <div class="market_back" id="rising_stocks">
                     <h3>Rises</h3>
                     <div class="rising">
-                        <table>
-                            <tr>
-                                <td>*Nome titolo*</td>
-                                <td></td>
-                                <td>*Valore*</td>
-                                <td id="rise">*Rise*</td>
-                            </tr>
-                            <tr>
-                                <td>*Nome titolo*</td>
-                                <td></td>
-                                <td>*Valore*</td>
-                                <td id="rise">*Rise*</td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
                 <div class="market_back" id="declining_stocks">
                     <h3>Falls</h3>
+                    <div class="falling">
+
+                    </div>
                 </div>
             </div>   
         </div>
@@ -155,11 +144,11 @@
                     </div>
                 </div>
                 <div class="time_buttons">
-                    <button id="1d">1d</button>
-                    <button id="1w">1w</button>
-                    <button id="1m">1m</button>
-                    <button id="1y">1y</button>
-                    <button id="5y">5y</button>
+                    <button id="1d" onclick="gm.setGraph('master stock',1,'bestStock_graf')">1d</button>
+                    <button id="1w" onclick="gm.setGraph('master stock',7,'bestStock_graf')">1w</button>
+                    <button id="1m" onclick="gm.setGraph('master stock',30,'bestStock_graf')">1m</button>
+                    <button id="1y" onclick="gm.setGraph('master stock',365,'bestStock_graf')">1y</button>
+                    <button id="5y" onclick="gm.setGraph('master stock',(365*5),'bestStock_graf')">5y</button>
                 </div>
                 <div class="graf">
                     <canvas id="stock_graf"></canvas>
@@ -191,5 +180,11 @@
     </body>
     <script src="app.js" type="text/javascript"></script>
     <script src="sw.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        gm.checkLoggedIn().then(r => {
+            if (r) toSlide('saves')
+            else toSlide('landingPage')
+        })
+    </script>
 </html>
 

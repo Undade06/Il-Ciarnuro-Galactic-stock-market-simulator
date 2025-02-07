@@ -14,19 +14,30 @@ if (window.matchMedia('(display-mode: standalone)').matches) { //PWAs in standal
 
 //Basic functions
 function toSlide(id) {
-    document.querySelectorAll("div.slide").forEach(function(e) {
-        e.classList.add("hidden");
-        e.classList.remove("visible");
-        e.querySelectorAll("*").forEach(function(e1) {
-            e1.tabIndex = "-1"; 
+    /*
+    if(id!=="landingPage" && id!=="login_register" && id!=="registerPage"){
+        gm.checkLoggedIn().then(r => {
+            if(!r){
+                alert("Devi effettuare il login per accedere a questa pagina!");
+                return;
+            }
+        })
+    }else{*/
+        document.querySelectorAll("div.slide").forEach(function(e) {
+            e.classList.add("hidden");
+            e.classList.remove("visible");
+            e.querySelectorAll("*").forEach(function(e1) {
+                e1.tabIndex = "-1"; 
+            });
         });
-    });
-    let d = document.getElementById(id);
-    d.classList.add("visible");
-    d.classList.remove("hidden");
-    d.querySelectorAll("*").forEach(function(e2) {
-        e2.tabIndex = "0";  
-    });
+
+        let d = document.getElementById(id);
+        d.classList.add("visible");
+        d.classList.remove("hidden");
+        d.querySelectorAll("*").forEach(function(e2) {
+            e2.tabIndex = "0";  
+        });
+    //} DA ELIMINARE ALLA FINE
 }
 function getCurrentSlide(){
     let s=document.getElementsByClassName("slide visible");
@@ -101,6 +112,8 @@ function createNewSave() {
 function loadSave(id) {
     const save = saves.find((s) => s.id === id);
     if (save) {
+        gm.startGame();
+        gm.setGraph("master stock",1,"bestStock_graf");
         toSlide("marketHomePage");
     } else {
         alert("Salvataggio non trovato!");
@@ -163,6 +176,20 @@ document.getElementById("marketHomePage").addEventListener('click', function(eve
 document.getElementById("profilePage").addEventListener('click', function(event) {
     event.stopPropagation(); // Prevents click propagation
 });
+
+
+function risesAndFalls(){
+    document.getElementById("rising").innerText=""
+    document.getElementById("falling").innerText=""
+    let t= document.createElement("table")
+
+    for( let k in arr){
+        let r=document.createElement("tr")
+        let c=document.createElement("td")
+        c.innerText=k
+        r.appendChild(c)
+    }
+}
 
 //profilePage
 document.addEventListener("DOMContentLoaded", () => {

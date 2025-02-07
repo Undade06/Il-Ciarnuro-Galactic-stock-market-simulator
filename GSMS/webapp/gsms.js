@@ -644,7 +644,7 @@ GameManager.prototype = {
     },
     /**
      * Function that initialize game's GUI
-     * (initialize all stocks in the market, make them proceed in time, start and update risings, fallings and beststock)
+     * (initialize all stocks in the market, make them proceed in time, start and update risings, fallings and beststock, etc)
      */
     startGame: function () {
 
@@ -672,10 +672,25 @@ GameManager.prototype = {
             }
             lastTimeUpdated = GameManager.currentNumberValue()
 
-        }, GameManager.VALUESPERREALSECONDS * 1000 + 1)
+        }, GameManager.VALUESPERREALSECONDS * 1000)
 
         this.updateBestStock()
-        setInterval(() => { this.updateBestStock() }, GameManager.VALUESPERREALSECONDS * 1000 + 1)
+        setInterval(() => { this.updateBestStock() }, GameManager.VALUESPERREALSECONDS * 1000)
+
+        let date = new Date(GameManager.gameTimer())
+        document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
+        setInterval(() => {
+
+            date = new Date(GameManager.gameTimer())
+            document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())        
+        }, GameManager.VALUESPERREALSECONDS * 1000)
+
+        document.getElementById('my_balance').innerText = 'Bilancio: ' + this.player.wallet
+        document.getElementById('profileName').innerText = 'Nome: ' + this.player.name
+        document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
+        document.getElementById('balance').innerText = 'Bilancio: ' + this.player.wallet
+        document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity()
+        setInterval(() => { document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity() }, GameManager.VALUESPERREALSECONDS * 1000)
 
     },
     /**
@@ -1115,7 +1130,7 @@ GameManager.prototype = {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) throw alert("Server error: " + j.msg)
-                if(j.error === 0) toSlide('landingPage')
+                if (j.error === 0) toSlide('landingPage')
             } catch (e) {
                 console.log(e)
             }
@@ -1161,7 +1176,7 @@ GameManager.prototype = {
             alert('Server error')
         }
 
-        let data = "save=" + JSON.stringify(this.saves[gm.saveSelected])+ "&idSave="+idSave
+        let data = "save=" + JSON.stringify(this.saves[gm.saveSelected]) + "&idSave=" + idSave
         console.log(data)
         x.open('POST', 'api.php?op=createSave')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -1575,6 +1590,9 @@ function removeDuplicatesFromArray(arr) {
     return cleanedArr
 }
 
+function numberTo2Digits(n) {
+    if (n >= 0 && n < 10) return '0' + n; else return '' + n;
+}
 
 //      Fundamental entities of the game
 

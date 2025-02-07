@@ -70,7 +70,7 @@
             </div>
             <div class="market_back" id="best_stock">
                 <div class="stock_header">
-                    <div class="bestStock_name" id="bestStockName" onclick="toSlide('stockPage')"><h2>*Miglior Titolo*</h2></div>
+                    <div class="bestStock_name" id="bestStockName" onclick="gm.stock = gm.best; gm.setGraph(gm.stock, gm.stockTimeSpan,'stock_graf');toSlide('stockPage')"><h2>*Miglior Titolo*</h2></div>
                     <div class="stockInfo">
                         <div class="bestStock_value" id="bestStockValue"><h1>*Valore*</h1></div>
                     <div class="bestStock_percentage" id="bestStockRise"><h1>*Aumento%*</h1></div>

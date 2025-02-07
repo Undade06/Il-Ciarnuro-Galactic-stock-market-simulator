@@ -1076,7 +1076,7 @@ GameManager.prototype = {
             x.onerror = function () {
                 reject(false)
             }
-            x.open('GET', 'api.php?op=checkConnection')
+            x.open('GET', 'api.php?op=checkLoggedIn')
             x.send()
         })
     },

@@ -1101,7 +1101,68 @@ GameManager.prototype = {
         }
         x.open('GET', 'api.php?op=logout')
         x.send()
+    },
+    loadSaves: function () {
+        return new Promise((resolve, reject) => {
+            let x = new XMLHttpRequest()
+            x.onload = function () {
+                try {
+                    let j = JSON.parse(x.responseText)
+                    if (j.error === 0) resolve(j.msg)
+                    if (j.error === 1) reject(j.msg)
+                } catch (e) {
+                    console.log(e)
+                    reject(e)
+                }
+            }
+            x.onerror = function () {
+                reject('Server error')
+            }
+            x.open('GET', 'api.php?op=loadSaves')
+            x.send()
+        })
+    },
+    createSave: function (idSave) {
+        let x = new XMLHttpRequest()
+        x.onload = function () {
+            try {
+                let j = JSON.parse(x.responseText)
+                if (j.error === 1) throw alert("Server error: " + j.msg)
+                else alert('Inserted successfully')
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        x.onerror = function () {
+            alert('Server error')
+        }
+
+        let data = "save=" + JSON.stringify(this.saves[gm.saveSelected])+ "&idSave="+idSave
+        console.log(data)
+        x.open('POST', 'api.php?op=createSave')
+        x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        x.send(data)
+    },
+    deleteSave: function (idSave) {
+        let x = new XMLHttpRequest()
+        x.onload = function () {
+            try {
+                let j = JSON.parse(x.responseText)
+                if (j.error === 1) throw alert("Server error: " + j.msg)
+                else alert('deleted successfully')
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        x.onerror = function () {
+            alert('Server error')
+        }
+
+        let params = "op=deleteSave&save=" + encodeURIComponent(idSave)
+        x.open('GET', 'api.php?' + params)
+        x.send()
     }
+
 }
 
 GameManager.YEARSHIFT = 150             // ~2175

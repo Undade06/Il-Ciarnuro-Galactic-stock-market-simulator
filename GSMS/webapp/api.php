@@ -58,6 +58,7 @@
                         $q->bind_param("sss", $_POST["username"], $password, $_POST["email"]);
                         $q->execute();
                         $ret = ["error" => 0, "msg" => "Registered successfully"];
+                        $_SESSION["user_id"] = $username;
                     } else {
                         $ret = ["error" => 1, "msg" => "Missing field/s"];
                         break;
@@ -67,6 +68,32 @@
                     session_unset();
                     setcookie("PHPSESSID", "",0, "/");
                     $ret = ["error" => 0, "msg" => "Logged out successfully"];
+                } break;
+                case "createSave":{
+                    if(isset($_SESSION["user_id"]) && isset($_POST["save"]) && isset($_POST["idSave"])){
+                        $save = $_POST["save"];
+                        $idSave = $_POST["idSave"];
+                    }else{
+                        $ret = ["error" => 1, "msg" => "Missing field/s"];
+                        break;
+                    }
+                    $q = $conn->prepare("INSERT INTO Saves (idPlayer,idSave,budget,lastAccess,market) 
+                                        VALUES ((select id from Player where username = ?), ?, 250000, NOW(), ?)");
+                    $q->bind_param("sss", $_SESSION["user_id"], $idSave, $save);
+                    $q->execute();
+                    $ret = ["error" => 0, "msg" => "Save created successfully"];
+                } break;
+                case "deleteSave":{
+                    if(isset($_SESSION["user_id"]) && isset($_GET["save"])){
+                        $idSave = $_GET["save"];
+                    }else{
+                        $ret = ["error" => 1, "msg" => "Missing field/s"];
+                        break;
+                    }
+                    $q = $conn->prepare("DELETE FROM Saves WHERE idSave = ? AND idPlayer = (select id from Player where username = ?)");
+                    $q->bind_param("ss", $idSave, $_SESSION["user_id"]);
+                    $q->execute();
+                    $ret = ["error" => 0, "msg" => "Save deleted successfully"];
                 } break;
                 default:{
                     $ret=["error"=>1, "msg"=>"Undefined operation"];

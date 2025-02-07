@@ -97,6 +97,7 @@ function loadSaves() {
 function createNewSave() {
     if (saves.length < 3) {
         // Crea un nuovo save con un ID univoco e un nome
+        const saveNumber = saves.length + 1; // Numero del salvataggio (1,2,3)
         const newSave = {
             id: Date.now(), // ID univoco per il save
             name: `Save ${saveCounter}`, 
@@ -105,6 +106,7 @@ function createNewSave() {
         saves.push(newSave);
         saveCounter++;
         loadSaves();
+        gm.createSave(saveNumber); // Passa il numero del salvataggio (1,2,3)
     }
 }
 
@@ -123,6 +125,7 @@ function loadSave(id) {
 // Funzione per rimuovere un save
 function removeSave(id) {
     const saveIndex = saves.findIndex((s) => s.id === id); // Trova l'indice del save tramite ID
+    gm.deleteSave(saveIndex+1);
     if (saveIndex !== -1) {
         saves.splice(saveIndex, 1); // Rimuovi il save
         loadSaves();

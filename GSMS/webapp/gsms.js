@@ -1037,6 +1037,43 @@ GameManager.prototype = {
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
         x.send(data)
 
+    },
+    checkLoggedIn: function () {
+        return new Promise((resolve, reject) => {
+            let x = new XMLHttpRequest()
+            x.onload = function () {
+                try {
+                    let j = JSON.parse(x.responseText)
+                    if (j.error === 0) resolve(true)
+                    if (j.error === 1) resolve(false)
+                } catch (e) {
+                    console.log(e)
+                    resolve(false)
+                }
+            }
+            x.onerror = function () {
+                reject(false)
+            }
+            x.open('GET', 'api.php?op=checkConnection')
+            x.send()
+        })
+    },
+    logout: function () {
+        let x = new XMLHttpRequest()
+        x.onload = function () {
+            try {
+                let j = JSON.parse(x.responseText)
+                if (j.error === 1) throw alert("Server error: " + j.msg)
+                if(j.error === 0) toSlide('landingPage')
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        x.onerror = function () {
+            alert('Server error')
+        }
+        x.open('GET', 'api.php?op=logout')
+        x.send()
     }
 }
 

@@ -6,6 +6,7 @@
 
     if (!isset($_SESSION["user_id"])) {
         $_SESSION["user_id"] = "";
+        $_SESSION["status"] = "";
     }
 
     try{
@@ -17,6 +18,13 @@
             $ret=["error"=>1, "msg"=>"Operation not set"];
         }else{
             switch($_GET["op"]){
+                case "checkLoggedIn":{
+                    if($_SESSION["user_id"] != ""){
+                        $ret = ["error" => 0, "msg" => "Connected"];
+                    }else{
+                        $ret = ["error" => 1, "msg" => "Not connected"];
+                    }
+                } break;
                 case "login":{
                     if(isset($_POST["username"]) && isset($_POST["password"])){
                         $username = $_POST["username"];
@@ -27,7 +35,7 @@
                         $result = $q->get_result();
                         if($result->num_rows > 0) {
                             $_SESSION["user_id"] = $username;
-                            $ret = ["error" => 0, "msg" => "Logged in successfully"];
+                             $ret = ["error" => 0, "msg" => "Logged in successfully", "status" => "saves"];
                         } else {
                             $ret = ["error" => 1, "msg" => "incorrect username or password"];
                         }
@@ -54,6 +62,11 @@
                         $ret = ["error" => 1, "msg" => "Missing fields"];
                         break;
                     }
+                } break;
+                case "logout":{
+                    session_unset();
+                    setcookie("PHPSESSID", "",0, "/");
+                    $ret = ["error" => 0, "msg" => "Logged out successfully"];
                 } break;
                 default:{
                     $ret=["error"=>1, "msg"=>"Undefined operation"];

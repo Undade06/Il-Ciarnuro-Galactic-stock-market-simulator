@@ -626,11 +626,11 @@ div.slide.hidden #accessibility{
 }
 
 .graf #stock_graf{
-    width: 86rem;
-    height: 21rem;
+    width: 86rem !important;
+    height: 21rem !important;
     margin-top: 5rem;
     margin: 1rem;
-    background-color: black;
+    background-color: rgba(0,0,0,0.80);
 }
 
 .graf *{

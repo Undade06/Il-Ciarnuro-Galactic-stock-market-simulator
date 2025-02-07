@@ -1014,6 +1014,7 @@ GameManager.prototype = {
                 let j = JSON.parse(x.responseText)
                 if (j.error !== 0) throw alert("Server error: " + j.msg)
                 else alert('Login successful')
+                toSlide('saves')
             } catch (e) {
                 console.log(e)
             }
@@ -1043,6 +1044,7 @@ GameManager.prototype = {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) throw alert("Server error: " + j.msg)
                 else alert('Registered successfully')
+                toSlide('saves')
             } catch (e) {
                 console.log(e)
             }

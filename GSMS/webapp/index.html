@@ -11,7 +11,7 @@
         <link rel="icon" type="image/png" href="favicon.png"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
-    <body onload="toSlide('stockPage')">
+    <body onload="toSlide('stockPage'); ">
         <div class="bg"></div>
         <div class="slide visible" id="landingPage">
             <img src="pics/logo.webp" id="logo">
@@ -29,7 +29,7 @@
                     <input type="password" placeholder="Password" class="log_reg_input" id="passwordAccedi">
                     <div class="errorText" id="loginError"></div>
                     <div class="buttons_log_reg">
-                        <button onclick="if(loginCheck()) toSlide('saves')">Login</button>
+                        <button onclick="gm.login()">Login</button>
                         <button onclick="toSlide('registerPage')">Register</button>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                     <div class="errorText" id="registerError"></div>
                     <div class="register_buttons">
                         <button onclick="toSlide('login_register')">Back</button>
-                        <button onclick="if(checkPassword()) toSlide('saves')">Create</button>
+                        <button onclick="gm.register()">Create</button>
                     </div>
                 </div>
             </div>

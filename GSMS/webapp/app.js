@@ -101,6 +101,8 @@ function createNewSave() {
 function loadSave(id) {
     const save = saves.find((s) => s.id === id);
     if (save) {
+        gm.startGame();
+        gm.setGraph("master stock",1,"bestStock_graf");
         toSlide("marketHomePage");
     } else {
         alert("Salvataggio non trovato!");

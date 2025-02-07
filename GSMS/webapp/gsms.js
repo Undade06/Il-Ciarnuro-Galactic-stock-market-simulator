@@ -945,7 +945,7 @@ GameManager.prototype = {
         }
 
         // Variable to track stock value in order to calculate avg value before add another point to graph
-        let firstValueNotDisplayed = s.value, lastValueNotDisplayed = firstValueNotDisplayed, counter = 0
+        let lastUpdate = GameManager.currentNumberValue(), firstValueNotDisplayed = s.value, lastValueNotDisplayed = firstValueNotDisplayed, counter = 0
 
         if (g.idUpdatingFunction !== undefined) {
 
@@ -957,12 +957,21 @@ GameManager.prototype = {
 
             if (counter % timeSpan === 0) {
 
-                values.push({ x: (date * (1000 * 60 * 60 * 24)), y: (firstValueNotDisplayed + lastValueNotDisplayed) / 2 })
-                values.shift()
-                date += step
-                firstValueNotDisplayed = s.value
-                g.chartjs.data.datasets[0].data = values
-                g.chartjs.update()
+                if (lastUpdate !== GameManager.currentNumberValue() - 1) {
+
+                    this.setGraph(sAcronym, timeSpan, id)
+
+                } else {
+
+                    values.push({ x: (date * (1000 * 60 * 60 * 24)), y: (firstValueNotDisplayed + lastValueNotDisplayed) / 2 })
+                    values.shift()
+                    date += step
+                    firstValueNotDisplayed = s.value
+                    g.chartjs.data.datasets[0].data = values
+                    g.chartjs.update()
+                    lastUpdate = GameManager.currentNumberValue()
+
+                }
 
             }
 
@@ -1001,7 +1010,7 @@ GameManager.prototype = {
 
         let usrn = document.getElementById('usernameRegister').value, email = document.getElementById('emailRegister').value, pasw = document.getElementById('passwordRegister').value
 
-        if (pasw !== document.getElementById('confirmPassword').value) throw 'Passwords doen\'t match'
+        if (pasw !== document.getElementById('confirmPassword').value) throw 'Passwords doesn\'t match'
 
         let x = new XMLHttpRequest()
 

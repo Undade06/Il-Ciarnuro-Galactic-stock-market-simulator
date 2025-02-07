@@ -11,7 +11,7 @@
     try{
         $conn = new mysqli($db_hostname, $db_username, $db_password, $db_name);
         if ($conn->connect_error) {
-            sendJSON(["error" => 1, "message" => "Errore di connessione al database"]);
+            $ret = ["error" => 1, "msg" => "Connection error"];
         }
         if(!isset($_GET["op"])){
             $ret=["error"=>1, "msg"=>"Operation not set"];
@@ -30,7 +30,7 @@
                             $_SESSION["user_id"] = $row["username"];
                             $ret = ["error" => 0, "msg" => "Logged in successfully"];
                         } else {
-                            $ret = ["error" => 1, "msg" => "User not found or incorrect password"];
+                            $ret = ["error" => 1, "msg" => "incorrect username or password"];
                         }
                     }
                 } break;

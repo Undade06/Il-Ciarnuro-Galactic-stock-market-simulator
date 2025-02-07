@@ -18,12 +18,26 @@
         }else{
             switch($_GET["op"]){
                 case "login":{
-                    $ret=["error"=>0, "msg"=>"User correctly logged in"];
+                    if(isset($_POST["username"]) && isset($_POST["password"])){
+                        $username = $_POST["username"];
+                        $password = sha1($_POST["password"]);
+                        $q = $conn->prepare("SELECT passwordHash from Player WHERE username = ? AND passwordHash = ?");
+                        $q->bind_param("ss", $username, $password);
+                        $q->execute();
+                        $result = $q->get_result();
+                        if($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            $_SESSION["user_id"] = $row["username"];
+                            $ret = ["error" => 0, "msg" => "Logged in successfully"];
+                        } else {
+                            $ret = ["error" => 1, "msg" => "User not found or incorrect password"];
+                        }
+                    }
                 } break;
                 case "register":{
                     if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["email"])){
                         $username = $_POST["username"];
-                        $password = $_POST["password"];
+                        $password = sha1($_POST["password"]);
                         $email = $_POST["email"];
                         $q = $conn->prepare("SELECT username from Player WHERE username = ?");
                         $q->bind_param("s", $_POST["username"]);
@@ -33,8 +47,8 @@
                             $ret = ["error" => 1, "msg" => "Username already exist"];
                             break;
                         }
-                        $q = $conn->prepare("INSERT INTO Player (username, password, email) VALUES (?, ?, ?)");
-                        $q->bind_param("sss", $_POST["username"], $passwordHash, $_POST["email"]);
+                        $q = $conn->prepare("INSERT INTO Player (username, passwordHash, email) VALUES (?, ?, ?)");
+                        $q->bind_param("sss", $_POST["username"], $password, $_POST["email"]);
                         $q->execute();
                         $ret = ["error" => 0, "msg" => "Registered successfully"];
                     } else {

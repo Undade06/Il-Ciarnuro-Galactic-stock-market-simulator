@@ -10,7 +10,7 @@
             0.6
         ],
         "influencedBy": [],
-        "description": "Il prodotto replica il prezzo del litio percepito dai mercati nell'area di Krok.",
+        "description": "Il prodotto replica il prezzo del litio percepito dai mercati della Krok zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
@@ -27,7 +27,7 @@
             0.25
         ],
         "influencedBy": [],
-        "description": "Il prodotto replica il prezzo del titanio percepito dai mercati nell'area di Krok.",
+        "description": "Il prodotto replica il prezzo del titanio percepito dai mercati della Krok zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
@@ -44,7 +44,7 @@
             0.05
         ],
         "influencedBy": [],
-        "description": "Il prodotto replica il prezzo del niobio percepito dai mercati nell'area di Krok.",
+        "description": "Il prodotto replica il prezzo del niobio percepito dai mercati della Krok zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
@@ -61,7 +61,7 @@
             0
         ],
         "influencedBy": [],
-        "description": "Il prodotto replica il prezzo del tungsteno percepito dai mercati nell'area di Krok.",
+        "description": "Il prodotto replica il prezzo del tungsteno percepito dai mercati della Krok zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
@@ -78,7 +78,7 @@
             0.05
         ],
         "influencedBy": [],
-        "description": "Il prodotto replica il prezzo del rodio percepito dai mercati nell'area di Krok.",
+        "description": "Il prodotto replica il prezzo del rodio percepito dai mercati della Krok zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
@@ -95,7 +95,7 @@
             0.05
         ],
         "influencedBy": [],
-        "description": "Il prodotto replica il prezzo dell'oro percepito dai mercati nell'area di Krok.",
+        "description": "Il prodotto replica il prezzo dell’oro percepito dai mercati della Krok zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
@@ -112,7 +112,7 @@
             0
         ],
         "influencedBy": [],
-        "description": "Il prodotto replica il prezzo del silicio percepito dai mercati nell'area di Krok.",
+        "description": "Il prodotto replica il prezzo del silicio percepito dai mercati della Krok zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
@@ -129,7 +129,7 @@
             0.1
         ],
         "influencedBy": [],
-        "description": "Il prodotto replica il prezzo dell'ossigeno percepito dai mercati nell'area di Krok.",
+        "description": "Il prodotto replica il prezzo dell’ossigeno percepito dai mercati della Krok zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
@@ -146,14 +146,14 @@
             0.001
         ],
         "influencedBy": [],
-        "description": "Il prodotto replica il prezzo dell'uranio percepito dai mercati nell'area di Krok.",
+        "description": "Il prodotto replica il prezzo dell’uranio percepito dai mercati della Krok zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
         "earningTax": 0.05
     },
     "P-310": {
-        "name": "E-126 Paletio",
+        "name": "E-126 Palezio",
         "type": "stock",
         "params": [
             100000,
@@ -163,14 +163,14 @@
             1e-05
         ],
         "influencedBy": [],
-        "description": "Il prodotto replica il prezzo del paletio non radioattivo percepito dai mercati dell'area di Krok.",
+        "description": "Il prodotto replica il prezzo del palezio non radioattivo percepito dai mercati della Krok zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 100,
         "earningTax": 0.5
     },
     "Gra-310": {
-        "name": "E-134 Grano",
+        "name": "E-134 Gralio",
         "type": "stock",
         "params": [
             5000000,
@@ -180,7 +180,7 @@
             0
         ],
         "influencedBy": [],
-        "description": "Il prodotto replica il prezzo del grano non radioattivo percepito dai mercati dell'area di Krok.",
+        "description": "Il prodotto replica il prezzo del gralio non radioattivo percepito dai mercati della Krok zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 500,
@@ -197,7 +197,7 @@
             0.1
         ],
         "influencedBy": [],
-        "description": "Fondata nel 2127 da Miss FDU Stacy Collins attraverso l'acquisizione di Astro Cosmetica, un'azienda con grande potenziale ma portata sull'orlo del fallimento da un CEO incompetente, Collins Cosmetica è un'azienda che produce prodotti cosmetici unici e promuove il marchio della fondatrice con partnership con marchi al vertice della piramide del lusso.",
+        "description": "Fondata nel 2042 dalla Guida Spirituale Pash-Olyze per contrastare il fenomeno dei “cibi puri”, la Olyze cerca in tutti i modi di sensibilizzare le masse al culto del buon cibo attraverso efficaci campagne pubblicitarie volte a screditare il fiorente mercato alimentare sintetico offrendo prodotti BIO a prezzi competitivi.",
         "dividendsPercentage": 0.02,
         "daysDividendsFrequency": 120,
         "commissionPerOperation": 0.05,
@@ -214,14 +214,14 @@
             0.1
         ],
         "influencedBy": [],
-        "description": "Fondata nel 2127 da Miss FDU Stacy Collins attraverso l'acquisizione di Astro Cosmetica, un'azienda con grande potenziale ma portata sull'orlo del fallimento da un CEO incompetente, Collins Cosmetica è un'azienda che produce prodotti cosmetici unici e promuove il marchio della fondatrice con partnership con marchi al vertice della piramide del lusso.",
+        "description": "Fondata nel 2127 da Miss FDU Stacy Collins acquistando la Astro Cosmetica un’azienda con grandi potenzialità ma portata sull’orlo del fallimento da un CEO incompetente, la Collins Cosmetica è un’azienda che produce prodotti cosmetici unici e promuove il brand della fondatrice con partnership con i marchi al vertice della piramide del lusso.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
         "earningTax": 0.26
     },
     "GO-GO": {
-        "name": "Gomes Gold",
+        "name": "Gomes Oro",
         "type": "stock",
         "params": [
             10,
@@ -233,14 +233,14 @@
         "influencedBy": [
             "Au"
         ],
-        "description": "Fondata nel 2127 da Miss FDU Stacy Collins attraverso l'acquisizione di Astro Cosmetica, un'azienda con grande potenziale ma portata sull'orlo del fallimento da un CEO incompetente, Collins Cosmetica è un'azienda che produce prodotti cosmetici unici e promuove il marchio della fondatrice con partnership con marchi al vertice della piramide del lusso.",
+        "description": "Creato da Miss FDU 2077 Berenice Gomes, il Gomes Oro è un indice finanziario che reinterpreta il valore dell’oro nella Federazione e condiziona considerevolmente il commercio di gioielli e pietre preziose nella Fascia Principale e di Kuiper.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
         "earningTax": 0.1
     },
     "NASH-PA": {
-        "name": "Nashaty Precious Animals",
+        "name": "Nashaty Animali Preziosi",
         "type": "stock",
         "params": [
             5,
@@ -250,7 +250,7 @@
             0.2
         ],
         "influencedBy": [],
-        "description": "Fondata nel 2101 da Miss FDU 2100 Nida Nashaty per coltivare una delle sue molteplici passioni al massimo livello, Nashaty Animali Preziosi è un'azienda specializzata nell'allevamento e nella domesticazione di animali da compagnia feroci per il mercato del lusso, con particolare attenzione ai serpenti velenosi. Nashaty Precious Animals è sostenuta sia dal Centro di Guerra Gavomex, dal Consiglio degli Angeli della Chiesa Universale e dal Comando dell'Occhio di Tharsis.",
+        "description": "Fondata nel 2101 da Miss FDU 2100 Nida Nashaty per coltivare al massimo livello una delle sue numerose passioni, la Nashaty Animali Preziosi è un’azienda specializzata nell’allevamento e addomesticazione di animali feroci da compagnia per il mercato del lusso, con particolare attenzione per i serpenti velenosi. La Nashaty Animali Preziosi è supportata sia dal Centro Bellico Gavomex, dal Consiglio degli Angeli della Chiesa Universale e dal comando dell’Occhio di Tharsis.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
@@ -267,7 +267,7 @@
             0.05
         ],
         "influencedBy": [],
-        "description": "Bio Krovix è un'azienda che commercializza prodotti alimentari BIO di qualità superiore a prezzi onesti provenienti esclusivamente dall'industria agroalimentare krentoriana.",
+        "description": "La Bio Krovix è un’azienda che commercializza prodotti alimentari BIO di superba qualità a prezzi onesti provenienti unicamente dall’industria agroalimentare Krentoriana.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
@@ -284,7 +284,7 @@
             0.1
         ],
         "influencedBy": [],
-        "description": "Fondata nel 2042 attraverso un accordo tra Sintetix Bio (SXB) e ACQ, Genetyx Bio mira a guadagnare la fiducia dei consumatori scettici del mercato puramente sintetico offrendo alimenti al 50% organici e al 50% artificiali che, secondo molti nutrizionisti, potrebbero rappresentare una valida alternativa ai loro omologhi estremisti.",
+        "description": "Fondata nel 2042 mediante un accordo fra la Sintetix Bio (SXB) e l’ACQ, la Genetyx Bio ha l’obiettivo di conquistare la fiducia dei consumatori scettici del mercato puramente sintetico proponendo cibi al 50% BIO e 50% artificiali i quali, secondo molti nutrizionisti, potrebbero rappresentare una valida alternativa nei confronti delle controparti estremiste.",
         "dividendsPercentage": 0.0003,
         "daysDividendsFrequency": 30,
         "commissionPerOperation": 0.05,
@@ -301,7 +301,7 @@
             0.25
         ],
         "influencedBy": [],
-        "description": "L'Unione Mineraria Torpex è la più grande azienda cosmica operante nel settore delle materie prime ed essendo totalmente gestita e amministrata da personale Torpex non ha rivali in questo campo.",
+        "description": "L’Unione Mineraria Torpex è la più grande azienda cosmica operante nel settore delle materie prime allo stato grezzo ed essendo totalmente gestita e amministrata da personale Torpex non possiede rivali in tale campo.",
         "dividendsPercentage": 0.001,
         "daysDividendsFrequency": 90,
         "commissionPerOperation": 0.05,
@@ -318,7 +318,7 @@
             0.1
         ],
         "influencedBy": [],
-        "description": "Sintetix Bio è un'azienda che produce alimenti sintetici attraverso la clonazione diretta dei corrispettivi biologici. L'obiettivo di SXB è offrire ai consumatori un'ottima alternativa agli alimenti organici costosi e allo stesso tempo salvaguardare il loro potere d'acquisto.",
+        "description": "La Sintetix Bio è un’azienda che produce cibo sintetico mediante clonazione diretta delle controparti biologiche. L’obiettivo della SXB è quello di offrire al consumatore un’ottima alternativa ai costosi cibi biologici e salvaguardare nel contempo il suo potere d’acquisto.",
         "dividendsPercentage": 0.01,
         "daysDividendsFrequency": 180,
         "commissionPerOperation": 0.5,
@@ -335,14 +335,14 @@
             0.2
         ],
         "influencedBy": [],
-        "description": "Universal Kryborg è nata nel 2062 dall'unione di due piccole aziende operative nei settori della metallurgia, dell'energia e dei beni di consumo. Inizialmente guardata con sospetto a causa delle sue relazioni con il culto Syrotechnic, riuscì, grazie alle abilità diplomatiche dei suoi rappresentanti, a conquistare quote di mercato decenti, nonché ad ottenere l'accesso ai condotti iperparsec per il transito delle sue merci.",
+        "description": "La Universal Kryborg nasce nel 2062 dall’unione di due piccole aziende operanti nel settore della metallurgia, dell’energia e dei beni di consumo. Inizialmente mal vista per via dei suoi rapporti con il culto Syrotecnico, riuscì, grazie alle abilità diplomatiche dei propri rappresentanti, a conquistare discrete quote di mercato, oltre ad ottenere l’accesso ai condotti iperparsec per il transito delle proprie merci.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.5,
         "earningTax": 0.15
     },
     "FAT-R": {
-        "name": "Fairtrade e Mercato Sostenibile di \u00d2lrax e \u00d2rax",
+        "name": "Equomercato Grezzo di Òlrax e Òrax",
         "type": "stock",
         "params": [
             0.015,
@@ -352,14 +352,14 @@
             0.1
         ],
         "influencedBy": [],
-        "description": "Fairtrade e Mercato Sostenibile dei pianeti liberi di \u00d2lrax e \u00d2rax che opera nel settore delle materie prime.",
+        "description": "Mercato Equosolidale e Sostenibile dei pianeti liberi di Òlrax e Òrax che opera nel settore delle materie prime allo stato grezzo.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.01,
         "earningTax": 0.03
     },
     "QEQ": {
-        "name": "Q\u00fcan en Q\u00fcant",
+        "name": "Qüan en Qüant",
         "type": "stock",
         "params": [
             1.2,
@@ -369,14 +369,14 @@
             0.05
         ],
         "influencedBy": [],
-        "description": "Azienda che si occupa principalmente del commercio di qualsiasi tipo di bene di consumo ma è anche attiva nel settore dedicato ai beni di lusso.",
+        "description": "Azienda che tratta principalmente il commercio di qualsiasi tipo di bene di consumo ma è attiva anche nel settore dedicato ai beni di lusso.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.05,
         "earningTax": 0.08
     },
     "FAT-D": {
-        "name": "Mercato Sviluppato Fair di \u00d2lrax e \u00d2rax",
+        "name": "Equomercato Sviluppato di Òlrax e Òrax",
         "type": "stock",
         "params": [
             0.9,
@@ -386,14 +386,14 @@
             0.1
         ],
         "influencedBy": [],
-        "description": "Fairtrade e Mercato Sostenibile dei pianeti liberi di \u00d2lrax e \u00d2rax che tenta di emergere nel settore dei beni di consumo.",
+        "description": "Mercato Equosolidale e Sostenibile dei pianeti liberi di Òlrax e Òrax che tenta di emergere nel settore dei beni di consumo.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.01,
         "earningTax": 0.03
     },
     "QTA-AS": {
-        "name": "Sezione Assets dell'Alleanza Commerciale Q\u00fcark",
+        "name": "Sezione beni dell’Alleanza Commerciale Qüark",
         "type": "stock",
         "params": [
             200,
@@ -403,14 +403,14 @@
             0.5
         ],
         "influencedBy": [],
-        "description": "Società speciale sostenuta da Q\u00fcomq che si occupa principalmente del commercio di beni di consumo e di lusso di ogni tipo.",
+        "description": "Corporazione speciale supportata dal Qüomq che tratta principalmente il commercio di beni di consumo e di lusso di ogni genere.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.03,
         "earningTax": 0.15
     },
     "QTA-SP": {
-        "name": "Sezione Spazio dell'Alleanza Commerciale Q\u00fcark",
+        "name": "Sezione spazio dell’Alleanza Commerciale Qüark",
         "type": "stock",
         "params": [
             800,
@@ -420,14 +420,14 @@
             0.005
         ],
         "influencedBy": [],
-        "description": "Società speciale sostenuta da Q\u00fcomq che vende territori, oggetti celesti e regioni di spazio al prezzo di Km\u00b3.",
+        "description": "Corporazione speciale supportata dal Qüomq che vende territori, oggetti celesti e regioni di spazio al Km³.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.03,
         "earningTax": 0.15
     },
     "QTA-EX": {
-        "name": "Sezione di Scambio dell'Alleanza Commerciale Q\u00fcark",
+        "name": "Sezione scambio dell’Alleanza Commerciale Qüark",
         "type": "stock",
         "params": [
             2000,
@@ -437,14 +437,14 @@
             0.0001
         ],
         "influencedBy": [],
-        "description": "Società speciale sostenuta da Q\u00fcomq che vende abilità attraverso la pratica dell'iniezione simorfica e fornisce personale altamente qualificato per ogni tipo di evenienza.",
+        "description": "Corporazione speciale supportata dal Qüomq che vende competenze mediante la pratica dell’iniezione simorfica e fornisce personale altamente addestrato per ogni tipo di evenienza.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.03,
         "earningTax": 0.15
     },
     "NAL-E": {
-        "name": "Nalah \u2013 Energia",
+        "name": "Nalah – Energia",
         "type": "stock",
         "params": [
             11.8,
@@ -454,14 +454,14 @@
             0.1
         ],
         "influencedBy": [],
-        "description": "La sezione energia di Nalah offre energia elettrica pulita attraverso il suo motore magnetico rivoluzionario in grado di ruotare a velocità precedentemente impensabili.",
+        "description": "La sezione energia della Nalah propone energia elettrica pulita attraverso il suo rivoluzionario motore magnetico capace di roteare a velocità fino ad ora impensabili.",
         "dividendsPercentage": 0.0002,
         "daysDividendsFrequency": 25,
         "commissionPerOperation": 0.05,
         "earningTax": 0.1
     },
     "UC-E": {
-        "name": "Chiesa Universale \u2013 Energia",
+        "name": "Chiesa Universale – Energia",
         "type": "stock",
         "params": [
             118,
@@ -471,14 +471,14 @@
             0.1
         ],
         "influencedBy": [],
-        "description": "La sezione energia della Chiesa Universale è la più grande azienda umana nel settore dell'energia.",
+        "description": "La sezione energia della Chiesa Universale è l’azienda Umana più grande presente nel settore dell’energia.",
         "dividendsPercentage": 0.05,
         "daysDividendsFrequency": 365,
         "commissionPerOperation": 0.05,
         "earningTax": 0.1
     },
     "QTA-EN": {
-        "name": "Sezione Energia dell'Alleanza Commerciale Q\u00fcark",
+        "name": "Sezione energetica dell’Alleanza Commerciale Qüark",
         "type": "stock",
         "params": [
             1900,
@@ -488,7 +488,7 @@
             0.1
         ],
         "influencedBy": [],
-        "description": "Società speciale sostenuta da Q\u00fcomq che vende tutti i tipi di energia al prezzo standard definito dagli economisti QTA.",
+        "description": "Corporazione speciale supportata dal Qüomq che vende tutti i tipi di energia al prezzo standard definito dagli economisti dell’ACQ.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.03,
@@ -505,7 +505,7 @@
             0.1
         ],
         "influencedBy": [],
-        "description": "Azienda umana che offre armi e protezione di alta qualità, personale competente e soluzioni mediche a prezzi competitivi e gode di privilegi speciali grazie alle sue eccellenti relazioni con alcuni membri di Q\u00fcomq.",
+        "description": "Azienda Umana che offre armi e protezioni di elevata fattura, personale competente e soluzioni mediche a prezzi competitivi e gode di privilegi speciali per i suoi ottimi rapporti con alcuni membri del Qüomq.",
         "dividendsPercentage": 0.03,
         "daysDividendsFrequency": 256,
         "commissionPerOperation": 0.05,
@@ -522,7 +522,7 @@
             0.3
         ],
         "influencedBy": [],
-        "description": "Fondata nel 2063 dall'adepto Tehl-Nalahzor per contrastare il potere economico della Chiesa Universale in tutti i suoi campi, è un'azienda molto attiva nel settore energetico, nel settore medico e nel settore speciale.",
+        "description": "Fondata nel 2063 dall’adepto Tehl-Nalahzor per contrastare il potere economico della della Chiesa Universale in tutti i suoi campi è un’azienda molto attiva nel campo energetico, nel campo medico e nel campo speciale.",
         "dividendsPercentage": 0.07,
         "daysDividendsFrequency": 300,
         "commissionPerOperation": 0.05,
@@ -539,7 +539,7 @@
             0.5
         ],
         "influencedBy": [],
-        "description": "Krattok è un'azienda di guerra krentoriana specializzata nella creazione di armi con la massima potenza di fuoco nello spazio più piccolo possibile.",
+        "description": "La Krattok è un’azienda bellica Krentoriana specializzata nella creazione di armi aventi la massima potenza di fuoco possibile nel minor spazio possibile.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 0.01,
@@ -556,14 +556,14 @@
             0.5
         ],
         "influencedBy": [],
-        "description": "Nata all'inizio del 2062 dalla collaborazione di alcuni illuminati magnati umani, qüark e guide spirituali, Mantkor è un'azienda attiva nel mercato speciale il cui obiettivo principale è la creazione di armi in grado di porre fine alle guerre più velocemente.",
+        "description": "Nata agli inizi del 2062 dalla collaborazione di alcuni magnati illuminati Umani, Qüark e guide spirituali, la Mantkor è un’azienda attiva nel mercato speciale il cui obiettivo primario è la creazione di armi in grado di porre fine alle guerre più velocemente.",
         "dividendsPercentage": 0.012,
         "daysDividendsFrequency": 100,
         "commissionPerOperation": 1,
         "earningTax": 0.18
     },
     "CSA": {
-        "name": "Arsenale Cosmico",
+        "name": "Cosmic Arsenal",
         "type": "stock",
         "params": [
             15,
@@ -573,7 +573,7 @@
             0.0025
         ],
         "influencedBy": [],
-        "description": "Fondata su Gaia nel 2058 su iniziativa di un fiorente gruppo metallurgico, acquisì rapidamente il sostegno del Governo della Terra, che la rese la prima azienda di guerra umana, pienamente attiva nel mercato speciale. Conosciuta in tutta la Galassia per l'efficacia e l'ottimo artigianato delle sue armi, rappresenta, dopo la Chiesa Universale, la seconda azienda più temuta tra le altre GCC sul mercato.",
+        "description": "Fondata su Gaia nel 2058 per volere di un fiorente gruppo imprenditoriale metallurgico, acquisì in breve tempo il supporto del Governo Terrestre, che ne fece la prima azienda bellica Umana, pienamente attiva nel mercato speciale. Conosciuta in tutta la Galassia per l’efficacia e l’ottima fattura delle proprie armi, rappresenta, dopo la Chiesa Universale, la seconda azienda più temuta dalle altre GCC presenti sul mercato.",
         "dividendsPercentage": 0.09,
         "daysDividendsFrequency": 365,
         "commissionPerOperation": 2,
@@ -590,7 +590,7 @@
             0.15
         ],
         "influencedBy": [],
-        "description": "La missione di questa piccola azienda è identificata nello sviluppo del sistema di protezione perfetto per ogni esigenza. Attualmente offre tute tecnologiche di livello superiore in grado di affrontare anche i pericoli dello spazio e scudi tattici intelligenti per dispositivi in grado di autocalibrarsi in relazione ai danni subiti. I prodotti Olonovis sono molto richiesti sia nel campo della guerra, sotto forma di tute, che nel settore industriale come D.P.I., al fine di prevenire gli infortuni sul lavoro.",
+        "description": "La missione di questa piccola realtà si identifica nella messa a punto del sistema di protezione perfetto per ogni esigenza. Attualmente offre tecnotute di altissimo livello capaci di affrontare anche le insidie dello spazio e scudi tattici intelligenti per congegni in grado di autoricalibrarsi in relazione ai danni subiti. I prodotti Olonovis sono molto richiesti sia in campo bellico, sotto forma di tute, sia nel settore industriale sotto forma di DPI, al fine di prevenire gli infortuni sul lavoro.",
         "dividendsPercentage": 0.1,
         "daysDividendsFrequency": 365,
         "commissionPerOperation": 5,
@@ -607,14 +607,14 @@
             0.5
         ],
         "influencedBy": [],
-        "description": "Azienda specializzata in armi e attrezzature che utilizzano la tecnologia del fascio di luce coerente, offre un'ampia gamma di prodotti destinati al settore della guerra e all'industria mineraria. Il laser Canori, dopo il xerolaser Torpex, è lo strumento più venduto in questo settore e, come dichiarato dal presidente di Lux Canori Arsenal, \"è il compagno perfetto del minatore moderno\".",
+        "description": "Azienda specializzata in armi ed equipaggiamenti facenti uso della tecnologia dei fasci di luce coerente, propone una vasta gamma di prodotti destinati al comparto bellico e all’industria mineraria. Il laser Canori, dopo lo xerolaser Torpex, è lo strumento più venduto in questo settore e, come dichiarato dal presidente della Lux Canori Arsenal, “è il compagno perfetto del minatore moderno”.",
         "dividendsPercentage": 0.06,
         "daysDividendsFrequency": 365,
         "commissionPerOperation": 1,
         "earningTax": 0.1
     },
     "GOE": {
-        "name": "Gilda degli Esuli",
+        "name": "Gilda degli Esiliati",
         "type": "stock",
         "params": [
             10000,
@@ -624,7 +624,7 @@
             0.5
         ],
         "influencedBy": [],
-        "description": "La Gilda degli Esuli è un'organizzazione composta da milioni di menti brillanti in grado di sollevare e rilanciare intere popolazioni, al fine di salvaguardare i redditi futuri e sostenere la crescita costante dei settori Speciale, Scambio e Spazio.",
+        "description": "La gilda degli Esiliati è un’organizzazione composta da milioni di menti geniali capaci di risollevare e rilanciare intere popolazioni, al fine di salvaguardare i redditi futuri e sostenere la crescita costante del settore Speciale, dello Scambio e dello Spazio.",
         "dividendsPercentage": 0.05,
         "daysDividendsFrequency": 200,
         "commissionPerOperation": 10,
@@ -641,14 +641,14 @@
             0.5
         ],
         "influencedBy": [],
-        "description": "Diretta personalmente dal famigerato finanziere qüark Kh\u00e0r-Kran\u00ecka, la Gilda degli Oppressori è un'organizzazione composta da milioni di mercanti di schiavi qüark chiamati corporali. L'organizzazione ha un accordo commerciale con un misterioso membro della Corte di Sirone che prevede il pagamento di una quota in Krok pari al 38% del lavoro giornaliero svolto solo dagli schiavi qüark forniti dalla gilda.",
+        "description": "Diretta personalmente dal famigerato finanziere Qüark Khàr-Kranìka, la Gilda degli Oppressori è un’organizzazione composta da milioni di trafficanti di schiavi Qüark detti caporali. L’organizzazione ha un accordo commerciale con un esponente misterioso della Corte di Sirone che prevede il pagamento di una quota in Krok pari al 38% del lavoro giornaliero svolto solo dagli schiavi Qüark forniti dalla gilda.",
         "dividendsPercentage": 0.15,
         "daysDividendsFrequency": 720,
         "commissionPerOperation": 30,
         "earningTax": 0.03
     },
     "QG": {
-        "name": "Gilda dei Minatori",
+        "name": "Gilda dei Cavatori",
         "type": "stock",
         "params": [
             25000,
@@ -658,14 +658,14 @@
             0.5
         ],
         "influencedBy": [],
-        "description": "Risultato della collaborazione tra Torpex e Qüark, la Gilda dei Minatori fornisce manodopera a basso costo accanto ai lavoratori siderurgici torpex per aiutare l'espansione coloniale degli stati tecnologicamente non idonei con un complesso sistema di prestiti e finanziamenti a interesse composto.",
+        "description": "Frutto di una collaborazione Torpex-Qüark, la Gilda dei Cavatori fornisce manodopera a basso costo affiancata ai superbi operai siderurgici Torpex per aiutare l’espansionismo coloniale degli stati tecnologicamente inadatti con un complesso sistema di prestiti e finanziamenti con interessi composti.",
         "dividendsPercentage": 0.06,
         "daysDividendsFrequency": 200,
         "commissionPerOperation": 10,
         "earningTax": 0.01
     },
     "QTA-TK": {
-        "name": "Timocrazia di Koburak",
+        "name": "Timocrazia di Kòburàk",
         "type": "stock",
         "params": [
             700,
@@ -675,7 +675,7 @@
             0.5
         ],
         "influencedBy": [],
-        "description": "L'indice riporta il risultato in tempo reale delle relazioni tra l'area di Krok e l'economia interna di Kobur\u00e0k.",
+        "description": "L’indice riporta il risultato in tempo reale delle relazioni fra la Krok zona e l’economia interna di Kòburàk.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 2,
@@ -692,14 +692,14 @@
             0.5
         ],
         "influencedBy": [],
-        "description": "L'indice riporta il risultato in tempo reale delle relazioni tra l'area di Krok e l'economia interna di Arabayma.",
+        "description": "L’indice riporta il risultato in tempo reale delle relazioni fra la Krok zona e l’economia interna di Arabayma.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 2,
         "earningTax": 0.07
     },
     "QTA-GO": {
-        "name": "Alleanza Commerciale Q\u00fcark e Oligarchia Grisiana",
+        "name": "Alleanza Commerciale Qüark e Oligarchia Grisiana",
         "type": "stock",
         "params": [
             6000,
@@ -709,14 +709,14 @@
             0.5
         ],
         "influencedBy": [],
-        "description": "L'indice riporta il risultato in tempo reale delle relazioni tra l'area di Krok e l'area di Griso.",
+        "description": "L’indice riporta il risultato in tempo reale delle relazioni fra la Krok zona e la Griso zona.",
         "dividendsPercentage": 0,
         "daysDividendsFrequency": 0,
         "commissionPerOperation": 5,
         "earningTax": 0.26
     },
     "QTA": {
-        "name": "Alleanza Commerciale Q\u00fcark",
+        "name": "Alleanza Commerciale Qüark",
         "type": "ETF",
         "composition": {
             "OLZ": 0.02,
@@ -740,12 +740,12 @@
             "Au": 0.02,
             "P-310": 0.04
         },
-        "description": "L'indice riporta il risultato in tempo reale delle transazioni più significative avvenute nell'area di Krok.",
+        "description": "L’indice riporta il risultato in tempo reale delle compravendite più significative all’interno della Krok zona.",
         "commissionPerOperation": 0,
         "earningTax": 0.1
     },
     "QTA-RW": {
-        "name": "QTA-RW",
+        "name": "ACQ-MG",
         "type": "ETF",
         "composition": {
             "Li": 0.05,
@@ -759,7 +759,7 @@
             "U": 0.05,
             "P-310": 0.2
         },
-        "description": "L'indice misura il grado di interesse degli investitori nel mercato delle materie prime nella zona di Krok.",
+        "description": "L’indice riporta il grado di interesse degli investitori nei riguardi del mercato delle materie prime allo stato grezzo nella Krok zona.",
         "commissionPerOperation": 0,
         "earningTax": 0.1
     }

@@ -26,8 +26,7 @@
                         $q->execute();
                         $result = $q->get_result();
                         if($result->num_rows > 0) {
-                            $row = $result->fetch_assoc();
-                            $_SESSION["user_id"] = $row["username"];
+                            $_SESSION["user_id"] = $username;
                             $ret = ["error" => 0, "msg" => "Logged in successfully"];
                         } else {
                             $ret = ["error" => 1, "msg" => "incorrect username or password"];

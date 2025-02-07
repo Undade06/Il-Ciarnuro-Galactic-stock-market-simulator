@@ -600,6 +600,14 @@ function GameManager(pName = undefined) {
     // Last time player accessed the game in game time
     this.lastAccess = GameManager.gameTimer()
 
+    // Best stock showed in homepage
+    this.best = undefined
+    this.bestTimeSpan = 1
+
+    // Stock selected to show
+    this.stock = undefined
+    this.stockTimeSpan = 1
+
 }
 
 GameManager.prototype = {
@@ -635,7 +643,8 @@ GameManager.prototype = {
 
     },
     /**
-     * Function that initialize all stocks in the market and make them proceed in time
+     * Function that initialize game's GUI
+     * (initialize all stocks in the market, make them proceed in time, start and update risings, fallings and beststock)
      */
     startGame: function () {
 
@@ -664,6 +673,9 @@ GameManager.prototype = {
             lastTimeUpdated = GameManager.currentNumberValue()
 
         }, GameManager.VALUESPERREALSECONDS * 1000 + 1)
+
+        this.updateBestStock()
+        setInterval(() => { this.updateBestStock() }, GameManager.VALUESPERREALSECONDS * 1000 + 1)
 
     },
     /**
@@ -875,6 +887,18 @@ GameManager.prototype = {
         }
 
         return payments
+
+    },
+    updateBestStock: function () {
+
+        let s = this.getBestStock()
+        this.best = s
+
+        document.getElementById('bestStockName').innerText = s.name
+        document.getElementById('bestStockValue').innerText = s.value.toFixed(3) + ' Kr'
+        document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
+
+        this.setGraph(s.acronym, this.bestTimeSpan, 'bestStock_graf')
 
     },
     /**

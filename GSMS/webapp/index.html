@@ -77,11 +77,11 @@
                     </div>
                 </div>
                 <div class="time_buttons">
-                    <button id="1d" onclick="gm.setGraph('master stock',1,'bestStock_graf')">1g</button>
-                    <button id="1w" onclick="gm.setGraph('master stock',7,'bestStock_graf')">1s</button>
-                    <button id="1m" onclick="gm.setGraph('master stock',30,'bestStock_graf')">1m</button>
-                    <button id="1y" onclick="gm.setGraph('master stock',365,'bestStock_graf')">1a</button>
-                    <button id="5y" onclick="gm.setGraph('master stock',(365*5),'bestStock_graf')">5a</button>
+                    <button id="1d" onclick="gm.bestTimeSpan = 1;gm.setGraph(gm.best.acronym,gm.bestTimeSpan,'bestStock_graf')">1g</button>
+                    <button id="1w" onclick="gm.bestTimeSpan = 7;gm.setGraph(gm.best.acronym,gm.bestTimeSpan,'bestStock_graf')">1s</button>
+                    <button id="1m" onclick="gm.bestTimeSpan = 30;gm.setGraph(gm.best.acronym,gm.bestTimeSpan,'bestStock_graf')">1m</button>
+                    <button id="1y" onclick="gm.bestTimeSpan = 365;gm.setGraph(gm.best.acronym,gm.bestTimeSpan,'bestStock_graf')">1a</button>
+                    <button id="5y" onclick="gm.bestTimeSpan = 365*5;gm.setGraph(gm.best.acronym,gm.bestTimeSpan,'bestStock_graf')">5a</button>
                 </div>
                 <div class="graf">
                     <canvas id="bestStock_graf"></canvas>
@@ -144,11 +144,11 @@
                     </div>
                 </div>
                 <div class="time_buttons">
-                    <button id="1d" onclick="gm.setGraph('master stock',1,'bestStock_graf')">1g</button>
-                    <button id="1w" onclick="gm.setGraph('master stock',7,'bestStock_graf')">1s</button>
-                    <button id="1m" onclick="gm.setGraph('master stock',30,'bestStock_graf')">1m</button>
-                    <button id="1y" onclick="gm.setGraph('master stock',365,'bestStock_graf')">1a</button>
-                    <button id="5y" onclick="gm.setGraph('master stock',(365*5),'bestStock_graf')">5a</button>
+                    <button id="1d" onclick="">1g</button>
+                    <button id="1w" onclick="">1s</button>
+                    <button id="1m" onclick="">1m</button>
+                    <button id="1y" onclick="">1a</button>
+                    <button id="5y" onclick="">5a</button>
                 </div>
                 <div class="graf">
                     <canvas id="stock_graf"></canvas>

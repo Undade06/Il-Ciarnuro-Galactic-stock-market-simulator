@@ -66,41 +66,41 @@
                     table.innerHTML = `
                         <tr>
                             <td><label>Base value:</label></td>
-                            <td><input id="${stockId}baseValue" type="number" value="${stock._baseValue}" onchange="gm.saves[saveSelected].stocks['${stockId}']._baseValue=Number(document.getElementById('${stockId}baseValue').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                            <td><input id="${stockId}baseValue" type="number" value="${stock._baseValue}" onchange="gm.saves[0].stocks['${stockId}']._baseValue=Number(document.getElementById('${stockId}baseValue').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>
                         <tr>
                             <td><label>Influenceability:</label></td>
-                            <td><input id="${stockId}influenceability" type="number" step="0.01" value="${stock.influenceability}" onchange="gm.saves[saveSelected].stocks['${stockId}'].influenceability=Number(document.getElementById('${stockId}influenceability').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                            <td><input id="${stockId}influenceability" type="number" step="0.01" value="${stock.influenceability}" onchange="gm.saves[0].stocks['${stockId}'].influenceability=Number(document.getElementById('${stockId}influenceability').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>
                         <tr>
                             <td><label>Stability:</label></td>
-                            <td><input id="${stockId}stability" type="number" step="0.1" value="${stock.stability}" onchange="gm.saves[saveSelected].stocks['${stockId}'].stability=Number(document.getElementById('${stockId}stability').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                            <td><input id="${stockId}stability" type="number" step="0.1" value="${stock.stability}" onchange="gm.saves[0].stocks['${stockId}'].stability=Number(document.getElementById('${stockId}stability').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>
                         <tr>
                             <td><label>Growth:</label></td>
-                            <td><input id="${stockId}growth" type="number" step="0.1" value="${stock.growth}" onchange="gm.saves[saveSelected].stocks['${stockId}'].growth=Number(document.getElementById('${stockId}growth').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                            <td><input id="${stockId}growth" type="number" step="0.1" value="${stock.growth}" onchange="gm.saves[0].stocks['${stockId}'].growth=Number(document.getElementById('${stockId}growth').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>
                         <tr>
                             <td><label>Volatility:</label></td>
-                            <td><input id="${stockId}volatility" type="number" step="0.01" value="${stock.volatility}" onchange="gm.saves[saveSelected].stocks['${stockId}'].volatility=Number(document.getElementById('${stockId}volatility').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                            <td><input id="${stockId}volatility" type="number" step="0.01" value="${stock.volatility}" onchange="gm.saves[0].stocks['${stockId}'].volatility=Number(document.getElementById('${stockId}volatility').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>
                         <tr>
                             <td><label>Seed:</label></td>
-                            <td><input id="${stockId}seed" type="number" value="${stock.seed}" onchange="gm.saves[saveSelected].stocks['${stockId}'].seed=Number(document.getElementById('${stockId}seed').value); chartTest_update('${stockId}', 365 * 5)"></td>
+                            <td><input id="${stockId}seed" type="number" value="${stock.seed}" onchange="gm.saves[0].stocks['${stockId}'].seed=Number(document.getElementById('${stockId}seed').value); chartTest_update('${stockId}', 365 * 5)"></td>
                         </tr>`
                     container.appendChild(table)
                 }
 
                 document.getElementById("stocks").appendChild(container)
 
-                chartTest_update(stockId, 1)
+                chartTest_update(stockId, 365*5)
             }
             function initChartTest() {
-                gm.startGame()
+                /*gm.startGame()
                 for(s in gm.saves[0].stocks){
                     generateChar(s)
-                }
-                //generateChar('Li')
+                }*/
+                generateChar('master stock')
             }
         </script>
     </head>

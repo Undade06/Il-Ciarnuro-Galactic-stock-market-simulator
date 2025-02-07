@@ -629,6 +629,11 @@ GameManager.prototype = {
         this.saves[index] = undefined
 
     },
+    saveInLS: function () {
+
+        localStorage.saves = JSON.stringify(this.saves)
+
+    },
     /**
      * Function that initialize all stocks in the market and make them proceed in time
      */
@@ -720,7 +725,7 @@ GameManager.prototype = {
 
     },
     /**
-     * 
+     * Return best stock(which has the most high _trend)
      * 
      * @returns 
      */
@@ -1091,6 +1096,67 @@ GameManager.currentNumberValue = function () {
 }
 
 /**
+ * Load from local storage local saves
+ * 
+ * @returns saves array
+ */
+GameManager.loadFromLS = function () {
+
+    let retSaves = [], saves = JSON.parse(localStorage.saves), save
+
+    saves.forEach(e => {
+
+        save = GameManager.parseSave(e.stocks)
+
+        save.saveId = e.saveId
+
+        retSaves[e.saveId] = save
+
+    })
+
+    return retSaves
+
+}
+
+/**
+ * Parse a single save from string
+ * 
+ * @param {string} s JSON string to parse
+ * @returns created save
+ */
+GameManager.parseSave = function (s) {
+
+    let stocks = {}, tempInfl
+
+    for(let acr in s) {
+
+        tempInfl = []
+
+        if (s[acr].type === 'stock') {
+
+            s[acr].influencedBy.forEach((stockId) => tempInfl.push(stocks[stockId]))
+
+            stocks[acr] = new Stock(s[acr].name, acr, s[acr].description, s[acr].baseValue, s[acr].stability, s[acr].growth, s[acr].volatility, s[acr].seed, s[acr].influenceability, s[acr].dividendsPercentage, s[acr].daysDividendsFrequency, s[acr].commPerOperation, s[acr].earningTax)
+
+            tempInfl.forEach(e => {
+                stocks[acr].influencedBy.push(e)
+            })
+
+        } else if (s[acr].type === 'ETF') {
+
+            s[acr].influencedBy.forEach((e) => tempInfl.push({ stock: s[e.stock.acronym], perc: e.perc }))
+
+            stocks[acr] = new ETF(s[acr].name, acr, s[acr].description, tempInfl, s[acr].commissionPerOperation, s[acr].earningTax)
+
+        } else throw acr+' Unkown type: ' + s[acr].type
+
+    }
+
+    return new Save(stocks)
+
+}
+
+/**
  * Player constructor
  * 
  * Player is a class that represent the player. It contains all player's data, such as wallet, honor grade, stocks owned, etc.
@@ -1307,7 +1373,7 @@ Save.loadMarket = function (seeds = undefined) {
                         s.influencedBy.forEach((stockId) => tempInfl.push(stocks[stockId]))
 
                         if (seeds !== undefined && seeds[id] !== undefined) tempSeed = seeds[id]
-                        else tempSeed = /* Temporarily fixed seed */ 648157
+                        else tempSeed = ~~(Math.random() * Math.pow(10, Stock.SEEDDIGITS))
 
                         // Stock{name, acronym, description, base value, stability, growth, volatility, seed, influenceability, dividends percentage, days dividends frequency, commission per operation, earning tax}
                         // params[base value, stability, growth, volatility, influenceability]
@@ -1337,7 +1403,7 @@ Save.loadMarket = function (seeds = undefined) {
         }
 
         xhr.onerror = function () { reject('Failed to load market.json') }
-        xhr.open('GET', 'market.json')
+        xhr.open('GET', 'market-it-translated.json')
         xhr.send()
 
     })

@@ -420,7 +420,7 @@ div.slide.visible #best_stock {
     transform: none;
     margin-top: 2rem;
     margin-bottom: 2rem;
-    height: 39rem;
+    height: auto;
     width: 96%;
     padding: 1.25rem;
 }
@@ -593,7 +593,7 @@ div.stock_header{
 }
 
 .graf #bestStock_graf{
-    width: 98%;
+    width: 98% !important;
     height: 20rem;
     margin: 1rem;
     background-color: black;
@@ -630,12 +630,12 @@ div.slide.hidden #accessibility{
     height: 21rem !important;
     margin-top: 5rem;
     margin: 1rem;
-    background-color: rgba(0,0,0,0.80);
 }
 
 .graf *{
     border: none;
     border-radius: 2rem;
+    background-color: rgba(0,0,0,0.80);
 }
 
 .graf #relstrenght_graf{

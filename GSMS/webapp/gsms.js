@@ -177,10 +177,10 @@ Stock.prototype = {
 
             if (this.acronym === stet) {
 
-                console.log('Last history       ' + (timeWindow-1))
+                console.log('Last history       ' + (timeWindow - 1))
                 console.log('Value: ' + v)
                 console.log('Rising: ' + rising)
-                console.log('Formule: ' + (this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + timeWindow -1)))
+                console.log('Formule: ' + (this.growth * Stock.TIMESTEP + this.volatility * Math.sqrt(Stock.TIMESTEP) * normalDistributedNumber(this.seed + timeWindow - 1)))
 
             }
 
@@ -642,7 +642,7 @@ GameManager.prototype = {
         for (let acr in this.saves[this.saveSelected].stocks) {
 
             this.getStock(acr).simulateHistory(GameManager.MAXYEARGAP * 365)
-            if(lastTimeUpdated !== GameManager.currentNumberValue()){
+            if (lastTimeUpdated !== GameManager.currentNumberValue()) {
                 this._syncStocks(lastTimeUpdated)
             }
             lastTimeUpdated = GameManager.currentNumberValue()
@@ -992,6 +992,35 @@ GameManager.prototype = {
         let data = 'username=test&password=0000&email=test@gm.com'
 
         x.open('POST', 'api.php?op=login')
+        x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        x.send(data)
+
+    },
+    register: function () {
+
+
+        let usrn = document.getElementById('usernameRegister').value, email = document.getElementById('emailRegister').value, pasw = document.getElementById('passwordRegister').value
+
+        if (pasw !== document.getElementById('confirmPassword').value) throw 'Passwords doen\'t match'
+
+        let x = new XMLHttpRequest()
+
+        x.onload = function () {
+            try {
+                let j = JSON.parse(x.responseText)
+                if (j.error === 1) throw alert("Server error: " + j.msg)
+                else alert('Login successful')
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        x.onerror = function () {
+            alert('Server error')
+        }
+
+        let data = 'username=' + usrn + '&email=' + email + '&password=' + pasw
+
+        x.open('POST', 'api.php?op=register')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
         x.send(data)
 

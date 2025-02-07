@@ -17,7 +17,7 @@
             }
             default:{
                 $ret=["error"=>1, "msg"=>"Undefined operation"];
-             } break;
+            } break;
         }
     }
 

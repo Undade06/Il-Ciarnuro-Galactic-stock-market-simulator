@@ -181,17 +181,65 @@ document.getElementById("profilePage").addEventListener('click', function(event)
 });
 
 
-function risesAndFalls(){
-    document.getElementById("rising").innerText=""
-    document.getElementById("falling").innerText=""
-    let t= document.createElement("table")
+function risesAndFalls() {
+    //console.log("Rises and falls")
+    const rising = document.getElementById("rising")
+    const falling = document.getElementById("falling")
 
-    for( let k in arr){
-        let r=document.createElement("tr")
-        let c=document.createElement("td")
-        c.innerText=k
-        r.appendChild(c)
-    }
+    rising.innerText = ""
+    falling.innerText = ""
+
+    let risingTable = document.createElement("table")
+    let fallingTable = document.createElement("table")
+
+    let risings = gm.getRisings()
+    let fallings = gm.getFallings()
+    console.log(risings)
+    console.log(fallings)
+
+    risings.forEach(stock => {
+        //console.log("Rises and falls2")
+        let row = document.createElement("tr")
+        let name = document.createElement("td")
+        let value = document.createElement("td")
+        let trend = document.createElement("td")
+
+        name.innerText = stock.name
+        value.innerText = stock.value.toFixed(2)
+        trend.innerText = (stock._trend * 100).toFixed(2) + "%"
+
+        row.appendChild(name)
+        row.appendChild(value)
+        row.appendChild(trend)
+        risingTable.appendChild(row)
+
+        row.addEventListener('click', () => {
+            toSlide('stockPage')
+        })
+    })
+
+    fallings.forEach(stock => {
+        let row = document.createElement("tr")
+        let name = document.createElement("td")
+        let value = document.createElement("td")
+        let trend = document.createElement("td")
+
+        name.innerText = stock.name
+        value.innerText = stock.value.toFixed(2)
+        trend.innerText = (stock._trend * 100).toFixed(2) + "%"
+
+        row.appendChild(name)
+        row.appendChild(value)
+        row.appendChild(trend)
+        fallingTable.appendChild(row)
+
+        row.addEventListener('click', () => {
+            toSlide('stockPage')
+        })
+    })
+
+    rising.appendChild(risingTable)
+    falling.appendChild(fallingTable)
 }
 
 //profilePage

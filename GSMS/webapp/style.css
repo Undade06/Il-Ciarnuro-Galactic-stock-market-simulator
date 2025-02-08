@@ -615,6 +615,15 @@ div.rising tr,td{
     padding: 0.5%;
 }
 
+#rising td,#falling td{
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    color: white;
+    font-size: 1.5rem;
+    padding: 1rem;
+    border-bottom:3px solid #FFFFFF;
+}
+
 /*--- StockPage ---*/
 
 #stockPage .market_back{
@@ -898,7 +907,6 @@ div.slide.visible #profileInfo{
         gap: 1rem;
     }
 }
-
 @media (max-width: 48rem) {
     div.slide.visible #best_stock, 
     div.slide.visible #singleStock {
@@ -928,7 +936,6 @@ div.slide.visible #profileInfo{
 
     
 }
-
 @media (max-width: 30rem) {
     #logoHome {
         width: 18rem;
@@ -950,3 +957,4 @@ div.slide.visible #profileInfo{
     }
     
 }
+

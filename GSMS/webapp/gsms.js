@@ -684,7 +684,7 @@ GameManager.prototype = {
     },
     /**
      * Function that initialize game's GUI
-     * (initialize all stocks in the market, make them proceed in time, start and update risings, fallings and beststock, etc)
+     * (initialize all stocks in the market, make them proceed in time, start and update risings, fallings and best stock, etc)
      */
     startGame: function () {
 
@@ -731,6 +731,7 @@ GameManager.prototype = {
         document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity() + ' Kr'
         setInterval(() => { document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity() + ' Kr' }, GameManager.VALUESPERREALSECONDS * 1000)
 
+        risesAndFalls()
     },
     /**
      * Synchronize all stocks from passed timestep value making them proceed all together till GameManager.currentNumberValue()
@@ -946,9 +947,6 @@ GameManager.prototype = {
     updateBestStock: function () {
 
         let s = this.getBestStock()
-        if (s === this.best) return
-
-        this.best = s
 
         document.getElementById('bestStockName').innerText = s.acronym + ': ' + s.name
         document.getElementById('bestStockValue').innerText = s.value.toFixed(3) + ' Kr'
@@ -956,7 +954,12 @@ GameManager.prototype = {
         if (s.getDailyTrend() > 0) document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
         else document.getElementById('bestStockRise').innerText = (s.getDailyTrend() * 100).toFixed(3) + '%'
 
-        this.setGraph(s.acronym, this.bestTimeSpan, 'bestStock_graf')
+        if (s !== this.best) {
+
+            this.setGraph(s.acronym, this.bestTimeSpan, 'bestStock_graf')
+            this.best = s
+
+        }
 
     },
     prepareStockPage: function () {

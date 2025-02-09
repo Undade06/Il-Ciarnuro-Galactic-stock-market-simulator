@@ -244,6 +244,11 @@ function risesAndFalls() {
 
     rising.appendChild(risingTable)
     falling.appendChild(fallingTable)
+
+    // Future updates
+    setTimeout(() => {
+        risesAndFalls()
+    }, GameManager.VALUESPERREALSECONDS * 1000)
 }
 
 //profilePage

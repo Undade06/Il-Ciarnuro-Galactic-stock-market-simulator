@@ -39,6 +39,7 @@
                         } else {
                             $ret = ["error" => 1, "msg" => "Incorrect username or password"];
                         }
+                        $result->close();
                     }
                 } break;
                 case "register":{
@@ -51,13 +52,14 @@
                         $q->execute();
                         $result = $q->get_result();
                         if($result->num_rows > 0) {
-                            $ret = ["error" => 1, "msg" => "Username already exist"];
+                            $ret = ["error" => 1, "msg" => "Username already exists"];
                             break;
                         }
                         $q = $conn->prepare("INSERT INTO Player (username, passwordHash, email) VALUES (?, ?, ?)");
                         $q->bind_param("sss", $_POST["username"], $password, $_POST["email"]);
                         $q->execute();
                         $ret = ["error" => 0, "msg" => "Registered successfully"];
+                        $q->close();
                         $_SESSION["user_id"] = $username;
                     } else {
                         $ret = ["error" => 1, "msg" => "Missing field/s"];
@@ -77,11 +79,12 @@
                         $ret = ["error" => 1, "msg" => "Missing field/s"];
                         break;
                     }
-                    $q = $conn->prepare("INSERT INTO Saves (idPlayer,idSave,budget,lastAccess,market) 
-                                        VALUES ((select id from Player where username = ?), ?, 250000, NOW(), ?)");
+                    $q = $conn->prepare("INSERT INTO Saves (idPlayer, idSave, budget, lastAccess, market) 
+                                        VALUES ((select id from Player where username = ?), ?, 25, NOW(), ?)");
                     $q->bind_param("sss", $_SESSION["user_id"], $idSave, $save);
                     $q->execute();
                     $ret = ["error" => 0, "msg" => "Save created successfully"];
+                    $q->close();
                 } break;
                 case "deleteSave":{
                     if(isset($_SESSION["user_id"]) && isset($_GET["save"])){
@@ -94,16 +97,34 @@
                     $q->bind_param("ss", $idSave, $_SESSION["user_id"]);
                     $q->execute();
                     $ret = ["error" => 0, "msg" => "Save deleted successfully"];
+                    $q->close();
+                } break;
+                case "getSaves":{
+                    if(!isset($_SESSION["user_id"])){    
+                        $ret = ["error" => 1, "msg" => "Not logged in"];
+                        break;
+                    }
+
+                    $q = $conn->query("SELECT * FROM Saves WHERE idPlayer = (SELECT id FROM Player WHERE username = \"".$_SESSION["user_id"]."\")");
+                    
+                    $saves=[];
+                    while($save=$q->fetch_array()){
+                        $tempS=["idSave"=>$save["idSave"], "budget"=>$save["budget"], "lastAccess"=>$save["lastAccess"], "ownedStock"=>$save["ownedStock"], "market"=>$save["market"]];
+                        array_push($saves, $tempS);
+                    }
+
+                    $q->close();
+                    $ret = ["error" => 0, "saves"=>$saves];
                 } break;
                 default:{
                     $ret=["error"=>1, "msg"=>"Undefined operation"];
-                } 
-                break;
+                } break;
             }
         }
     }catch(Exception $e){
         $ret=["error"=>1, "msg"=>"Error: ".$e->getMessage()];
     }
+
     echo json_encode($ret);
     
 ?>

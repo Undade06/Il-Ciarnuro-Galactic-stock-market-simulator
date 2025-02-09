@@ -106,7 +106,7 @@ function createNewSave() {
         saves.push(newSave);
         saveCounter++;
         loadSaves();
-        gm.createSave(saveNumber); // Passa il numero del salvataggio (1,2,3)
+        gm.initializeSave(saveNumber)
     }
 }
 
@@ -194,8 +194,8 @@ function risesAndFalls() {
 
     let risings = gm.getRisings()
     let fallings = gm.getFallings()
-    console.log(risings)
-    console.log(fallings)
+    //console.log(risings)
+    //console.log(fallings)
 
     risings.forEach(stock => {
         //console.log("Rises and falls2")

@@ -653,7 +653,7 @@ function GameManager(pName = undefined) {
 GameManager.prototype = {
     constructor: GameManager,
     /**
-     * Function that initialize a new save with a new market
+     * Function that initialize a new save with a new market and save it in db
      * 
      * @param {Number} index index of the save to initialize
      */
@@ -662,7 +662,11 @@ GameManager.prototype = {
         if (isNaN(index) || index < 0 || index > GameManager.MAXSAVES) throw 'Passed saves index isn\'t valid'
 
         this.saveSelected = index
-        Save.loadMarket().then(save => { this.saves[index] = save; this.saves[index].saveId = index })
+        Save.loadMarket().then(save => {
+            this.saves[index] = save
+            this.saves[index].saveId = index
+            this.createSave(index)
+        })
 
     },
     /**
@@ -1209,27 +1213,49 @@ GameManager.prototype = {
         x.open('GET', 'api.php?op=logout')
         x.send()
     },
+    /**
+     * Query database to obtain player's saves
+     * 
+     * @returns Array of object representing game's data for each save
+     */
     loadSaves: function () {
         return new Promise((resolve, reject) => {
             let x = new XMLHttpRequest()
             x.onload = function () {
                 try {
                     let j = JSON.parse(x.responseText)
-                    if (j.error === 0) resolve(j.msg)
+                    if (j.error === 0) {
+
+                        let data = []
+
+                        j.saves.forEach(s => {
+
+                            data.push({save: new Save(GameManager.parseSave(s.market.stocks), s.idSave), lastAccess: s.lastAccess, ownedStocks: s.ownedStock, budget: s.budget})
+
+                        })
+
+                        resolve(data)
+
+                    }
                     if (j.error === 1) reject(j.msg)
                 } catch (e) {
+
                     console.log(e)
                     reject(e)
+                    
                 }
             }
             x.onerror = function () {
                 reject('Server error')
             }
-            x.open('GET', 'api.php?op=loadSaves')
+            x.open('GET', 'api.php?op=getSaves')
             x.send()
         })
     },
     createSave: function (idSave) {
+
+        if (this.saves[idSave] === undefined) throw 'Save not initilized'
+
         let x = new XMLHttpRequest()
         x.onload = function () {
             try {
@@ -1244,19 +1270,23 @@ GameManager.prototype = {
             alert('Server error')
         }
 
-        let data = "save=" + JSON.stringify(this.saves[gm.saveSelected]) + "&idSave=" + idSave
-        console.log(data)
+        let params = "save=" + JSON.stringify(this.saves[idSave]) + "&idSave=" + idSave
+        //console.log(params)
         x.open('POST', 'api.php?op=createSave')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-        x.send(data)
+        x.send(params)
+
     },
     deleteSave: function (idSave) {
+
+        if (this.saves[idSave] === undefined) throw 'Undefined save'
+
         let x = new XMLHttpRequest()
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) throw alert("Server error: " + j.msg)
-                else alert('deleted successfully')
+                else alert('Deleted successfully')
             } catch (e) {
                 console.log(e)
             }
@@ -1268,6 +1298,7 @@ GameManager.prototype = {
         let params = "op=deleteSave&save=" + encodeURIComponent(idSave)
         x.open('GET', 'api.php?' + params)
         x.send()
+
     }
 
 }
@@ -1275,7 +1306,7 @@ GameManager.prototype = {
 GameManager.YEARSHIFT = 150             // ~2175
 GameManager.MAXYEARGAP = 5              // Maximum year gap that can be simulated by stock generation
 GameManager.SECSPEEDUP = 60             // 1 real second = 1 game minute
-GameManager.REALSTARTDATE = new Date('2025-01-20').getTime()            // Temporarily fixed start date
+GameManager.REALSTARTDATE = new Date('2025-01-01').getTime()            // Temporarily fixed start date
 GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 1000 * 24 * 60 * 60 * 365 * GameManager.YEARSHIFT).getTime()
 GameManager.MAXSAVES = 3
 GameManager.MAXVISUALIZABLEVALUES = 1 / Stock.TIMESTEP
@@ -1526,27 +1557,7 @@ function Save(stocks = undefined, saveId = undefined) {
 }
 
 Save.prototype = {
-    constructor: Save,
-    /**
-     * Function that generates save seed, a string composed by all stocks's seeds(not ETFs's one) divided by '-'
-     * 
-     * @returns A string representing save seed
-     */
-    generateSaveSeed: function () {
-
-        let s = ''
-
-        for (k in this.stocks) {
-
-            if (this.stocks[k].type === 'stock') s += this.stocks[k].seed + '-'
-
-        }
-
-        s = s.substring(0, s.length - 1)      // Remove last '-'
-
-        return s
-
-    }
+    constructor: Save
 }
 
 /**
@@ -1568,7 +1579,7 @@ Save.loadMarket = function (seeds = undefined) {
 
                 let stocks = {}
 
-                stocks[masterStock.acronym] = masterStock           // To be removed
+                stocks[masterStock.acronym] = masterStock
 
                 for (id in data) {
 
@@ -1671,4 +1682,3 @@ function numberTo2Digits(n) {
 const masterStock = new Stock('master stock', 'master stock', 'master stock', 100, 0.2, 0.5, 1, 123456, 0, 0.5, 0, 0.5, 0)
 
 let gm = new GameManager('test')
-gm.initializeSave(0)

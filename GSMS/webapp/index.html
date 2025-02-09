@@ -182,7 +182,10 @@
     <script src="sw.js" type="text/javascript"></script>
     <script type="text/javascript">
         gm.checkLoggedIn().then(r => {
-            if (r) toSlide('saves')
+            if (r){
+                loadSaves()
+                toSlide('saves')
+            }
             else toSlide('landingPage')
         })
     </script>

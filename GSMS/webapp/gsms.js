@@ -665,7 +665,7 @@ GameManager.prototype = {
         Save.loadMarket().then(save => {
             this.saves[index] = save
             this.saves[index].saveId = index
-            this.createSave(index)
+            this.createSaveInDB(index)
         })
 
     },
@@ -679,6 +679,8 @@ GameManager.prototype = {
         if (this.saveSelected === index) throw 'Cannot delete selected save'
 
         this.saves[index] = undefined
+
+        this.deleteSaveFromDB(index)
 
     },
     saveInLS: function () {
@@ -1218,7 +1220,7 @@ GameManager.prototype = {
      * 
      * @returns Array of object representing game's data for each save
      */
-    loadSaves: function () {
+    loadSavesFromDB: function () {
         return new Promise((resolve, reject) => {
             let x = new XMLHttpRequest()
             x.onload = function () {
@@ -1230,7 +1232,7 @@ GameManager.prototype = {
 
                         j.saves.forEach(s => {
 
-                            data.push({save: new Save(GameManager.parseSave(s.market.stocks), s.idSave), lastAccess: s.lastAccess, ownedStocks: s.ownedStock, budget: s.budget})
+                            data.push({ save: new Save(GameManager.parseSave(s.market.stocks), s.idSave), lastAccess: s.lastAccess, ownedStocks: s.ownedStock, budget: s.budget })
 
                         })
 
@@ -1242,7 +1244,7 @@ GameManager.prototype = {
 
                     console.log(e)
                     reject(e)
-                    
+
                 }
             }
             x.onerror = function () {
@@ -1252,7 +1254,7 @@ GameManager.prototype = {
             x.send()
         })
     },
-    createSave: function (idSave) {
+    createSaveInDB: function (idSave) {
 
         if (this.saves[idSave] === undefined) throw 'Save not initilized'
 
@@ -1277,7 +1279,7 @@ GameManager.prototype = {
         x.send(params)
 
     },
-    deleteSave: function (idSave) {
+    deleteSaveFromDB: function (idSave) {
 
         if (this.saves[idSave] === undefined) throw 'Undefined save'
 

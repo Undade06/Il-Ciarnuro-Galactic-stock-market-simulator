@@ -458,6 +458,9 @@ function ETF(name, acronym, description, influencedBy, commPerOperation, earning
     // Variable to store this stock trend from last Stock.TIMESTEP in order to lighten the calculation
     this._trend = undefined
 
+    // Array to store last day values
+    this._lastDayValues = []
+
     //Stocks that compose this ETF, it's supposed to be an array such as {stock, percentual composition}
     this.influencedBy = removeDuplicatesFromArray(influencedBy)
 
@@ -489,14 +492,14 @@ ETF.prototype = {
 
         let stocksValues = [], values, tempValue, value = []
 
-        this.influencedBy.forEach((e) => {          //Register all stock value
+        this.influencedBy.forEach((e) => {          // Register all stock value
             stocksValues.push(e.stock.simulateHistory(t, true))
         })
 
         let timeWindow = GameManager.currentNumberValue()
 
-        for (let i = 0; i < timeWindow; i++) {          //Calculate value for each stock with relative influence
-            values = []             //Temporary array to store each stock value in 'i' time
+        for (let i = 0; i < timeWindow; i++) {          // Calculate value for each stock with relative influence
+            values = []             // Temporary array to store each stock value in 'i' time
             tempValue = 0
             stocksValues.forEach((e) => {
                 values.push(e[i])
@@ -507,6 +510,8 @@ ETF.prototype = {
 
             value.push(tempValue)
         }
+
+        this._lastDayValues = value.slice(value.length - (1 / Stock.TIMESTEP))
 
         if (!calculatingTrend) {
 
@@ -532,6 +537,8 @@ ETF.prototype = {
         this.influencedBy.forEach((e) => { v += e.stock.value * e.perc })
 
         this._trend = (v - this.value) / this.value
+        this._lastDayValues.push(v)
+        this._lastDayValues.shift()
         this.value = v
 
         return v
@@ -600,19 +607,13 @@ ETF.prototype = {
 
     },
     /**
-     * Get the daily variation of this ETF based on the daily variation of the stocks that compose it
+     * Get the daily variation of this ETF
      * 
      * @returns Number representing the daily variation(NOT percentage)
      */
     getDailyTrend: function () {
 
-        let avgVariation = 0
-
-        this.influencedBy.forEach((e) => {
-            avgVariation += e.stock.getDailyTrend() * e.perc
-        })
-
-        return avgVariation
+        return (this.value - this._lastDayValues[0]) / this._lastDayValues[0]
 
     }
 }
@@ -952,7 +953,7 @@ GameManager.prototype = {
         document.getElementById('bestStockName').innerText = s.acronym + ': ' + s.name
         document.getElementById('bestStockValue').innerText = s.value.toFixed(3) + ' Kr'
         // Even if it's the best stock it could still be falling
-        if(s.getDailyTrend()> 0) document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
+        if (s.getDailyTrend() > 0) document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
         else document.getElementById('bestStockRise').innerText = (s.getDailyTrend() * 100).toFixed(3) + '%'
 
         this.setGraph(s.acronym, this.bestTimeSpan, 'bestStock_graf')

@@ -772,7 +772,7 @@ GameManager.prototype = {
 
     },
     /**
-     * Function that return every rising stock/ETF basing on its _trend
+     * Function that return every rising stock/ETF basing on its daily trend
      * 
      * @returns Array with every rising stock/ETF
      */
@@ -781,7 +781,7 @@ GameManager.prototype = {
         let risings = []
 
         for (acr in this.saves[this.saveSelected].stocks) {
-            if (this.getStock(acr).getDailyTrend() > 0) {
+            if (acr !== masterStock.acronym && this.getStock(acr).getDailyTrend() > 0) {
                 risings.push(this.getStock(acr))
             }
         }
@@ -790,7 +790,7 @@ GameManager.prototype = {
 
     },
     /**
-     * Return best stock(which has the most high _trend)
+     * Return best stock(which has the most high daily trend)
      * 
      * @returns 
      */
@@ -799,20 +799,16 @@ GameManager.prototype = {
         let best = this.getStock('Li')          // Random stock
 
         for (acr in this.saves[this.saveSelected].stocks) {
-
-            if (this.getStock(acr).getDailyTrend() > best.getDailyTrend()) {
-                if (this.getStock(acr) !== masterStock) {
-                    best = this.getStock(acr)
-                }
+            if (acr !== masterStock.acronym && this.getStock(acr).getDailyTrend() > best.getDailyTrend()) {
+                best = this.getStock(acr)
             }
-
         }
 
         return best
 
     },
     /**
-     * Function that return every falling stock/ETF basing on its _trend
+     * Function that return every falling stock/ETF basing on its daily trend
      * 
      * @returns Array with every falling stock/ETF
      */
@@ -821,7 +817,7 @@ GameManager.prototype = {
         let fallings = []
 
         for (acr in this.saves[this.saveSelected].stocks) {
-            if (this.getStock(acr).getDailyTrend() < 0) {
+            if (acr !== masterStock.acronym && this.getStock(acr).getDailyTrend() < 0) {
                 fallings.push(this.getStock(acr))
             }
         }
@@ -955,7 +951,9 @@ GameManager.prototype = {
 
         document.getElementById('bestStockName').innerText = s.acronym + ': ' + s.name
         document.getElementById('bestStockValue').innerText = s.value.toFixed(3) + ' Kr'
-        document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
+        // Even if it's the best stock it could still be falling
+        if(s.getDailyTrend()> 0) document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
+        else document.getElementById('bestStockRise').innerText = (s.getDailyTrend() * 100).toFixed(3) + '%'
 
         this.setGraph(s.acronym, this.bestTimeSpan, 'bestStock_graf')
 
@@ -966,7 +964,6 @@ GameManager.prototype = {
         document.getElementById('singleStockValue').innerText = this.stock.value.toFixed(3) + ' Kr'
         let trend = this.stock.getDailyTrend()
         if (trend > 0) trend = '+' + (trend * 100).toFixed(3) + '%'
-        else if (trend < 0) trend = '-' + (trend * 100).toFixed(3) + '%'
         else trend = (trend * 100).toFixed(3) + '%'
         document.getElementById('singleStockRise').innerText = trend
 
@@ -976,7 +973,6 @@ GameManager.prototype = {
             document.getElementById('singleStockValue').innerText = this.stock.value.toFixed(3) + ' Kr'
             trend = this.stock.getDailyTrend()
             if (trend > 0) trend = '+' + (trend * 100).toFixed(3) + '%'
-            else if (trend < 0) trend = '-' + (trend * 100).toFixed(3) + '%'
             else trend = (trend * 100).toFixed(3) + '%'
             document.getElementById('singleStockRise').innerText = trend
 
@@ -1019,7 +1015,7 @@ GameManager.prototype = {
                 type: "line",
                 data: {
                     datasets: [{
-                        label: s.name,
+                        label: s.acronym,
                         indexAxis: 'x',
                         borderWidth: 1,
                         radius: 0,
@@ -1073,6 +1069,7 @@ GameManager.prototype = {
         } else {
 
             g.chartjs.data.datasets[0].data = values
+            g.chartjs._metasets[0]._dataset.label = s.acronym
             g.chartjs.update()
 
         }

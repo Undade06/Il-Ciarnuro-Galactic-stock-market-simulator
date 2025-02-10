@@ -131,9 +131,11 @@ function loadSave(id) {
     const save = saves.find((s) => s.id === id);
     if (save) {
         showLoading(); // Show the loading div
-        gm.startGame();
-        toSlide("marketHomePage");
-        hideLoading(); // Hide the loading div after starting the game
+        setTimeout(() => {
+            gm.startGame();
+            toSlide("marketHomePage");
+            hideLoading(); // Hide the loading div after starting the game
+        }, 10);
     } else {
         alert("Salvataggio non trovato!");
     }
@@ -221,15 +223,15 @@ function risesAndFalls() {
         let name = document.createElement("td")
         let value = document.createElement("td")
         let trend = document.createElement("td")
-        let typeETF=document.createElement("td")
+        let typeETF = document.createElement("td")
 
         name.innerText = stock.acronym
         value.innerText = stock.value.toFixed(2)
         trend.innerText = "+" + (stock.getDailyTrend() * 100).toFixed(2) + "%"
 
-        trend.style.color="green"
+        trend.style.color = "green"
         row.appendChild(name)
-        if(stock.type==="ETF"){
+        if (stock.type === "ETF") {
             typeETF.innerText = "ETF"
             row.appendChild(typeETF)
         }
@@ -250,16 +252,16 @@ function risesAndFalls() {
         let name = document.createElement("td")
         let value = document.createElement("td")
         let trend = document.createElement("td")
-        let typeETF=document.createElement("td")
+        let typeETF = document.createElement("td")
 
         name.innerText = stock.acronym
         value.innerText = stock.value.toFixed(2)
         trend.innerText = (stock.getDailyTrend() * 100).toFixed(2) + "%"
 
-        trend.style.color="red"
+        trend.style.color = "red"
         row.appendChild(name)
         name.classList.add("bestStock_name")
-        if(stock.type==="ETF"){
+        if (stock.type === "ETF") {
             typeETF.innerText = "ETF"
             row.appendChild(typeETF)
         }
@@ -310,19 +312,19 @@ function closeNav() {
 }
 
 // Chiudi il pannello quando si clicca fuori
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     const infoPanel = document.getElementById('infoPanel');
     const infoButton = document.querySelector('#infoButton');
-    
+
     // Se il pannello è aperto e il click non è sul pannello stesso o sul pulsante info
-    if (infoPanel.style.width === "20rem" && 
-        !infoPanel.contains(event.target) && 
+    if (infoPanel.style.width === "20rem" &&
+        !infoPanel.contains(event.target) &&
         !infoButton.contains(event.target)) {
         closeNav();
     }
 });
 
 // Aggiungi event listener all'overlay
-document.getElementById('overlay').addEventListener('click', function() {
+document.getElementById('overlay').addEventListener('click', function () {
     closeNav();
 });

@@ -240,6 +240,7 @@ function risesAndFalls() {
 
         trend.style.color="red"
         row.appendChild(name)
+        name.classList.add("bestStock_name")
         if(stock.type==="ETF"){
             typeETF.innerText = "ETF"
             row.appendChild(typeETF)

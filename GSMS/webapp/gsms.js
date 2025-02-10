@@ -731,12 +731,12 @@ GameManager.prototype = {
             document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
         }, GameManager.VALUESPERREALSECONDS * 1000)
 
-        document.getElementById('my_balance').innerText = 'Bilancio: ' + this.player.wallet + ' Kr'
+        document.getElementById('my_balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
         document.getElementById('profileName').innerText = 'Nome: ' + this.player.name
         document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
-        document.getElementById('balance').innerText = 'Bilancio: ' + this.player.wallet + ' Kr'
-        document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity() + ' Kr'
-        setInterval(() => { document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity() + ' Kr' }, GameManager.VALUESPERREALSECONDS * 1000)
+        document.getElementById('balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
+        document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr'
+        setInterval(() => { document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr' }, GameManager.VALUESPERREALSECONDS * 1000)
 
         risesAndFalls()
 
@@ -1521,7 +1521,7 @@ Player.prototype = {
 
     },
     /**
-     * Make the player sell passed amount of the passed stock
+     * Make the player sell passed amount of the passed stock and update honor grade
      * 
      * @param {Stock} stock acronym of the stock(index of stock dictionary)
      * @param {Number} amountP amount to sell
@@ -1537,9 +1537,11 @@ Player.prototype = {
         this.stocks[stock.acronym].amount -= amountP
         if (this.stocks[stock.acronym].amount === 0) delete (this.stocks[stock.acronym])
 
+        this.updateHonorGrade()
+
     },
     /**
-     * Make the player sell all of the passed stock
+     * Make the player sell all of the passed stock and update honor grade
      * 
      * @param {Stock} stock acronym of the stock(index of stock dictionary)
      */
@@ -1551,6 +1553,8 @@ Player.prototype = {
         this.wallet += stock.value * this.stocks[stock.acronym].amount - gm.getStock(stock.acronym).commPerOperation - gm.getStock(stock.acronym).getTaxesCost(this.stocks[stock.acronym].amount)
 
         delete (this.stocks[stock.acronym])
+
+        this.updateHonorGrade()
 
     },
     /**

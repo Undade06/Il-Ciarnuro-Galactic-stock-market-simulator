@@ -202,6 +202,10 @@ div.slide.visible #log_reg_back{
     z-index: 0;
 }
 
+div.slide.hidden #log_reg_back .content{
+    display: none;
+}
+
 div.slide.visible #log_reg_back .content {
     opacity: 1;
     z-index: 1;
@@ -298,7 +302,7 @@ div.slide.visible #registerPage_back{
     z-index: 0;
 }
 
-.content #registerPage_back{
+div.slide.visible .content #registerPage_back{
     opacity: 1;
     z-index: 1;
 }
@@ -405,6 +409,10 @@ div.slide.hidden #saves_back{
 
 /*--- Market Home ---*/
 
+div.slide.visible #marketHomePage{
+    width: 100%;
+}
+
 div.slide.hidden .market_back {
     display: none;
 }
@@ -444,7 +452,7 @@ div.slide.visible #rising_stocks {
     transform: none;
     margin: 0.5rem;
     height: 27rem;
-    width: 46%;
+    width: 39rem;
     padding-left: 1.25rem;
 }
 
@@ -452,14 +460,14 @@ div.slide.visible #declining_stocks {
     overflow-y: auto;
     transform: none;
     margin: 0.5rem;
-    height: 58%;
-    width: 46%;
+    height: 27rem;
+    width: 39rem;
     padding-left: 1.25rem;
 }
 
 div.slide.visible #rises_falls{
     display: flex;
-    gap: 3rem;
+    gap: 4rem;
 }
 
 div.slide.visible #relativeStrenght {
@@ -472,8 +480,9 @@ div.slide.visible #relativeStrenght {
 
 div.slide.visible #accessibility{
     position: absolute;
-    top: 0.3%;
-    right: 1%;
+    top: 0;
+    right: 5%;
+    margin: 1rem;
     transform: none;
     height: 10rem;
     padding-left: 1.1rem;
@@ -665,6 +674,14 @@ div.slide.visible .buySell{
     border-radius: 2rem;
     border: none;
     opacity: 0.8;
+}
+
+div.slide.hidden #buy{
+    display: none;
+}
+
+div.slide.hidden #sell{
+    display: none;
 }
 
 div.slide.visible #n_actionsToBuy{

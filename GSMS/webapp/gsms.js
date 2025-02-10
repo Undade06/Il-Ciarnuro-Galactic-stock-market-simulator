@@ -667,7 +667,6 @@ GameManager.prototype = {
         Save.loadMarket().then(save => {
             this.saves[index] = save
             this.saves[index].saveId = index
-            this.createSaveInDB(index)
         })
 
     },
@@ -1256,7 +1255,7 @@ GameManager.prototype = {
             x.send()
         })
     },
-    createSaveInDB: function (idSave) {
+    createSaveInDB: function (idSave, budget, player) {
 
         if (this.saves[idSave] === undefined) throw 'Save not initilized'
 
@@ -1274,7 +1273,7 @@ GameManager.prototype = {
             alert('Server error')
         }
 
-        let params = "save=" + JSON.stringify(this.saves[idSave]) + "&idSave=" + idSave
+        let params = "saveSeeds=" + encodeURIComponent(JSON.stringify(this.saves[idSave].getSeeds())) + "&idSave=" + idSave + "&budget=" + encodeURIComponent(budget) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks))
         //console.log(params)
         x.open('POST', 'api.php?op=createSave')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -1571,7 +1570,7 @@ Save.prototype = {
     */
     getSeeds: function () {
 
-        let seeds = []
+        let seeds = {}
 
         for (k in this.stocks) {
 

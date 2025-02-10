@@ -1248,7 +1248,7 @@ GameManager.prototype = {
 
                                 save.saveId = s.idSave
 
-                                data.push({ save: save, lastAccess: s.lastAccess, ownedStocks: s.ownedStock, budget: s.budget })
+                                data.push({ save: save, lastAccess: s.lastAccess, ownedStocks: JSON.parse(s.ownedStocks), budget: s.budget })
 
                             })
 
@@ -1608,7 +1608,7 @@ Save.prototype = {
  * @returns a promise that resolve with a Save object
  */
 Save.loadMarket = function (seeds = undefined) {
-    console.log(seeds)
+
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest()
         xhr.onload = function () {
@@ -1630,12 +1630,11 @@ Save.loadMarket = function (seeds = undefined) {
 
                         s.influencedBy.forEach((stockId) => tempInfl.push(stocks[stockId]))
 
-                        if (seeds !== undefined && seeds[id] !== undefined) { console.log('Uso l\'array: ' + seeds[id]); tempSeed = seeds[id] }
+                        if (seeds !== undefined && seeds[id] !== undefined) tempSeed = seeds[id]
                         else {
                             while (('' + tempSeed).length !== Stock.SEEDDIGITS) {
                                 tempSeed = Math.round((Math.random()) * Math.pow(10, Stock.SEEDDIGITS))
                             }
-                            console.log('Genero: ' + tempSeed)
                         }
 
                         // Stock{name, acronym, description, base value, stability, growth, volatility, seed, influenceability, dividends percentage, days dividends frequency, commission per operation, earning tax}

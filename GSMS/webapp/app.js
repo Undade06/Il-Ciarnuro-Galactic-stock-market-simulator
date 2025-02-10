@@ -110,12 +110,30 @@ function createNewSave() {
     }
 }
 
+// Function to show the loading div
+function showLoading() {
+    const loadingDiv = document.getElementById("loading");
+    if (loadingDiv) {
+        loadingDiv.style.display = "block";
+    }
+}
+
+// Function to hide the loading div
+function hideLoading() {
+    const loadingDiv = document.getElementById("loading");
+    if (loadingDiv) {
+        loadingDiv.style.display = "none";
+    }
+}
+
 // Funzione per caricare uno specifico save
 function loadSave(id) {
     const save = saves.find((s) => s.id === id);
     if (save) {
+        showLoading(); // Show the loading div
         gm.startGame();
         toSlide("marketHomePage");
+        hideLoading(); // Hide the loading div after starting the game
     } else {
         alert("Salvataggio non trovato!");
     }

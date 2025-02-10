@@ -171,10 +171,9 @@
                     <input type="number" id="n_actionsToSell">
                     <button id="sellButton" onclick="gm.playerSell(gm.stock, Number(document.getElementById('n_actionsToSell').value))">Vendi</button>
                 </div>
-                <button class="infoButton" onclick="toggleNav()">Info</button>
-            </div>
-            <div id="infoPanel" class="sidepanel">
-                
+                <div id="infoPanel" class="sidepanel"></div>
+                <div id="overlay"></div>
+                <button id="infoButton" onclick="openNav()">Info</button>
             </div>
         </div>
     </body>
@@ -190,4 +189,3 @@
         })
     </script>
 </html>
-

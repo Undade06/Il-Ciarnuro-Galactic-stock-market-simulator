@@ -263,22 +263,35 @@ document.addEventListener("DOMContentLoaded", () => {
 function openNav() {
     const panel = document.getElementById("infoPanel");
     panel.style.display = "block";
-    // Piccolo delay per permettere al display:block di attivarsi prima dell'animazione
     setTimeout(() => {
         panel.style.width = "20rem";
+        document.getElementById("overlay").classList.add('visible');
     }, 10);
 }
 
 function closeNav() {
     const panel = document.getElementById("infoPanel");
     panel.style.width = "0";
+    document.getElementById("overlay").classList.remove('visible');
+    setTimeout(() => {
+        panel.style.display = "none";
+    }, 500);
 }
 
-function toggleNav() {
-    const panel = document.getElementById("infoPanel");
-    if (panel.style.width === "20rem") {
+// Chiudi il pannello quando si clicca fuori
+document.addEventListener('click', function(event) {
+    const infoPanel = document.getElementById('infoPanel');
+    const infoButton = document.querySelector('#infoButton');
+    
+    // Se il pannello è aperto e il click non è sul pannello stesso o sul pulsante info
+    if (infoPanel.style.width === "20rem" && 
+        !infoPanel.contains(event.target) && 
+        !infoButton.contains(event.target)) {
         closeNav();
-    } else {
-        openNav();
     }
-}
+});
+
+// Aggiungi event listener all'overlay
+document.getElementById('overlay').addEventListener('click', function() {
+    closeNav();
+});

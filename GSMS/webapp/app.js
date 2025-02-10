@@ -124,12 +124,13 @@ function loadSave(id) {
 
 // Funzione per rimuovere un save
 function removeSave(id) {
+    //console.log(id);
     const saveIndex = saves.findIndex((s) => s.id === id); // Trova l'indice del save tramite ID
-    gm.deleteSave(saveIndex + 1);
     if (saveIndex !== -1) {
         saves.splice(saveIndex, 1); // Rimuovi il save
         loadSaves();
-        alert(`Salvataggio eliminato!`);
+        //alert(`Salvataggio eliminato!`);
+        gm.deleteSaveFromDB(saveIndex + 1)
     }
 }
 

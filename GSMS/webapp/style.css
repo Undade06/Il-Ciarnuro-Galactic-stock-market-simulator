@@ -64,6 +64,14 @@ button:hover{
     z-index: 9999;
 }
 
+#rising,#falling td:hover{
+    cursor: pointer;
+}
+
+.bestStock_name:hover{
+    text-decoration: underline;
+}
+
 .errorText{
     max-width:20rem;
     height: auto;
@@ -495,7 +503,7 @@ div.slide.visible #relativeStrenght {
     padding-left: 1.25rem;
 }
 
-div.slide.visible #accessibility{
+#accessibility{
     position: absolute;
     top: 0;
     right: 5%;
@@ -516,7 +524,7 @@ div.slide.visible #sessionInfo{
     width: 100%;
 }
 
-div.slide.visible #accessibility h4,h5{
+#accessibility h4,h5{
     margin: 1rem;
     font-family: "Xolonium-Regular";
     font-weight: normal;

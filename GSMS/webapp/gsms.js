@@ -958,8 +958,14 @@ GameManager.prototype = {
         document.getElementById('bestStockName').innerText = s.acronym + ': ' + s.name
         document.getElementById('bestStockValue').innerText = s.value.toFixed(3) + ' Kr'
         // Even if it's the best stock it could still be falling
-        if (s.getDailyTrend() > 0) document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
-        else document.getElementById('bestStockRise').innerText = (s.getDailyTrend() * 100).toFixed(3) + '%'
+        if (s.getDailyTrend() > 0){
+            document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
+            document.getElementById('bestStockRise').style.color = 'green'
+        } 
+        else{
+            document.getElementById('bestStockRise').innerText = (s.getDailyTrend() * 100).toFixed(3) + '%'
+            document.getElementById('bestStockRise').style.color = 'red'
+        } 
 
         if (s !== this.best) {
 
@@ -974,8 +980,13 @@ GameManager.prototype = {
         document.getElementById('singleStockName').innerText = this.stock.acronym + ': ' + this.stock.name
         document.getElementById('singleStockValue').innerText = this.stock.value.toFixed(3) + ' Kr'
         let trend = this.stock.getDailyTrend()
-        if (trend > 0) trend = '+' + (trend * 100).toFixed(3) + '%'
-        else trend = (trend * 100).toFixed(3) + '%'
+        if (trend > 0){
+            trend = '+' + (trend * 100).toFixed(3) + '%'
+            document.getElementById('singleStockRise').style.color = 'green'  
+        }else{
+            trend = (trend * 100).toFixed(3) + '%'
+            document.getElementById('singleStockRise').style.color = 'red'
+        }
         document.getElementById('singleStockRise').innerText = trend
 
         this.setGraph(this.stock.acronym, this.stockTimeSpan, 'stock_graf')

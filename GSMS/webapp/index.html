@@ -58,7 +58,6 @@
             <div class="planet" id="planetStatic"></div>
             <div class="back" id="saves_back">
                 <div class="content" id="save_content">
-                    
                 </div>
             </div>
         </div>
@@ -97,7 +96,6 @@
                 <div class="market_back" id="declining_stocks">
                     <h3>In ribasso</h3>
                     <div id="falling">
-
                     </div>
                 </div>
             </div>   
@@ -165,12 +163,12 @@
             </div>
             <div id="stockActions">
                 <div class="buySell" id="buy">
-                    <input type="number" id="n_actionsToBuy">
+                    <input type="number" id="n_actionsToBuy" min="0" value="1" step="1">
                     <button id="buyButton" onclick="gm.playerPurchase(gm.stock, Number(document.getElementById('n_actionsToBuy').value))">Compra</button>
                 </div>
                 <button id="all_in" onclick="gm.playerPurchase(gm.stock, -1)">All in</button>
                 <div class="buySell" id="sell">
-                    <input type="number" id="n_actionsToSell">
+                    <input type="number" id="n_actionsToSell"  min="0" value="1" step="1">
                     <button id="sellButton" onclick="gm.playerSell(gm.stock, Number(document.getElementById('n_actionsToSell').value))">Vendi</button>
                 </div>
                 <button class="infoButton" onclick="toggleNav()">Info</button>

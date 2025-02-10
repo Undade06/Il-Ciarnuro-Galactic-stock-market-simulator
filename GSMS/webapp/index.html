@@ -11,7 +11,7 @@
         <link rel="icon" type="image/png" href="favicon.png"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
-    <body onload=" ">
+    <body onload="toSlide('saves')">
         <div class="bg"></div>
         <div class="slide visible" id="landingPage">
             <img src="pics/logo.webp" id="logo">
@@ -53,6 +53,7 @@
             </div>
         </div>
         <div class="slide hidden" id="saves">
+            <div id="loading"><h2>Caricamento</h2></div>
             <img src="pics/logo2.webp" id="logoLogin">
             <div class="planet" id="planetStatic"></div>
             <div class="back" id="saves_back">
@@ -123,7 +124,6 @@
             <div class="profile_back" id="portfolio">
             </div>
         </div>
-
         <div class="slide hidden" id="stockPage">
             <button class="backHome" onclick="toSlide('marketHomePage')">
                 <img src="pics/vector.webp">
@@ -131,8 +131,10 @@
             </button>
             <div id="accessibility">
                 <img src="pics/logo3.webp" id="logoHome">
-                <h4 id="cur_date"></h4>
-                <h5 id="my_balance"></h5>
+                <div id="sessionInfo">
+                    <h4 id="cur_date"></h4>
+                    <h5 id="my_balance"></h5>
+                </div>
                 <button id="my_stocks" onclick="toSlide('profilePage')">Le tue azioni<img id="my_stock_pic" src="pics/myStockPic.webp"></button>
             </div>
             <div class="market_back" id="singleStock">

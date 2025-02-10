@@ -26,10 +26,10 @@
                     }
                 } break;
                 case "login":{
-                    if(isset($_POST["username"]) && isset($_POST["password"])){
+                    if(isset($_POST["username"]) && isset($_POST["password"])){ 
                         $username = $_POST["username"];
                         $password = sha1($_POST["password"]);
-                        $q = $conn->prepare("SELECT passwordHash from Player WHERE username = ? AND passwordHash = ?");
+                        $q = $conn->prepare("SELECT passwordHash from player WHERE username = ? AND passwordHash = ?");
                         $q->bind_param("ss", $username, $password);
                         $q->execute();
                         $result = $q->get_result();
@@ -47,7 +47,7 @@
                         $username = $_POST["username"];
                         $password = sha1($_POST["password"]);
                         $email = $_POST["email"];
-                        $q = $conn->prepare("SELECT username from Player WHERE username = ?");
+                        $q = $conn->prepare("SELECT username from player WHERE username = ?");
                         $q->bind_param("s", $_POST["username"]);
                         $q->execute();
                         $result = $q->get_result();
@@ -55,7 +55,7 @@
                             $ret = ["error" => 1, "msg" => "Username already exists"];
                             break;
                         }
-                        $q = $conn->prepare("INSERT INTO Player (username, passwordHash, email) VALUES (?, ?, ?)");
+                        $q = $conn->prepare("INSERT INTO player (username, passwordHash, email) VALUES (?, ?, ?)");
                         $q->bind_param("sss", $_POST["username"], $password, $_POST["email"]);
                         $q->execute();
                         $ret = ["error" => 0, "msg" => "Registered successfully"];

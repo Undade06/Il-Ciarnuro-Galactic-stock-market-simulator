@@ -1287,7 +1287,9 @@ GameManager.prototype = {
 
                         })
 
-                        resolve(data)
+                        setTimeout(() => {
+                            resolve(data)
+                        }, 1000);
 
                     }
                     if (j.error === 1) reject(j.msg)

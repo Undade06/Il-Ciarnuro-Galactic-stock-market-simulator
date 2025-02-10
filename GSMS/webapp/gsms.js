@@ -739,6 +739,25 @@ GameManager.prototype = {
         setInterval(() => { document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity() + ' Kr' }, GameManager.VALUESPERREALSECONDS * 1000)
 
         risesAndFalls()
+
+        let payments = this.checkDividendsPayment()
+
+        if (payments !== undefined) {
+
+            let msg = 'Dividendi pagati:\n', tot = 0
+
+            for (let k in payments) {
+
+                msg += k + ': ' + payments[k] + ' Kr\n'
+                tot += payments[k]
+
+            }
+
+            alert(msg + 'Totale: ' + tot + ' Kr')
+
+        }
+
+
     },
     /**
      * Synchronize all stocks from passed timestep value making them proceed all together till GameManager.currentNumberValue()
@@ -849,10 +868,16 @@ GameManager.prototype = {
 
             if (amount === -1) this.player.allIn(stock)
             else this.player.buy(stock, amount)
-            this.setDividendsPayment(stock.acronym)
+            alert('Pagamento effettuato.\nValore azione: ' + (this.player.stocks[stock.acronym].purchaseValue).toFixed(3) + ' Kr\nQuantità: ' + this.player.stocks[stock.acronym].amount + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: ' + (this.player.stocks[stock.acronym].purchaseValue * this.player.stocks[stock.acronym].amount + stock.commPerOperation).toFixed(3) + ' Kr')
 
         } catch (error) {
-            console.error(error)
+            alert('Non hai abbastanza soldi!\nBilancio corrente: ' + this.player.wallet)
+        }
+
+        try {
+            this.setDividendsPayment(stock.acronym)
+        } catch (error) {
+            console.log(stock.name + ' ' + error)
         }
 
     },
@@ -869,11 +894,19 @@ GameManager.prototype = {
 
         try {
 
-            if (amount === -1) this.player.sellAll(stock.acronym)
-            else this.player.sell(stock.acronym, amount)
+            let a
+            if (amount === -1) {
+                this.player.sellAll(stock)
+                a = this.player.stocks[stock.acronym].amount
+            }
+            else {
+                this.player.sell(stock, amount)
+                a = amount
+            }
+            alert('Vendita effettuata.\nValore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: ' + (stock.value * a + stock.commPerOperation).toFixed(3) + ' Kr')
 
         } catch (error) {
-            console.error(error)
+            alert('Non hai così tante azioni!')
         }
 
     },
@@ -958,14 +991,14 @@ GameManager.prototype = {
         document.getElementById('bestStockName').innerText = s.acronym + ': ' + s.name
         document.getElementById('bestStockValue').innerText = s.value.toFixed(3) + ' Kr'
         // Even if it's the best stock it could still be falling
-        if (s.getDailyTrend() > 0){
+        if (s.getDailyTrend() > 0) {
             document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
             document.getElementById('bestStockRise').style.color = 'green'
-        } 
-        else{
+        }
+        else {
             document.getElementById('bestStockRise').innerText = (s.getDailyTrend() * 100).toFixed(3) + '%'
             document.getElementById('bestStockRise').style.color = 'red'
-        } 
+        }
 
         if (s !== this.best) {
 
@@ -980,10 +1013,10 @@ GameManager.prototype = {
         document.getElementById('singleStockName').innerText = this.stock.acronym + ': ' + this.stock.name
         document.getElementById('singleStockValue').innerText = this.stock.value.toFixed(3) + ' Kr'
         let trend = this.stock.getDailyTrend()
-        if (trend > 0){
+        if (trend > 0) {
             trend = '+' + (trend * 100).toFixed(3) + '%'
-            document.getElementById('singleStockRise').style.color = 'green'  
-        }else{
+            document.getElementById('singleStockRise').style.color = 'green'
+        } else {
             trend = (trend * 100).toFixed(3) + '%'
             document.getElementById('singleStockRise').style.color = 'red'
         }
@@ -1490,34 +1523,34 @@ Player.prototype = {
     /**
      * Make the player sell passed amount of the passed stock
      * 
-     * @param {String} stockAcronym acronym of the stock(index of stock dictionary)
+     * @param {Stock} stock acronym of the stock(index of stock dictionary)
      * @param {Number} amountP amount to sell
      */
-    sell: function (stockAcronym, amountP) {
+    sell: function (stock, amountP) {
 
-        if (stockAcronym === undefined || isNaN(Number(amountP))) throw 'Parameters not supported'
-        if (this.stocks[stockAcronym] === undefined) throw 'Player doesn\'t own passed stock'
-        if (this.stocks[stockAcronym].amount < amountP) throw 'Player doesn\'t have such amount of passed stock'
+        if (stock === undefined || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
+        if (this.stocks[stock.acronym].amount < amountP) throw 'Player doesn\'t have such amount of passed stock'
 
-        this.wallet += this.stocks[stockAcronym].purchaseValue * amountP - gm.getStock(stockAcronym).commPerOperation - gm.getStock(stockAcronym).getTaxesCost(amountP)
+        this.wallet += stock.value * amountP - gm.getStock(stock.acronym).commPerOperation - gm.getStock(stock.acronym).getTaxesCost(amountP)
 
-        this.stocks[stockAcronym].amount -= amountP
-        if (this.stocks[stockAcronym].amount === 0) delete (this.stocks[stockAcronym])
+        this.stocks[stock.acronym].amount -= amountP
+        if (this.stocks[stock.acronym].amount === 0) delete (this.stocks[stock.acronym])
 
     },
     /**
      * Make the player sell all of the passed stock
      * 
-     * @param {String} stockAcronym acronym of the stock(index of stock dictionary)
+     * @param {Stock} stock acronym of the stock(index of stock dictionary)
      */
-    sellAll: function (stockAcronym) {
+    sellAll: function (stock) {
 
-        if (stockAcronym === undefined) throw 'Parameters not supported'
-        if (this.stocks[stockAcronym] === undefined) throw 'Player doesn\'t own passed stock'
+        if (stock === undefined) throw 'Parameters not supported'
+        if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
 
-        this.wallet += this.stocks[stockAcronym].purchaseValue * this.stocks[stockAcronym].amount - gm.getStock(stockAcronym).commPerOperation - gm.getStock(stockAcronym).getTaxesCost(this.stocks[stockAcronym].amount)
+        this.wallet += stock.value * this.stocks[stock.acronym].amount - gm.getStock(stock.acronym).commPerOperation - gm.getStock(stock.acronym).getTaxesCost(this.stocks[stock.acronym].amount)
 
-        delete (this.stocks[stockAcronym])
+        delete (this.stocks[stock.acronym])
 
     },
     /**

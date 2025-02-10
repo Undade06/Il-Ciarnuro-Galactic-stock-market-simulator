@@ -163,12 +163,12 @@
             </div>
             <div id="stockActions">
                 <div class="buySell" id="buy">
-                    <input type="number" id="n_actionsToBuy" min="0" value="1" step="1">
+                    <input type="number" id="n_actionsToBuy" min="0" placeholder="1" step="1">
                     <button id="buyButton" onclick="gm.playerPurchase(gm.stock, Number(document.getElementById('n_actionsToBuy').value))">Compra</button>
                 </div>
                 <button id="all_in" onclick="gm.playerPurchase(gm.stock, -1)">All in</button>
                 <div class="buySell" id="sell">
-                    <input type="number" id="n_actionsToSell"  min="0" value="1" step="1">
+                    <input type="number" id="n_actionsToSell"  min="0" placeholder="1" step="1">
                     <button id="sellButton" onclick="gm.playerSell(gm.stock, Number(document.getElementById('n_actionsToSell').value))">Vendi</button>
                 </div>
                 <div id="infoPanel" class="sidepanel"></div>

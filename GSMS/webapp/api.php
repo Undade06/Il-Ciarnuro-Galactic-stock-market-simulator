@@ -96,7 +96,7 @@
                         $ret = ["error" => 1, "msg" => "Missing field/s"];
                         break;
                     }
-                    $q = $conn->prepare("DELETE FROM Saves WHERE idSave = ? AND idPlayer = (select id from Player where username = ?)");
+                    $q = $conn->prepare("DELETE FROM Save WHERE idSave = ? AND idPlayer = (select id from Player where username = ?)");
                     $q->bind_param("ss", $idSave, $_SESSION["user_id"]);
                     $q->execute();
                     $ret = ["error" => 0, "msg" => "Save deleted successfully"];
@@ -108,11 +108,11 @@
                         break;
                     }
 
-                    $q = $conn->query("SELECT * FROM Saves WHERE idPlayer = (SELECT id FROM Player WHERE username = \"".$_SESSION["user_id"]."\")");
+                    $q = $conn->query("SELECT * FROM Save WHERE idPlayer = (SELECT id FROM Player WHERE username = \"".$_SESSION["user_id"]."\")");
                     
                     $saves=[];
                     while($save=$q->fetch_array()){
-                        $tempS=["idSave"=>$save["idSave"], "budget"=>$save["budget"], "lastAccess"=>$save["lastAccess"], "ownedStock"=>$save["ownedStock"], "market"=>$save["market"]];
+                        $tempS=["idSave"=>$save["idSave"], "budget"=>$save["budget"], "lastAccess"=>$save["lastAccess"], "ownedStocks"=>$save["ownedStocks"], "saveSeeds"=>$save["saveSeeds"]];
                         array_push($saves, $tempS);
                     }
 

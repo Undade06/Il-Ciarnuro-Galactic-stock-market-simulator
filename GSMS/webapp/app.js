@@ -110,13 +110,30 @@ function createNewSave() {
     }
 }
 
+// Function to show the loading div
+function showLoading() {
+    const loadingDiv = document.getElementById("loading");
+    if (loadingDiv) {
+        loadingDiv.style.display = "block";
+    }
+}
+
+// Function to hide the loading div
+function hideLoading() {
+    const loadingDiv = document.getElementById("loading");
+    if (loadingDiv) {
+        loadingDiv.style.display = "none";
+    }
+}
+
 // Funzione per caricare uno specifico save
 function loadSave(id) {
     const save = saves.find((s) => s.id === id);
     if (save) {
+        showLoading(); // Show the loading div
         gm.startGame();
-        gm.setGraph("master stock", 1, "bestStock_graf");
         toSlide("marketHomePage");
+        hideLoading(); // Hide the loading div after starting the game
     } else {
         alert("Salvataggio non trovato!");
     }
@@ -204,14 +221,21 @@ function risesAndFalls() {
         let name = document.createElement("td")
         let value = document.createElement("td")
         let trend = document.createElement("td")
+        let typeETF=document.createElement("td")
 
         name.innerText = stock.acronym
         value.innerText = stock.value.toFixed(2)
         trend.innerText = "+" + (stock.getDailyTrend() * 100).toFixed(2) + "%"
 
+        trend.style.color="green"
         row.appendChild(name)
+        if(stock.type==="ETF"){
+            typeETF.innerText = "ETF"
+            row.appendChild(typeETF)
+        }
         row.appendChild(value)
         row.appendChild(trend)
+
         risingTable.appendChild(row)
 
         row.addEventListener('click', () => {
@@ -226,12 +250,19 @@ function risesAndFalls() {
         let name = document.createElement("td")
         let value = document.createElement("td")
         let trend = document.createElement("td")
+        let typeETF=document.createElement("td")
 
         name.innerText = stock.acronym
         value.innerText = stock.value.toFixed(2)
         trend.innerText = (stock.getDailyTrend() * 100).toFixed(2) + "%"
 
+        trend.style.color="red"
         row.appendChild(name)
+        name.classList.add("bestStock_name")
+        if(stock.type==="ETF"){
+            typeETF.innerText = "ETF"
+            row.appendChild(typeETF)
+        }
         row.appendChild(value)
         row.appendChild(trend)
         fallingTable.appendChild(row)

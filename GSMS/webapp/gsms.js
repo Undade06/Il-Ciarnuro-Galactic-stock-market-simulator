@@ -439,7 +439,7 @@ Stock.convertLongTermScore = function (score) {
  * @param {String} name Complete name of the ETF
  * @param {String} acronym Abbreviation acronym of the ETF
  * @param {String} description Description of the ETF
- * @param {Stock[]} influencedBy Arrays of stocks that compose this ETF
+ * @param {Array} influencedBy Arrays of stocks that compose this ETF and theri percentage
  * @param {Number} commPerOperation Commission per operation of this ETF
  * @param {Number} earningTax Earnign tax which weighs on this ETF sales
  */
@@ -468,8 +468,10 @@ function ETF(name, acronym, description, influencedBy, commPerOperation, earning
     influencedBy.forEach((e) => { composition += e.perc })
     if (1 - composition > 0.000001) throw this.acronym + ' composition doesn\'t reach 100%(' + composition + ')'            // JS has some issues with floating point numbers
 
+    if (commPerOperation === undefined || isNaN(commPerOperation) || commPerOperation < 0) throw this.acronym + ': undefined or illegal commissions per operation(' + commPerOperation + ')'
     this.commPerOperation = commPerOperation
 
+    if (earningTax === undefined || isNaN(earningTax) || earningTax < 0 || earningTax > 1) throw this.acronym + ': undefined or illegal tax over earnings(' + daysDividendsFrequency + ')'
     this.earningTax = earningTax
 
     this.krolikRating = this._calculateLongTermInvestmentRating()
@@ -596,14 +598,14 @@ ETF.prototype = {
     /**
      * Calculate taxes cost of this ETF considering passed amount
      * 
-     * @param {Number} sAmount Amount of this ETF to sell
+     * @param {Number} amount Amount of this ETF to sell
      * @returns Number representing the taxes cost
      */
-    getTaxesCost: function (sAmount) {
+    getTaxesCost: function (amount) {
 
-        if (isNaN(sAmount) || sAmount < 0) throw 'Invalid ETF\'s amount number'
+        if (isNaN(amount) || amount < 0) throw 'Invalid ETF\'s amount number'
 
-        return sAmount * this.value * this.earningTax
+        return amount * this.value * this.earningTax
 
     },
     /**
@@ -665,7 +667,6 @@ GameManager.prototype = {
         Save.loadMarket().then(save => {
             this.saves[index] = save
             this.saves[index].saveId = index
-            this.createSaveInDB(index)
         })
 
     },
@@ -730,14 +731,33 @@ GameManager.prototype = {
             document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
         }, GameManager.VALUESPERREALSECONDS * 1000)
 
-        document.getElementById('my_balance').innerText = 'Bilancio: ' + this.player.wallet + ' Kr'
+        document.getElementById('my_balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
         document.getElementById('profileName').innerText = 'Nome: ' + this.player.name
         document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
-        document.getElementById('balance').innerText = 'Bilancio: ' + this.player.wallet + ' Kr'
-        document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity() + ' Kr'
-        setInterval(() => { document.getElementById('equity').innerText = 'Equità: ' + this.player.getEquity() + ' Kr' }, GameManager.VALUESPERREALSECONDS * 1000)
+        document.getElementById('balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
+        document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr'
+        setInterval(() => { document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr' }, GameManager.VALUESPERREALSECONDS * 1000)
 
         risesAndFalls()
+
+        let payments = this.checkDividendsPayment()
+
+        if (payments !== undefined) {
+
+            let msg = 'Dividendi pagati:\n', tot = 0
+
+            for (let k in payments) {
+
+                msg += k + ': ' + payments[k] + ' Kr\n'
+                tot += payments[k]
+
+            }
+
+            alert(msg + 'Totale: ' + tot + ' Kr')
+
+        }
+
+
     },
     /**
      * Synchronize all stocks from passed timestep value making them proceed all together till GameManager.currentNumberValue()
@@ -848,10 +868,16 @@ GameManager.prototype = {
 
             if (amount === -1) this.player.allIn(stock)
             else this.player.buy(stock, amount)
-            this.setDividendsPayment(stock.acronym)
+            alert('Pagamento effettuato.\nValore azione: ' + (this.player.stocks[stock.acronym].purchaseValue).toFixed(3) + ' Kr\nQuantità: ' + this.player.stocks[stock.acronym].amount + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: ' + (this.player.stocks[stock.acronym].purchaseValue * this.player.stocks[stock.acronym].amount + stock.commPerOperation).toFixed(3) + ' Kr')
 
         } catch (error) {
-            console.error(error)
+            alert('Non hai abbastanza soldi!\nBilancio corrente: ' + this.player.wallet)
+        }
+
+        try {
+            this.setDividendsPayment(stock.acronym)
+        } catch (error) {
+            console.log(stock.name + ' ' + error)
         }
 
     },
@@ -868,11 +894,19 @@ GameManager.prototype = {
 
         try {
 
-            if (amount === -1) this.player.sellAll(stock.acronym)
-            else this.player.sell(stock.acronym, amount)
+            let a
+            if (amount === -1) {
+                this.player.sellAll(stock)
+                a = this.player.stocks[stock.acronym].amount
+            }
+            else {
+                this.player.sell(stock, amount)
+                a = amount
+            }
+            alert('Vendita effettuata.\nValore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: ' + (stock.value * a + stock.commPerOperation).toFixed(3) + ' Kr')
 
         } catch (error) {
-            console.error(error)
+            alert('Non hai così tante azioni!')
         }
 
     },
@@ -957,8 +991,14 @@ GameManager.prototype = {
         document.getElementById('bestStockName').innerText = s.acronym + ': ' + s.name
         document.getElementById('bestStockValue').innerText = s.value.toFixed(3) + ' Kr'
         // Even if it's the best stock it could still be falling
-        if (s.getDailyTrend() > 0) document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
-        else document.getElementById('bestStockRise').innerText = (s.getDailyTrend() * 100).toFixed(3) + '%'
+        if (s.getDailyTrend() > 0) {
+            document.getElementById('bestStockRise').innerText = '+' + (s.getDailyTrend() * 100).toFixed(3) + '%'
+            document.getElementById('bestStockRise').style.color = 'green'
+        }
+        else {
+            document.getElementById('bestStockRise').innerText = (s.getDailyTrend() * 100).toFixed(3) + '%'
+            document.getElementById('bestStockRise').style.color = 'red'
+        }
 
         if (s !== this.best) {
 
@@ -973,8 +1013,13 @@ GameManager.prototype = {
         document.getElementById('singleStockName').innerText = this.stock.acronym + ': ' + this.stock.name
         document.getElementById('singleStockValue').innerText = this.stock.value.toFixed(3) + ' Kr'
         let trend = this.stock.getDailyTrend()
-        if (trend > 0) trend = '+' + (trend * 100).toFixed(3) + '%'
-        else trend = (trend * 100).toFixed(3) + '%'
+        if (trend > 0) {
+            trend = '+' + (trend * 100).toFixed(3) + '%'
+            document.getElementById('singleStockRise').style.color = 'green'
+        } else {
+            trend = (trend * 100).toFixed(3) + '%'
+            document.getElementById('singleStockRise').style.color = 'red'
+        }
         document.getElementById('singleStockRise').innerText = trend
 
         this.setGraph(this.stock.acronym, this.stockTimeSpan, 'stock_graf')
@@ -1232,7 +1277,13 @@ GameManager.prototype = {
 
                         j.saves.forEach(s => {
 
-                            data.push({ save: new Save(GameManager.parseSave(s.market.stocks), s.idSave), lastAccess: s.lastAccess, ownedStocks: s.ownedStock, budget: s.budget })
+                            Save.loadMarket(JSON.parse(s.saveSeeds)).then(save => {
+
+                                save.saveId = s.idSave
+
+                                data.push({ save: save, lastAccess: s.lastAccess, ownedStocks: JSON.parse(s.ownedStocks), budget: s.budget })
+
+                            })
 
                         })
 
@@ -1254,7 +1305,7 @@ GameManager.prototype = {
             x.send()
         })
     },
-    createSaveInDB: function (idSave) {
+    createSaveInDB: function (idSave, budget, player) {
 
         if (this.saves[idSave] === undefined) throw 'Save not initilized'
 
@@ -1272,7 +1323,7 @@ GameManager.prototype = {
             alert('Server error')
         }
 
-        let params = "save=" + JSON.stringify(this.saves[idSave]) + "&idSave=" + idSave
+        let params = "saveSeeds=" + encodeURIComponent(JSON.stringify(this.saves[idSave].getSeeds())) + "&idSave=" + idSave + "&budget=" + encodeURIComponent(budget) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks))
         //console.log(params)
         x.open('POST', 'api.php?op=createSave')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -1334,13 +1385,13 @@ GameManager.currentNumberValue = function () {
 }
 
 /**
- * Load from local storage local saves
+ * Load from local storage JSON passed string
  * 
  * @returns saves array
  */
-GameManager.loadFromLS = function () {
+GameManager.loadFromJSON = function (s) {
 
-    let retSaves = [], saves = JSON.parse(localStorage.saves), save
+    let retSaves = [], saves = JSON.parse(s), save
 
     saves.forEach(e => {
 
@@ -1368,6 +1419,8 @@ GameManager.parseSave = function (s) {
 
     for (let acr in s) {
 
+        console.log(acr)
+
         tempInfl = []
 
         if (s[acr].type === 'stock') {
@@ -1384,7 +1437,7 @@ GameManager.parseSave = function (s) {
 
             s[acr].influencedBy.forEach((e) => tempInfl.push({ stock: s[e.stock.acronym], perc: e.perc }))
 
-            stocks[acr] = new ETF(s[acr].name, acr, s[acr].description, tempInfl, s[acr].commissionPerOperation, s[acr].earningTax)
+            stocks[acr] = new ETF(s[acr].name, acr, s[acr].description, tempInfl, s[acr].commPerOperation, s[acr].earningTax)
 
         } else throw acr + ' Unkown type: ' + s[acr].type
 
@@ -1468,36 +1521,40 @@ Player.prototype = {
 
     },
     /**
-     * Make the player sell passed amount of the passed stock
+     * Make the player sell passed amount of the passed stock and update honor grade
      * 
-     * @param {String} stockAcronym acronym of the stock(index of stock dictionary)
+     * @param {Stock} stock acronym of the stock(index of stock dictionary)
      * @param {Number} amountP amount to sell
      */
-    sell: function (stockAcronym, amountP) {
+    sell: function (stock, amountP) {
 
-        if (stockAcronym === undefined || isNaN(Number(amountP))) throw 'Parameters not supported'
-        if (this.stocks[stockAcronym] === undefined) throw 'Player doesn\'t own passed stock'
-        if (this.stocks[stockAcronym].amount < amountP) throw 'Player doesn\'t have such amount of passed stock'
+        if (stock === undefined || isNaN(Number(amountP))) throw 'Parameters not supported'
+        if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
+        if (this.stocks[stock.acronym].amount < amountP) throw 'Player doesn\'t have such amount of passed stock'
 
-        this.wallet += this.stocks[stockAcronym].purchaseValue * amountP - gm.getStock(stockAcronym).commPerOperation - gm.getStock(stockAcronym).getTaxesCost(amountP)
+        this.wallet += stock.value * amountP - gm.getStock(stock.acronym).commPerOperation - gm.getStock(stock.acronym).getTaxesCost(amountP)
 
-        this.stocks[stockAcronym].amount -= amountP
-        if (this.stocks[stockAcronym].amount === 0) delete (this.stocks[stockAcronym])
+        this.stocks[stock.acronym].amount -= amountP
+        if (this.stocks[stock.acronym].amount === 0) delete (this.stocks[stock.acronym])
+
+        this.updateHonorGrade()
 
     },
     /**
-     * Make the player sell all of the passed stock
+     * Make the player sell all of the passed stock and update honor grade
      * 
-     * @param {String} stockAcronym acronym of the stock(index of stock dictionary)
+     * @param {Stock} stock acronym of the stock(index of stock dictionary)
      */
-    sellAll: function (stockAcronym) {
+    sellAll: function (stock) {
 
-        if (stockAcronym === undefined) throw 'Parameters not supported'
-        if (this.stocks[stockAcronym] === undefined) throw 'Player doesn\'t own passed stock'
+        if (stock === undefined) throw 'Parameters not supported'
+        if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
 
-        this.wallet += this.stocks[stockAcronym].purchaseValue * this.stocks[stockAcronym].amount - gm.getStock(stockAcronym).commPerOperation - gm.getStock(stockAcronym).getTaxesCost(this.stocks[stockAcronym].amount)
+        this.wallet += stock.value * this.stocks[stock.acronym].amount - gm.getStock(stock.acronym).commPerOperation - gm.getStock(stock.acronym).getTaxesCost(this.stocks[stock.acronym].amount)
 
-        delete (this.stocks[stockAcronym])
+        delete (this.stocks[stock.acronym])
+
+        this.updateHonorGrade()
 
     },
     /**
@@ -1559,7 +1616,24 @@ function Save(stocks = undefined, saveId = undefined) {
 }
 
 Save.prototype = {
-    constructor: Save
+    constructor: Save,
+    /**
+    * Function that generates a dictionary like seeds[acr] = seed
+    * 
+    * @returns A dictionary with each stock's seed
+    */
+    getSeeds: function () {
+
+        let seeds = {}
+
+        for (k in this.stocks) {
+
+            if (this.stocks[k].type === 'stock') seeds[k] = this.stocks[k].seed
+
+        }
+
+        return seeds
+    }
 }
 
 /**
@@ -1594,7 +1668,11 @@ Save.loadMarket = function (seeds = undefined) {
                         s.influencedBy.forEach((stockId) => tempInfl.push(stocks[stockId]))
 
                         if (seeds !== undefined && seeds[id] !== undefined) tempSeed = seeds[id]
-                        else tempSeed = ~~(Math.random() * Math.pow(10, Stock.SEEDDIGITS))
+                        else {
+                            while (('' + tempSeed).length !== Stock.SEEDDIGITS) {
+                                tempSeed = Math.round((Math.random()) * Math.pow(10, Stock.SEEDDIGITS))
+                            }
+                        }
 
                         // Stock{name, acronym, description, base value, stability, growth, volatility, seed, influenceability, dividends percentage, days dividends frequency, commission per operation, earning tax}
                         // params[base value, stability, growth, volatility, influenceability]

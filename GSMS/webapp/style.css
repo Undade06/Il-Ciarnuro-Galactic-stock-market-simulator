@@ -1,15 +1,15 @@
 /*--- FONT ---*/
 
 @font-face {
-    font-family: 'Xolonium';
-    src: url('fonts/Xolonium-Bold.woff2') format('woff2');
+    font-family: "Noto sans";
+    /*src: url('fonts/Xolonium-Bold.woff2') format('woff2');*/
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Xolonium_regular';
-    src: url('fonts/Xolonium-Regular.woff2') format('woff2');
+    font-family: "Noto sans";
+    /*src: url('fonts/Xolonium-Regular.woff2') format('woff2');*/
     font-weight: bold;
     font-style: normal;
 }
@@ -202,6 +202,10 @@ div.slide.visible #log_reg_back{
     z-index: 0;
 }
 
+div.slide.hidden #log_reg_back .content{
+    display: none;
+}
+
 div.slide.visible #log_reg_back .content {
     opacity: 1;
     z-index: 1;
@@ -298,7 +302,7 @@ div.slide.visible #registerPage_back{
     z-index: 0;
 }
 
-.content #registerPage_back{
+div.slide.visible .content #registerPage_back{
     opacity: 1;
     z-index: 1;
 }
@@ -403,7 +407,28 @@ div.slide.hidden #saves_back{
     display: none;
 }
 
+#loading{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    opacity: 0.7;
+    z-index: -1;
+}
+
+#loading h2{
+    text-align: center;
+}
+
 /*--- Market Home ---*/
+
+div.slide.visible #marketHomePage{
+    width: 100%;
+}
 
 div.slide.hidden .market_back {
     display: none;
@@ -444,7 +469,7 @@ div.slide.visible #rising_stocks {
     transform: none;
     margin: 0.5rem;
     height: 27rem;
-    width: 46%;
+    width: 39rem;
     padding-left: 1.25rem;
 }
 
@@ -452,14 +477,14 @@ div.slide.visible #declining_stocks {
     overflow-y: auto;
     transform: none;
     margin: 0.5rem;
-    height: 58%;
-    width: 46%;
+    height: 27rem;
+    width: 39rem;
     padding-left: 1.25rem;
 }
 
 div.slide.visible #rises_falls{
     display: flex;
-    gap: 3rem;
+    gap: 4rem;
 }
 
 div.slide.visible #relativeStrenght {
@@ -472,8 +497,9 @@ div.slide.visible #relativeStrenght {
 
 div.slide.visible #accessibility{
     position: absolute;
-    top: 0.3%;
-    right: 1%;
+    top: 0;
+    right: 5%;
+    margin: 1rem;
     transform: none;
     height: 10rem;
     padding-left: 1.1rem;
@@ -589,7 +615,6 @@ div.stock_header{
 
 .bestStock_percentage{
     margin: 1rem;
-    color: rgb(0, 190, 0);
 }
 
 .graf #bestStock_graf{
@@ -602,7 +627,13 @@ div.stock_header{
 
 div.rising{
     width: auto;
-    margin-top: 12%;
+    margin-top: 3rem;
+    border-bottom-style: solid;
+    border: #FFFFFF;
+}
+div.falling{
+    width: auto;
+    margin-top: 3rem;
     border-bottom-style: solid;
     border: #FFFFFF;
 }

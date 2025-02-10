@@ -1,15 +1,15 @@
 /*--- FONT ---*/
 
 @font-face {
-    font-family: 'Xolonium';
-    src: url('fonts/Xolonium-Bold.woff2') format('woff2');
+    font-family: "Noto sans";
+    /*src: url('fonts/Xolonium-Bold.woff2') format('woff2');*/
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Xolonium_regular';
-    src: url('fonts/Xolonium-Regular.woff2') format('woff2');
+    font-family: "Noto sans";
+    /*src: url('fonts/Xolonium-Regular.woff2') format('woff2');*/
     font-weight: bold;
     font-style: normal;
 }

@@ -1,18 +1,18 @@
 /*--- FONT ---*/
-
+/*
 @font-face {
     font-family: "Noto sans";
-    /*src: url('fonts/Xolonium-Bold.woff2') format('woff2');*/
+    src: url('fonts/Xolonium-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Noto sans";
-    /*src: url('fonts/Xolonium-Regular.woff2') format('woff2');*/
+    src: url('fonts/Xolonium-Regular.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
-}
+}*/
 
 *{
     -webkit-user-drag: none;
@@ -721,7 +721,7 @@ div.slide.visible #n_actionsToBuy , #n_actionsToSell{
     background-color:rgba(11, 21, 59, 0.75);
     color: white;
     border: none;
-    border-radius: 2rem;
+    border-radius: 0.8rem;
     margin: 0.5rem;
     flex: 1;
 }
@@ -734,7 +734,7 @@ div.slide.visible #buyButton, #sellButton{
     background: none;
     color: white;
     border: none;
-    font-family: 'Xolonium',sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     font-size: clamp(1rem, 2vw, 1.5rem);
     margin: 0.5rem;
     flex: 1;
@@ -748,7 +748,7 @@ div.slide.visible #all_in, #infoButton {
     background-color: #0A205A;
     color: white;
     width: 7rem;
-    font-family: 'Xolonium', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     font-size: 1.5rem;
     border: none;
     border-radius: 1rem;
@@ -774,7 +774,7 @@ div.slide.visible #all_in, #infoButton {
     overflow-x: hidden;
     transition: width 0.5s ease;
     color: white;
-    font-family: 'Xolonium', sans-serif;
+    font-family: 'noto sans', sans-serif;
 }
 
 #infoPanel.visible {

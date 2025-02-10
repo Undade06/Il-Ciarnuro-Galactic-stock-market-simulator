@@ -54,16 +54,11 @@ document.getElementById("saves").addEventListener('click', function (event) {
 // Reload saves
 let saveSelection = [];// Gestione in memoria
 gm.loadSavesFromDB().then(r => {
-    if (r){
-        saveSelection=r
-        let tempSaves=r
-        console.log(tempSaves)
-        console.log(r.length)
-
-        for(let i=0;i<saveSelection.length;i++){
-            gm.saves[r[i].save.saveId]=r[i].save
-            
-        }
+    if (r) {
+        saveSelection = r
+        r.forEach(s => {
+            gm.saves[s.save.saveId] = s.save
+        })
         loadSaves()
     }
 })
@@ -95,7 +90,7 @@ function loadSaves() {
         saveBox.textContent = save.name;
         saveBox.appendChild(img);
 
-        saveBox.addEventListener("click", () => loadSave(save.id)); // Carica il salvataggio specifico
+        saveBox.addEventListener("click", () => loadSave(save.save.saveId)); // Carica il salvataggio specifico
         savesContainer.appendChild(saveBox);
     });
 
@@ -144,17 +139,13 @@ function hideLoading() {
 
 // Funzione per caricare uno specifico save
 function loadSave(id) {
-    const save = saveSelection.find((s) => s.id === id);
-    if (save) {
-        showLoading(); // Show the loading div
-        setTimeout(() => {
-            gm.startGame();
-            toSlide("marketHomePage");
-            hideLoading(); // Hide the loading div after starting the game
-        }, 10);
-    } else {
-        alert("Salvataggio non trovato!");
-    }
+    showLoading(); // Show the loading div
+    setTimeout(() => {
+        gm.saveSelected = id
+        gm.startGame();
+        toSlide("marketHomePage");
+        hideLoading(); // Hide the loading div after starting the game
+    }, 100);
 }
 
 // Funzione per rimuovere un save

@@ -72,16 +72,19 @@
                     $ret = ["error" => 0, "msg" => "Logged out successfully"];
                 } break;
                 case "createSave":{
-                    if(isset($_SESSION["user_id"]) && isset($_POST["save"]) && isset($_POST["idSave"])){
-                        $save = $_POST["save"];
+                    if(isset($_SESSION["user_id"]) && isset($_POST["saveSeeds"]) && isset($_POST["idSave"]) && isset($_POST["ownedStocks"]) && isset($_POST["lastAccess"]) && isset($_POST["budget"])){
+                        $saveS = $_POST["saveSeeds"];
                         $idSave = $_POST["idSave"];
+                        $ownS = $_POST["ownedStocks"];
+                        $lastA = $_POST["lastAccess"];
+                        $budget = $_POST["budget"];
                     }else{
                         $ret = ["error" => 1, "msg" => "Missing field/s"];
                         break;
                     }
-                    $q = $conn->prepare("INSERT INTO Saves (idPlayer, idSave, budget, lastAccess, market) 
-                                        VALUES ((select id from Player where username = ?), ?, 25, NOW(), ?)");
-                    $q->bind_param("sss", $_SESSION["user_id"], $idSave, $save);
+                    $q = $conn->prepare("INSERT INTO save (idPlayer, idSave, budget, lastAccess, saveSeeds, ownedStocks) 
+                                        VALUES ((select id from player where username = ?), ?, ?, ?, ?, ?)");
+                    $q->bind_param("sidsss", $_SESSION["user_id"], $idSave, $budget, $lastA, $saveS, $ownS);
                     $q->execute();
                     $ret = ["error" => 0, "msg" => "Save created successfully"];
                     $q->close();

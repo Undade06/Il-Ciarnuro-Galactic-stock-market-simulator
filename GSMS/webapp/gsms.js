@@ -439,7 +439,7 @@ Stock.convertLongTermScore = function (score) {
  * @param {String} name Complete name of the ETF
  * @param {String} acronym Abbreviation acronym of the ETF
  * @param {String} description Description of the ETF
- * @param {Stock[]} influencedBy Arrays of stocks that compose this ETF
+ * @param {Array} influencedBy Arrays of stocks that compose this ETF and theri percentage
  * @param {Number} commPerOperation Commission per operation of this ETF
  * @param {Number} earningTax Earnign tax which weighs on this ETF sales
  */
@@ -468,8 +468,10 @@ function ETF(name, acronym, description, influencedBy, commPerOperation, earning
     influencedBy.forEach((e) => { composition += e.perc })
     if (1 - composition > 0.000001) throw this.acronym + ' composition doesn\'t reach 100%(' + composition + ')'            // JS has some issues with floating point numbers
 
+    if (commPerOperation === undefined || isNaN(commPerOperation) || commPerOperation < 0) throw this.acronym + ': undefined or illegal commissions per operation(' + commPerOperation + ')'
     this.commPerOperation = commPerOperation
 
+    if (earningTax === undefined || isNaN(earningTax) || earningTax < 0 || earningTax > 1) throw this.acronym + ': undefined or illegal tax over earnings(' + daysDividendsFrequency + ')'
     this.earningTax = earningTax
 
     this.krolikRating = this._calculateLongTermInvestmentRating()
@@ -596,14 +598,14 @@ ETF.prototype = {
     /**
      * Calculate taxes cost of this ETF considering passed amount
      * 
-     * @param {Number} sAmount Amount of this ETF to sell
+     * @param {Number} amount Amount of this ETF to sell
      * @returns Number representing the taxes cost
      */
-    getTaxesCost: function (sAmount) {
+    getTaxesCost: function (amount) {
 
-        if (isNaN(sAmount) || sAmount < 0) throw 'Invalid ETF\'s amount number'
+        if (isNaN(amount) || amount < 0) throw 'Invalid ETF\'s amount number'
 
-        return sAmount * this.value * this.earningTax
+        return amount * this.value * this.earningTax
 
     },
     /**
@@ -665,7 +667,6 @@ GameManager.prototype = {
         Save.loadMarket().then(save => {
             this.saves[index] = save
             this.saves[index].saveId = index
-            this.createSaveInDB(index)
         })
 
     },
@@ -1254,7 +1255,7 @@ GameManager.prototype = {
             x.send()
         })
     },
-    createSaveInDB: function (idSave) {
+    createSaveInDB: function (idSave, budget, player) {
 
         if (this.saves[idSave] === undefined) throw 'Save not initilized'
 
@@ -1272,7 +1273,7 @@ GameManager.prototype = {
             alert('Server error')
         }
 
-        let params = "save=" + JSON.stringify(this.saves[idSave]) + "&idSave=" + idSave
+        let params = "saveSeeds=" + encodeURIComponent(JSON.stringify(this.saves[idSave].getSeeds())) + "&idSave=" + idSave + "&budget=" + encodeURIComponent(budget) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks))
         //console.log(params)
         x.open('POST', 'api.php?op=createSave')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -1334,13 +1335,13 @@ GameManager.currentNumberValue = function () {
 }
 
 /**
- * Load from local storage local saves
+ * Load from local storage JSON passed string
  * 
  * @returns saves array
  */
-GameManager.loadFromLS = function () {
+GameManager.loadFromJSON = function (s) {
 
-    let retSaves = [], saves = JSON.parse(localStorage.saves), save
+    let retSaves = [], saves = JSON.parse(s), save
 
     saves.forEach(e => {
 
@@ -1368,6 +1369,8 @@ GameManager.parseSave = function (s) {
 
     for (let acr in s) {
 
+        console.log(acr)
+
         tempInfl = []
 
         if (s[acr].type === 'stock') {
@@ -1384,7 +1387,7 @@ GameManager.parseSave = function (s) {
 
             s[acr].influencedBy.forEach((e) => tempInfl.push({ stock: s[e.stock.acronym], perc: e.perc }))
 
-            stocks[acr] = new ETF(s[acr].name, acr, s[acr].description, tempInfl, s[acr].commissionPerOperation, s[acr].earningTax)
+            stocks[acr] = new ETF(s[acr].name, acr, s[acr].description, tempInfl, s[acr].commPerOperation, s[acr].earningTax)
 
         } else throw acr + ' Unkown type: ' + s[acr].type
 
@@ -1559,7 +1562,24 @@ function Save(stocks = undefined, saveId = undefined) {
 }
 
 Save.prototype = {
-    constructor: Save
+    constructor: Save,
+    /**
+    * Function that generates a dictionary like seeds[acr] = seed
+    * 
+    * @returns A dictionary with each stock's seed
+    */
+    getSeeds: function () {
+
+        let seeds = {}
+
+        for (k in this.stocks) {
+
+            if (this.stocks[k].type === 'stock') seeds[k] = this.stocks[k].seed
+
+        }
+
+        return seeds
+    }
 }
 
 /**

@@ -115,7 +115,6 @@ function loadSave(id) {
     const save = saves.find((s) => s.id === id);
     if (save) {
         gm.startGame();
-        gm.setGraph("master stock", 1, "bestStock_graf");
         toSlide("marketHomePage");
     } else {
         alert("Salvataggio non trovato!");
@@ -204,14 +203,21 @@ function risesAndFalls() {
         let name = document.createElement("td")
         let value = document.createElement("td")
         let trend = document.createElement("td")
+        let typeETF=document.createElement("td")
 
         name.innerText = stock.acronym
         value.innerText = stock.value.toFixed(2)
         trend.innerText = "+" + (stock.getDailyTrend() * 100).toFixed(2) + "%"
 
+        trend.style.color="green"
         row.appendChild(name)
+        if(stock.type==="ETF"){
+            typeETF.innerText = "ETF"
+            row.appendChild(typeETF)
+        }
         row.appendChild(value)
         row.appendChild(trend)
+
         risingTable.appendChild(row)
 
         row.addEventListener('click', () => {
@@ -226,12 +232,18 @@ function risesAndFalls() {
         let name = document.createElement("td")
         let value = document.createElement("td")
         let trend = document.createElement("td")
+        let typeETF=document.createElement("td")
 
         name.innerText = stock.acronym
         value.innerText = stock.value.toFixed(2)
         trend.innerText = (stock.getDailyTrend() * 100).toFixed(2) + "%"
 
+        trend.style.color="red"
         row.appendChild(name)
+        if(stock.type==="ETF"){
+            typeETF.innerText = "ETF"
+            row.appendChild(typeETF)
+        }
         row.appendChild(value)
         row.appendChild(trend)
         fallingTable.appendChild(row)

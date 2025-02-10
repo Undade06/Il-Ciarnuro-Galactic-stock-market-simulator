@@ -628,7 +628,13 @@ div.stock_header{
 
 div.rising{
     width: auto;
-    margin-top: 12%;
+    margin-top: 3rem;
+    border-bottom-style: solid;
+    border: #FFFFFF;
+}
+div.falling{
+    width: auto;
+    margin-top: 3rem;
     border-bottom-style: solid;
     border: #FFFFFF;
 }

@@ -64,6 +64,14 @@ button:not(#buyButton,#sellButton):hover{
     z-index: 9999;
 }
 
+#rising,#falling td:hover{
+    cursor: pointer;
+}
+
+.bestStock_name:hover{
+    text-decoration: underline;
+}
+
 .errorText{
     max-width:20rem;
     height: auto;
@@ -407,6 +415,8 @@ div.slide.hidden #saves_back{
     display: none;
 }
 
+/*--- Loading ---*/
+
 #loading{
     position: absolute;
     width: 100%;
@@ -416,14 +426,48 @@ div.slide.hidden #saves_back{
     right: 0;
     bottom: 0;
     display: none;
-    opacity: 0.7;
-    z-index: -1;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 999;
 }
 
 #loading h2{
+    margin-top: 11rem;
+    font-family: 'noto sans', sans-serif;
+    font-size: 4rem;
     text-align: center;
 }
 
+/*.loadingBar svg polyline {
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  
+  .loadingBar svg polyline#back {
+    fill: none;
+    stroke: #111525;
+  }
+  
+  .loadingBar svg polyline#front {
+    fill: none;
+    stroke: #0A205A;
+    stroke-dasharray: 48, 144;
+    stroke-dashoffset: 192;
+    animation: dash_682 1.4s linear infinite;
+  }
+  
+  @keyframes dash_682 {
+    72.5% {
+      opacity: 0;
+    }
+  
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+*/
 /*--- Market Home ---*/
 
 div.slide.visible #marketHomePage{
@@ -495,7 +539,7 @@ div.slide.visible #relativeStrenght {
     padding-left: 1.25rem;
 }
 
-div.slide.visible #accessibility{
+.accessibility{
     position: absolute;
     top: 0;
     right: 5%;
@@ -516,7 +560,7 @@ div.slide.visible #sessionInfo{
     width: 100%;
 }
 
-div.slide.visible #accessibility h4,h5{
+.accessibility h4,h5{
     margin: 1rem;
     font-family: "Xolonium-Regular";
     font-weight: normal;
@@ -662,7 +706,7 @@ div.rising tr,td{
     border-radius: 2rem;
 }
 
-div.slide.hidden #accessibility{
+div.slide.hidden .accessibility{
     display: none;
 }
 

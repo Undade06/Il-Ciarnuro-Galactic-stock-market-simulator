@@ -1334,9 +1334,6 @@ GameManager.prototype = {
 
     },
     deleteSaveFromDB: function (idSave) {
-
-        if (this.saves[idSave] === undefined) throw 'Undefined save'
-
         let x = new XMLHttpRequest()
         x.onload = function () {
             try {

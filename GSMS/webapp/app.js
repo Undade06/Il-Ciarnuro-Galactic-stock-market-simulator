@@ -84,7 +84,7 @@ function loadSaves() {
         img.alt = "Rimuovi Salvataggio";
         img.addEventListener("click", (event) => {
             event.stopPropagation(); // Impedisce il click sull'immagine
-            removeSave(save.id);
+            removeSave(save.save.saveId);
         });
 
         saveBox.textContent = save.name;
@@ -180,12 +180,11 @@ function loadSave(id) {
 function removeSave(id) {
     //console.log(id);
     const saveIndex = saveSelection.findIndex((s) => s.save.saveId === id); // Trova l'indice del save tramite ID
-    if (saveIndex !== -1) {
-        saveSelection.splice(saveIndex, 1); // Rimuovi il save
-        loadSaves();
-        //alert(`Salvataggio eliminato!`);
-        gm.deleteSaveFromDB(saveIndex + 1)
-    }
+    gm.deleteSave(id)
+    console.log("saveIndex " + saveIndex)
+    saveSelection.splice(saveIndex, 1); // Rimuovi il save
+    loadSaves();
+    //alert(`Salvataggio eliminato!`);
 }
 
 document.addEventListener("DOMContentLoaded", () => {

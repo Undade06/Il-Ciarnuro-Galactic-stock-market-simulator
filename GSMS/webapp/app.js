@@ -52,7 +52,18 @@ document.getElementById("saves").addEventListener('click', function (event) {
 });
 
 // Reload saves
-let saves = []; // Gestione in memoria
+let saveSelection = [];// Gestione in memoria
+gm.loadSavesFromDB().then(r => {
+    if (r) {
+        saveSelection = r
+        r.forEach(s => {
+            gm.saves[s.save.saveId] = s.save
+        })
+        loadSaves()
+    }
+})
+
+
 let saveCounter = 1; // Contatore per i salvataggi
 
 function loadSaves() {
@@ -60,7 +71,7 @@ function loadSaves() {
     savesContainer.innerHTML = "";
 
     // Crea una box per ogni save
-    saves.forEach((save) => {
+    saveSelection.forEach((save) => {
         const saveBox = document.createElement("div");
         saveBox.classList.add("save-box");
         saveBox.style.position = "relative";
@@ -79,12 +90,12 @@ function loadSaves() {
         saveBox.textContent = save.name;
         saveBox.appendChild(img);
 
-        saveBox.addEventListener("click", () => loadSave(save.id)); // Carica il salvataggio specifico
+        saveBox.addEventListener("click", () => loadSave(save.save.saveId)); // Carica il salvataggio specifico
         savesContainer.appendChild(saveBox);
     });
 
     // Aggiungi una nuova save-box
-    if (saves.length < 3) {
+    if (saveSelection.length < 3) {
         const newSaveBox = document.createElement("div");
         newSaveBox.classList.add("save-box", "new-save");
         newSaveBox.textContent = "+";
@@ -95,7 +106,7 @@ function loadSaves() {
 
 // Creazione di un nuovo save
 function createNewSave() {
-    if (saves.length < 3) {
+    if (saveSelection.length < 3) {
         // Crea un nuovo save con un ID univoco e un nome
         const saveNumber = saves.length + 1; // Numero del salvataggio (1,2,3)
         const newSave = {
@@ -103,7 +114,7 @@ function createNewSave() {
             name: `Save ${saveCounter}`,
             data: `` // Dati del salvataggio
         };
-        saves.push(newSave);
+        saveSelection.push(newSave);
         saveCounter++;
         loadSaves();
         gm.initializeSave(saveNumber)
@@ -128,25 +139,21 @@ function hideLoading() {
 
 // Funzione per caricare uno specifico save
 function loadSave(id) {
-    const save = saves.find((s) => s.id === id);
-    if (save) {
-        showLoading(); // Show the loading div
-        setTimeout(() => {
-            gm.startGame();
-            toSlide("marketHomePage");
-            hideLoading(); // Hide the loading div after starting the game
-        }, 10);
-    } else {
-        alert("Salvataggio non trovato!");
-    }
+    showLoading(); // Show the loading div
+    setTimeout(() => {
+        gm.saveSelected = id
+        gm.startGame();
+        toSlide("marketHomePage");
+        hideLoading(); // Hide the loading div after starting the game
+    }, 100);
 }
 
 // Funzione per rimuovere un save
 function removeSave(id) {
     //console.log(id);
-    const saveIndex = saves.findIndex((s) => s.id === id); // Trova l'indice del save tramite ID
+    const saveIndex = saveSelection.findIndex((s) => s.id === id); // Trova l'indice del save tramite ID
     if (saveIndex !== -1) {
-        saves.splice(saveIndex, 1); // Rimuovi il save
+        saveSelection.splice(saveIndex, 1); // Rimuovi il save
         loadSaves();
         //alert(`Salvataggio eliminato!`);
         gm.deleteSaveFromDB(saveIndex + 1)

@@ -1273,21 +1273,20 @@ GameManager.prototype = {
                     let j = JSON.parse(x.responseText)
                     if (j.error === 0) {
 
-                        let data = []
-
-                        j.saves.forEach(s => {
-
-                            Save.loadMarket(JSON.parse(s.saveSeeds)).then(save => {
-
-                                save.saveId = s.idSave
-
-                                data.push({ save: save, lastAccess: s.lastAccess, ownedStocks: JSON.parse(s.ownedStocks), budget: s.budget })
-
-                            })
-
+                        let promises = j.saves.map(s => {
+                            return Save.loadMarket(JSON.parse(s.saveSeeds))
+                                .then(save => {
+                                    save.saveId = s.idSave
+                                    return {
+                                        save: save,
+                                        lastAccess: s.lastAccess,
+                                        ownedStocks: JSON.parse(s.ownedStocks),
+                                        budget: s.budget
+                                    }
+                                })
                         })
 
-                        resolve(data)
+                        Promise.all(promises).then(data => { resolve(data) })
 
                     }
                     if (j.error === 1) reject(j.msg)

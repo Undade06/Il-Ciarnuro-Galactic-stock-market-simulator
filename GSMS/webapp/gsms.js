@@ -655,7 +655,7 @@ function GameManager(pName = undefined) {
 GameManager.prototype = {
     constructor: GameManager,
     /**
-     * Function that initialize a new save with a new market and save it in db
+     * Function that initialize a new save with a new market
      * 
      * @param {Number} index index of the save to initialize
      */

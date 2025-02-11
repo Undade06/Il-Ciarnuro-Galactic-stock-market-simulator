@@ -89,11 +89,11 @@ function loadSaves() {
 
         saveBox.textContent = save.name;
         let saveid = document.createElement("div")
-        saveid.innerText =  "Salvataggio " + save.save.saveId
+        saveid.innerText = "Salvataggio " + save.save.saveId
         let saveDate = document.createElement("div")
         saveDate.innerText = save.lastAccess.getFullYear() + '-' + numberTo2Digits(save.lastAccess.getMonth() + 1) + '-' + numberTo2Digits(save.lastAccess.getDate())
         let balance = document.createElement("div")
-        balance.innerText = "Bilancio: " + (save.budget).toFixed(2)+" Kr"
+        balance.innerText = "Bilancio: " + (save.budget).toFixed(2) + " Kr"
         saveBox.appendChild(saveid)
         saveBox.appendChild(saveDate)
         saveBox.appendChild(balance)
@@ -117,19 +117,35 @@ function loadSaves() {
 function createNewSave() {
     if (saveSelection.length < 3) {
         // Crea un nuovo save con un ID univoco e un nome
-        const saveNumber = saves.length + 1; // Numero del salvataggio (1,2,3)
-        const newSave = {
-            id: Date.now(), // ID univoco per il save
-            name: `Save ${saveCounter}`,
-            data: `` // Dati del salvataggio
-        };
-        saveSelection.push(newSave);
-        saveCounter++;
-        loadSaves();
-        gm.initializeSave(saveNumber)
+        const saveNumber = saveSelection.length + 1; // Numero del salvataggio (1,2,3)
+
+        Save.loadMarket().then(save => {
+            // Crea un nuovo oggetto Save con gli stock caricati
+            const newSave = {
+                    save: new Save(save.stocks, saveNumber),
+                    lastAccess: new Date(new Date(GameManager.gameTimer())),
+                    ownedStocks: undefined,
+                    budget: Player.startMoney
+            };
+
+            saveSelection.push(newSave);
+            //console.log(gm.player);
+            //console.log(saveNumber);
+            gm.initializeSave(saveNumber);
+            gm.saves[saveNumber] = newSave.save;
+
+            console.log(gm.saves[saveNumber]);
+
+            // Crea il salvataggio nel database
+            gm.createSaveInDB(saveNumber, Player.startMoney, gm.player);
+
+            saveCounter++;
+            loadSaves();
+        }).catch(error => {
+            console.error('Error loading stocks: ', error);
+        });
     }
 }
-
 // Function to show the loading div
 function showLoading() {
     const loadingDiv = document.getElementById("loading");
@@ -248,7 +264,7 @@ function risesAndFalls() {
         trend.style.color = "green"
         row.appendChild(name)
         name.classList.add("bestStock_name")
-        if(stock.type==="ETF"){
+        if (stock.type === "ETF") {
             typeETF.innerText = "ETF"
             row.appendChild(typeETF)
         }

@@ -1229,7 +1229,11 @@ GameManager.prototype = {
             x.onload = function () {
                 try {
                     let j = JSON.parse(x.responseText)
-                    if (j.error === 0) resolve(true)
+                    if (j.error === 0){
+                        if(gm.player === undefined) gm.player = new Player(j.username)
+                        else gm.player.name = j.username
+                        resolve(true)
+                    }
                     if (j.error === 1) resolve(false)
                 } catch (e) {
                     console.log(e)

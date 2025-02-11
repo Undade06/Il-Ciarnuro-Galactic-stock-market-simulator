@@ -104,7 +104,7 @@ function loadSaves() {
     });
 
     // Aggiungi una nuova save-box
-    if (saveSelection.length < 3) {
+    if (saveSelection.length < GameManager.MAXSAVES) {
         const newSaveBox = document.createElement("div");
         newSaveBox.classList.add("save-box", "new-save");
         newSaveBox.textContent = "+";
@@ -115,7 +115,7 @@ function loadSaves() {
 
 // Creazione di un nuovo save
 function createNewSave() {
-    if (saveSelection.length < 3) {
+    if (saveSelection.length < GameManager.MAXSAVES) {
         // Crea un nuovo save con un ID univoco e un nome
         const saveNumber = saveSelection.length + 1; // Numero del salvataggio (1,2,3)
 
@@ -166,7 +166,10 @@ function hideLoading() {
 function loadSave(id) {
     showLoading(); // Show the loading div
     setTimeout(() => {
+        let save = saveSelection[saveSelection.findIndex((s) => s.save.saveId === id)]
         gm.saveSelected = id
+        gm.lastAccess = save.lastAccess.getTime()
+        gm.player.wallet = save.budget
         gm.startGame();
         toSlide("marketHomePage");
         hideLoading(); // Hide the loading div after starting the game
@@ -176,7 +179,7 @@ function loadSave(id) {
 // Funzione per rimuovere un save
 function removeSave(id) {
     //console.log(id);
-    const saveIndex = saveSelection.findIndex((s) => s.id === id); // Trova l'indice del save tramite ID
+    const saveIndex = saveSelection.findIndex((s) => s.save.saveId === id); // Trova l'indice del save tramite ID
     if (saveIndex !== -1) {
         saveSelection.splice(saveIndex, 1); // Rimuovi il save
         loadSaves();

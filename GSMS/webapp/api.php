@@ -20,7 +20,7 @@
             switch($_GET["op"]){
                 case "checkLoggedIn":{
                     if($_SESSION["user_id"] != ""){
-                        $ret = ["error" => 0, "msg" => "Connected"];
+                        $ret = ["error" => 0, "msg" => "Connected", "username"=>$_SESSION["user_id"]];
                     }else{
                         $ret = ["error" => 1, "msg" => "Not connected"];
                     }

@@ -119,6 +119,29 @@
                     $q->close();
                     $ret = ["error" => 0, "saves"=>$saves];
                 } break;
+                case "updateSave":{
+                    if(!isset($_SESSION["user_id"])){    
+                        $ret = ["error" => 1, "msg" => "Not logged in"];
+                        break;
+                    }
+                    
+                    if(!isset($_POST["ownedStocks"]) || !isset($_POST["lastAccess"]) || !isset($_POST["budget"]) || !isset($_POST["idSave"])){
+                        $ret = ["error" => 1, "msg" => "Missing field/s"];
+                        break;
+                    }
+                    $ownS = $_POST["ownedStocks"];
+                    $lastA = $_POST["lastAccess"];
+                    $budget = $_POST["budget"];
+                    $idSave = $_POST["idSave"];
+
+                    $q = $conn->prepare("UPDATE Save SET budget = ?, lastAccess = ?, ownedStocks = ? WHERE idPlayer = (SELECT id FROM Player WHERE username = ?) AND idSave = ?");
+                    
+                    $q->bind_param("dsssi", $budget, $lastA, $ownS, $_SESSION["user_id"], $idSave);
+                    $q->execute();
+
+                    $ret = ["error" => 0, "msg" => "Save updated successfully"];
+                    $q->close();
+                } break;
                 default:{
                     $ret=["error"=>1, "msg"=>"Undefined operation"];
                 } break;

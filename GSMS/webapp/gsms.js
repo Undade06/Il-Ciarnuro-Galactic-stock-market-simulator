@@ -677,8 +677,6 @@ GameManager.prototype = {
      */
     deleteSave: function (index) {
 
-        if (this.saveSelected === index) throw 'Cannot delete selected save'
-
         this.saves[index] = undefined
 
         this.deleteSaveFromDB(index)
@@ -1176,7 +1174,6 @@ GameManager.prototype = {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error !== 0) throw alert("Server error: " + j.msg)
-                else alert('Login successful')
                 toSlide('saves')
             } catch (e) {
                 console.log(e)
@@ -1206,7 +1203,7 @@ GameManager.prototype = {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) throw alert("Server error: " + j.msg)
-                else alert('Registered successfully')
+                else console.log('Registered successfully')
                 toSlide('saves')
             } catch (e) {
                 console.log(e)
@@ -1229,8 +1226,8 @@ GameManager.prototype = {
             x.onload = function () {
                 try {
                     let j = JSON.parse(x.responseText)
-                    if (j.error === 0){
-                        if(gm.player === undefined) gm.player = new Player(j.username)
+                    if (j.error === 0) {
+                        if (gm.player === undefined) gm.player = new Player(j.username)
                         else gm.player.name = j.username
                         resolve(true)
                     }
@@ -1308,16 +1305,14 @@ GameManager.prototype = {
             x.send()
         })
     },
-    createSaveInDB: function (idSave, budget, player) {
-
-        if (this.saves[idSave] === undefined) throw 'Save not initilized'
+    createSaveInDB: function (idSave, player) {
 
         let x = new XMLHttpRequest()
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) throw alert("Server error: " + j.msg)
-                else alert('Inserted successfully')
+                else console.log('Save inserted successfully')
             } catch (e) {
                 console.log(e)
             }
@@ -1326,7 +1321,7 @@ GameManager.prototype = {
             alert('Server error')
         }
 
-        let params = "saveSeeds=" + encodeURIComponent(JSON.stringify(this.saves[idSave].getSeeds())) + "&idSave=" + idSave + "&budget=" + encodeURIComponent(budget) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks))
+        let params = "saveSeeds=" + encodeURIComponent(JSON.stringify(this.saves[idSave].getSeeds())) + "&idSave=" + idSave + "&budget=" + encodeURIComponent(this.player.wallet) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks))
         //console.log(params)
         x.open('POST', 'api.php?op=createSave')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -1338,8 +1333,8 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error === 1) throw alert("Server error: " + j.msg)
-                else alert('Deleted successfully')
+                if (j.error === 1) alert("Server error: " + j.msg)
+                else console.log('Save deleted successfully')
             } catch (e) {
                 console.log(e)
             }
@@ -1352,8 +1347,30 @@ GameManager.prototype = {
         x.open('GET', 'api.php?' + params)
         x.send()
 
-    }
+    },
+    updateSaveInDB: function (idSave, player) {
 
+        let x = new XMLHttpRequest()
+        x.onload = function () {
+            try {
+                let j = JSON.parse(x.responseText)
+                if (j.error === 1) alert("Server error: " + j.msg)
+                else console.log('Save updated successfully')
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        x.onerror = function () {
+            alert('Server error')
+        }
+
+        let params = "idSave=" + idSave + "&budget=" + encodeURIComponent(player.wallet) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks))
+
+        x.open('POST', 'api.php?op=updateSave')
+        x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        x.send(params)
+
+    }
 }
 
 GameManager.YEARSHIFT = 150             // ~2175

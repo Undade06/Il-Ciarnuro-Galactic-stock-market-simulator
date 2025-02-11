@@ -137,7 +137,7 @@ function createNewSave() {
             console.log(gm.saves[saveNumber]);
 
             // Crea il salvataggio nel database
-            gm.createSaveInDB(saveNumber, Player.startMoney, gm.player);
+            gm.createSaveInDB(saveNumber, new Player());
 
             saveCounter++;
             loadSaves();

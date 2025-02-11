@@ -180,11 +180,13 @@
     <script src="sw.js" type="text/javascript"></script>
     <script type="text/javascript">
         gm.checkLoggedIn().then(r => {
-            if (r){
+            if (r === true){
                 loadSaves()
                 toSlide('saves')
             }
-            else toSlide('landingPage')
+            else{
+                toSlide('landingPage')
+            }
         })
     </script>
 </html>

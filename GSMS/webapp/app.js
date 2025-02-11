@@ -88,6 +88,15 @@ function loadSaves() {
         });
 
         saveBox.textContent = save.name;
+        let saveid = document.createElement("div")
+        saveid.innerText =  "Salvataggio " + save.save.saveId
+        let saveDate = document.createElement("div")
+        saveDate.innerText = save.lastAccess.getFullYear() + '-' + numberTo2Digits(save.lastAccess.getMonth() + 1) + '-' + numberTo2Digits(save.lastAccess.getDate())
+        let balance = document.createElement("div")
+        balance.innerText = "Bilancio: " + (save.budget).toFixed(2)+" Kr"
+        saveBox.appendChild(saveid)
+        saveBox.appendChild(saveDate)
+        saveBox.appendChild(balance)
         saveBox.appendChild(img);
 
         saveBox.addEventListener("click", () => loadSave(save.save.saveId)); // Carica il salvataggio specifico

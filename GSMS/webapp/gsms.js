@@ -1279,9 +1279,9 @@ GameManager.prototype = {
                                     save.saveId = s.idSave
                                     return {
                                         save: save,
-                                        lastAccess: s.lastAccess,
+                                        lastAccess: new Date(s.lastAccess),
                                         ownedStocks: JSON.parse(s.ownedStocks),
-                                        budget: s.budget
+                                        budget: Number(s.budget)
                                     }
                                 })
                         })

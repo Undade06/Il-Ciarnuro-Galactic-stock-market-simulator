@@ -76,12 +76,27 @@ button:not(#buyButton,#sellButton):hover{
     cursor: pointer;
     background-image: linear-gradient(180deg, #0A205A 0%, #10328d 100%);
     border-color: #a2a2a2;
+    transition: ease-in 0.5;
 }
 
 .tbuttonSelected{
     cursor: pointer;
     background-image: linear-gradient(180deg, #0A205A 0%, #10328d 100%);
-    border-color: #a2a2a2;
+    border: #a2a2a2;
+    background-color: #0A205A;
+    color: white;
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    width: 5rem;
+    height: 2.5rem;
+    margin-top: 1.1rem;
+    margin-left: 1.1rem;
+    margin-right: 1.1rem;
+    font-size: 1.3em;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-radius: 0.6rem;
+    z-index: 1;
 }
 
 .errorText{
@@ -628,7 +643,7 @@ div.slide.visible #sessionInfo{
     margin-left: 4rem;
 }
 
-.time_buttons button{
+.tbutton{
     background-color: #0A205A;
     background-image: linear-gradient(180deg, #0A205A 0%, #030815 100%);
     color: white;
@@ -702,25 +717,28 @@ div.stock_header{
     max-height: 30rem;
 }
 
-div.rising{
+#rising{
     width: auto;
     margin-top: 3rem;
     border-bottom-style: solid;
     border: #FFFFFF;
 }
-div.falling{
+#falling{
     width: auto;
     margin-top: 3rem;
     border-bottom-style: solid;
     border: #FFFFFF;
 }
 
-div.rising tr,td{
+#rising table,#falling table{
+    border-collapse: collapse;
+}
+#rising tr,#falling tr{
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
     color: white;
     font-size: 1.5rem;
-    padding: 0.5%;
+    padding: 1rem;
 }
 
 #rising td,#falling td{
@@ -843,8 +861,7 @@ div.slide.visible #all_in, #infoButton {
     z-index: 1000;
     top: 0;
     right: 0;
-    background-color: #0A205A;
-    opacity: 0.8;
+    background-color: rgba(11, 21, 59, 0.85);
     overflow-x: hidden;
     transition: width 0.5s ease;
     color: white;
@@ -881,6 +898,34 @@ div.slide.visible #all_in, #infoButton {
 }
 
 /*--- profilePage ---*/
+#portfolio{
+    display: flex;
+    flex-direction: column;
+}
+#portfolio h2{
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    color: white;
+    font-size: 2rem;
+    margin: 1rem;
+}
+#portfolioContent tr{
+    font-family: 'Noto sans';
+    font-weight: bold;
+    color: white;
+    width: 100%;
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+
+#portfolioContent td{
+    font-family: 'Noto sans';
+    font-weight: bold;
+    color: white;
+    padding: 1rem;
+    border-bottom:3px solid #FFFFFF;
+}
+
 
 .backHome{
     position: absolute;

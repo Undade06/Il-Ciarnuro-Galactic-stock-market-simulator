@@ -755,13 +755,13 @@ GameManager.prototype = {
 
                 msg += k + ': ' + payments[k] + ' Kr\n'
                 tot += payments[k]
+                this.setDividendsPayment(k)
 
             }
 
-            alert(msg + 'Totale: ' + tot + ' Kr')
+            console.log(msg + 'Totale: ' + tot + ' Kr')
 
         }
-
 
     },
     /**
@@ -868,6 +868,8 @@ GameManager.prototype = {
 
         if (this.player === undefined) throw 'Player not created'
         if (this.saveSelected === undefined) throw 'Save not initialized'
+        if(stock === undefined || amount === undefined) throw 'Undefined parameters'
+        if(amount === 0) return
 
         try {
 
@@ -897,6 +899,8 @@ GameManager.prototype = {
 
         if (this.player === undefined) throw 'Player not created'
         if (this.saveSelected === undefined) throw 'Save not initialized'
+        if(stock === undefined || amount === undefined) throw 'Undefined parameters'
+        if(amount === 0) return
 
         try {
 
@@ -1057,8 +1061,15 @@ GameManager.prototype = {
 
             document.getElementById('singleStockValue').innerText = this.stock.value.toFixed(3) + ' Kr'
             trend = this.stock.getDailyTrend()
-            if (trend > 0) trend = '+' + (trend * 100).toFixed(3) + '%'
-            else trend = (trend * 100).toFixed(3) + '%'
+            if (trend > 0){
+                trend = '+' + (trend * 100).toFixed(3) + '%'
+                document.getElementById('singleStockRise').style.color = 'green'
+            }
+            else {
+                trend = (trend * 100).toFixed(3) + '%'
+                document.getElementById('singleStockRise').style.color = 'red'
+            }
+
             document.getElementById('singleStockRise').innerText = trend
 
         }, GameManager.VALUESPERREALSECONDS * 1000)
@@ -1556,7 +1567,7 @@ Player.prototype = {
         if (!(stock instanceof Stock) && !(stock instanceof ETF)) throw 'Stock not defined'
 
         let n = Math.floor(this.wallet / stock.value)
-        if (stock.value * n + stock.commPerOperation > this.wallet) n--
+        while (stock.value * n + stock.commPerOperation > this.wallet) n--
         this.wallet -= stock.value * n + stock.commPerOperation
 
         let pv = stock.value, newAmount = n

@@ -1031,16 +1031,16 @@ GameManager.prototype = {
             case 1:
                 selectButton('stockButtons', '1d', this.stockTimeSpan)
                 break;
-            case 1:
+            case 7:
                 selectButton('stockButtons', '1w', this.stockTimeSpan)
                 break;
-            case 1:
+            case 30:
                 selectButton('stockButtons', '1m', this.stockTimeSpan)
                 break;
-            case 1:
+            case 365:
                 selectButton('stockButtons', '1y', this.stockTimeSpan)
                 break;
-            case 1:
+            case 365*5:
                 selectButton('stockButtons', '5y', this.stockTimeSpan)
                 break;
         

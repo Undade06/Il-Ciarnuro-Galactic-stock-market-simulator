@@ -168,7 +168,7 @@ Stock.prototype = {
             } catch (error) {
                 console.log(error)
                 console.log(this.acronym + ' length: ' + w.length)
-                return 
+                return
             }
 
         }
@@ -726,7 +726,7 @@ GameManager.prototype = {
         }, GameManager.VALUESPERREALSECONDS * 1000)
 
         this.updateBestStock()
-        selectButton('bestButtons','1dB', 1)
+        selectButton('bestButtons', '1dB', 1)
         setInterval(() => { this.updateBestStock() }, GameManager.VALUESPERREALSECONDS * 1000)
 
         let date = new Date(GameManager.gameTimer())
@@ -742,8 +742,8 @@ GameManager.prototype = {
         document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
         document.getElementById('balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
         document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr'
-        
-        setInterval(() => { 
+
+        setInterval(() => {
             document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
             document.getElementById('balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
             document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr'
@@ -875,14 +875,14 @@ GameManager.prototype = {
 
         if (this.player === undefined) throw 'Player not created'
         if (this.saveSelected === undefined) throw 'Save not initialized'
-        if(stock === undefined || amount === undefined) throw 'Undefined parameters'
-        if(amount === 0) return
+        if (stock === undefined || amount === undefined) throw 'Undefined parameters'
+        if (amount === 0) return
 
         try {
 
             if (amount === -1) this.player.allIn(stock)
             else this.player.buy(stock, amount)
-            alert('Pagamento effettuato.\nValore azione: ' + (this.player.stocks[stock.acronym].purchaseValue).toFixed(3) + ' Kr\nQuantità: ' + this.player.stocks[stock.acronym].amount + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: ' + (this.player.stocks[stock.acronym].purchaseValue * this.player.stocks[stock.acronym].amount + stock.commPerOperation).toFixed(3) + ' Kr')
+            alert('Pagamento effettuato.\nValore azione: ' + (this.player.stocks[stock.acronym].purchaseValue).toFixed(3) + ' Kr\nQuantità: ' + this.player.stocks[stock.acronym].amount + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: -' + ((this.player.stocks[stock.acronym].purchaseValue * this.player.stocks[stock.acronym].amount + stock.commPerOperation)).toFixed(3) + ' Kr')
 
             this.updateSaveInDB(this.saveSelected, this.player)
         } catch (error) {
@@ -906,8 +906,8 @@ GameManager.prototype = {
 
         if (this.player === undefined) throw 'Player not created'
         if (this.saveSelected === undefined) throw 'Save not initialized'
-        if(stock === undefined || amount === undefined) throw 'Undefined parameters'
-        if(amount === 0) return
+        if (stock === undefined || amount === undefined) throw 'Undefined parameters'
+        if (amount === 0) return
 
         try {
 
@@ -920,7 +920,7 @@ GameManager.prototype = {
                 this.player.sell(stock, amount)
                 a = amount
             }
-            alert('Vendita effettuata.\nValore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: ' + (stock.value * a + stock.commPerOperation).toFixed(3) + ' Kr')
+            alert('Vendita effettuata.\nValore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTasse: ' + stock.getTaxesCost(a).toFixed(3) + ' Kr\nTotale: +' + ((stock.value * a - stock.commPerOperation - stock.getTaxesCost(a))).toFixed(3) + ' Kr')
 
             this.updateSaveInDB(this.saveSelected, this.player)
         } catch (error) {
@@ -1042,33 +1042,36 @@ GameManager.prototype = {
         }
         document.getElementById('singleStockRise').innerText = trend
 
+        let id
         switch (this.stockTimeSpan) {
             case 1:
-                selectButton('stockButtons', '1d', this.stockTimeSpan)
+                id = '1d'
                 break;
             case 7:
-                selectButton('stockButtons', '1w', this.stockTimeSpan)
+                id = '1w'
                 break;
             case 30:
-                selectButton('stockButtons', '1m', this.stockTimeSpan)
+                id = '1m'
                 break;
             case 365:
-                selectButton('stockButtons', '1y', this.stockTimeSpan)
+                id = '1y'
                 break;
-            case 365*5:
-                selectButton('stockButtons', '5y', this.stockTimeSpan)
+            case 365 * 5:
+                id = '5y'
                 break;
-        
+
             default:
                 throw 'Undefined stock timespan'
                 break;
         }
+        selectButton('stockButtons', id, this.stockTimeSpan)
+
         this.setGraph(this.stock.acronym, this.stockTimeSpan, 'stock_graf')
         setInterval(() => {
 
             document.getElementById('singleStockValue').innerText = this.stock.value.toFixed(3) + ' Kr'
             trend = this.stock.getDailyTrend()
-            if (trend > 0){
+            if (trend > 0) {
                 trend = '+' + (trend * 100).toFixed(3) + '%'
                 document.getElementById('singleStockRise').style.color = 'green'
             }
@@ -1600,7 +1603,7 @@ Player.prototype = {
         if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
         if (this.stocks[stock.acronym].amount < amountP) throw 'Player doesn\'t have such amount of passed stock'
 
-        this.wallet += stock.value * amountP - gm.getStock(stock.acronym).commPerOperation - gm.getStock(stock.acronym).getTaxesCost(amountP)
+        this.wallet += stock.value * amountP - stock.commPerOperation - stock.getTaxesCost(amountP)
 
         this.stocks[stock.acronym].amount -= amountP
         if (this.stocks[stock.acronym].amount === 0) delete (this.stocks[stock.acronym])
@@ -1618,7 +1621,7 @@ Player.prototype = {
         if (stock === undefined) throw 'Parameters not supported'
         if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
 
-        this.wallet += stock.value * this.stocks[stock.acronym].amount - gm.getStock(stock.acronym).commPerOperation - gm.getStock(stock.acronym).getTaxesCost(this.stocks[stock.acronym].amount)
+        this.wallet += stock.value * this.stocks[stock.acronym].amount - stock.commPerOperation - stock.getTaxesCost(this.stocks[stock.acronym].amount)
 
         delete (this.stocks[stock.acronym])
 

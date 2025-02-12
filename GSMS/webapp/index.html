@@ -142,7 +142,7 @@
             </button>
             <div class="market_back" id="singleStock">
                 <div class="stock_header">
-                    <div class="bestStock_name" id="singleStockName"><h2>*Titolo azione*</h2></div>
+                    <div class="" id="singleStockName"><h2>*Titolo azione*</h2></div>
                     <div class="stockInfo">
                         <div class="bestStock_value" id="singleStockValue"><h1>*Valore*</h1></div>
                         <div class="bestStock_percentage" id="singleStockRise"><h1>*Aumento%*</h1></div>
@@ -160,21 +160,21 @@
                 </div>
                 
             </div>
-            <div class="market_back" id="relativeStrenght">
+            <!--<div class="market_back" id="relativeStrenght">
                 <h3>Forza relativa</h3>
                 <div class="graf">
                     <canvas id="relstrenght_graf"></canvas>
                 </div>
-            </div>
+            </div>-->
             <div id="stockActions">
                 <div class="buySell" id="buy">
                     <input type="number" id="n_actionsToBuy" min="1" placeholder="1" step="1">
-                    <button id="buyButton" onclick="gm.playerPurchase(gm.stock, Number(document.getElementById('n_actionsToBuy').value))">Compra</button>
+                    <button id="buyButton" onclick="gm.playerPurchase(gm.stock, Number(document.getElementById('n_actionsToBuy').value)); document.getElementById('n_actionsToBuy').value = ''">Compra</button>
                 </div>
                 <button id="all_in" onclick="gm.playerPurchase(gm.stock, -1)">All in</button>
                 <div class="buySell" id="sell">
                     <input type="number" id="n_actionsToSell"  min="1" placeholder="1" step="1">
-                    <button id="sellButton" onclick="gm.playerSell(gm.stock, Number(document.getElementById('n_actionsToSell').value))">Vendi</button>
+                    <button id="sellButton" onclick="gm.playerSell(gm.stock, Number(document.getElementById('n_actionsToSell').value)); document.getElementById('n_actionsToSell').value = ''">Vendi</button>
                 </div>
                 <div id="infoPanel" class="sidepanel">
                     <label for="companyProfile">Profilo della Compagnia</label>

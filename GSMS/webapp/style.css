@@ -629,7 +629,7 @@ div.slide.visible #sessionInfo{
     margin-left: 4rem;
 }
 
-.time_buttons .tbutton{
+.tbutton{
     background-color: #0A205A;
     background-image: linear-gradient(180deg, #0A205A 0%, #030815 100%);
     color: white;

@@ -734,6 +734,7 @@ GameManager.prototype = {
         setInterval(() => {
             date = new Date(GameManager.gameTimer())
             document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
+            document.getElementById('my_balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
         }, GameManager.VALUESPERREALSECONDS * 1000)
 
         document.getElementById('my_balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
@@ -741,9 +742,15 @@ GameManager.prototype = {
         document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
         document.getElementById('balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
         document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr'
-        setInterval(() => { document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr' }, GameManager.VALUESPERREALSECONDS * 1000)
+        
+        setInterval(() => { 
+            document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
+            document.getElementById('balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
+            document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr'
+        }, GameManager.VALUESPERREALSECONDS * 1000)
 
         risesAndFalls()
+        portfolioInfos()
 
         let payments = this.checkDividendsPayment()
 

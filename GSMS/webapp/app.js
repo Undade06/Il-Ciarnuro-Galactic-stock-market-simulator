@@ -129,7 +129,7 @@ function createNewSave() {
             const newSave = {
                     save: new Save(save.stocks, saveNumber),
                     lastAccess: new Date(new Date(GameManager.gameTimer())),
-                    ownedStocks: undefined,
+                    ownedStocks: {},
                     budget: Player.startMoney
             };
 
@@ -175,6 +175,7 @@ function loadSave(id) {
         gm.saveSelected = id
         gm.lastAccess = save.lastAccess.getTime()
         gm.player.wallet = save.budget
+        gm.player.stocks = save.ownedStocks
         gm.startGame();
         toSlide("marketHomePage");
         hideLoading(); // Hide the loading div after starting the game

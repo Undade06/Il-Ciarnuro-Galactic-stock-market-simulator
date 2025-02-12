@@ -72,19 +72,20 @@
                     $ret = ["error" => 0, "msg" => "Logged out successfully"];
                 } break;
                 case "createSave":{
-                    if(isset($_SESSION["user_id"]) && isset($_POST["saveSeeds"]) && isset($_POST["idSave"]) && isset($_POST["ownedStocks"]) && isset($_POST["lastAccess"]) && isset($_POST["budget"])){
+                    if(isset($_SESSION["user_id"]) && isset($_POST["saveSeeds"]) && isset($_POST["idSave"]) && isset($_POST["ownedStocks"]) && isset($_POST["lastAccess"]) && isset($_POST["budget"]) && isset($_POST["realStartDate"])){
                         $saveS = $_POST["saveSeeds"];
                         $idSave = $_POST["idSave"];
                         $ownS = $_POST["ownedStocks"];
                         $lastA = $_POST["lastAccess"];
                         $budget = $_POST["budget"];
+                        $rsd = $_POST["realStartDate"];
                     }else{
-                        $ret = ["error" => 1, "msg" => "Missing field/s"];
+                        $ret = ["error" => 1, "msg" => "Missing field/s or not logged in"];
                         break;
                     }
-                    $q = $conn->prepare("INSERT INTO save (idPlayer, idSave, budget, lastAccess, saveSeeds, ownedStocks) 
-                                        VALUES ((select id from player where username = ?), ?, ?, ?, ?, ?)");
-                    $q->bind_param("sidsss", $_SESSION["user_id"], $idSave, $budget, $lastA, $saveS, $ownS);
+                    $q = $conn->prepare("INSERT INTO save (idPlayer, idSave, budget, lastAccess, saveSeeds, ownedStocks, realStartDate) 
+                                        VALUES ((select id from player where username = ?), ?, ?, ?, ?, ?, ?)");
+                    $q->bind_param("sidssss", $_SESSION["user_id"], $idSave, $budget, $lastA, $saveS, $ownS, $rsd);
                     $q->execute();
                     $ret = ["error" => 0, "msg" => "Save created successfully"];
                     $q->close();
@@ -112,7 +113,7 @@
                     
                     $saves=[];
                     while($save=$q->fetch_array()){
-                        $tempS=["idSave"=>$save["idSave"], "budget"=>$save["budget"], "lastAccess"=>$save["lastAccess"], "ownedStocks"=>$save["ownedStocks"], "saveSeeds"=>$save["saveSeeds"]];
+                        $tempS=["idSave"=>$save["idSave"], "budget"=>$save["budget"], "lastAccess"=>$save["lastAccess"], "ownedStocks"=>$save["ownedStocks"], "saveSeeds"=>$save["saveSeeds"], "realStartDate"=>$save["realStartDate"]];
                         array_push($saves, $tempS);
                     }
 

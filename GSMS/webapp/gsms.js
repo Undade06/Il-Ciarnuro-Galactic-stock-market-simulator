@@ -142,7 +142,6 @@ Stock.prototype = {
 
         }
 
-        console.log(timeWindow)
         //let T_T = []
         for (let i = 1; i < timeWindow; i++) {           //Wiener process with drift
 

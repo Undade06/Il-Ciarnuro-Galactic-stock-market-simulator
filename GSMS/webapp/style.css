@@ -703,25 +703,28 @@ div.stock_header{
     max-height: 30rem;
 }
 
-div.rising{
+#rising{
     width: auto;
     margin-top: 3rem;
     border-bottom-style: solid;
     border: #FFFFFF;
 }
-div.falling{
+#falling{
     width: auto;
     margin-top: 3rem;
     border-bottom-style: solid;
     border: #FFFFFF;
 }
 
-#rising tr{
+#rising table,#falling table{
+    border-collapse: collapse;
+}
+#rising tr,#falling tr{
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
     color: white;
     font-size: 1.5rem;
-    padding: 0.5%;
+    padding: 1rem;
 }
 
 #rising td,#falling td{

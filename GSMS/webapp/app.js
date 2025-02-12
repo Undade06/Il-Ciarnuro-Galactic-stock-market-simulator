@@ -277,6 +277,8 @@ function risesAndFalls() {
         if (stock.type === "ETF") {
             typeETF.innerText = "ETF"
             row.appendChild(typeETF)
+        }else{
+            typeETF.innerText = " "
         }
         row.appendChild(value)
         row.appendChild(trend)
@@ -307,6 +309,8 @@ function risesAndFalls() {
         if (stock.type === "ETF") {
             typeETF.innerText = "ETF"
             row.appendChild(typeETF)
+        }else{
+            typeETF.innerText = " "
         }
         row.appendChild(value)
         row.appendChild(trend)

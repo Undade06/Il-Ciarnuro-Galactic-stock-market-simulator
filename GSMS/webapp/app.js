@@ -338,7 +338,7 @@ function openNav() {
     const panel = document.getElementById("infoPanel");
     panel.style.display = "block";
     setTimeout(() => {
-        panel.style.width = "20rem";
+        panel.style.width = "30rem";
         document.getElementById("overlay").classList.add('visible');
     }, 10);
 }
@@ -358,7 +358,7 @@ document.addEventListener('click', function (event) {
     const infoButton = document.querySelector('#infoButton');
 
     // Se il pannello è aperto e il click non è sul pannello stesso o sul pulsante info
-    if (infoPanel.style.width === "20rem" &&
+    if (infoPanel.style.width === "30rem" &&
         !infoPanel.contains(event.target) &&
         !infoButton.contains(event.target)) {
         closeNav();

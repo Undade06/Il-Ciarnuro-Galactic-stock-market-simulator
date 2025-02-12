@@ -1183,7 +1183,7 @@ GameManager.prototype = {
             alert('Server error')
         }
 
-        let data = 'username=' + usrn + '&password=' + pasw
+        let data = 'username=' + encodeURIComponent(usrn) + '&password=' + encodeURIComponent(pasw)
 
         x.open('POST', 'api.php?op=login')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -1213,7 +1213,7 @@ GameManager.prototype = {
             alert('Server error')
         }
 
-        let data = 'username=' + usrn + '&email=' + email + '&password=' + pasw
+        let data = 'username=' + encodeURIComponent(usrn) + '&email=' + encodeURIComponent(email) + '&password=' + (encodeURIComponent(pasw))
 
         x.open('POST', 'api.php?op=register')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -1281,6 +1281,7 @@ GameManager.prototype = {
                                     return {
                                         save: save,
                                         lastAccess: new Date(s.lastAccess),
+                                        realStartDate: new Date(s.realStartDate),
                                         ownedStocks: JSON.parse(s.ownedStocks),
                                         budget: Number(s.budget)
                                     }
@@ -1321,8 +1322,8 @@ GameManager.prototype = {
             alert('Server error')
         }
 
-        let params = "saveSeeds=" + encodeURIComponent(JSON.stringify(this.saves[idSave].getSeeds())) + "&idSave=" + idSave + "&budget=" + encodeURIComponent(this.player.wallet) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks))
-        //console.log(params)
+        let params = "saveSeeds=" + encodeURIComponent(JSON.stringify(this.saves[idSave].getSeeds())) + "&idSave=" + encodeURIComponent(idSave) + "&budget=" + encodeURIComponent(this.player.wallet) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks)) + "&realStartDate=" + encodeURIComponent(new Date().toISOString())
+
         x.open('POST', 'api.php?op=createSave')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
         x.send(params)
@@ -1364,7 +1365,7 @@ GameManager.prototype = {
             alert('Server error')
         }
 
-        let params = "idSave=" + idSave + "&budget=" + encodeURIComponent(player.wallet) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks))
+        let params = "idSave=" + encodeURIComponent(idSave) + "&budget=" + encodeURIComponent(player.wallet) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks))
 
         x.open('POST', 'api.php?op=updateSave')
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')

@@ -499,7 +499,7 @@ div.slide.visible .market_back{
 
 div.slide.visible #best_stock {
     transform: none;
-    margin-top: 2rem;
+    margin-top: 3rem;
     margin-bottom: 2rem;
     height: auto;
     max-width: 96%;
@@ -508,7 +508,7 @@ div.slide.visible #best_stock {
 
 div.slide.visible #singleStock {
     transform: none;
-    margin-top: 2rem;
+    margin-top: 3rem;
     margin-bottom: 2rem;
     height: auto;
     max-width: 96%;
@@ -526,7 +526,7 @@ div.slide.visible #rising_stocks {
     transform: none;
     margin: 0.5rem;
     height: 27rem;
-    width: 39rem;
+    width: 42rem;
     padding-left: 1.25rem;
 }
 
@@ -535,7 +535,7 @@ div.slide.visible #declining_stocks {
     transform: none;
     margin: 0.5rem;
     height: 27rem;
-    width: 39rem;
+    width: 42rem;
     padding-left: 1.25rem;
 }
 
@@ -555,7 +555,7 @@ div.slide.visible #relativeStrenght {
 .accessibility{
     position: absolute;
     top: 0;
-    right: 5%;
+    right: 1%;
     margin: 1rem;
     transform: none;
     height: 10rem;
@@ -575,7 +575,7 @@ div.slide.visible #sessionInfo{
 }
 
 .accessibility h4,h5{
-    margin: 1rem;
+    margin: 0.5rem;
     font-family: "Noto sans";
     font-weight: normal;
     color:white;
@@ -634,12 +634,12 @@ div.slide.visible #sessionInfo{
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
-    width: 4rem;
-    height: 2rem;
+    width: 5rem;
+    height: 2.5rem;
     margin-top: 1.1rem;
     margin-left: 1.1rem;
     margin-right: 1.1rem;
-    font-size: 1em;
+    font-size: 1.3em;
     border: #1E1E1E;
     border-style: solid;
     border-width: 0.1rem;
@@ -680,7 +680,10 @@ div.stock_header{
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
+    font-size: 2rem;
     width: auto;
+    margin: 1rem;
+    margin-left: 1.5rem;
 }
 
 .bestStock_value{

@@ -142,6 +142,7 @@ Stock.prototype = {
 
         }
 
+        console.log(timeWindow)
         //let T_T = []
         for (let i = 1; i < timeWindow; i++) {           //Wiener process with drift
 
@@ -163,7 +164,13 @@ Stock.prototype = {
 
             if (mulberry32(this.seed + i) > this.stability) rising *= -1            //The stock invert its trend to simulate random real shock
 
-            w.push(v)
+            try {
+                w.push(v)
+            } catch (error) {
+                console.log(error)
+                console.log(this.acronym + ' length: ' + w.length)
+                return 
+            }
 
         }
 
@@ -1277,7 +1284,7 @@ GameManager.prototype = {
                         let promises = j.saves.map(s => {
                             return Save.loadMarket(JSON.parse(s.saveSeeds))
                                 .then(save => {
-                                    save.saveId = s.idSave
+                                    save.saveId = Number(s.idSave)
                                     return {
                                         save: save,
                                         lastAccess: new Date(s.lastAccess),

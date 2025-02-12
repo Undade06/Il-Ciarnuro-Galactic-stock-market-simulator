@@ -12,6 +12,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body onload="toSlide('saves')">
+        <div class="accessibility" id="accessibility">
+            <img src="pics/logo3.webp" id="logoHome">
+            <h4 id="cur_date"></h4>
+            <div id="BalanceStocks">
+                <h5 id="my_balance"></h5>
+                <button id="my_stocks" onclick="toSlide('profilePage')">Le tue azioni<img id="my_stock_pic" src="pics/myStockPic.webp"></button>
+            </div>
+        </div>
         <div class="bg"></div>
         <div class="slide visible" id="landingPage">
             <img src="pics/logo.webp" id="logo">
@@ -69,14 +77,6 @@
             </div>
         </div>
         <div class="slide hidden" id="marketHomePage">
-            <div class="accessibility" id="accessibility">
-                <img src="pics/logo3.webp" id="logoHome">
-                <h4 id="cur_date"></h4>
-                <div id="BalanceStocks">
-                    <h5 id="my_balance"></h5>
-                    <button id="my_stocks" onclick="toSlide('profilePage')">Le tue azioni<img id="my_stock_pic" src="pics/myStockPic.webp"></button>
-                </div>
-            </div>
             <div class="market_back" id="best_stock">
                 <div class="stock_header">
                     <div class="bestStock_name" id="bestStockName" onclick="gm.stock = gm.best; gm.prepareStockPage(); toSlide('stockPage')"><h2>*Miglior Titolo*</h2></div>
@@ -164,12 +164,12 @@
             </div>
             <div id="stockActions">
                 <div class="buySell" id="buy">
-                    <input type="number" id="n_actionsToBuy" min="0" placeholder="1" step="1">
+                    <input type="number" id="n_actionsToBuy" min="1" placeholder="1" step="1">
                     <button id="buyButton" onclick="gm.playerPurchase(gm.stock, Number(document.getElementById('n_actionsToBuy').value))">Compra</button>
                 </div>
                 <button id="all_in" onclick="gm.playerPurchase(gm.stock, -1)">All in</button>
                 <div class="buySell" id="sell">
-                    <input type="number" id="n_actionsToSell"  min="0" placeholder="1" step="1">
+                    <input type="number" id="n_actionsToSell"  min="1" placeholder="1" step="1">
                     <button id="sellButton" onclick="gm.playerSell(gm.stock, Number(document.getElementById('n_actionsToSell').value))">Vendi</button>
                 </div>
                 <div id="infoPanel" class="sidepanel"></div>

@@ -553,6 +553,7 @@ div.slide.visible #relativeStrenght {
     border-radius: 1.5rem;
     border: 0.2rem solid rgba(11, 21, 59, 0.75);
     z-index: 9999;
+    display: none;
 }
 
 div.slide.visible #sessionInfo{

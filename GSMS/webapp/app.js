@@ -23,6 +23,11 @@ function toSlide(id) {
             }
         })
     }else{*/
+    if(id === "marketHomePage" || id ==="stockPage"){
+        document.getElementById("accessibility").style.display = "block";
+    }else{
+        document.getElementById("accessibility").style.display = "none";
+    }
     document.querySelectorAll("div.slide").forEach(function (e) {
         e.classList.add("hidden");
         e.classList.remove("visible");

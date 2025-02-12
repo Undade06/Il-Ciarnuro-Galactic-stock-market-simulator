@@ -170,7 +170,8 @@ function hideLoading() {
 function loadSave(id) {
     showLoading(); // Show the loading div
     setTimeout(() => {
-        let save = saveSelection[saveSelection.findIndex((s) => s.save.saveId === id)]
+        let save = saveSelection[id]
+        if(save === undefined) throw 'Undefined save'
         gm.saveSelected = id
         gm.lastAccess = save.lastAccess.getTime()
         gm.player.wallet = save.budget

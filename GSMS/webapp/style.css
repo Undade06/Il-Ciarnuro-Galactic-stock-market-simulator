@@ -568,7 +568,7 @@ div.slide.visible #relativeStrenght {
 }
 
 .accessibility{
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 1%;
     margin: 1rem;

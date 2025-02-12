@@ -1665,6 +1665,32 @@ Player.prototype = {
         else if (e < 10000000) this.honorGrade = 'Presidente di corporazione'
         else this.honorGrade = 'Grande Signore di Gaia'
 
+    },
+    /**
+     * Calculate trend, whether positive or negative, of passed player's stock referring to its purchase's value
+     * 
+     * @param {Stock} stock Which the trend is calculated on
+     * @returns Trend calculated(NOT a percentage)
+     */
+    getIncomeLossTrend: function (stock) {
+
+        if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
+
+        return (stock.value - this.stocks[stock.acronym].purchaseValue) / this.stocks[stock.acronym].purchaseValue
+
+    },
+    /**
+     * Calculate value difference, whether positive or negative, of passed player's stock referring to its purchase's value
+     * 
+     * @param {Stock} stock Which the difference is calculated on
+     * @returns Value calculated
+     */
+    getIncomeLossValue: function (stock) {
+
+        if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
+
+        return (stock.value - this.stocks[stock.acronym].purchaseValue) * this.stocks[stock.acronym].amount
+
     }
 }
 

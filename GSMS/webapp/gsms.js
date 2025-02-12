@@ -726,6 +726,7 @@ GameManager.prototype = {
         }, GameManager.VALUESPERREALSECONDS * 1000)
 
         this.updateBestStock()
+        selectButton('1dB', 1)
         setInterval(() => { this.updateBestStock() }, GameManager.VALUESPERREALSECONDS * 1000)
 
         let date = new Date(GameManager.gameTimer())
@@ -1026,6 +1027,27 @@ GameManager.prototype = {
         }
         document.getElementById('singleStockRise').innerText = trend
 
+        switch (this.stockTimeSpan) {
+            case 1:
+                selectButton('1d', this.stockTimeSpan)
+                break;
+            case 1:
+                selectButton('1w', this.stockTimeSpan)
+                break;
+            case 1:
+                selectButton('1m', this.stockTimeSpan)
+                break;
+            case 1:
+                selectButton('1y', this.stockTimeSpan)
+                break;
+            case 1:
+                selectButton('5y', this.stockTimeSpan)
+                break;
+        
+            default:
+                throw 'Undefined stock timespan'
+                break;
+        }
         this.setGraph(this.stock.acronym, this.stockTimeSpan, 'stock_graf')
         setInterval(() => {
 

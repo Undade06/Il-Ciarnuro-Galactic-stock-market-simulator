@@ -121,7 +121,7 @@ function createNewSave() {
     if (arrayCountNotUndefined(saveSelection) < GameManager.MAXSAVES) {
         // Crea un nuovo save con un ID univoco e un nom
         let saveNumber = arrayFirstIndexAvailable(saveSelection)
-        if(saveNumber === -1) saveNumber = 3
+        if (saveNumber === -1) saveNumber = 3
         Save.loadMarket().then(save => {
             // Crea un nuovo oggetto Save con gli stock caricati
             const newSave = {
@@ -171,7 +171,7 @@ function loadSave(id) {
     showLoading(); // Show the loading div
     setTimeout(() => {
         let save = saveSelection[id]
-        if(save === undefined) throw 'Undefined save'
+        if (save === undefined) throw 'Undefined save'
         gm.saveSelected = id
         gm.lastAccess = save.lastAccess.getTime()
         gm.player.wallet = save.budget
@@ -385,5 +385,16 @@ function arrayFirstIndexAvailable(arr) {
     for (let i = 0; i < arr.length; i++) if (arr[i] === undefined) return i
 
     return -1
+
+}
+
+function selectButton(id, time) {
+
+    gm.bestTimeSpan = time
+
+    gm.setGraph(gm.best.acronym, gm.bestTimeSpan, 'bestStock_graf')
+
+    document.getElementById(id).classList.remove('tbutton')
+    document.getElementById(id).classList.add('tbuttonSelected')
 
 }

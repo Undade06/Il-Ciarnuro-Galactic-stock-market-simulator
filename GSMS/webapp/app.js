@@ -23,9 +23,9 @@ function toSlide(id) {
             }
         })
     }else{*/
-    if(id === "marketHomePage" || id ==="stockPage"){
+    if (id === "marketHomePage" || id === "stockPage") {
         document.getElementById("accessibility").style.display = "block";
-    }else{
+    } else {
         document.getElementById("accessibility").style.display = "none";
     }
     document.querySelectorAll("div.slide").forEach(function (e) {
@@ -59,13 +59,11 @@ document.getElementById("saves").addEventListener('click', function (event) {
 // Reload saves
 let saveSelection = [];// Gestione in memoria
 gm.loadSavesFromDB().then(r => {
-    if (r) {
-        saveSelection = r
-        r.forEach(s => {
-            gm.saves[s.save.saveId] = s.save
-        })
-        loadSaves()
-    }
+    r.forEach(s => {
+        saveSelection[s.save.saveId] = s
+        gm.saves[s.save.saveId] = s.save
+    })
+    loadSaves()
 })
 
 
@@ -94,7 +92,7 @@ function loadSaves() {
 
         saveBox.textContent = save.name;
         let saveid = document.createElement("div")
-        saveid.innerText = "Salvataggio " + save.save.saveId
+        saveid.innerText = "Salvataggio " + (save.save.saveId + 1)
         let saveDate = document.createElement("div")
         saveDate.innerText = save.lastAccess.getFullYear() + '-' + numberTo2Digits(save.lastAccess.getMonth() + 1) + '-' + numberTo2Digits(save.lastAccess.getDate())
         let balance = document.createElement("div")
@@ -109,7 +107,7 @@ function loadSaves() {
     });
 
     // Aggiungi una nuova save-box
-    if (saveSelection.length < GameManager.MAXSAVES) {
+    if (arrayCountNotUndefined(saveSelection) < GameManager.MAXSAVES) {
         const newSaveBox = document.createElement("div");
         newSaveBox.classList.add("save-box", "new-save");
         newSaveBox.textContent = "+";
@@ -120,17 +118,17 @@ function loadSaves() {
 
 // Creazione di un nuovo save
 function createNewSave() {
-    if (saveSelection.length < GameManager.MAXSAVES) {
-        // Crea un nuovo save con un ID univoco e un nome
-        const saveNumber = saveSelection.length + 1; // Numero del salvataggio (1,2,3)
-
+    if (arrayCountNotUndefined(saveSelection) < GameManager.MAXSAVES) {
+        // Crea un nuovo save con un ID univoco e un nom
+        let saveNumber = arrayFirstIndexAvailable(saveSelection)
         Save.loadMarket().then(save => {
             // Crea un nuovo oggetto Save con gli stock caricati
             const newSave = {
-                    save: new Save(save.stocks, saveNumber),
-                    lastAccess: new Date(new Date(GameManager.gameTimer())),
-                    ownedStocks: {},
-                    budget: Player.startMoney
+                save: new Save(save.stocks, saveNumber),
+                lastAccess: new Date(GameManager.gameTimer()),
+                realStartDate: new Date(),
+                ownedStocks: {},
+                budget: Player.startMoney
             };
 
             saveSelection.push(newSave);
@@ -176,6 +174,8 @@ function loadSave(id) {
         gm.lastAccess = save.lastAccess.getTime()
         gm.player.wallet = save.budget
         gm.player.stocks = save.ownedStocks
+        GameManager.REALSTARTDATE = save.realStartDate.getTime()
+        GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 1000 * 24 * 60 * 60 * 365 * GameManager.YEARSHIFT).getTime()
         gm.startGame();
         toSlide("marketHomePage");
         hideLoading(); // Hide the loading div after starting the game
@@ -369,3 +369,19 @@ document.addEventListener('click', function (event) {
 document.getElementById('overlay').addEventListener('click', function () {
     closeNav();
 });
+
+function arrayCountNotUndefined(arr) {
+
+    let c = 0
+    for (let i = 0; i < arr.length; i++) if (arr[i] !== undefined) c++
+    return c
+
+}
+
+function arrayFirstIndexAvailable(arr) {
+
+    for (let i = 0; i < arr.length; i++) if (arr[i] === undefined) return i
+
+    return -1
+
+}

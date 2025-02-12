@@ -121,6 +121,7 @@ function createNewSave() {
     if (arrayCountNotUndefined(saveSelection) < GameManager.MAXSAVES) {
         // Crea un nuovo save con un ID univoco e un nom
         let saveNumber = arrayFirstIndexAvailable(saveSelection)
+        if(saveNumber === -1) saveNumber = 3
         Save.loadMarket().then(save => {
             // Crea un nuovo oggetto Save con gli stock caricati
             const newSave = {

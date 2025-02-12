@@ -277,7 +277,7 @@ function risesAndFalls() {
         if (stock.type === "ETF") {
             typeETF.innerText = "ETF"
             row.appendChild(typeETF)
-        }else{
+        } else {
             typeETF.innerText = " "
         }
         row.appendChild(value)
@@ -309,7 +309,7 @@ function risesAndFalls() {
         if (stock.type === "ETF") {
             typeETF.innerText = "ETF"
             row.appendChild(typeETF)
-        }else{
+        } else {
             typeETF.innerText = " "
         }
         row.appendChild(value)
@@ -392,11 +392,20 @@ function arrayFirstIndexAvailable(arr) {
 
 }
 
-function selectButton(id, time) {
+function selectButton(container, id, time) {
 
-    gm.bestTimeSpan = time
+    if (container === 'bestButtons') {
+        gm.bestTimeSpan = time
+        gm.setGraph(gm.best.acronym, gm.bestTimeSpan, 'bestStock_graf')
+    }else if(container === 'stockButtons'){
+        gm.stockTimeSpan = time
+        gm.setGraph(gm.stock.acronym, gm.stockTimeSpan, 'stock_graf')
+    }
 
-    gm.setGraph(gm.best.acronym, gm.bestTimeSpan, 'bestStock_graf')
+    document.getElementById(container).querySelectorAll('button').forEach(b => {
+        b.classList.add('tbutton')
+        b.classList.remove('tbuttonSelected')
+    })
 
     document.getElementById(id).classList.remove('tbutton')
     document.getElementById(id).classList.add('tbuttonSelected')
@@ -404,7 +413,7 @@ function selectButton(id, time) {
 }
 
 
-function portfolioInfos(){
+function portfolioInfos() {
     const portfolioContent = document.getElementById("portfolioContent")
 
     portfolioContent.innerText = ""
@@ -423,7 +432,7 @@ function portfolioInfos(){
     let infos = gm.player.stocks
     console.log(infos)
 
-    for(let k in infos){
+    for (let k in infos) {
         console.log("portfolioInfos")
         let row = document.createElement("tr")
         let name = document.createElement("td")
@@ -431,20 +440,20 @@ function portfolioInfos(){
         let trend = document.createElement("td")
         let amount = document.createElement("td")
         //let income_loss= document.createElement("td")
-        let singleStock=gm.getStock(k)
+        let singleStock = gm.getStock(k)
         console.log(singleStock)
 
-        name.innerText = ""+k
+        name.innerText = "" + k
         console.log(name)
-        value.innerText = infos[k].purchaseValue.toFixed(3)+" Kr"
+        value.innerText = infos[k].purchaseValue.toFixed(3) + " Kr"
         console.log(value)
         trend.innerText = (singleStock.getDailyTrend() * 100).toFixed(2) + "%"
         console.log(trend)
 
-        if(trend>0){
+        if (trend > 0) {
             trend.style.color = "green"
             trend.innerText = "+" + trend.innerText
-        }else{
+        } else {
             trend.style.color = "red"
         }
 
@@ -453,7 +462,7 @@ function portfolioInfos(){
 
         row.appendChild(name)
         name.classList.add("bestStock_name")
-        
+
         row.appendChild(value)
         row.appendChild(trend)
         row.appendChild(amount)
@@ -465,12 +474,12 @@ function portfolioInfos(){
             gm.prepareStockPage()
             toSlide('stockPage')
         })
-        
+
     }
 
     portfolioContent.appendChild(portfolioTable)
     // Future updates
     setTimeout(() => {
-       portfolioInfos()
+        portfolioInfos()
     }, GameManager.VALUESPERREALSECONDS * 1000)
 }

@@ -875,6 +875,7 @@ GameManager.prototype = {
             else this.player.buy(stock, amount)
             alert('Pagamento effettuato.\nValore azione: ' + (this.player.stocks[stock.acronym].purchaseValue).toFixed(3) + ' Kr\nQuantità: ' + this.player.stocks[stock.acronym].amount + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: ' + (this.player.stocks[stock.acronym].purchaseValue * this.player.stocks[stock.acronym].amount + stock.commPerOperation).toFixed(3) + ' Kr')
 
+            this.updateSaveInDB(this.saveSelected, this.player)
         } catch (error) {
             alert('Non hai abbastanza soldi!\nBilancio corrente: ' + this.player.wallet)
         }
@@ -910,9 +911,12 @@ GameManager.prototype = {
             }
             alert('Vendita effettuata.\nValore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: ' + (stock.value * a + stock.commPerOperation).toFixed(3) + ' Kr')
 
+            this.updateSaveInDB(this.saveSelected, this.player)
         } catch (error) {
             alert('Non hai così tante azioni!')
         }
+
+
 
     },
     /**

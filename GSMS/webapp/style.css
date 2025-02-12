@@ -730,7 +730,7 @@ div.stock_header{
     border: #FFFFFF;
 }
 
-#rising table,#falling table{
+table{
     border-collapse: collapse;
 }
 #rising tr,#falling tr{
@@ -783,6 +783,9 @@ div.stock_header{
     display: flex;
 }
 
+div.slide.hidden #stockActions{
+    display:none
+}
 div.slide.visible #stockActions{
     max-width: 100rem;
     width: 100%;
@@ -898,10 +901,19 @@ div.slide.visible #all_in, #infoButton {
 }
 
 /*--- profilePage ---*/
-#portfolio{
+
+div.slide.hidden #portfolio{
+    display:none;
+}
+div.slide.visible #portfolio{
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
+    margin: 0.5rem;
+    height: 27rem;
+    width: 100%;
 }
+
 #portfolio h2{
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
@@ -913,7 +925,6 @@ div.slide.visible #all_in, #infoButton {
     font-family: 'Noto sans';
     font-weight: bold;
     color: white;
-    width: 100%;
     font-size: 1.5rem;
     padding: 1rem;
 }

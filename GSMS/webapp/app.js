@@ -419,62 +419,70 @@ function portfolioInfos() {
     portfolioContent.innerText = ""
 
     let portfolioTable = document.createElement("table")
-
-    let headerRow = document.createElement("tr");
-    let headers = ["Name", "Value", "Trend", "Amount"];
-    headers.forEach(headerText => {
-        let header = document.createElement("th");
-        header.innerText = headerText;
-        headerRow.appendChild(header);
-    });
-    portfolioTable.appendChild(headerRow);
-
     let infos = gm.player.stocks
     console.log(infos)
+    
+    if (Object.keys(infos).length > 0) {
 
-    for (let k in infos) {
-        console.log("portfolioInfos")
+        let headerRow = document.createElement("tr")
+        let headers = ["Name", "Value", "Trend", "Amount"]
+        headers.forEach(headerText => {
+            let header = document.createElement("th")
+            header.innerText = headerText;
+            headerRow.appendChild(header);
+        })
+        portfolioTable.appendChild(headerRow);
+
+        for (let k in infos) {
+            console.log("portfolioInfos")
+            let row = document.createElement("tr")
+            let name = document.createElement("td")
+            let value = document.createElement("td")
+            let trend = document.createElement("td")
+            let amount = document.createElement("td")
+            //let income_loss= document.createElement("td")
+            let singleStock = gm.getStock(k)
+            //console.log(singleStock)
+
+            name.innerText = "" + k
+            //console.log(name)
+            value.innerText = infos[k].purchaseValue.toFixed(3) + " Kr"
+            //console.log(value)
+            trend.innerText = (singleStock.getDailyTrend() * 100).toFixed(2) + "%"
+            //console.log(trend)
+
+            if (trend > 0) {
+                trend.style.color = "green"
+                trend.innerText = "+" + trend.innerText
+            } else {
+                trend.style.color = "red"
+            }
+
+            amount.innerText = infos[k].amount
+            //console.log(amount)
+
+            row.appendChild(name)
+            name.classList.add("bestStock_name")
+
+            row.appendChild(value)
+            row.appendChild(trend)
+            row.appendChild(amount)
+
+            portfolioTable.appendChild(row)
+
+            row.addEventListener('click', () => {
+                gm.stock = singleStock
+                gm.prepareStockPage()
+                toSlide('stockPage')
+            })
+
+        }
+    } else {
         let row = document.createElement("tr")
         let name = document.createElement("td")
-        let value = document.createElement("td")
-        let trend = document.createElement("td")
-        let amount = document.createElement("td")
-        //let income_loss= document.createElement("td")
-        let singleStock = gm.getStock(k)
-        console.log(singleStock)
-
-        name.innerText = "" + k
-        console.log(name)
-        value.innerText = infos[k].purchaseValue.toFixed(3) + " Kr"
-        console.log(value)
-        trend.innerText = (singleStock.getDailyTrend() * 100).toFixed(2) + "%"
-        console.log(trend)
-
-        if (trend > 0) {
-            trend.style.color = "green"
-            trend.innerText = "+" + trend.innerText
-        } else {
-            trend.style.color = "red"
-        }
-
-        amount.innerText = infos[k].amount
-        console.log(amount)
-
+        name.innerText = "Non possiedi alcuna azione"
         row.appendChild(name)
-        name.classList.add("bestStock_name")
-
-        row.appendChild(value)
-        row.appendChild(trend)
-        row.appendChild(amount)
-
         portfolioTable.appendChild(row)
-
-        row.addEventListener('click', () => {
-            gm.stock = singleStock
-            gm.prepareStockPage()
-            toSlide('stockPage')
-        })
-
     }
 
     portfolioContent.appendChild(portfolioTable)
@@ -482,4 +490,5 @@ function portfolioInfos() {
     setTimeout(() => {
         portfolioInfos()
     }, GameManager.VALUESPERREALSECONDS * 1000)
+
 }

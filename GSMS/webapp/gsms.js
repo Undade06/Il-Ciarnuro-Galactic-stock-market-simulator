@@ -744,6 +744,7 @@ GameManager.prototype = {
         setInterval(() => { document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr' }, GameManager.VALUESPERREALSECONDS * 1000)
 
         risesAndFalls()
+        portfolioInfos()
 
         let payments = this.checkDividendsPayment()
 

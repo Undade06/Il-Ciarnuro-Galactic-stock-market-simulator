@@ -440,7 +440,7 @@ function portfolioInfos() {
     if (Object.keys(infos).length > 0) {
 
         let headerRow = document.createElement("tr")
-        let headers = ["Name", "Value", "Trend", "Amount", "Income/Loss %"  , "Income/Loss Value"]
+        let headers = ["Azione", "Valore", "Trend", "Quantità", "Variazione %"  , "Variazione"]
         headers.forEach(headerText => {
             let header = document.createElement("th")
             header.innerText = headerText;

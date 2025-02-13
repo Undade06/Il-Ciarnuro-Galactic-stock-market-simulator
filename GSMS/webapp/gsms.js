@@ -746,6 +746,7 @@ GameManager.prototype = {
 
         document.getElementById('my_balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
         document.getElementById('profileName').innerText = 'Nome: ' + this.player.name
+        this.player.updateHonorGrade()
         document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
         document.getElementById('balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
         document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr'

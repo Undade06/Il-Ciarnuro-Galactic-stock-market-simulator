@@ -402,12 +402,10 @@ div.slide.visible #saves_back {
     top: 35%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.75);
-    width: 100%;
-    max-width: 15rem;
+    width: 20rem;
     height: 90%;
-    max-height: 19.5rem;
-    padding: 1rem;
-    padding-top: 0.5%;
+    max-height: 24rem;
+    padding: 2rem;
     border-radius: 1rem;
     text-align: center;
     z-index: 1;
@@ -415,23 +413,22 @@ div.slide.visible #saves_back {
 
 .save-box {
     width: auto;
-    height: 5rem;
+    height: 6.5rem;
     margin: 1rem auto;
     background-color: #111525;
     opacity: 65%;
     color: white;
     font-family: 'Xolonium_regular', sans-serif;
     font-size: 1.5em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border: 3px solid gray;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     cursor: pointer;
-    text-align: center;
 }
 
 .save-box.new-save {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #1E1E1E;
     opacity: 70%;
     font-size: 1.5rem;
@@ -440,6 +437,29 @@ div.slide.visible #saves_back {
 
 div.slide.hidden #saves_back{
     display: none;
+}
+
+.save-id{
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: bold;
+    padding-top:0.4rem;
+}
+.balance-date{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2rem;
+}
+.save-date{
+    font-size: 1rem;
+    font-weight: bold; 
+    padding-right:0.4rem;  
+}
+.save-balance{
+    font-size: 1rem;
+    font-weight: bold;
+    padding-left:0.4rem;
 }
 
 /*--- Loading ---*/
@@ -1162,6 +1182,11 @@ div.slide.visible #profileInfo{
     .bg{
         width: 100%;
         height: 100%;
+    }
+
+    div.slide.visible #saves_back {
+        width: 18rem;
+        padding: 1rem;
     }
 }
 

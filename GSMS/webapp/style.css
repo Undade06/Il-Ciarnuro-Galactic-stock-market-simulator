@@ -910,7 +910,7 @@ div.slide.visible #portfolio{
     display: flex;
     flex-direction: column;
     margin: 0.5rem;
-    height: 27rem;
+    height: 40rem;
     width: 100%;
 }
 
@@ -935,6 +935,16 @@ div.slide.visible #portfolio{
     color: white;
     padding: 1rem;
     border-bottom:3px solid #FFFFFF;
+}
+#portfolioContent tr:last-child td, #rising tr:last-child td, #falling tr:last-child td{
+    border-bottom: none;
+}
+
+#portfolioContent th{
+    font-family: 'Noto sans';
+    font-weight: bold;
+    color: white;
+    padding: 1rem;
 }
 
 

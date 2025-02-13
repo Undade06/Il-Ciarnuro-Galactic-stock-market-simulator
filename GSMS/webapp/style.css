@@ -858,6 +858,7 @@ div.slide.visible #all_in, #infoButton {
 /*--- Sidepannel ---*/
 
 #infoPanel, .sidepanel {
+    overflow-y: auto;
     height: 100%;
     width: 0;
     position: fixed;
@@ -898,6 +899,66 @@ div.slide.visible #all_in, #infoButton {
 
 #infoPanel {
     z-index: 1000;
+}
+
+#companyProfile {
+    margin: 1rem;
+    display: block;
+    width: 25rem;
+    height: 14rem;
+    overflow-y: auto;
+    background-color: rgba(15, 27, 73, 0.755);
+    border: none;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    font-family: 'noto sans', sans-serif;
+    font-size: 1.2rem;
+}
+
+.header {
+    display: block;
+    font-family: 'noto sans', sans-serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 1rem;
+    margin-left: 2rem;
+}
+
+#descHeader{
+    margin-top: 14rem;
+}
+
+#miscellaneus{
+    margin: 1rem;
+    width: 25rem;
+    height: fit-content;
+    background-color: rgba(15, 27, 73, 0.755);
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    gap: 2rem;
+}
+
+.spec{
+    width: 7rem;
+    height: fit-content;
+    border: none;
+    border-radius: 1rem;
+    background-color: rgba(36, 85, 159, 0.838);
+    text-align: center;
+    font-family: 'noto sans', sans-serif;
+    padding: 0.7rem;
+}
+
+.innerSpec{
+    width: 5rem;
+    height: 2rem;
+    background-color: #0e1a48d5;
+    border: none;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+    font-family: 'noto sans', sans-serif;
 }
 
 /*--- profilePage ---*/

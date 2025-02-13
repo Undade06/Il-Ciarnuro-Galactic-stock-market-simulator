@@ -293,6 +293,7 @@ function risesAndFalls() {
             row.appendChild(typeETF)
         } else {
             typeETF.innerText = " "
+            row.appendChild(typeETF)
         }
         row.appendChild(value)
         row.appendChild(trend)

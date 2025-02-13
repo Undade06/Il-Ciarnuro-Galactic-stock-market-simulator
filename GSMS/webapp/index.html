@@ -177,27 +177,27 @@
                     <button id="sellButton" onclick="gm.playerSell(gm.stock, Number(document.getElementById('n_actionsToSell').value)); document.getElementById('n_actionsToSell').value = ''">Vendi</button>
                 </div>
                 <div id="infoPanel" class="sidepanel">
-                    <label for="companyProfile" class="header" id="descHeader">Profilo Compagnia</label>
+                    <label for="companyProfile" class="header" id="descHeader">Profilo azione</label>
                     <div id="companyProfile">
-                        lorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?
+
                     </div>
                     <label for="miscellaneus" class="header" id="miscHeader">Dividendi</label>
                     <div id="miscellaneus">
                         <div class="spec" id="percentage">
                             Percentuale
-                            <div class="innerSpec" id="value">
+                            <div class="innerSpec" id="dividendsPerc">
 
                             </div>
                         </div>
                         <div class="spec" id="frequency">
                             Frequenza
-                            <div class="innerSpec" id="days">
+                            <div class="innerSpec" id="dividendsDays">
                                 
                             </div>
                         </div>
                         <div class="spec" id="nextDate">
-                            Data agg.
-                            <div class="innerSpec" id="date">
+                            Prossima data
+                            <div class="innerSpec" id="nextDividendsDate">
                                 
                             </div>
                         </div>
@@ -206,13 +206,13 @@
                         <div id="commissions">
                             <div class="spec" id="perOperation">
                                 Per operazione
-                                <div class="innerSpec" id="fee">
+                                <div class="innerSpec" id="commissionValue">
 
                                 </div>
                             </div>
                             <div class="spec" id="earningsTax">
-                                Tassa su guadagno
-                                <div class="innerSpec" id="feePercentage">
+                                Tassa sui guadagni
+                                <div class="innerSpec" id="earningsTaxValue">
                                     
                                 </div>
                             </div>
@@ -230,14 +230,16 @@
     <script src="app.js" type="text/javascript"></script>
     <script src="sw.js" type="text/javascript"></script>
     <script type="text/javascript">
+        toSlide('landingPage')
         gm.checkLoggedIn().then(r => {
-            if (r === true){
+        if (r === true) {
+            showLoading()
+            setTimeout(() => {
                 loadSaves()
                 toSlide('saves')
-            }
-            else{
-                toSlide('landingPage')
-            }
-        })
+                hideLoading()
+            }, 100)
+        }
+    })
     </script>
 </html>

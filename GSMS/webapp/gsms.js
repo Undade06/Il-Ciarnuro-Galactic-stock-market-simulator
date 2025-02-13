@@ -92,10 +92,10 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     }
 
     this.krolikRating = undefined
-    //this.krolikRating = this._calculateLongTermInvestmentRating()
+    this.krolikRating = this._calculateLongTermInvestmentRating()
 
     this.FQRating = undefined
-    //if (Stock.masterCreated) this.FQRating = this._calculateSpeculativeInvestmentRating()          // Nobody cares if masterstock doesn't have a FQRating
+    if (Stock.masterCreated) this.FQRating = this._calculateSpeculativeInvestmentRating()          // Nobody cares if masterstock doesn't have a FQRating
 
     Stock.masterCreated = true
 
@@ -356,6 +356,13 @@ Stock.prototype = {
     getDailyTrend: function () {
 
         return (this.value - this._lastDayValues[0]) / this._lastDayValues[0]
+
+    },
+    nextDividendsDate: function () {
+
+        if (this.dividendsPercentage === 0) throw 'Stock doesn\'t pay dividends'
+
+        return new Date(GameManager.gameTimer() + (this.daysDividendsFrequency * 24 * 60 * 60 * 1000 - ((GameManager.gameTimer() - GameManager.STARTDATE) % (this.daysDividendsFrequency * 24 * 60 * 60 * 1000))))
 
     }
 }
@@ -766,7 +773,7 @@ GameManager.prototype = {
 
             }
 
-            console.log(msg + 'Totale: +' + tot + ' Kr')
+            alert(msg + 'Totale: +' + tot + ' Kr')
 
         }
 
@@ -1002,7 +1009,7 @@ GameManager.prototype = {
 
         }
 
-        if (Object.keys(payments) === 0) return
+        if (Object.keys(payments).length === 0) return
         return payments
 
     },
@@ -1067,6 +1074,15 @@ GameManager.prototype = {
                 break;
         }
         selectButton('stockButtons', id, this.stockTimeSpan)
+
+        document.getElementById('companyProfile').innerText = this.stock.description
+
+        document.getElementById('dividendsPerc').innerText = this.stock.dividendsPercentage * 100 + '%'
+        document.getElementById('dividendsDays').innerText = this.stock.daysDividendsFrequency + ' giorni'
+        document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
+
+        document.getElementById('commissionValue').innerText = this.stock.commPerOperation + ' Kr'
+        document.getElementById('earningsTaxValue').innerText = this.stock.earningTax * 100 + '%'
 
         this.setGraph(this.stock.acronym, this.stockTimeSpan, 'stock_graf')
         setInterval(() => {

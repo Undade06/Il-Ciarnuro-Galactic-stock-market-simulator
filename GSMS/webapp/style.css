@@ -961,6 +961,7 @@ div.slide.visible #all_in, #infoButton {
 }
 
 #miscellaneus{
+    text-align: center;
     margin: 1rem;
     width: 26rem;
     height: fit-content;

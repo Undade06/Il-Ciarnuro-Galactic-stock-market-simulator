@@ -930,6 +930,8 @@ GameManager.prototype = {
             alert('Vendita effettuata.\nValore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTasse: ' + stock.getTaxesCost(a).toFixed(3) + ' Kr\nTotale: +' + ((stock.value * a - stock.commPerOperation - stock.getTaxesCost(a))).toFixed(3) + ' Kr')
 
             this.updateSaveInDB(this.saveSelected, this.player)
+            this.player.updateHonorGrade()
+            document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
         } catch (error) {
             alert('Non hai così tante azioni!')
         }
@@ -1077,12 +1079,31 @@ GameManager.prototype = {
 
         document.getElementById('companyProfile').innerText = this.stock.description
 
-        document.getElementById('dividendsPerc').innerText = this.stock.dividendsPercentage * 100 + '%'
-        document.getElementById('dividendsDays').innerText = this.stock.daysDividendsFrequency + ' giorni'
-        document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
+        try {
+
+            document.getElementById('noDividends').style.display = 'none'
+            document.getElementById('percentage').style.display = 'block'
+            document.getElementById('frequency').style.display = 'block'
+            document.getElementById('nextDate').style.display = 'block'
+
+            document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
+            document.getElementById('dividendsPerc').innerText = this.stock.dividendsPercentage * 100 + '%'
+            document.getElementById('dividendsDays').innerText = this.stock.daysDividendsFrequency + ' giorni'
+        
+        } catch (e) {
+
+            document.getElementById('noDividends').style.display = 'block'
+            document.getElementById('percentage').style.display = 'none'
+            document.getElementById('frequency').style.display = 'none'
+            document.getElementById('nextDate').style.display = 'none'
+
+        }
 
         document.getElementById('commissionValue').innerText = this.stock.commPerOperation + ' Kr'
         document.getElementById('earningsTaxValue').innerText = this.stock.earningTax * 100 + '%'
+
+        document.getElementById('longTerm').innerText = Stock.convertLongTermScore(this.stock.krolikRating)
+        document.getElementById('speculative').innerText = Stock.convertSpeculativeScore(this.stock.FQRating)
 
         this.setGraph(this.stock.acronym, this.stockTimeSpan, 'stock_graf')
         setInterval(() => {

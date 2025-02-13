@@ -93,13 +93,26 @@ function loadSaves() {
         saveBox.textContent = save.name;
         let saveid = document.createElement("div")
         saveid.innerText = "Salvataggio " + (save.save.saveId + 1)
+
+        let balanceDate = document.createElement("div")
+
         let saveDate = document.createElement("div")
         saveDate.innerText = save.lastAccess.getFullYear() + '-' + numberTo2Digits(save.lastAccess.getMonth() + 1) + '-' + numberTo2Digits(save.lastAccess.getDate())
-        let balance = document.createElement("div")
-        balance.innerText = "Bilancio: " + (save.budget).toFixed(2) + " Kr"
+        
+        let saveBalance = document.createElement("div")
+        saveBalance.innerText = "Bilancio: " + (save.budget).toFixed(2) + " Kr"
+
+        saveid.classList.add("save-id")
+        balanceDate.classList.add("balance-date")
+        saveDate.classList.add("save-date")
+        saveBalance.classList.add("save-balance")
+
         saveBox.appendChild(saveid)
-        saveBox.appendChild(saveDate)
-        saveBox.appendChild(balance)
+
+        balanceDate.appendChild(saveBalance)
+        balanceDate.appendChild(saveDate)
+
+        saveBox.appendChild(balanceDate)
         saveBox.appendChild(img);
 
         saveBox.addEventListener("click", () => loadSave(save.save.saveId)); // Carica il salvataggio specifico
@@ -280,6 +293,7 @@ function risesAndFalls() {
             row.appendChild(typeETF)
         } else {
             typeETF.innerText = " "
+            row.appendChild(typeETF)
         }
         row.appendChild(value)
         row.appendChild(trend)

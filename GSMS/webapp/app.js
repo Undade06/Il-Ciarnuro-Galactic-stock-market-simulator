@@ -121,7 +121,8 @@ function createNewSave() {
     if (arrayCountNotUndefined(saveSelection) < GameManager.MAXSAVES) {
         // Crea un nuovo save con un ID univoco e un nom
         let saveNumber = arrayFirstIndexAvailable(saveSelection)
-        if (saveNumber === -1) saveNumber = 3
+        if (saveNumber === -1) saveNumber = 0
+
         Save.loadMarket().then(save => {
             // Crea un nuovo oggetto Save con gli stock caricati
             const newSave = {
@@ -397,7 +398,7 @@ function selectButton(container, id, time) {
     if (container === 'bestButtons') {
         gm.bestTimeSpan = time
         gm.setGraph(gm.best.acronym, gm.bestTimeSpan, 'bestStock_graf')
-    }else if(container === 'stockButtons'){
+    } else if (container === 'stockButtons') {
         gm.stockTimeSpan = time
         gm.setGraph(gm.stock.acronym, gm.stockTimeSpan, 'stock_graf')
     }
@@ -421,7 +422,7 @@ function portfolioInfos() {
     let portfolioTable = document.createElement("table")
     let infos = gm.player.stocks
     console.log(infos)
-    
+
     if (Object.keys(infos).length > 0) {
 
         let headerRow = document.createElement("tr")

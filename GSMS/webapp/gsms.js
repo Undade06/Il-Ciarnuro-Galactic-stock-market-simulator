@@ -766,7 +766,7 @@ GameManager.prototype = {
 
             }
 
-            console.log(msg + 'Totale: ' + tot + ' Kr')
+            console.log(msg + 'Totale: +' + tot + ' Kr')
 
         }
 
@@ -948,7 +948,7 @@ GameManager.prototype = {
             if (this.player.stocks[sAcr] === undefined) return
 
             this.player.wallet += this.getStock(sAcr).dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount
-            alert(sAcr + ' dividends payment: ' + this.getStock(sAcr).dividendsPercentage * 100 + ' * ' + this.getStock(sAcr).value + ' * ' + this.player.stocks[sAcr].amount + ' = ' + s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount + 'Kr')
+            alert(sAcr + ' dividends payment: ' + this.getStock(sAcr).dividendsPercentage + ' * ' + this.getStock(sAcr).value + ' * ' + this.player.stocks[sAcr].amount + ' = ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount) + 'Kr')
 
             // But now it will
             let id = setInterval(() => {
@@ -959,7 +959,7 @@ GameManager.prototype = {
                 }
 
                 this.player.wallet += s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount
-                alert(sAcr + ' dividends payment: ' + s.dividendsPercentage * 100 + ' * ' + this.getStock(sAcr).value + ' * ' + this.player.stocks[sAcr].amount + ' = ' + s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount + 'Kr')
+                alert(sAcr + ' dividends payment: ' + s.dividendsPercentage + ' * ' + this.getStock(sAcr).value + ' * ' + this.player.stocks[sAcr].amount + ' = ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount) + 'Kr')
 
             }, s.daysDividendsFrequency * (((24 * 60 * 60) / GameManager.SECSPEEDUP) * 1000))
 
@@ -970,18 +970,18 @@ GameManager.prototype = {
      * Function to determine from what stock and how much the player must be paid from dividends from its last access to the game.
      * Since it consider current player owned stock, it's supposed to be called before player can buy or sell any stocks when accessing the game
      * 
-     * @returns Array(dictionary) with every stock and amount paid to player, nothing if player didn't own any stock or no dividends has to be paid
+     * @returns Array(dictionary) with every stock and amount paid to player, undefined if player didn't own any stock or no dividends has to be paid
      */
     checkDividendsPayment: function () {
 
         if (Object.keys(this.player.stocks).length === 0) return
-        let now = GameManager.gameTimer(), payments = {}, interval
+        let now = GameManager.currentNumberValue(), payments = {}, interval, convertedLA = GameManager.dateToNumberValue(new Date(this.lastAccess))
 
         for (acr in this.player.stocks) {
 
-            interval = this.getStock(acr).daysDividendsFrequency * 24 * 60 * 60 / GameManager.SECSPEEDUP
+            interval = this.getStock(acr).daysDividendsFrequency / Stock.TIMESTEP
 
-            if (this.getStock(acr).dividendsPercentage !== 0 && this.lastAccess + interval < now) {
+            if (interval !== 0 && convertedLA + interval < now) {
 
                 payments[acr] = 0
 
@@ -989,9 +989,10 @@ GameManager.prototype = {
                 let values = this.getStock(acr).simulateHistory(365 * 5, true)
 
                 // Determine when the dividends has been paid and store that stock value
-                for (let i = now; i > this.lastAccess; i -= interval) {
+                for (let i = convertedLA; i < now; i += interval) {
 
-                    payments[acr] += values[~~(values.length - (now - i) - 1)] * this.getStock(acr).dividendsPercentage * this.player.stocks[acr].amount
+                    payments[acr] += values[i] * this.getStock(acr).dividendsPercentage * this.player.stocks[acr].amount
+                    console.log(acr + ' dividends at ' + i + ' = ' + values[i] * this.getStock(acr).dividendsPercentage * this.player.stocks[acr].amount)
 
                 }
 
@@ -1001,6 +1002,7 @@ GameManager.prototype = {
 
         }
 
+        if (Object.keys(payments) === 0) return
         return payments
 
     },
@@ -1453,6 +1455,16 @@ GameManager.gameTimer = function () {
  */
 GameManager.currentNumberValue = function () {
     return GameManager.MAXYEARGAP * 365 / Stock.TIMESTEP + ~~(((GameManager.gameTimer() - GameManager.STARTDATE) / (24 * 60 * 60 * 1000)) / Stock.TIMESTEP)
+}
+
+/**
+ * Convert a Date object to the corresponding number of value in game time
+ * 
+ * @param {Date} date To convert
+ * @returns Number representing game's timestep at passed date
+ */
+GameManager.dateToNumberValue = function (date) {
+    return GameManager.MAXYEARGAP * 365 / Stock.TIMESTEP + ~~(((date.getTime() - GameManager.STARTDATE) / (24 * 60 * 60 * 1000)) / Stock.TIMESTEP)
 }
 
 /**

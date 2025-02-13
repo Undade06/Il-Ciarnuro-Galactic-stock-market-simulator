@@ -949,6 +949,7 @@ div.slide.visible #all_in, #infoButton {
 }
 
 #components{
+    align-items: center;
     margin: 1rem;
     width: 26rem;
     height: fit-content;
@@ -961,6 +962,7 @@ div.slide.visible #all_in, #infoButton {
 }
 
 #miscellaneus{
+    align-items: center;
     margin: 1rem;
     width: 26rem;
     height: fit-content;
@@ -995,6 +997,7 @@ div.slide.visible #all_in, #infoButton {
 }
 
 #commissions{
+    align-items: center;
     background-color: rgba(15, 27, 73, 0.755);
     border: none;
     border-radius: 1rem;
@@ -1008,6 +1011,7 @@ div.slide.visible #all_in, #infoButton {
 }
 
 #Aratings{
+    align-items: center;
     background-color: rgba(15, 27, 73, 0.755);
     border: none;
     border-radius: 1rem;
@@ -1018,6 +1022,10 @@ div.slide.visible #all_in, #infoButton {
     padding: 0.7rem;
     padding-left: 4rem;
     gap: 4rem;
+}
+
+#krolik,#f_q{
+    font-family: 'Xolonium', sans-serif;
 }
 /*--- profilePage ---*/
 

@@ -420,12 +420,11 @@ function portfolioInfos() {
 
     let portfolioTable = document.createElement("table")
     let infos = gm.player.stocks
-    console.log(infos)
     
     if (Object.keys(infos).length > 0) {
 
         let headerRow = document.createElement("tr")
-        let headers = ["Name", "Value", "Trend", "Amount"]
+        let headers = ["Name", "Value", "Trend", "Amount", "Income/Loss %"  , "Income/Loss Value"]
         headers.forEach(headerText => {
             let header = document.createElement("th")
             header.innerText = headerText;
@@ -434,32 +433,63 @@ function portfolioInfos() {
         portfolioTable.appendChild(headerRow);
 
         for (let k in infos) {
-            console.log("portfolioInfos")
             let row = document.createElement("tr")
             let name = document.createElement("td")
             let value = document.createElement("td")
             let trend = document.createElement("td")
             let amount = document.createElement("td")
-            //let income_loss= document.createElement("td")
+            let income_loss_trend= document.createElement("td")
+            let income_loss_value=document.createElement("td")
+
             let singleStock = gm.getStock(k)
-            //console.log(singleStock)
 
             name.innerText = "" + k
-            //console.log(name)
             value.innerText = infos[k].purchaseValue.toFixed(3) + " Kr"
-            //console.log(value)
-            trend.innerText = (singleStock.getDailyTrend() * 100).toFixed(2) + "%"
-            //console.log(trend)
 
-            if (trend > 0) {
+            let dailyTrend = (singleStock.getDailyTrend() * 100).toFixed(2)
+            if (dailyTrend > 0) {
                 trend.style.color = "green"
-                trend.innerText = "+" + trend.innerText
+                trend.innerText = "+" + dailyTrend + "%"
             } else {
-                trend.style.color = "red"
+                if(dailyTrend == 0){
+                    trend.style.color = "white"
+                    trend.innerText = dailyTrend + "%"
+                }else{
+                    trend.style.color = "red"
+                    trend.innerText = dailyTrend + "%"
+                }
             }
 
             amount.innerText = infos[k].amount
-            //console.log(amount)
+            
+            let incomeLossTrend = (gm.player.getIncomeLossTrend(singleStock)*100).toFixed(2)
+            if (incomeLossTrend > 0) {
+                income_loss_trend.style.color = "green"
+                income_loss_trend.innerText = "+" + incomeLossTrend + "%"
+            } else {
+                if(incomeLossTrend == 0){
+                    income_loss_trend.style.color = "white"
+                    income_loss_trend.innerText = incomeLossTrend + "%"
+                }else{
+                    income_loss_trend.style.color = "red"
+                    income_loss_trend.innerText = incomeLossTrend + "%"
+                }
+            }
+
+            let incomeLossValue= gm.player.getIncomeLossValue(singleStock).toFixed(2)
+            if (incomeLossValue > 0) {
+                income_loss_value.style.color = "green"
+                income_loss_value.innerText = "+" + incomeLossValue + " Kr"
+            } else {
+                if(incomeLossValue == 0){
+                    income_loss_value.style.color = "white"
+                    income_loss_value.innerText = incomeLossValue + " Kr"
+                }else{
+                    income_loss_value.style.color = "red"
+                    income_loss_value.innerText = incomeLossValue + " Kr"
+                }
+            }
+
 
             row.appendChild(name)
             name.classList.add("bestStock_name")
@@ -467,6 +497,8 @@ function portfolioInfos() {
             row.appendChild(value)
             row.appendChild(trend)
             row.appendChild(amount)
+            row.appendChild(income_loss_trend)
+            row.appendChild(income_loss_value)
 
             portfolioTable.appendChild(row)
 

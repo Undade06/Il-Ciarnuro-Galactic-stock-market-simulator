@@ -1019,6 +1019,10 @@ div.slide.visible #all_in, #infoButton {
     padding-left: 4rem;
     gap: 4rem;
 }
+
+#krolik,#f_q{
+    font-family: 'Xolonium', sans-serif;
+}
 /*--- profilePage ---*/
 
 div.slide.hidden #portfolio{

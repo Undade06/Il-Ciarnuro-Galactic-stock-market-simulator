@@ -290,11 +290,11 @@ function risesAndFalls() {
         name.classList.add("bestStock_name")
         if (stock.type === "ETF") {
             typeETF.innerText = "ETF"
-            row.appendChild(typeETF)
         } else {
-            typeETF.innerText = " "
-            row.appendChild(typeETF)
+            typeETF.innerText = "ETF"
+            typeETF.style.opacity = 0
         }
+        row.appendChild(typeETF)
         row.appendChild(value)
         row.appendChild(trend)
 
@@ -323,10 +323,11 @@ function risesAndFalls() {
         name.classList.add("bestStock_name")
         if (stock.type === "ETF") {
             typeETF.innerText = "ETF"
-            row.appendChild(typeETF)
         } else {
-            typeETF.innerText = " "
+            typeETF.innerText = "ETF"
+            typeETF.style.opacity = 0
         }
+        row.appendChild(typeETF)
         row.appendChild(value)
         row.appendChild(trend)
         fallingTable.appendChild(row)

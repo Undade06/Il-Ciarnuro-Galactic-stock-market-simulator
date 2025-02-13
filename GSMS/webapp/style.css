@@ -740,12 +740,14 @@ div.stock_header{
 #rising{
     width: auto;
     margin-top: 3rem;
+    margin-left: 4rem;
     border-bottom-style: solid;
     border: #FFFFFF;
 }
 #falling{
     width: auto;
     margin-top: 3rem;
+    margin-left: 4rem;
     border-bottom-style: solid;
     border: #FFFFFF;
 }

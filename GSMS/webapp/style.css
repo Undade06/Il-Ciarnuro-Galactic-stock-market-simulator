@@ -1131,15 +1131,14 @@ div.slide.visible .profile_back{
 
 div.slide.visible #profile {
     display: flex;
-    position: absolute;
-    top: 5%;
-    left: 0;
+    position: relative;
+    top: 0.5rem;
     transform: none;
-    margin-bottom: 1rem;
     padding: 1.25rem;
     margin-left: 3rem; margin-right: 3rem;
     margin-top: 2rem; margin-bottom: 2rem;
     height: 35vh;
+    max-width: 90%;
 }
 
 div.slide.visible #accessibility_profile{

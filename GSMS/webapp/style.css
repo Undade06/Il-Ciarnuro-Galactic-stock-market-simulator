@@ -1056,14 +1056,19 @@ div.slide.visible #all_in, #infoButton {
 div.slide.hidden #portfolio{
     display:none;
 }
-div.slide.visible #portfolio{
-    overflow-y: auto;
+div.slide.visible #portfolio {
     display: flex;
+    overflow-y: auto;
     flex-direction: column;
-    margin: 0.5rem;
-    height: 40rem;
-    width: 100%;
+    transform: none;
+    position: relative;
+    padding: 1.25rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
+    max-width: 90%;
+    height: 35vh;
 }
+
 
 #portfolio h2{
     font-family: 'Xolonium', sans-serif;
@@ -1137,17 +1142,6 @@ div.slide.visible #profile {
     height: 35vh;
 }
 
-div.slide.visible #portfolio {
-    display: flex;
-    transform: none;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    padding: 1.25rem;
-    margin-left: 3rem; margin-right: 3rem;
-    margin-top: 2rem; margin-bottom: 2rem;
-    height: 35vh; 
-}
 div.slide.visible #accessibility_profile{
     position: absolute;
     top: 4%;

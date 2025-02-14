@@ -1670,6 +1670,7 @@ Player.prototype = {
     allIn: function (stock) {
 
         if (!(stock instanceof Stock) && !(stock instanceof ETF)) throw 'Stock not defined'
+        if(stock.value > this.wallet) throw 'Player doesn\'t have enough money'
 
         let n = Math.floor(this.wallet / stock.value)
         while (stock.value * n + stock.commPerOperation > this.wallet) n--

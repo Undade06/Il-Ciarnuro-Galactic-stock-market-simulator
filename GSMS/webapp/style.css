@@ -550,11 +550,6 @@ div.slide.visible #singleStock {
     padding: 1.25rem;
 }
 
-div.slide.visible #rises_and_falls{
-    display: flex;
-    gap: 2rem;
-}
-
 div.slide.visible #rising_stocks {
     overflow-y: auto;
     overflow-x: hidden;
@@ -567,6 +562,7 @@ div.slide.visible #rising_stocks {
 
 div.slide.visible #declining_stocks {
     overflow-y: auto;
+    overflow-x: hidden;
     transform: none;
     margin: 0.5rem;
     height: 27rem;
@@ -687,7 +683,9 @@ div.slide.visible #sessionInfo{
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
     font-size: 2.5rem;
-    top: 0%;
+    margin-top: 3rem;
+    margin-left: 2rem;
+    margin-bottom: 1rem;
 }
 
 #declining_stocks h3{
@@ -695,7 +693,9 @@ div.slide.visible #sessionInfo{
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
     font-size: 2.5rem;
-    top: 0%;
+    margin-left: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
 }
 
 #relativeStrenght h3{
@@ -703,7 +703,8 @@ div.slide.visible #sessionInfo{
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
     font-size: 2rem;
-    margin: 1.5rem;
+    margin: 1rem;
+    margin-top: 2rem;
     top: 0%;
 }
 
@@ -738,16 +739,16 @@ div.stock_header{
 }
 
 #rising{
-    width: auto;
-    margin-top: 3rem;
-    margin-left: 4rem;
+    width: 37rem;
+    margin-top: 1rem;
+    margin-left: 1.5rem;
     border-bottom-style: solid;
     border: #FFFFFF;
 }
 #falling{
-    width: auto;
-    margin-top: 3rem;
-    margin-left: 4rem;
+    width: 37rem;
+    margin-top: 1rem;
+    margin-left: 1.5rem;
     border-bottom-style: solid;
     border: #FFFFFF;
 }
@@ -760,7 +761,6 @@ table{
     font-weight: bold;
     color: white;
     font-size: 1.5rem;
-    padding: 1rem;
 }
 
 #rising td,#falling td{
@@ -768,8 +768,9 @@ table{
     font-weight: bold;
     color: white;
     font-size: 1.5rem;
-    padding: 1rem;
+    padding: 1.2rem;
     border-bottom:3px solid #FFFFFF;
+    width: 10rem;
 }
 
 /*--- StockPage ---*/

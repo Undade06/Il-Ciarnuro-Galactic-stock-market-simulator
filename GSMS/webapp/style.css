@@ -443,7 +443,7 @@ div.slide.hidden #saves_back{
     font-size: 1.4rem;
     text-align: center;
     font-weight: bold;
-    padding-top:0.4rem;
+    padding-top:0.8rem;
 }
 .balance-date{
     display: flex;
@@ -454,12 +454,12 @@ div.slide.hidden #saves_back{
 .save-date{
     font-size: 1rem;
     font-weight: bold; 
-    padding-right:0.4rem;  
+    padding-right:0.8rem;  
 }
 .save-balance{
     font-size: 1rem;
     font-weight: bold;
-    padding-left:0.4rem;
+    padding-left:0.8rem;
 }
 
 /*--- Loading ---*/

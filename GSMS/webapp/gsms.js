@@ -1106,6 +1106,10 @@ GameManager.prototype = {
         document.getElementById('longTerm').innerText = Stock.convertLongTermScore(this.stock.krolikRating)
         document.getElementById('speculative').innerText = Stock.convertSpeculativeScore(this.stock.FQRating)
 
+        let composition = document.createElement('div')
+        composition.id = 'composition'
+        composition.style.display = 'none'
+        
         if (this.stock.type === "ETF") {
 
             document.getElementById('noDividends').style.display = 'none'
@@ -1115,8 +1119,6 @@ GameManager.prototype = {
 
             document.getElementById('components').innerText = ''
 
-            let composition = document.createElement('div')
-            composition.id = 'composition'
             composition.style.display = 'flex'
 
             this.stock.influencedBy.forEach((e) => {
@@ -1131,7 +1133,7 @@ GameManager.prototype = {
 
                 let stockValueDiv = document.createElement('div')
                 stockValueDiv.id = 'stockValueComposition'
-                stockValueDiv.innerText = e.perc + '%'
+                stockValueDiv.innerText = (e.perc*100).toFixed(2) + '%'
                 stockValueDiv.classList.add('innerSpec')
 
                 stockContainer.appendChild(stockNameDiv)
@@ -1143,7 +1145,6 @@ GameManager.prototype = {
 
         } else {
             document.getElementById('miscHeader').innerText = "Dividendi"
-            document.getElementById('composition').style.display = 'none'
             document.getElementById('components').style.display = 'none'
             document.getElementById('miscellaneus').style.display = 'flex'
         }

@@ -11,7 +11,7 @@
         <link rel="icon" type="image/png" href="favicon.png"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
-    <body onload="toSlide('saves')">
+    <body>
         <div class="accessibility" id="accessibility">
             <img src="pics/logo3.webp" id="logoHome">
             <h4 id="cur_date"></h4>
@@ -248,11 +248,17 @@
     <script src="sw.js" type="text/javascript"></script>
     <script type="text/javascript">
         toSlide('landingPage')
+        gm.loadSavesFromDB().then(r => {
+            r.forEach(s => {
+                saveSelection[s.save.saveId] = s
+                gm.saves[s.save.saveId] = s.save
+            })
+        })
         gm.checkLoggedIn().then(r => {
-        if (r === true) {
-            loadSaves()
-            toSlide('saves')
-        }
-    })
+            if (r === true) {
+                loadSaves()
+                toSlide('saves')
+            }
+        })
     </script>
 </html>

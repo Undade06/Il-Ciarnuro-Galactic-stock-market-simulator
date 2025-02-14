@@ -58,112 +58,119 @@ document.getElementById("saves").addEventListener('click', function (event) {
 
 // Reload saves
 let saveSelection = [];// Gestione in memoria
-gm.loadSavesFromDB().then(r => {
-    r.forEach(s => {
-        saveSelection[s.save.saveId] = s
-        gm.saves[s.save.saveId] = s.save
-    })
-    loadSaves()
-})
-
-
-let saveCounter = 1; // Contatore per i salvataggi
 
 function loadSaves() {
     showLoading()
-    const savesContainer = document.querySelector("#saves .content");
-    savesContainer.innerHTML = "";
+    setTimeout(() => {
 
-    // Crea una box per ogni save
-    saveSelection.forEach((save) => {
-        const saveBox = document.createElement("div");
-        saveBox.classList.add("save-box");
-        saveBox.style.position = "relative";
+        const savesContainer = document.querySelector("#saves .content");
+        savesContainer.innerHTML = "";
 
-        const img = document.createElement("img");
-        img.src = "pics/rimuoviSave.webp";
-        img.style.position = "absolute";
-        img.style.top = "0.2rem";
-        img.style.right = "0.2rem";
-        img.alt = "Rimuovi Salvataggio";
-        img.addEventListener("click", (event) => {
-            event.stopPropagation(); // Impedisce il click sull'immagine
-            removeSave(save.save.saveId);
+        // Crea una box per ogni save
+        saveSelection.forEach((save) => {
+            const saveBox = document.createElement("div");
+            saveBox.classList.add("save-box");
+            saveBox.style.position = "relative";
+
+            const img = document.createElement("img");
+            img.src = "pics/rimuoviSave.webp";
+            img.style.position = "absolute";
+            img.style.top = "0.2rem";
+            img.style.right = "0.2rem";
+            img.alt = "Rimuovi Salvataggio";
+            img.addEventListener("click", (event) => {
+                event.stopPropagation(); // Impedisce il click sull'immagine
+                removeSave(save.save.saveId);
+            });
+
+            saveBox.textContent = save.name;
+            let saveid = document.createElement("div")
+            saveid.innerText = "Salvataggio " + (save.save.saveId + 1)
+
+            let balanceDate = document.createElement("div")
+
+            let saveDate = document.createElement("div")
+            saveDate.innerText = save.lastAccess.getFullYear() + '-' + numberTo2Digits(save.lastAccess.getMonth() + 1) + '-' + numberTo2Digits(save.lastAccess.getDate())
+
+            let saveBalance = document.createElement("div")
+            saveBalance.innerText = "Bilancio: " + (save.budget).toFixed(2) + " Kr"
+
+            saveid.classList.add("save-id")
+            balanceDate.classList.add("balance-date")
+            saveDate.classList.add("save-date")
+            saveBalance.classList.add("save-balance")
+
+            saveBox.appendChild(saveid)
+
+            balanceDate.appendChild(saveBalance)
+            balanceDate.appendChild(saveDate)
+
+            saveBox.appendChild(balanceDate)
+            saveBox.appendChild(img);
+
+            saveBox.addEventListener("click", () => loadSave(save.save.saveId)); // Carica il salvataggio specifico
+            savesContainer.appendChild(saveBox);
         });
 
-        saveBox.textContent = save.name;
-        let saveid = document.createElement("div")
-        saveid.innerText = "Salvataggio " + (save.save.saveId + 1)
+        // Aggiungi una nuova save-box
+        if (arrayCountNotUndefined(saveSelection) < GameManager.MAXSAVES) {
+            const newSaveBox = document.createElement("div");
+            newSaveBox.classList.add("save-box", "new-save");
+            newSaveBox.textContent = "+";
+            newSaveBox.addEventListener("click", createNewSave);
+            savesContainer.appendChild(newSaveBox);
+        }
+        hideLoading()
 
-        let balanceDate = document.createElement("div")
+    }, 200)
 
-        let saveDate = document.createElement("div")
-        saveDate.innerText = save.lastAccess.getFullYear() + '-' + numberTo2Digits(save.lastAccess.getMonth() + 1) + '-' + numberTo2Digits(save.lastAccess.getDate())
-        
-        let saveBalance = document.createElement("div")
-        saveBalance.innerText = "Bilancio: " + (save.budget).toFixed(2) + " Kr"
-
-        saveid.classList.add("save-id")
-        balanceDate.classList.add("balance-date")
-        saveDate.classList.add("save-date")
-        saveBalance.classList.add("save-balance")
-
-        saveBox.appendChild(saveid)
-
-        balanceDate.appendChild(saveBalance)
-        balanceDate.appendChild(saveDate)
-
-        saveBox.appendChild(balanceDate)
-        saveBox.appendChild(img);
-
-        saveBox.addEventListener("click", () => loadSave(save.save.saveId)); // Carica il salvataggio specifico
-        savesContainer.appendChild(saveBox);
-    });
-
-    // Aggiungi una nuova save-box
-    if (arrayCountNotUndefined(saveSelection) < GameManager.MAXSAVES) {
-        const newSaveBox = document.createElement("div");
-        newSaveBox.classList.add("save-box", "new-save");
-        newSaveBox.textContent = "+";
-        newSaveBox.addEventListener("click", createNewSave);
-        savesContainer.appendChild(newSaveBox);
-    }
-    hideLoading()
 }
 
 // Creazione di un nuovo save
 function createNewSave() {
     if (arrayCountNotUndefined(saveSelection) < GameManager.MAXSAVES) {
-        // Crea un nuovo save con un ID univoco e un nom
-        let saveNumber = arrayFirstIndexAvailable(saveSelection)
-        if (saveNumber === -1) saveNumber = 0
 
-        Save.loadMarket().then(save => {
-            // Crea un nuovo oggetto Save con gli stock caricati
-            const newSave = {
-                save: new Save(save.stocks, saveNumber),
-                lastAccess: new Date(GameManager.gameTimer()),
-                realStartDate: new Date(),
-                ownedStocks: {},
-                budget: Player.startMoney
-            };
+        let saveNumber  /*=arrayFirstIndexAvailable(saveSelection)
+        if (saveNumber === -1) saveNumber = 0*/
+        for (let i = 0; i < GameManager.MAXSAVES; i++) {
+            if(saveSelection[i] === undefined){
+                saveNumber = i
+                break
+            }
+        }
 
-            saveSelection.push(newSave);
-            //console.log(gm.player);
-            //console.log(saveNumber);
-            gm.initializeSave(saveNumber);
-            gm.saves[saveNumber] = newSave.save;
+        showLoading()
+        setTimeout(() => {
 
-            console.log(gm.saves[saveNumber]);
+            Save.loadMarket().then(save => {
+                // Crea un nuovo oggetto Save con gli stock caricati
+                const newSave = {
+                    save: new Save(save.stocks, saveNumber),
+                    lastAccess: new Date(GameManager.gameTimer()),
+                    realStartDate: new Date(),
+                    ownedStocks: {},
+                    budget: Player.startMoney
+                };
 
-            // Crea il salvataggio nel database
-            gm.createSaveInDB(saveNumber, new Player());
+                saveSelection.push(newSave);
+                //console.log(gm.player);
+                //console.log(saveNumber);
+                gm.initializeSave(saveNumber);
+                gm.saves[saveNumber] = newSave.save;
 
-            saveCounter++;
-            loadSaves();
-        }).catch(error => {
-            console.error('Error loading stocks: ', error);
-        });
+                console.log(gm.saves[saveNumber]);
+
+                // Crea il salvataggio nel database
+                gm.createSaveInDB(saveNumber, new Player());
+
+                loadSaves();
+            }).catch(error => {
+                console.error('Error loading stocks: ', error);
+            });
+
+        }, 100)
+
+
     }
 }
 // Function to show the loading div
@@ -442,7 +449,7 @@ function portfolioInfos() {
     if (Object.keys(infos).length > 0) {
 
         let headerRow = document.createElement("tr")
-        let headers = ["Azione", "Valore", "Trend", "Quantità", "Variazione %"  , "Variazione"]
+        let headers = ["Azione", "Valore", "Trend", "Quantità", "Variazione %", "Variazione"]
         headers.forEach(headerText => {
             let header = document.createElement("th")
             header.innerText = headerText;
@@ -456,8 +463,8 @@ function portfolioInfos() {
             let value = document.createElement("td")
             let trend = document.createElement("td")
             let amount = document.createElement("td")
-            let income_loss_trend= document.createElement("td")
-            let income_loss_value=document.createElement("td")
+            let income_loss_trend = document.createElement("td")
+            let income_loss_value = document.createElement("td")
 
             let singleStock = gm.getStock(k)
 
@@ -469,40 +476,40 @@ function portfolioInfos() {
                 trend.style.color = "green"
                 trend.innerText = "+" + dailyTrend + "%"
             } else {
-                if(dailyTrend == 0){
+                if (dailyTrend == 0) {
                     trend.style.color = "white"
                     trend.innerText = dailyTrend + "%"
-                }else{
+                } else {
                     trend.style.color = "red"
                     trend.innerText = dailyTrend + "%"
                 }
             }
 
             amount.innerText = infos[k].amount
-            
-            let incomeLossTrend = (gm.player.getIncomeLossTrend(singleStock)*100).toFixed(2)
+
+            let incomeLossTrend = (gm.player.getIncomeLossTrend(singleStock) * 100).toFixed(2)
             if (incomeLossTrend > 0) {
                 income_loss_trend.style.color = "green"
                 income_loss_trend.innerText = "+" + incomeLossTrend + "%"
             } else {
-                if(incomeLossTrend == 0){
+                if (incomeLossTrend == 0) {
                     income_loss_trend.style.color = "white"
                     income_loss_trend.innerText = incomeLossTrend + "%"
-                }else{
+                } else {
                     income_loss_trend.style.color = "red"
                     income_loss_trend.innerText = incomeLossTrend + "%"
                 }
             }
 
-            let incomeLossValue= gm.player.getIncomeLossValue(singleStock).toFixed(2)
+            let incomeLossValue = gm.player.getIncomeLossValue(singleStock).toFixed(2)
             if (incomeLossValue > 0) {
                 income_loss_value.style.color = "green"
                 income_loss_value.innerText = "+" + incomeLossValue + " Kr"
             } else {
-                if(incomeLossValue == 0){
+                if (incomeLossValue == 0) {
                     income_loss_value.style.color = "white"
                     income_loss_value.innerText = incomeLossValue + " Kr"
-                }else{
+                } else {
                     income_loss_value.style.color = "red"
                     income_loss_value.innerText = incomeLossValue + " Kr"
                 }

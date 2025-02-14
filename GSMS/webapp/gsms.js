@@ -1090,7 +1090,7 @@ GameManager.prototype = {
             document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
             document.getElementById('dividendsPerc').innerText = this.stock.dividendsPercentage * 100 + '%'
             document.getElementById('dividendsDays').innerText = this.stock.daysDividendsFrequency + ' giorni'
-        
+
         } catch (e) {
 
             document.getElementById('noDividends').style.display = 'block'
@@ -1106,22 +1106,25 @@ GameManager.prototype = {
         document.getElementById('longTerm').innerText = Stock.convertLongTermScore(this.stock.krolikRating)
         document.getElementById('speculative').innerText = Stock.convertSpeculativeScore(this.stock.FQRating)
 
-        if(this.stock.type == "ETF") {
+        let composition = document.createElement('div')
+        composition.id = 'composition'
+        composition.style.display = 'none'
+        
+        if (this.stock.type === "ETF") {
+
             document.getElementById('noDividends').style.display = 'none'
-            document.getElementById('miscHeader').innerText="Composizione"
+            document.getElementById('miscHeader').innerText = "Composizione"
             document.getElementById('components').style.display = 'flex'
             document.getElementById('miscellaneus').style.display = 'none'
 
             document.getElementById('components').innerText = ''
-            
-            let composition = document.createElement('div')
-            composition.id = 'composition'
+
             composition.style.display = 'flex'
-            
+
             this.stock.influencedBy.forEach((e) => {
                 console.log(e)
-                let stockContainer=document.createElement('div')
-                stockContainer.id='stockContainer'
+                let stockContainer = document.createElement('div')
+                stockContainer.id = 'stockContainer'
                 stockContainer.classList.add('spec')
 
                 let stockNameDiv = document.createElement('div')
@@ -1130,7 +1133,7 @@ GameManager.prototype = {
 
                 let stockValueDiv = document.createElement('div')
                 stockValueDiv.id = 'stockValueComposition'
-                stockValueDiv.innerText = e.perc + '%'
+                stockValueDiv.innerText = (e.perc*100).toFixed(2) + '%'
                 stockValueDiv.classList.add('innerSpec')
 
                 stockContainer.appendChild(stockNameDiv)
@@ -1140,9 +1143,8 @@ GameManager.prototype = {
             })
             document.getElementById('components').appendChild(composition)
 
-        }else{
-            document.getElementById('miscHeader').innerText="Dividendi"
-            document.getElementById('composition').style.display = 'none'
+        } else {
+            document.getElementById('miscHeader').innerText = "Dividendi"
             document.getElementById('components').style.display = 'none'
             document.getElementById('miscellaneus').style.display = 'flex'
         }
@@ -1308,6 +1310,7 @@ GameManager.prototype = {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error !== 0) throw alert("Server error: " + j.msg)
+                loadSaves()
                 toSlide('saves')
             } catch (e) {
                 console.log(e)
@@ -1338,6 +1341,7 @@ GameManager.prototype = {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) throw alert("Server error: " + j.msg)
                 else console.log('Registered successfully')
+                loadSaves()
                 toSlide('saves')
             } catch (e) {
                 console.log(e)
@@ -1365,7 +1369,7 @@ GameManager.prototype = {
                         else gm.player.name = j.username
                         resolve(true)
                     }
-                    if (j.error === 1) resolve(false)
+                    resolve(false)
                 } catch (e) {
                     console.log(e)
                     resolve(false)

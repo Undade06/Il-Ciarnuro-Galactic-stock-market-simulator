@@ -927,7 +927,7 @@ div.slide.visible #all_in, #infoButton {
     margin: 1rem;
     display: block;
     width: 25.5rem;
-    max-height: 14rem;
+    max-height: 10rem;
     overflow-y: auto;
     background-color: rgba(15, 27, 73, 0.755);
     border: none;
@@ -935,6 +935,20 @@ div.slide.visible #all_in, #infoButton {
     padding: 1.2rem;
     font-family: 'noto sans', sans-serif;
     font-size: 1.2rem;
+}
+
+#companyProfile::-webkit-scrollbar{
+    width: 0.8rem;
+}
+
+#companyProfile::-webkit-scrollbar-thumb{
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 0.5rem;
+}
+
+#companyProfile::-webkit-scrollbar-track{
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 0.5rem;
 }
 
 .header {

@@ -70,6 +70,7 @@ gm.loadSavesFromDB().then(r => {
 let saveCounter = 1; // Contatore per i salvataggi
 
 function loadSaves() {
+    showLoading()
     const savesContainer = document.querySelector("#saves .content");
     savesContainer.innerHTML = "";
 
@@ -127,6 +128,7 @@ function loadSaves() {
         newSaveBox.addEventListener("click", createNewSave);
         savesContainer.appendChild(newSaveBox);
     }
+    hideLoading()
 }
 
 // Creazione di un nuovo save

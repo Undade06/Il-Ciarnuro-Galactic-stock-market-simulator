@@ -250,12 +250,8 @@
         toSlide('landingPage')
         gm.checkLoggedIn().then(r => {
         if (r === true) {
-            showLoading()
-            setTimeout(() => {
-                loadSaves()
-                toSlide('saves')
-                hideLoading()
-            }, 100)
+            loadSaves()
+            toSlide('saves')
         }
     })
     </script>

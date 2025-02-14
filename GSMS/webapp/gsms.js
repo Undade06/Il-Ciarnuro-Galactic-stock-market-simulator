@@ -1106,6 +1106,47 @@ GameManager.prototype = {
         document.getElementById('longTerm').innerText = Stock.convertLongTermScore(this.stock.krolikRating)
         document.getElementById('speculative').innerText = Stock.convertSpeculativeScore(this.stock.FQRating)
 
+        if(this.stock.type == "ETF") {
+            document.getElementById('noDividends').style.display = 'none'
+            document.getElementById('miscHeader').innerText="Composizione"
+            document.getElementById('components').style.display = 'flex'
+            document.getElementById('miscellaneus').style.display = 'none'
+
+            document.getElementById('components').innerText = ''
+            
+            let composition = document.createElement('div')
+            composition.id = 'composition'
+            composition.style.display = 'flex'
+            
+            this.stock.influencedBy.forEach((e) => {
+                console.log(e)
+                let stockContainer=document.createElement('div')
+                stockContainer.id='stockContainer'
+                stockContainer.classList.add('spec')
+
+                let stockNameDiv = document.createElement('div')
+                stockNameDiv.id = 'stockName'
+                stockNameDiv.innerText = e.stock.acronym
+
+                let stockValueDiv = document.createElement('div')
+                stockValueDiv.id = 'stockValueComposition'
+                stockValueDiv.innerText = e.perc + '%'
+                stockValueDiv.classList.add('innerSpec')
+
+                stockContainer.appendChild(stockNameDiv)
+                stockContainer.appendChild(stockValueDiv)
+
+                composition.appendChild(stockContainer)
+            })
+            document.getElementById('components').appendChild(composition)
+
+        }else{
+            document.getElementById('miscHeader').innerText="Dividendi"
+            document.getElementById('composition').style.display = 'none'
+            document.getElementById('components').style.display = 'none'
+            document.getElementById('miscellaneus').style.display = 'flex'
+        }
+
         this.setGraph(this.stock.acronym, this.stockTimeSpan, 'stock_graf')
         setInterval(() => {
 

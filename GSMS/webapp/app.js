@@ -122,7 +122,7 @@ function loadSaves() {
         }
         hideLoading()
 
-    }, 100)
+    }, 200)
 
 }
 

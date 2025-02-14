@@ -72,16 +72,18 @@ function loadSaves() {
             saveBox.classList.add("save-box");
             saveBox.style.position = "relative";
 
-            const img = document.createElement("img");
-            img.src = "pics/rimuoviSave.webp";
-            img.style.position = "absolute";
-            img.style.top = "0.2rem";
-            img.style.right = "0.2rem";
-            img.alt = "Rimuovi Salvataggio";
+            const img = document.createElement("img")
+            img.src = "pics/rimuoviSave.webp"
+            img.style.position = "absolute"
+            img.style.top = "0.2rem"
+            img.style.right = "0.2rem"
+            img.style.paddingTop = "0.45rem"
+            img.style.paddingRight= "0.45rem"
+            img.alt = "Rimuovi Salvataggio"
             img.addEventListener("click", (event) => {
                 event.stopPropagation(); // Impedisce il click sull'immagine
-                removeSave(save.save.saveId);
-            });
+                removeSave(save.save.saveId)
+            })
 
             saveBox.textContent = save.name;
             let saveid = document.createElement("div")

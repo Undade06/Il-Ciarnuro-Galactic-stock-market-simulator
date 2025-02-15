@@ -79,6 +79,11 @@ table tr:hover{
     border-radius: 3rem;
 }
 
+.bestStock_name{
+    text-align: left;
+    cursor: pointer;
+}
+
 .tbutton:hover{
     cursor: pointer;
     background-image: linear-gradient(180deg, #0A205A 0%, #10328d 100%);
@@ -758,13 +763,18 @@ div.stock_header{
     margin-left: 1.5rem;
     border-bottom-style: solid;
     border: #FFFFFF;
+    white-space: nowrap;
+    text-align: end
 }
+
 #falling{
     width: 37rem;
     margin-top: 1rem;
     margin-left: 1.5rem;
     border-bottom-style: solid;
     border: #FFFFFF;
+    white-space: nowrap;
+    text-align: end
 }
 
 table{
@@ -804,8 +814,8 @@ table{
 
 .graf *{
     border: none;
-    border-radius: 2rem;
-    background-color: rgba(0,0,0,0.80);
+    border-radius: 1rem;
+    background-color: rgba(0,0,0,0.7);
 }
 
 .graf #relstrenght_graf{
@@ -870,6 +880,7 @@ div.slide.visible #buyButton, #sellButton{
     font-size: clamp(1rem, 2vw, 1.5rem);
     margin: 0.5rem;
     flex: 1;
+    cursor: pointer;
 }
 
 div.slide.visible #stockActions .buySell {

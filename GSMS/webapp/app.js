@@ -293,7 +293,7 @@ function risesAndFalls() {
         let typeETF = document.createElement("td")
 
         name.innerText = stock.acronym
-        value.innerText = stock.value.toFixed(2)
+        value.innerText = stock.value.toFixed(2) + ' Kr'
         trend.innerText = "+" + (stock.getDailyTrend() * 100).toFixed(2) + "%"
 
         trend.style.color = "green"
@@ -326,7 +326,7 @@ function risesAndFalls() {
         let typeETF = document.createElement("td")
 
         name.innerText = stock.acronym
-        value.innerText = stock.value.toFixed(2)
+        value.innerText = stock.value.toFixed(2) + ' Kr'
         trend.innerText = (stock.getDailyTrend() * 100).toFixed(2) + "%"
 
         trend.style.color = "red"

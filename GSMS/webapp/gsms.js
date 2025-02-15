@@ -836,13 +836,13 @@ GameManager.prototype = {
 
         let risings = []
 
-        for (acr in this.saves[this.saveSelected].stocks) {
+        for (let acr in this.saves[this.saveSelected].stocks) {
             if (acr !== masterStock.acronym && this.getStock(acr).getDailyTrend() > 0) {
                 risings.push(this.getStock(acr))
             }
         }
 
-        return risings
+        return risings.sort((a, b) => b.getDailyTrend() - a.getDailyTrend())
 
     },
     /**
@@ -854,7 +854,7 @@ GameManager.prototype = {
 
         let best = this.getStock('Li')          // Random stock
 
-        for (acr in this.saves[this.saveSelected].stocks) {
+        for (let acr in this.saves[this.saveSelected].stocks) {
             if (acr !== masterStock.acronym && this.getStock(acr).getDailyTrend() > best.getDailyTrend()) {
                 best = this.getStock(acr)
             }
@@ -872,13 +872,13 @@ GameManager.prototype = {
 
         let fallings = []
 
-        for (acr in this.saves[this.saveSelected].stocks) {
+        for (let acr in this.saves[this.saveSelected].stocks) {
             if (acr !== masterStock.acronym && this.getStock(acr).getDailyTrend() < 0) {
                 fallings.push(this.getStock(acr))
             }
         }
 
-        return fallings
+        return fallings.sort((a, b) => a.getDailyTrend() - b.getDailyTrend())
 
     },
     /**
@@ -942,6 +942,7 @@ GameManager.prototype = {
             this.player.updateHonorGrade()
             document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
         } catch (error) {
+            console.log(error)
             alert('Non hai così tante azioni!')
         }
 
@@ -1707,7 +1708,9 @@ Player.prototype = {
         if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
         if (this.stocks[stock.acronym].amount < amountP) throw 'Player doesn\'t have such amount of passed stock'
 
-        this.wallet += stock.value * amountP - stock.commPerOperation - stock.getTaxesCost(amountP)
+        let tempW = stock.value * amountP - stock.commPerOperation - stock.getTaxesCost(amountP)
+        if (tempW < 0) throw 'Commissions or taxes exceed stock value'
+        this.wallet = tempW
 
         this.stocks[stock.acronym].amount -= amountP
         if (this.stocks[stock.acronym].amount === 0) delete (this.stocks[stock.acronym])
@@ -1725,7 +1728,9 @@ Player.prototype = {
         if (stock === undefined) throw 'Parameters not supported'
         if (this.stocks[stock.acronym] === undefined) throw 'Player doesn\'t own passed stock'
 
-        this.wallet += stock.value * this.stocks[stock.acronym].amount - stock.commPerOperation - stock.getTaxesCost(this.stocks[stock.acronym].amount)
+        let tempW = stock.value * this.stocks[stock.acronym].amount - stock.commPerOperation - stock.getTaxesCost(this.stocks[stock.acronym].amount)
+        if (tempW < 0) throw 'Commissions or taxes exceed stock value'
+        this.wallet = tempW
 
         delete (this.stocks[stock.acronym])
 

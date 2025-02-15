@@ -170,7 +170,7 @@ function createNewSave() {
                 console.error('Error loading stocks: ', error);
             });
 
-        }, 100)
+        }, 200)
 
 
     }
@@ -206,7 +206,7 @@ function loadSave(id) {
         gm.startGame();
         toSlide("marketHomePage");
         hideLoading(); // Hide the loading div after starting the game
-    }, 100);
+    }, 200);
 }
 
 // Funzione per rimuovere un save

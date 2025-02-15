@@ -73,10 +73,9 @@ button:not(#buyButton,#sellButton):hover{
 }
 
 table tr:hover{
-    background-color: rgba(11, 19, 53, 0.75);
+    background-color: rgba(0, 0, 0, 0.3);
     transition: ease-in 0.25s;
     border: none;
-    border-radius: 3rem;
 }
 
 .bestStock_name{
@@ -577,6 +576,7 @@ div.slide.visible #rising_stocks {
     height: 27rem;
     width: 42rem;
     padding-left: 1.25rem;
+    padding-bottom: 1rem;
 }
 
 div.slide.visible #declining_stocks {
@@ -587,6 +587,7 @@ div.slide.visible #declining_stocks {
     height: 27rem;
     width: 42rem;
     padding-left: 1.25rem;
+    padding-bottom: 1rem;
 }
 
 div.slide.visible #rises_falls{
@@ -780,6 +781,7 @@ div.stock_header{
 table{
     border-collapse: collapse;
 }
+
 #rising tr,#falling tr{
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
@@ -790,10 +792,10 @@ table{
 #rising td,#falling td{
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
-    color: white;
+    color: #FFFFFF;
     font-size: 1.5rem;
     padding: 1.2rem;
-    border-bottom:3px solid #FFFFFF;
+    border-bottom:0.2rem solid #FFFFFF;
     width: 10rem;
 }
 

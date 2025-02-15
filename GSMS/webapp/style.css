@@ -550,7 +550,7 @@ div.slide.visible .market_back{
     z-index: 0;
 }
 
-div.slide.visible #best_stock {
+div.slide.visible #best_stock,div.slide.visible #singleStock  {
     transform: none;
     margin-top: 3rem;
     margin-bottom: 2rem;
@@ -559,16 +559,7 @@ div.slide.visible #best_stock {
     padding: 1.25rem;
 }
 
-div.slide.visible #singleStock {
-    transform: none;
-    margin-top: 3rem;
-    margin-bottom: 2rem;
-    height: auto;
-    max-width: 96%;
-    padding: 1.25rem;
-}
-
-div.slide.visible #rising_stocks {
+div.slide.visible #rising_stocks, div.slide.visible #declining_stocks{
     overflow-y: auto;
     overflow-x: hidden;
     transform: none;
@@ -698,23 +689,13 @@ div.slide.visible #sessionInfo{
     z-index: 1;
 }
 
-#rising_stocks h3{
+#rising_stocks h3,#declining_stocks h3{
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
     font-size: 2.5rem;
     margin-top: 3rem;
     margin-left: 2rem;
-    margin-bottom: 1rem;
-}
-
-#declining_stocks h3{
-    color: white;
-    font-family: 'Xolonium', sans-serif;
-    font-weight: bold;
-    font-size: 2.5rem;
-    margin-left: 2rem;
-    margin-top: 3rem;
     margin-bottom: 1rem;
 }
 
@@ -758,7 +739,7 @@ div.stock_header{
     max-height: 30rem;
 }
 
-#rising{
+#rising,#falling{
     width: 37rem;
     margin-top: 1rem;
     margin-left: 1.5rem;
@@ -768,15 +749,6 @@ div.stock_header{
     text-align: end
 }
 
-#falling{
-    width: 37rem;
-    margin-top: 1rem;
-    margin-left: 1.5rem;
-    border-bottom-style: solid;
-    border: #FFFFFF;
-    white-space: nowrap;
-    text-align: end
-}
 
 table{
     border-collapse: collapse;
@@ -1062,7 +1034,7 @@ div.slide.visible #all_in, #infoButton {
     font-family: 'noto sans', sans-serif;
 }
 
-#commissions{
+#commissions,#Aratings{
     align-items: center;
     background-color: rgba(15, 27, 73, 0.755);
     border: none;
@@ -1076,19 +1048,6 @@ div.slide.visible #all_in, #infoButton {
     gap: 4rem;
 }
 
-#Aratings{
-    align-items: center;
-    background-color: rgba(15, 27, 73, 0.755);
-    border: none;
-    border-radius: 1rem;
-    margin: 1rem;
-    height: fit-content;
-    width: 23.5rem;
-    display: flex;
-    padding: 0.7rem;
-    padding-left: 4rem;
-    gap: 4rem;
-}
 
 #krolik,#f_q{
     font-family: 'Xolonium', sans-serif;

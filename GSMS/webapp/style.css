@@ -69,14 +69,14 @@ button:not(#buyButton,#sellButton):hover{
 }
 
 .bestStock_name:hover{
+    cursor: pointer;
     text-decoration: underline;
 }
 
-table tr:hover{
+table tr:not(table.th):hover{
+    cursor: pointer;
     background-color: rgba(11, 19, 53, 0.75);
     transition: ease-in 0.25s;
-    border: none;
-    border-radius: 3rem;
 }
 
 .tbutton:hover{
@@ -752,14 +752,7 @@ div.stock_header{
     max-height: 30rem;
 }
 
-#rising{
-    width: 37rem;
-    margin-top: 1rem;
-    margin-left: 1.5rem;
-    border-bottom-style: solid;
-    border: #FFFFFF;
-}
-#falling{
+.trend{
     width: 37rem;
     margin-top: 1rem;
     margin-left: 1.5rem;

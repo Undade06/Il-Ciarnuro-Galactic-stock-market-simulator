@@ -72,6 +72,13 @@ button:not(#buyButton,#sellButton):hover{
     text-decoration: underline;
 }
 
+table tr:hover{
+    background-color: rgba(11, 19, 53, 0.75);
+    transition: ease-in 0.25s;
+    border: none;
+    border-radius: 3rem;
+}
+
 .tbutton:hover{
     cursor: pointer;
     background-image: linear-gradient(180deg, #0A205A 0%, #10328d 100%);
@@ -1107,7 +1114,7 @@ div.slide.visible #portfolio {
     color: white;
     padding: 1rem;
     border-bottom:3px solid #FFFFFF;
-    width: 7rem;
+    width: 10rem;
 }
 #portfolioContent tr:last-child td, #rising tr:last-child td, #falling tr:last-child td{
     border-bottom: none;
@@ -1118,7 +1125,7 @@ div.slide.visible #portfolio {
     font-weight: bold;
     color: white;
     padding: 1rem;
-    width: 10rem;
+    width: 12rem;
 }
 
 

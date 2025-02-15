@@ -358,6 +358,11 @@ Stock.prototype = {
         return (this.value - this._lastDayValues[0]) / this._lastDayValues[0]
 
     },
+    /**
+     * Get next date in which this stock will pay dividends
+     * 
+     * @returns Date object representing next date to pay
+     */
     nextDividendsDate: function () {
 
         if (this.dividendsPercentage === 0) throw 'Stock doesn\'t pay dividends'
@@ -894,7 +899,7 @@ GameManager.prototype = {
 
             this.updateSaveInDB(this.saveSelected, this.player)
         } catch (error) {
-            alert('Non hai abbastanza soldi!\nBilancio corrente: ' + this.player.wallet)
+            alert('Non hai abbastanza soldi!\nBilancio corrente: ' + this.player.wallet.toFixed(2)+ ' Kr')
         }
 
         try {

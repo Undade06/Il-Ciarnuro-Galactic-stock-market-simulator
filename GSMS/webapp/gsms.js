@@ -92,10 +92,10 @@ function Stock(name, acronym, description, baseValue, stability, growth, volatil
     }
 
     this.krolikRating = undefined
-    this.krolikRating = this._calculateLongTermInvestmentRating()
+    //this.krolikRating = this._calculateLongTermInvestmentRating()
 
     this.FQRating = undefined
-    if (Stock.masterCreated) this.FQRating = this._calculateSpeculativeInvestmentRating()          // Nobody cares if masterstock doesn't have a FQRating
+    //if (Stock.masterCreated) this.FQRating = this._calculateSpeculativeInvestmentRating()          // Nobody cares if masterstock doesn't have a FQRating
 
     Stock.masterCreated = true
 
@@ -718,6 +718,9 @@ GameManager.prototype = {
         let lastTimeUpdated = GameManager.currentNumberValue()
         for (let acr in this.saves[this.saveSelected].stocks) {
 
+            this.getStock(acr).krolikRating = this.getStock(acr)._calculateLongTermInvestmentRating()
+            this.getStock(acr).FQRating = this.getStock(acr)._calculateSpeculativeInvestmentRating()
+
             this.getStock(acr).simulateHistory(GameManager.MAXYEARGAP * 365)
             if (lastTimeUpdated !== GameManager.currentNumberValue()) {
                 this._syncStocks(lastTimeUpdated)
@@ -899,7 +902,7 @@ GameManager.prototype = {
 
             this.updateSaveInDB(this.saveSelected, this.player)
         } catch (error) {
-            alert('Non hai abbastanza soldi!\nBilancio corrente: ' + this.player.wallet.toFixed(2)+ ' Kr')
+            alert('Non hai abbastanza soldi!\nBilancio corrente: ' + this.player.wallet.toFixed(2) + ' Kr')
         }
 
         try {
@@ -1114,7 +1117,7 @@ GameManager.prototype = {
         let composition = document.createElement('div')
         composition.id = 'composition'
         composition.style.display = 'none'
-        
+
         if (this.stock.type === "ETF") {
 
             document.getElementById('noDividends').style.display = 'none'
@@ -1138,7 +1141,7 @@ GameManager.prototype = {
 
                 let stockValueDiv = document.createElement('div')
                 stockValueDiv.id = 'stockValueComposition'
-                stockValueDiv.innerText = (e.perc*100).toFixed(2) + '%'
+                stockValueDiv.innerText = (e.perc * 100).toFixed(2) + '%'
                 stockValueDiv.classList.add('innerSpec')
 
                 stockContainer.appendChild(stockNameDiv)
@@ -1675,7 +1678,7 @@ Player.prototype = {
     allIn: function (stock) {
 
         if (!(stock instanceof Stock) && !(stock instanceof ETF)) throw 'Stock not defined'
-        if(stock.value > this.wallet) throw 'Player doesn\'t have enough money'
+        if (stock.value > this.wallet) throw 'Player doesn\'t have enough money'
 
         let n = Math.floor(this.wallet / stock.value)
         while (stock.value * n + stock.commPerOperation > this.wallet) n--

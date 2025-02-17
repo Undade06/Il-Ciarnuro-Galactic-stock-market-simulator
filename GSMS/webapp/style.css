@@ -1038,6 +1038,7 @@ div.slide.visible #all_in, #infoButton {
 }
 
 .innerSpec{
+    white-space: nowrap;
     width: 84%;
     height: fit-content;
     background-color: #0e1a48d5;

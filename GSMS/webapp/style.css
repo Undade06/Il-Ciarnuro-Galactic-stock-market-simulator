@@ -774,6 +774,7 @@ table{
 }
 
 #rising td,#falling td{
+    white-space: nowrap;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
     color: #FFFFFF;

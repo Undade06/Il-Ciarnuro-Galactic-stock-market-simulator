@@ -737,6 +737,7 @@ div.stock_header{
 }
 
 .graf #bestStock_graf{
+    display: inline !important;
     width: 98% !important;
     height: 20rem;
     margin-top: 2rem;
@@ -791,6 +792,7 @@ table{
 }
 
 .graf #stock_graf{
+    display: inline !important;
     width: 98% !important;
     height: 20rem;
     margin-top: 2rem;

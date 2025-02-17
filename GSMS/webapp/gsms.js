@@ -1216,12 +1216,12 @@ GameManager.prototype = {
                         label: s.acronym,
                         indexAxis: 'x',
                         borderWidth: 1,
-                        radius: 0,
+                        radius: 0.5,
                         data: values
                     }]
                 },
                 options: {
-                    animation: false,
+                    animation: true,
                     parsing: false,
                     //responsive:false,
                     interaction: {

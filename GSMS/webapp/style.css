@@ -73,13 +73,9 @@ button:not(#buyButton,#sellButton):hover{
     text-decoration: underline;
 }
 
-table tr:not(table.th):hover{
+table tr:not(table.tr.th):hover{
     cursor: pointer;
     background-color: rgba(11, 19, 53, 0.75);
-table tr:hover{
-    background-color: rgba(0, 0, 0, 0.3);
-    transition: ease-in 0.25s;
-    border: none;
 }
 
 .bestStock_name{
@@ -1071,6 +1067,7 @@ div.slide.hidden #portfolio{
 div.slide.visible #portfolio {
     display: flex;
     overflow-y: auto;
+    overflow-x: hidden;
     flex-direction: column;
     transform: none;
     position: relative;
@@ -1106,6 +1103,7 @@ div.slide.visible #portfolio {
     border-bottom:3px solid #FFFFFF;
     width: 10rem;
 }
+
 #portfolioContent tr:last-child td, #rising tr:last-child td, #falling tr:last-child td{
     border-bottom: none;
 }
@@ -1117,7 +1115,6 @@ div.slide.visible #portfolio {
     padding: 1rem;
     width: 12rem;
 }
-
 
 .backHome{
     position: absolute;

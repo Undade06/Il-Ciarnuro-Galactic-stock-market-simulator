@@ -1319,8 +1319,14 @@ GameManager.prototype = {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error !== 0) throw alert("Server error: " + j.msg)
-                loadSaves()
-                toSlide('saves')
+                gm.loadSavesFromDB().then(r => {
+                    r.forEach(s => {
+                        saveSelection[s.save.saveId] = s
+                        gm.saves[s.save.saveId] = s.save
+                    })
+                    loadSaves()
+                    toSlide('saves')
+                })
             } catch (e) {
                 console.log(e)
             }
@@ -1349,9 +1355,17 @@ GameManager.prototype = {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) throw alert("Server error: " + j.msg)
-                else console.log('Registered successfully')
-                loadSaves()
-                toSlide('saves')
+                else {
+                    console.log('Registered successfully')
+                    gm.loadSavesFromDB().then(r => {
+                        r.forEach(s => {
+                            saveSelection[s.save.saveId] = s
+                            gm.saves[s.save.saveId] = s.save
+                        })
+                        loadSaves()
+                        toSlide('saves')
+                    })
+                }
             } catch (e) {
                 console.log(e)
             }
@@ -1524,7 +1538,7 @@ GameManager.prototype = {
 GameManager.YEARSHIFT = 150             // ~2175
 GameManager.MAXYEARGAP = 5              // Maximum year gap that can be simulated by stock generation
 GameManager.SECSPEEDUP = 60             // 1 real second = 1 game minute
-GameManager.REALSTARTDATE = new Date('2025-01-01').getTime()            // Temporarily fixed start date
+GameManager.REALSTARTDATE = new Date().getTime()
 GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 1000 * 24 * 60 * 60 * 365 * GameManager.YEARSHIFT).getTime()
 GameManager.MAXSAVES = 3
 GameManager.MAXVISUALIZABLEVALUES = 1 / Stock.TIMESTEP

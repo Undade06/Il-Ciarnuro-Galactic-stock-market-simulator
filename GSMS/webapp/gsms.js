@@ -1524,7 +1524,7 @@ GameManager.prototype = {
 GameManager.YEARSHIFT = 150             // ~2175
 GameManager.MAXYEARGAP = 5              // Maximum year gap that can be simulated by stock generation
 GameManager.SECSPEEDUP = 60             // 1 real second = 1 game minute
-GameManager.REALSTARTDATE = new Date('2025-01-01').getTime()            // Temporarily fixed start date
+GameManager.REALSTARTDATE = new Date().getTime()
 GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 1000 * 24 * 60 * 60 * 365 * GameManager.YEARSHIFT).getTime()
 GameManager.MAXSAVES = 3
 GameManager.MAXVISUALIZABLEVALUES = 1 / Stock.TIMESTEP

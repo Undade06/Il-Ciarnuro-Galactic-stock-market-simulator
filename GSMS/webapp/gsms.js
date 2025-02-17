@@ -1097,7 +1097,7 @@ GameManager.prototype = {
             document.getElementById('nextDate').style.display = 'block'
 
             document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
-            document.getElementById('dividendsPerc').innerText = this.stock.dividendsPercentage * 100 + '%'
+            document.getElementById('dividendsPerc').innerText = (this.stock.dividendsPercentage * 100).toFixed(2) + '%'
             document.getElementById('dividendsDays').innerText = this.stock.daysDividendsFrequency + ' giorni'
 
         } catch (e) {

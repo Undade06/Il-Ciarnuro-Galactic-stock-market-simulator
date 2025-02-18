@@ -772,17 +772,17 @@ GameManager.prototype = {
 
         if (payments !== undefined) {
 
-            let msg = 'Dividendi pagati:\n', tot = 0
+            let msg = 'Pagamento dividendi:\n', tot = 0
 
             for (let k in payments) {
 
-                msg += k + ': ' + payments[k] + ' Kr\n'
+                msg += k + ': ' + payments[k].toFixed(3) + ' Kr\n'
                 tot += payments[k]
                 this.setDividendsPayment(k)
 
             }
 
-            alert(msg + 'Totale: +' + tot + ' Kr')
+            alert(msg + 'Totale: +' + tot.toFixed(3) + ' Kr')
 
         }
 

@@ -967,7 +967,7 @@ GameManager.prototype = {
             if (this.player.stocks[sAcr] === undefined) return
 
             this.player.wallet += this.getStock(sAcr).dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount
-            alert(sAcr + ' dividends payment: ' + this.getStock(sAcr).dividendsPercentage + ' * ' + this.getStock(sAcr).value + ' * ' + this.player.stocks[sAcr].amount + ' = ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount) + 'Kr')
+            alert(sAcr + ' dividends payment: ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount) + 'Kr')
 
             // But now it will
             let id = setInterval(() => {
@@ -1207,6 +1207,8 @@ GameManager.prototype = {
             date += step
         }
 
+        let down = (g, value) => g.p0.parsed.y > g.p1.parsed.y ? value : undefined
+
         if (g.chartjs === undefined) {
 
             g.chartjs = new Chart(g, {
@@ -1215,9 +1217,15 @@ GameManager.prototype = {
                     datasets: [{
                         label: s.acronym,
                         indexAxis: 'x',
-                        borderWidth: 1,
-                        radius: 0.5,
-                        data: values
+                        borderWidth: 2.5,
+                        borderColor: 'rgba(52, 189, 21, 0.7)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        radius: 0,
+                        data: values,
+                        segment: {
+                            borderColor: g => down(g, 'rgba(255, 0, 0, 0.7)')
+                        },
+                        pointBorderColor: 'rgba(255, 255, 255, 0.9)',
                     }]
                 },
                 options: {

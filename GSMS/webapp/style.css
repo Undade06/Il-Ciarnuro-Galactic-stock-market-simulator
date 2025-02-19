@@ -73,7 +73,7 @@ button:not(#buyButton,#sellButton):hover{
     text-decoration: underline;
 }
 
-table tr:first-child:hover{
+#portfolioContent tr:first-child:hover{
     cursor: default;
     background: rgba(0, 0, 0, 0.0);
 }

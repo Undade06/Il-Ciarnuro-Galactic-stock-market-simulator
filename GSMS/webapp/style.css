@@ -73,14 +73,16 @@ button:not(#buyButton,#sellButton):hover{
     text-decoration: underline;
 }
 
-table tr:not(table.tr.th):hover{
-    cursor: pointer;
-    background-color: rgba(11, 19, 53, 0.75);
+table tr:first-child:hover{
+    cursor: default;
+    background: rgba(0, 0, 0, 0.0);
 }
+
 table tr:hover{
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(11, 19, 53, 0.75);
     transition: ease-in 0.25s;
     border: none;
+    cursor: pointer;
 }
 
 .bestStock_name{

@@ -28,7 +28,7 @@
                 case "login":{
                     if(isset($_POST["username"]) && isset($_POST["password"])){ 
                         $username = $_POST["username"];
-                        $password = sha1($_POST["password"]);
+                        $password = hash("sha256", $_POST["password"]);
                         $q = $conn->prepare("SELECT passwordHash from player WHERE username = ? AND passwordHash = ?");
                         $q->bind_param("ss", $username, $password);
                         $q->execute();

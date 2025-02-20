@@ -1214,6 +1214,30 @@ div.slide.visible #profileInfo{
     font-size: 1.5rem;
 }
 
+#logoutButton{
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-image: url('pics/logout.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    z-index: 9999;
+    transition: ease-in 0.2s;
+    filter: brightness(0.7);
+}
+
+#logoutButton:hover{
+    filter: brightness(1);
+    transform: scale(1.1);
+    transition: ease-in 0.2s;
+    box-shadow: 0 0 1rem 0 rgba(94, 3, 73, 0.5);
+}
+
+/*--- MEDIA QUERIES ---*/
 
 @media screen and (max-width:45rem) {
     #landingPageText{

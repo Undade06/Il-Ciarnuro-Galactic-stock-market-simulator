@@ -35,7 +35,7 @@
                         $result = $q->get_result();
                         if($result->num_rows > 0) {
                             $_SESSION["user_id"] = $username;
-                             $ret = ["error" => 0, "msg" => "Logged in successfully", "status" => "saves"];
+                            $ret = ["error" => 0, "msg" => "Logged in successfully", "status" => "saves"];
                         } else {
                             $ret = ["error" => 1, "msg" => "Incorrect username or password"];
                         }
@@ -45,7 +45,7 @@
                 case "register":{
                     if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["email"])){
                         $username = $_POST["username"];
-                        $password = sha1($_POST["password"]);
+                        $password = hash("sha256", $_POST["password"]);
                         $email = $_POST["email"];
                         $q = $conn->prepare("SELECT username from player WHERE username = ?");
                         $q->bind_param("s", $_POST["username"]);
@@ -97,7 +97,7 @@
                         $ret = ["error" => 1, "msg" => "Missing field/s"];
                         break;
                     }
-                    $q = $conn->prepare("DELETE FROM Save WHERE idSave = ? AND idPlayer = (select id from Player where username = ?)");
+                    $q = $conn->prepare("DELETE FROM save WHERE idSave = ? AND idPlayer = (select id from player where username = ?)");
                     $q->bind_param("ss", $idSave, $_SESSION["user_id"]);
                     $q->execute();
                     $ret = ["error" => 0, "msg" => "Save deleted successfully"];
@@ -109,7 +109,7 @@
                         break;
                     }
 
-                    $q = $conn->query("SELECT * FROM Save WHERE idPlayer = (SELECT id FROM Player WHERE username = \"".$_SESSION["user_id"]."\")");
+                    $q = $conn->query("SELECT * FROM save WHERE idPlayer = (SELECT id FROM player WHERE username = \"".$_SESSION["user_id"]."\")");
                     
                     $saves=[];
                     while($save=$q->fetch_array()){
@@ -135,7 +135,7 @@
                     $budget = $_POST["budget"];
                     $idSave = $_POST["idSave"];
 
-                    $q = $conn->prepare("UPDATE Save SET budget = ?, lastAccess = ?, ownedStocks = ? WHERE idPlayer = (SELECT id FROM Player WHERE username = ?) AND idSave = ?");
+                    $q = $conn->prepare("UPDATE save SET budget = ?, lastAccess = ?, ownedStocks = ? WHERE idPlayer = (SELECT id FROM player WHERE username = ?) AND idSave = ?");
                     
                     $q->bind_param("dsssi", $budget, $lastA, $ownS, $_SESSION["user_id"], $idSave);
                     $q->execute();

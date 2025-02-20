@@ -7,6 +7,7 @@
     if (!isset($_SESSION["user_id"])) {
         $_SESSION["user_id"] = "";
         $_SESSION["status"] = "";
+        $_SESSION["lastSave"] = "";
     }
 
     try{
@@ -142,6 +143,37 @@
 
                     $ret = ["error" => 0, "msg" => "Save updated successfully"];
                     $q->close();
+                } break;
+                case "updateStatus":{
+
+                    if(!isset($_SESSION["user_id"])){    
+                        $ret = ["error" => 1, "msg" => "Not logged in"];
+                        break;
+                    }
+
+                    if(!isset($_POST["status"]) || !isset($_POST["saveSelected"])){
+                        $ret = ["error" => 1, "msg" => "Missing field/s"];
+                        break;
+                    }
+
+                    $_SESSION["status"] = $_POST["status"];
+                    $_SESSION["lastSave"] = $_POST["saveSelected"];
+
+                    $ret=["error"=>0, "msg"=>"Status updated successfully"];
+                } break;
+                case "getStatus":{
+
+                    if(!isset($_SESSION["user_id"])){    
+                        $ret = ["error" => 1, "msg" => "Not logged in"];
+                        break;
+                    }
+
+                    if(!isset($_SESSION["status"]) || !isset($_SESSION["lastSave"])){
+                        $ret = ["error" => 1, "msg" => "Status not set"];
+                        break;
+                    }
+
+                    $ret=["error"=>0, "msg"=>"Got status successfully", "status"=>$_SESSION["status"], "saveSelected"=>$_SESSION["lastSave"]];
                 } break;
                 default:{
                     $ret=["error"=>1, "msg"=>"Undefined operation"];

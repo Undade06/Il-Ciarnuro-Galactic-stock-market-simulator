@@ -786,6 +786,10 @@ GameManager.prototype = {
 
         }
 
+        setInterval(() => {
+            this.updateSaveInDB(this.saveSelected, this.player)
+        }, GameManager.VALUESPERREALSECONDS *1000 * 5)
+
     },
     /**
      * Synchronize all stocks from passed timestep value making them proceed all together till GameManager.currentNumberValue()
@@ -967,7 +971,7 @@ GameManager.prototype = {
             if (this.player.stocks[sAcr] === undefined) return
 
             this.player.wallet += this.getStock(sAcr).dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount
-            alert(sAcr + ' dividends payment: ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount) + 'Kr')
+            alert(sAcr + ' dividends payment: ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount).toFixed(3) + ' Kr')
 
             // But now it will
             let id = setInterval(() => {
@@ -978,7 +982,7 @@ GameManager.prototype = {
                 }
 
                 this.player.wallet += s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount
-                alert(sAcr + ' dividends payment: ' + s.dividendsPercentage + ' * ' + this.getStock(sAcr).value + ' * ' + this.player.stocks[sAcr].amount + ' = ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount) + 'Kr')
+                alert(sAcr + ' dividends payment:  ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount).toFixed(3) + ' Kr')
 
             }, s.daysDividendsFrequency * (((24 * 60 * 60) / GameManager.SECSPEEDUP) * 1000))
 
@@ -1011,7 +1015,7 @@ GameManager.prototype = {
                 for (let i = convertedLA; i < now; i += interval) {
 
                     payments[acr] += values[i] * this.getStock(acr).dividendsPercentage * this.player.stocks[acr].amount
-                    console.log(acr + ' dividends at ' + i + ' = ' + values[i] * this.getStock(acr).dividendsPercentage * this.player.stocks[acr].amount)
+                    //console.log(acr + ' dividends at ' + i + ' = ' + values[i] * this.getStock(acr).dividendsPercentage * this.player.stocks[acr].amount)
 
                 }
 
@@ -1097,6 +1101,10 @@ GameManager.prototype = {
             document.getElementById('nextDate').style.display = 'block'
 
             document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
+            let lastS = this.stock, t = setInterval(() => {
+                if(lastS !== this.stock) clearInterval(t)
+                if(lastS.nextDividendsDate().getTime() === GameManager.gameTimer()) document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
+            }, GameManager.VALUESPERREALSECONDS * 1000)
             document.getElementById('dividendsPerc').innerText = (this.stock.dividendsPercentage * 100).toFixed(2) + '%'
             document.getElementById('dividendsDays').innerText = this.stock.daysDividendsFrequency + ' giorni'
 

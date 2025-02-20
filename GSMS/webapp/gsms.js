@@ -1233,7 +1233,7 @@ GameManager.prototype = {
                         segment: {
                             borderColor: g => down(g, 'rgba(255, 0, 0, 0.7)')
                         },
-                        pointBorderColor: 'rgba(255, 255, 255, 0.9)',
+                        pointBorderColor: 'rgba(208, 208, 208, 0.9)',
                     }]
                 },
                 options: {

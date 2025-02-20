@@ -540,6 +540,7 @@ div.slide.hidden #saves_back{
     }
   }
 */
+
 /*--- Market Home ---*/
 
 div.slide.visible #marketHomePage{
@@ -560,7 +561,7 @@ div.slide.visible .market_back{
 div.slide.visible #best_stock,div.slide.visible #singleStock  {
     transform: none;
     margin-top: 3rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     height: auto;
     max-width: 96%;
     padding: 1.25rem;
@@ -634,7 +635,7 @@ div.slide.visible #sessionInfo{
     text-align: center;
     font-weight: bold;
 }
-#BalanceStocks{
+#balanceStocks{
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -738,13 +739,20 @@ div.stock_header{
     margin: 1rem;
 }
 
+.graf{
+    display: block;
+    width: 80rem;
+    height: 20rem;
+    margin: 1rem;
+    margin-top: 2rem;
+    margin-left: 4rem;
+}
+
 .graf #bestStock_graf{
     display: inline !important;
-    width: 98% !important;
-    height: 20rem;
-    margin-top: 2rem;
-    margin: 1rem;
-    max-height: 30rem;
+    width: auto !important;
+    height: auto !important;
+    max-height: 20rem;
 }
 
 .trend{
@@ -796,11 +804,9 @@ table{
 
 .graf #stock_graf{
     display: inline !important;
-    width: 98% !important;
-    height: 20rem;
-    margin-top: 2rem;
-    margin: 1rem;
-    max-height: 30rem;
+    width: auto !important;
+    height: auto !important;
+    max-height: 20rem;
 }
 
 .graf *{
@@ -1214,6 +1220,30 @@ div.slide.visible #profileInfo{
     font-size: 1.5rem;
 }
 
+#logoutButton{
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-image: url('pics/logout.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    z-index: 9999;
+    transition: ease-in 0.2s;
+    filter: brightness(0.7);
+}
+
+#logoutButton:hover{
+    filter: brightness(1);
+    transform: scale(1.1);
+    transition: ease-in 0.2s;
+    box-shadow: 0 0 1rem 0 rgba(94, 3, 73, 0.5);
+}
+
+/*--- MEDIA QUERIES ---*/
 
 @media screen and (max-width:45rem) {
     #landingPageText{

@@ -259,8 +259,17 @@
         })
         gm.checkLoggedIn().then(r => {
             if (r === true) {
-                loadSaves()
-                toSlide('saves')
+                gm.getStatus().then((state =>{
+                    if(state.status !== ''){
+                        if(state.status === 'saves' || state.status === 'marketHomePage' || state.status === 'profilePage' || state.status === 'stockPage'){
+                            loadSaves()
+                            if(state.save !== ''){
+                                loadSave(Number(state.save))
+                            }
+                        }
+                        toSlide(state.status)
+                    }                    
+                }))
             }
         })
     </script>

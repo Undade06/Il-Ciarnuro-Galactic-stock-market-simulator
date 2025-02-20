@@ -788,7 +788,7 @@ GameManager.prototype = {
 
         setInterval(() => {
             this.updateSaveInDB(this.saveSelected, this.player)
-        }, GameManager.VALUESPERREALSECONDS *1000 * 5)
+        }, GameManager.VALUESPERREALSECONDS * 1000 * 5)
 
     },
     /**
@@ -1102,8 +1102,8 @@ GameManager.prototype = {
 
             document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
             let lastS = this.stock, t = setInterval(() => {
-                if(lastS !== this.stock) clearInterval(t)
-                if(lastS.nextDividendsDate().getTime() === GameManager.gameTimer()) document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
+                if (lastS !== this.stock) clearInterval(t)
+                if (lastS.nextDividendsDate().getTime() === GameManager.gameTimer()) document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
             }, GameManager.VALUESPERREALSECONDS * 1000)
             document.getElementById('dividendsPerc').innerText = (this.stock.dividendsPercentage * 100).toFixed(2) + '%'
             document.getElementById('dividendsDays').innerText = this.stock.daysDividendsFrequency + ' giorni'
@@ -1427,7 +1427,10 @@ GameManager.prototype = {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) throw alert("Server error: " + j.msg)
-                if (j.error === 0) toSlide('landingPage')
+                if (j.error === 0) {
+                    toSlide('landingPage')
+                    saveSelection = []
+                }
             } catch (e) {
                 console.log(e)
             }
@@ -1548,6 +1551,55 @@ GameManager.prototype = {
         x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
         x.send(params)
 
+    },
+    updateStatus: function (status, idSave) {
+
+        let x = new XMLHttpRequest()
+        x.onload = function () {
+            try {
+                let j = JSON.parse(x.responseText)
+                if (j.error === 1) alert("Server error: " + j.msg)
+                else console.log('Status updated successfully')
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        x.onerror = function () {
+            alert('Server error')
+        }
+
+        let params = "status=" + encodeURIComponent(status) + "&saveSelected=" + encodeURIComponent(idSave)
+
+        x.open('POST', 'api.php?op=updateStatus')
+        x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        x.send(params)
+
+    },
+    getStatus: function () {
+
+        return new Promise((resolve, reject) => {
+            let x = new XMLHttpRequest()
+            x.onload = function () {
+                try {
+                    let j = JSON.parse(x.responseText)
+                    if (j.error === 1) reject(j.msg)
+                    else {
+                        resolve({status: j.status, save: j.saveSelected})
+                    }
+                } catch (e) {
+                    console.log(e)
+                    reject(j.msg)
+                }
+            }
+            x.onerror = function () {
+                alert('Server error')
+                reject(j.msg)
+            }
+
+            x.open('GET', 'api.php?op=getStatus')
+            x.send()
+
+        })
     }
 }
 

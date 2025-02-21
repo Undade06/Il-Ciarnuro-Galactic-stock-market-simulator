@@ -688,8 +688,9 @@ div.slide.visible #sessionInfo{
 
 .time_buttons{
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
     margin: 1rem;
+    margin-left: 3rem;
 }
 
 .button-group {

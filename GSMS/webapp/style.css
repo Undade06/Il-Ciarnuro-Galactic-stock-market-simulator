@@ -272,6 +272,81 @@ div.slide.visible #planetStatic2 {
     z-index: -1;
 }
 
+div.slide.visible #log_reg_back{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color:rgba(0, 0, 0, 0.75);
+    width: 100%;
+    max-width: 30rem;
+    height: 90%;
+    max-height: 15rem;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    text-align: center;
+    margin: 1rem;
+    z-index: 0;
+}
+
+div.slide.hidden #log_reg_back .content{
+    display: none;
+}
+
+div.slide.visible #log_reg_back .content {
+    opacity: 1;
+    z-index: 1;
+}
+
+div.slide.visible input.log_reg_input{
+    font-family: 'Xolonium_regular', sans-serif;
+    font-weight: bold;
+    color: #FFFFFF;
+    font-size: 1.3em;
+    height: 100%;
+    width: 90%;
+    background-color: rgba(30, 30, 30, 0.85);
+    border: none;
+    padding: 2%;
+    border-radius: 0.4rem;
+    margin-top: 6%;
+}
+
+div.slide.visible .buttons_log_reg{
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    z-index: 1;
+}
+
+div.slide.visible .buttons_log_reg button {
+    flex: 0 1 auto;
+    min-width: fit-content;
+}
+
+div.slide.visible .buttons_log_reg button{
+    background-color: #0A205A;
+    color: white;
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    font-size: 1.4rem;
+    padding: 1rem;
+    padding-right: 2.5rem;
+    padding-left: 2.5rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+    border: none;
+    border-radius: 0.4rem;
+    z-index: 1;
+}
+
+/*--- Register Page ---*/
+
 div.slide.hidden #registerPage_back{
     display: none;
 }

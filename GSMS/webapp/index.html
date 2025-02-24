@@ -262,14 +262,12 @@
             if (r === true) {
                 gm.getStatus().then((state =>{
                     if(state.status !== ''){
-                        if(state.status === 'saves' || state.status === 'marketHomePage' || state.status === 'profilePage' || state.status === 'stockPage'){
+                        if(state.status === 'marketHomePage' || state.status === 'profilePage'){
+                            loadSave(Number(state.save), state.status)
+                        }else{
                             loadSaves()
-                            if(state.save !== ''){
-                                loadSave(Number(state.save))
-                            }
                         }
-                        toSlide(state.status)
-                    }                    
+                    }               
                 }))
             }
         })

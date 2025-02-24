@@ -192,7 +192,7 @@ function hideLoading() {
 }
 
 // Funzione per caricare uno specifico save
-function loadSave(id) {
+function loadSave(id, slide = 'marketHomePage') {
     showLoading(); // Show the loading div
     setTimeout(() => {
         let save = saveSelection[id]
@@ -204,7 +204,7 @@ function loadSave(id) {
         GameManager.REALSTARTDATE = save.realStartDate.getTime()
         GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 1000 * 24 * 60 * 60 * 365 * GameManager.YEARSHIFT).getTime()
         gm.startGame();
-        toSlide("marketHomePage");
+        toSlide(slide);
         hideLoading(); // Hide the loading div after starting the game
     }, 200);
 }

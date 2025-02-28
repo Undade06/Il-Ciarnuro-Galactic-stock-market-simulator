@@ -1586,7 +1586,7 @@ GameManager.prototype = {
                     let j = JSON.parse(x.responseText)
                     if (j.error === 1) reject(j.msg)
                     else {
-                        resolve({status: j.status, save: j.saveSelected})
+                        resolve({ status: j.status, save: j.saveSelected })
                     }
                 } catch (e) {
                     console.log(e)

@@ -265,12 +265,14 @@
                         if(state.status === 'marketHomePage' || state.status === 'profilePage'){
                             loadSave(Number(state.save), state.status)
                         }else if(state.status === 'stockPage'){
+                            loadSave(Number(state.save), state.status)
                             toSlide('marketHomePage')
                         }else{
                             loadSaves()
                         }
                     }else{
                         toSlide('landingPage')
+                        hideLoading()
                     }
                 }))
             }

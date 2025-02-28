@@ -126,6 +126,8 @@ function loadSaves() {
 
     }, 200)
 
+    hideLoading()
+
 }
 
 // Creazione di un nuovo save
@@ -218,10 +220,6 @@ function removeSave(id) {
     loadSaves();
     //alert(`Salvataggio eliminato!`);
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    loadSaves(); // Carica tutti i salvataggi dalla memoria
-});
 
 //registerPage
 function checkPassword() {

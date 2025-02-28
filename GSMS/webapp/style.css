@@ -865,7 +865,7 @@ div.slide.visible #stockActions{
     width: 100%;
     display: flex;  
     gap: 1rem;
-    margin: 1rem;
+    margin-left: 1rem;
     justify-content: flex-start;
     flex-wrap: wrap;
     margin-right: 25rem;

@@ -790,6 +790,8 @@ GameManager.prototype = {
             this.updateSaveInDB(this.saveSelected, this.player)
         }, GameManager.VALUESPERREALSECONDS * 1000 * 5)
 
+        hideLoading()
+
     },
     /**
      * Synchronize all stocks from passed timestep value making them proceed all together till GameManager.currentNumberValue()
@@ -1792,7 +1794,7 @@ Player.prototype = {
 
         let tempW = stock.value * amountP - stock.commPerOperation - stock.getTaxesCost(amountP)
         if (tempW < 0) throw 'Commissions or taxes exceed stock value'
-        this.wallet = tempW
+        this.wallet += tempW
 
         this.stocks[stock.acronym].amount -= amountP
         if (this.stocks[stock.acronym].amount === 0) delete (this.stocks[stock.acronym])
@@ -1812,7 +1814,7 @@ Player.prototype = {
 
         let tempW = stock.value * this.stocks[stock.acronym].amount - stock.commPerOperation - stock.getTaxesCost(this.stocks[stock.acronym].amount)
         if (tempW < 0) throw 'Commissions or taxes exceed stock value'
-        this.wallet = tempW
+        this.wallet += tempW
 
         delete (this.stocks[stock.acronym])
 

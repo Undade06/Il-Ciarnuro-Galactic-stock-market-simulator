@@ -43,6 +43,7 @@ function toSlide(id) {
         e2.tabIndex = "0";
     });
     //} DA ELIMINARE ALLA FINE
+    gm.updateStatus(id, gm.saveSelected)
 }
 function getCurrentSlide() {
     let s = document.getElementsByClassName("slide visible");
@@ -122,7 +123,6 @@ function loadSaves() {
             newSaveBox.addEventListener("click", createNewSave);
             savesContainer.appendChild(newSaveBox);
         }
-        hideLoading()
 
     }, 200)
 
@@ -205,7 +205,6 @@ function loadSave(id, slide = 'marketHomePage') {
         GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 1000 * 24 * 60 * 60 * 365 * GameManager.YEARSHIFT).getTime()
         gm.startGame();
         toSlide(slide);
-        hideLoading(); // Hide the loading div after starting the game
     }, 200);
 }
 

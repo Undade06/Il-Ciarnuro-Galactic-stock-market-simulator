@@ -251,7 +251,6 @@
     <script src="app.js" type="text/javascript"></script>
     <script src="sw.js" type="text/javascript"></script>
     <script type="text/javascript">
-        toSlide('landingPage')
         gm.loadSavesFromDB().then(r => {
             r.forEach(s => {
                 saveSelection[s.save.saveId] = s
@@ -261,13 +260,18 @@
         gm.checkLoggedIn().then(r => {
             if (r === true) {
                 gm.getStatus().then((state =>{
+                    console.log(state)
                     if(state.status !== ''){
                         if(state.status === 'marketHomePage' || state.status === 'profilePage'){
                             loadSave(Number(state.save), state.status)
+                        }else if(state.status === 'stockPage'){
+                            toSlide('marketHomePage')
                         }else{
                             loadSaves()
                         }
-                    }               
+                    }else{
+                        toSlide('landingPage')
+                    }
                 }))
             }
         })

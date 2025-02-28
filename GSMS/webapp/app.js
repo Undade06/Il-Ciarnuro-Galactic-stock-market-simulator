@@ -537,6 +537,7 @@ function portfolioInfos() {
         let row = document.createElement("tr")
         let name = document.createElement("td")
         name.innerText = "Non possiedi alcuna azione"
+        name.style.whiteSpace='nowrap'
         row.appendChild(name)
         portfolioTable.appendChild(row)
     }

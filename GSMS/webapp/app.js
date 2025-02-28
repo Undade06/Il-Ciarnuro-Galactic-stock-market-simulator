@@ -43,6 +43,7 @@ function toSlide(id) {
         e2.tabIndex = "0";
     });
     //} DA ELIMINARE ALLA FINE
+    gm.updateStatus(id, gm.saveSelected)
 }
 function getCurrentSlide() {
     let s = document.getElementsByClassName("slide visible");
@@ -122,9 +123,10 @@ function loadSaves() {
             newSaveBox.addEventListener("click", createNewSave);
             savesContainer.appendChild(newSaveBox);
         }
-        hideLoading()
 
     }, 200)
+
+    hideLoading()
 
 }
 
@@ -205,7 +207,6 @@ function loadSave(id, slide = 'marketHomePage') {
         GameManager.STARTDATE = new Date(GameManager.REALSTARTDATE + 1000 * 24 * 60 * 60 * 365 * GameManager.YEARSHIFT).getTime()
         gm.startGame();
         toSlide(slide);
-        hideLoading(); // Hide the loading div after starting the game
     }, 200);
 }
 
@@ -219,10 +220,6 @@ function removeSave(id) {
     loadSaves();
     //alert(`Salvataggio eliminato!`);
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    loadSaves(); // Carica tutti i salvataggi dalla memoria
-});
 
 //registerPage
 function checkPassword() {
@@ -540,6 +537,7 @@ function portfolioInfos() {
         let row = document.createElement("tr")
         let name = document.createElement("td")
         name.innerText = "Non possiedi alcuna azione"
+        name.style.whiteSpace='nowrap'
         row.appendChild(name)
         portfolioTable.appendChild(row)
     }

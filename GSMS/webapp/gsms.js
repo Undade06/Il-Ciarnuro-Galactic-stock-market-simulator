@@ -786,7 +786,8 @@ GameManager.prototype = {
 
         }
 
-        setInterval(() => {
+        let updater = setInterval(() => {
+            if(this.saveSelected === undefined) clearInterval(updater)
             this.updateSaveInDB(this.saveSelected, this.player)
         }, GameManager.VALUESPERREALSECONDS * 1000 * 5)
 
@@ -1430,6 +1431,7 @@ GameManager.prototype = {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) throw alert("Server error: " + j.msg)
                 if (j.error === 0) {
+                    gm.saveSelected = undefined
                     toSlide('landingPage')
                     saveSelection = []
                 }
@@ -1465,7 +1467,8 @@ GameManager.prototype = {
                                         lastAccess: new Date(s.lastAccess),
                                         realStartDate: new Date(s.realStartDate),
                                         ownedStocks: JSON.parse(s.ownedStocks),
-                                        budget: Number(s.budget)
+                                        budget: Number(s.budget),
+                                        available: s.used === '0'
                                     }
                                 })
                         })

@@ -42,7 +42,6 @@ function toSlide(id) {
     d.querySelectorAll("*").forEach(function (e2) {
         e2.tabIndex = "0";
     });
-    //} DA ELIMINARE ALLA FINE
     gm.updateStatus(id, gm.saveSelected)
 }
 function getCurrentSlide() {
@@ -153,7 +152,8 @@ function createNewSave() {
                     lastAccess: new Date(GameManager.gameTimer()),
                     realStartDate: new Date(),
                     ownedStocks: {},
-                    budget: Player.startMoney
+                    budget: Player.startMoney,
+                    available: true
                 };
 
                 saveSelection.push(newSave);
@@ -195,10 +195,11 @@ function hideLoading() {
 
 // Funzione per caricare uno specifico save
 function loadSave(id, slide = 'marketHomePage') {
+    let save = saveSelection[id]
+    if (save === undefined) throw 'Undefined save'
+    if(!save.available) throw 'Selected save is already in use'
     showLoading(); // Show the loading div
     setTimeout(() => {
-        let save = saveSelection[id]
-        if (save === undefined) throw 'Undefined save'
         gm.saveSelected = id
         gm.lastAccess = save.lastAccess.getTime()
         gm.player.wallet = save.budget

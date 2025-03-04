@@ -115,7 +115,7 @@
                     
                     $saves=[];
                     while($save=$q->fetch_array()){
-                        $tempS=["idSave"=>$save["idSave"], "budget"=>$save["budget"], "lastAccess"=>$save["lastAccess"], "ownedStocks"=>$save["ownedStocks"], "saveSeeds"=>$save["saveSeeds"], "realStartDate"=>$save["realStartDate"]];
+                        $tempS=["idSave"=>$save["idSave"], "budget"=>$save["budget"], "lastAccess"=>$save["lastAccess"], "ownedStocks"=>$save["ownedStocks"], "saveSeeds"=>$save["saveSeeds"], "realStartDate"=>$save["realStartDate"], "used"=>$save["used"]];
                         array_push($saves, $tempS);
                     }
 
@@ -192,6 +192,7 @@
         Function to set the used field in database considering current session user and lasta save
     */
     function setUsed($conn, $used){
+        if(!isset($used) || $used === "") return;
         $q = $conn->prepare("UPDATE save SET used = ? WHERE idPlayer = (SELECT id FROM player WHERE username = ?) AND idSave = ?");
         $q->bind_param("isi", $used, $_SESSION["user_id"], $_SESSION["lastSave"]);
         $q->execute();

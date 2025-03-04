@@ -2,5 +2,5 @@
     $db_hostname="localhost";
     $db_username="root";
     $db_password="";
-    $db_name="gsmsdb2";
+    $db_name="gsmsdb";
 ?>

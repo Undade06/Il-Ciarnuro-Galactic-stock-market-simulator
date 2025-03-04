@@ -183,6 +183,42 @@ div.slide.hidden button{
     display: none;
 }
 
+/*--- Popup ---*/
+
+#popup{
+    position: absolute;
+    top: 20%;
+    left: 33%;
+    width: 30vw;
+    height: 40vh;
+    border: solid 0.3rem rgba(11, 21, 59, 0.85);
+    border-radius: 2rem;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    padding: 2rem;
+    z-index: 9999;
+}
+
+#popup_buttons{
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+
+#popup button{
+    background-color: #0A205A;
+    color: white;
+    font-size: 2rem;
+    font-family: 'noto sans', sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 1rem;
+    text-align: center;
+    padding: 0.5rem;
+    height: 4rem;
+    width: auto;
+}
+
 /*--- rotation animation ---*/
 
 @keyframes rotate {

@@ -68,6 +68,7 @@
                     }
                 } break;
                 case "logout":{
+                    setUsed($conn, 0);
                     session_unset();
                     setcookie("PHPSESSID", "",0, "/");
                     $ret = ["error" => 0, "msg" => "Logged out successfully"];
@@ -146,7 +147,7 @@
                 } break;
                 case "updateStatus":{
 
-                    if(!isset($_SESSION["user_id"])){    
+                    if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] === ""){    
                         $ret = ["error" => 1, "msg" => "Not logged in"];
                         break;
                     }
@@ -158,6 +159,7 @@
 
                     $_SESSION["status"] = $_POST["status"];
                     $_SESSION["lastSave"] = $_POST["saveSelected"];
+                    setUsed($conn, 1);
 
                     $ret=["error"=>0, "msg"=>"Status updated successfully"];
                 } break;
@@ -185,5 +187,15 @@
     }
 
     echo json_encode($ret);
+
+    /*
+        Function to set the used field in database considering current session user and lasta save
+    */
+    function setUsed($conn, $used){
+        $q = $conn->prepare("UPDATE save SET used = ? WHERE idPlayer = (SELECT id FROM player WHERE username = ?) AND idSave = ?");
+        $q->bind_param("isi", $used, $_SESSION["user_id"], $_SESSION["lastSave"]);
+        $q->execute();
+        $q->close();
+    }
     
 ?>

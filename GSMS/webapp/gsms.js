@@ -1560,7 +1560,7 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error === 1) alert("Server error: " + j.msg)
+                if (j.error === 1) console.log("Server error: " + j.msg)
                 else console.log('Status updated successfully')
             } catch (e) {
                 console.log(e)

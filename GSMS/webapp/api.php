@@ -177,6 +177,26 @@
 
                     $ret=["error"=>0, "msg"=>"Got status successfully", "status"=>$_SESSION["status"], "saveSelected"=>$_SESSION["lastSave"]];
                 } break;
+                case "unlockSave":{                     // Just for development purpose, to be removed
+
+                    if(!isset($_SESSION["user_id"])){    
+                        $ret = ["error" => 1, "msg" => "Not logged in"];
+                        break;
+                    }
+
+                    if(!isset($_GET["idSave"])){
+                        $ret = ["error" => 1, "msg" => "Save not set"];
+                        break;
+                    }
+
+                    $q = $conn->prepare("UPDATE save SET used = 0 WHERE idPlayer = (SELECT id FROM player WHERE username = ?) AND idSave = ?");
+                    $q->bind_param("si", $_SESSION["user_id"], $_GET["idSave"]);
+                    $q->execute();
+
+                    $q->close();
+
+                    $ret=["error"=>0, "msg"=>"Save unlocked successfully"];
+                } break;
                 default:{
                     $ret=["error"=>1, "msg"=>"Undefined operation"];
                 } break;

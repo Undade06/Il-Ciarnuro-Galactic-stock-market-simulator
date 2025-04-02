@@ -1612,7 +1612,11 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                console.log(j.msg)
+                if (j.error == 1) throw alert("Server error: " + j.msg)
+                else {
+                    saveSelection[idSave].available = true
+                    console.log(j.msg)
+                }
             } catch (e) {
                 console.log(e)
             }

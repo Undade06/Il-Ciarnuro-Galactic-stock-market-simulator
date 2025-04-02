@@ -184,7 +184,7 @@
                         break;
                     }
 
-                    if(!isset($_GET["idSave"])){
+                    if(!isset($_GET["idSave"]) || $_GET["idSave"] > 2){
                         $ret = ["error" => 1, "msg" => "Save not set"];
                         break;
                     }
@@ -209,7 +209,7 @@
     echo json_encode($ret);
 
     /*
-        Function to set the used field in database considering current session user and lasta save
+        Function to set the used field in database considering current session user and last save
     */
     function setUsed($conn, $used){
         if(!isset($used) || $used === "") return;

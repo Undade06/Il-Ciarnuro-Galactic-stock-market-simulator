@@ -1468,7 +1468,7 @@ GameManager.prototype = {
                                         realStartDate: new Date(s.realStartDate),
                                         ownedStocks: JSON.parse(s.ownedStocks),
                                         budget: Number(s.budget),
-                                        available: s.used === '0'
+                                        available: s.used == '0'
                                     }
                                 })
                         })

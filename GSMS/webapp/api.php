@@ -111,10 +111,16 @@
                         break;
                     }
 
-                    $q = $conn->query("SELECT * FROM save WHERE idPlayer = (SELECT id FROM player WHERE username = \"".$_SESSION["user_id"]."\")");
+                    $q = $conn->prepare("SELECT * FROM save WHERE idPlayer = (SELECT id FROM player WHERE username = ?)");
+                    $q->bind_param("s", $_SESSION["user_id"]);
+                    $q->execute();
+                    $q = $q->get_result();
                     
                     $saves=[];
                     while($save=$q->fetch_array()){
+                        if($_SESSION["lastSave"] == $save["idSave"]){
+                            $save["used"] = 0;
+                        }
                         $tempS=["idSave"=>$save["idSave"], "budget"=>$save["budget"], "lastAccess"=>$save["lastAccess"], "ownedStocks"=>$save["ownedStocks"], "saveSeeds"=>$save["saveSeeds"], "realStartDate"=>$save["realStartDate"], "used"=>$save["used"]];
                         array_push($saves, $tempS);
                     }

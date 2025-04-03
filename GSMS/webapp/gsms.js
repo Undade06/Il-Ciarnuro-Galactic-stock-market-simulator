@@ -729,8 +729,13 @@ GameManager.prototype = {
 
         }
 
-        setInterval(() => {
+        // Separated from other updates due to its higher execution weight
+        let syst = setInterval(() => {
 
+            if (this.saveSelected === undefined) {
+                clearInterval(syst)
+                return
+            }
             try {
                 this._syncStocks(lastTimeUpdated)
             } catch (error) {
@@ -742,15 +747,9 @@ GameManager.prototype = {
 
         this.updateBestStock()
         selectButton('bestButtons', '1dB', 1)
-        setInterval(() => { this.updateBestStock() }, GameManager.VALUESPERREALSECONDS * 1000)
 
         let date = new Date(GameManager.gameTimer())
         document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
-        setInterval(() => {
-            date = new Date(GameManager.gameTimer())
-            document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
-            document.getElementById('my_balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
-        }, GameManager.VALUESPERREALSECONDS * 1000)
 
         document.getElementById('my_balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
         document.getElementById('profileName').innerText = 'Nome: ' + this.player.name
@@ -758,12 +757,6 @@ GameManager.prototype = {
         document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
         document.getElementById('balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
         document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr'
-
-        setInterval(() => {
-            document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
-            document.getElementById('balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
-            document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr'
-        }, GameManager.VALUESPERREALSECONDS * 1000)
 
         risesAndFalls()
         portfolioInfos()
@@ -787,7 +780,24 @@ GameManager.prototype = {
         }
 
         let updater = setInterval(() => {
-            if (this.saveSelected === undefined) clearInterval(updater)
+            if (this.saveSelected === undefined) {
+                clearInterval(updater)
+                return
+            }
+            this.updateBestStock()
+            date = new Date(GameManager.gameTimer())
+            document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
+            document.getElementById('my_balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
+            document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
+            document.getElementById('balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
+            document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr'
+        }, GameManager.VALUESPERREALSECONDS * 1000)
+
+        let saveUpdater = setInterval(() => {
+            if (this.saveSelected === undefined) {
+                clearInterval(saveUpdater)
+                return
+            }
             this.updateSaveInDB(this.saveSelected, this.player)
         }, GameManager.VALUESPERREALSECONDS * 1000 * 5)
 
@@ -1105,7 +1115,10 @@ GameManager.prototype = {
 
             document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
             let lastS = this.stock, t = setInterval(() => {
-                if (lastS !== this.stock) clearInterval(t)
+                if (lastS !== this.stock || this.saveSelected === undefined){
+                    clearInterval(t)
+                    return
+                }
                 if (lastS.nextDividendsDate().getTime() === GameManager.gameTimer()) document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
             }, GameManager.VALUESPERREALSECONDS * 1000)
             document.getElementById('dividendsPerc').innerText = (this.stock.dividendsPercentage * 100).toFixed(2) + '%'
@@ -1170,7 +1183,12 @@ GameManager.prototype = {
         }
 
         this.setGraph(this.stock.acronym, this.stockTimeSpan, 'stock_graf')
-        setInterval(() => {
+        let stUpd = setInterval(() => {
+
+            if (this.saveSelected === undefined) {
+                clearInterval(stUpd)
+                return
+            }
 
             document.getElementById('singleStockValue').innerText = this.stock.value.toFixed(3) + ' Kr'
             trend = this.stock.getDailyTrend()
@@ -1301,6 +1319,11 @@ GameManager.prototype = {
         }
 
         g.idUpdatingFunction = setInterval(() => {
+
+            if (this.saveSelected === undefined) {
+                clearInterval(g.idUpdatingFunction)
+                return
+            }
 
             if (counter % timeSpan === 0) {
 

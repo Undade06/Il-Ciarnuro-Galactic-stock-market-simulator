@@ -352,7 +352,11 @@ function risesAndFalls() {
     falling.appendChild(fallingTable)
 
     // Future updates
-    setTimeout(() => {
+    let raf = setTimeout(() => {
+        if (gm.saveSelected === undefined) {
+            clearInterval(raf)
+            return
+        }
         risesAndFalls()
     }, GameManager.VALUESPERREALSECONDS * 1000)
 }

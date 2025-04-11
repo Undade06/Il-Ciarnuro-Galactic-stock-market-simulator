@@ -4,6 +4,8 @@
 
     session_start();
 
+    $maxMinuteDelay = 30;        // Minutes of not updating for a save to be considered available
+
     if (!isset($_SESSION["user_id"])) {
         $_SESSION["user_id"] = "";
         $_SESSION["status"] = "";
@@ -30,7 +32,7 @@
                     if(isset($_POST["username"]) && isset($_POST["password"])){ 
                         $username = $_POST["username"];
                         $password = hash("sha256", $_POST["password"]);
-                        $q = $conn->prepare("SELECT passwordHash from player WHERE username = ? AND passwordHash = ?");
+                        $q = $conn->prepare("SELECT passwordHash FROM player WHERE username = ? AND passwordHash = ?");
                         $q->bind_param("ss", $username, $password);
                         $q->execute();
                         $result = $q->get_result();
@@ -48,7 +50,7 @@
                         $username = $_POST["username"];
                         $password = hash("sha256", $_POST["password"]);
                         $email = $_POST["email"];
-                        $q = $conn->prepare("SELECT username from player WHERE username = ?");
+                        $q = $conn->prepare("SELECT username FROM player WHERE username = ?");
                         $q->bind_param("s", $_POST["username"]);
                         $q->execute();
                         $result = $q->get_result();
@@ -68,9 +70,8 @@
                     }
                 } break;
                 case "logout":{
-                    setUsed($conn, 0);
                     session_unset();
-                    setcookie("PHPSESSID", "",0, "/");
+                    setcookie("PHPSESSID", "", 0, "/");
                     $ret = ["error" => 0, "msg" => "Logged out successfully"];
                 } break;
                 case "createSave":{
@@ -85,9 +86,9 @@
                         $ret = ["error" => 1, "msg" => "Missing field/s or not logged in"];
                         break;
                     }
-                    $q = $conn->prepare("INSERT INTO save (idPlayer, idSave, budget, lastAccess, saveSeeds, ownedStocks, realStartDate) 
-                                        VALUES ((select id from player where username = ?), ?, ?, ?, ?, ?, ?)");
-                    $q->bind_param("sidssss", $_SESSION["user_id"], $idSave, $budget, $lastA, $saveS, $ownS, $rsd);
+                    $q = $conn->prepare("INSERT INTO save (idPlayer, idSave, budget, lastAccess, saveSeeds, ownedStocks, realStartDate, realLastAccess) 
+                                        VALUES ((SELECT id FROM player WHERE username = ?), ?, ?, ?, ?, ?, ?, DATE_ADD(NOW(), INTERVAL -? * 2 MINUTE))");   // just to be sure
+                    $q->bind_param("sidssssi", $_SESSION["user_id"], $idSave, $budget, $lastA, $saveS, $ownS, $rsd, $maxMinuteDelay);
                     $q->execute();
                     $ret = ["error" => 0, "msg" => "Save created successfully"];
                     $q->close();
@@ -99,7 +100,7 @@
                         $ret = ["error" => 1, "msg" => "Missing field/s"];
                         break;
                     }
-                    $q = $conn->prepare("DELETE FROM save WHERE idSave = ? AND idPlayer = (select id from player where username = ?)");
+                    $q = $conn->prepare("DELETE FROM save WHERE idSave = ? AND idPlayer = (SELECT id FROM player WHERE username = ?)");
                     $q->bind_param("ss", $idSave, $_SESSION["user_id"]);
                     $q->execute();
                     $ret = ["error" => 0, "msg" => "Save deleted successfully"];
@@ -118,8 +119,12 @@
                     
                     $saves=[];
                     while($save=$q->fetch_array()){
-                        if($_SESSION["lastSave"] == $save["idSave"]){
+                        $now = new DateTime();
+                        $lastAccess = new DateTime($save["realLastAccess"]);
+                        if($now->diff($lastAccess)->i > $maxMinuteDelay || $_SESSION["lastSave"] == $save["idSave"]){
                             $save["used"] = 0;
+                        }else{
+                            $save["used"] = 1;
                         }
                         $tempS=["idSave"=>$save["idSave"], "budget"=>$save["budget"], "lastAccess"=>$save["lastAccess"], "ownedStocks"=>$save["ownedStocks"], "saveSeeds"=>$save["saveSeeds"], "realStartDate"=>$save["realStartDate"], "used"=>$save["used"]];
                         array_push($saves, $tempS);
@@ -165,9 +170,14 @@
 
                     $_SESSION["status"] = $_POST["status"];
                     $_SESSION["lastSave"] = $_POST["saveSelected"];
-                    setUsed($conn, 1);
+                    
+                    $now = date("Y-m-d H:i:s");
+                    $q = $conn->prepare("UPDATE save SET realLastAccess = ? WHERE idPlayer = (SELECT id FROM player WHERE username = ?) AND idSave = ?");
+                    $q->bind_param("ssi", $now, $_SESSION["user_id"], $_SESSION["lastSave"]);
+                    $q->execute();
+                    $q->close();
 
-                    $ret=["error"=>0, "msg"=>"Status updated successfully"];
+                    $ret=["error" => 0, "msg" => "Status updated successfully"];
                 } break;
                 case "getStatus":{
 
@@ -181,7 +191,7 @@
                         break;
                     }
 
-                    $ret=["error"=>0, "msg"=>"Got status successfully", "status"=>$_SESSION["status"], "saveSelected"=>$_SESSION["lastSave"]];
+                    $ret=["error" => 0, "msg" => "Got status successfully", "status" => $_SESSION["status"], "saveSelected" => $_SESSION["lastSave"]];
                 } break;
                 case "unlockSave":{                     // Just for development purpose, to be removed
 
@@ -201,28 +211,17 @@
 
                     $q->close();
 
-                    $ret=["error"=>0, "msg"=>"Save unlocked successfully"];
+                    $ret=["error" => 0, "msg" => "Save unlocked successfully"];
                 } break;
                 default:{
-                    $ret=["error"=>1, "msg"=>"Undefined operation"];
+                    $ret=["error" => 1, "msg" => "Undefined operation"];
                 } break;
             }
         }
     }catch(Exception $e){
-        $ret=["error"=>1, "msg"=>"Error: ".$e->getMessage()];
+        $ret=["error" => 1, "msg" => "Error: ".$e->getMessage()];
     }
 
     echo json_encode($ret);
-
-    /*
-        Function to set the used field in database considering current session user and last save
-    */
-    function setUsed($conn, $used){
-        if(!isset($used) || $used === "") return;
-        $q = $conn->prepare("UPDATE save SET used = ? WHERE idPlayer = (SELECT id FROM player WHERE username = ?) AND idSave = ?");
-        $q->bind_param("isi", $used, $_SESSION["user_id"], $_SESSION["lastSave"]);
-        $q->execute();
-        $q->close();
-    }
     
 ?>

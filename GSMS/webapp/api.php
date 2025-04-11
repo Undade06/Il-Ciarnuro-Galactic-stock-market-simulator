@@ -4,7 +4,7 @@
 
     session_start();
 
-    $maxMinuteDelay = 30;        // Minutes of not updating for a save to be considered available
+    $maxMinuteDelay = 5;        // Minutes of not updating for a save to be considered available
 
     if (!isset($_SESSION["user_id"])) {
         $_SESSION["user_id"] = "";
@@ -72,6 +72,11 @@
                 case "logout":{
                     session_unset();
                     setcookie("PHPSESSID", "", 0, "/");
+                    // workaround to let the save be available
+                    $q = $conn->prepare("UPDATE save SET realLastAccess = DATE_ADD(NOW(), INTERVAL -? -1 MINUTE) WHERE idPlayer = (SELECT id FROM player WHERE username = ?) AND idSave = ?");
+                    $q->bind_param("isi", $maxMinuteDelay, $_SESSION["user_id"], $_GET["idSave"]);
+                    $q->execute();
+                    $q->close();
                     $ret = ["error" => 0, "msg" => "Logged out successfully"];
                 } break;
                 case "createSave":{
@@ -121,7 +126,7 @@
                     while($save=$q->fetch_array()){
                         $now = new DateTime();
                         $lastAccess = new DateTime($save["realLastAccess"]);
-                        if($now->diff($lastAccess)->i > $maxMinuteDelay || $_SESSION["lastSave"] == $save["idSave"]){
+                        if($now->getTimestamp() - $lastAccess->getTimestamp() > $maxMinuteDelay * 60 || $_SESSION["lastSave"] == $save["idSave"]){
                             $save["used"] = 0;
                         }else{
                             $save["used"] = 1;
@@ -192,26 +197,6 @@
                     }
 
                     $ret=["error" => 0, "msg" => "Got status successfully", "status" => $_SESSION["status"], "saveSelected" => $_SESSION["lastSave"]];
-                } break;
-                case "unlockSave":{                     // Just for development purpose, to be removed
-
-                    if(!isset($_SESSION["user_id"])){    
-                        $ret = ["error" => 1, "msg" => "Not logged in"];
-                        break;
-                    }
-
-                    if(!isset($_GET["idSave"]) || $_GET["idSave"] > 2){
-                        $ret = ["error" => 1, "msg" => "Save not set"];
-                        break;
-                    }
-
-                    $q = $conn->prepare("UPDATE save SET used = 0 WHERE idPlayer = (SELECT id FROM player WHERE username = ?) AND idSave = ?");
-                    $q->bind_param("si", $_SESSION["user_id"], $_GET["idSave"]);
-                    $q->execute();
-
-                    $q->close();
-
-                    $ret=["error" => 0, "msg" => "Save unlocked successfully"];
                 } break;
                 default:{
                     $ret=["error" => 1, "msg" => "Undefined operation"];

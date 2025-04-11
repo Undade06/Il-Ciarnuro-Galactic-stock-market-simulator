@@ -1628,29 +1628,6 @@ GameManager.prototype = {
             x.send()
 
         })
-    },
-    unlockSave: function (idSave) {               // Just for development purpose, to be removed
-
-        let x = new XMLHttpRequest()
-        x.onload = function () {
-            try {
-                let j = JSON.parse(x.responseText)
-                if (j.error == 1) throw alert("Server error: " + j.msg)
-                else {
-                    saveSelection[idSave].available = true
-                    console.log(j.msg)
-                }
-            } catch (e) {
-                console.log(e)
-            }
-        }
-        x.onerror = function () {
-            alert('Server error')
-        }
-
-        x.open('GET', 'api.php?op=unlockSave&idSave=' + idSave)
-        x.send()
-
     }
 }
 

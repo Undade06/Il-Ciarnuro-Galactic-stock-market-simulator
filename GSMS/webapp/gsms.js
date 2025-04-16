@@ -1115,7 +1115,7 @@ GameManager.prototype = {
 
             document.getElementById('nextDividendsDate').innerText = this.stock.nextDividendsDate().getFullYear() + '-' + numberTo2Digits(this.stock.nextDividendsDate().getMonth() + 1) + '-' + this.stock.nextDividendsDate().getDate()
             let lastS = this.stock, t = setInterval(() => {
-                if (lastS !== this.stock || this.saveSelected === undefined){
+                if (lastS !== this.stock || this.saveSelected === undefined) {
                     clearInterval(t)
                     return
                 }
@@ -1628,6 +1628,36 @@ GameManager.prototype = {
             x.send()
 
         })
+    },
+    requestToken: function (username) {
+
+        let x = new XMLHttpRequest()
+
+        x.open('GET', 'api.php?op=requestToken&username=' + encodeURIComponent(username))
+        x.send()
+
+    },
+    verifyToken: function (token) {
+
+        let x = new XMLHttpRequest()
+
+        let params = 'token=' + encodeURIComponent(token)
+
+        x.open('POST', 'api.php?op=verifyToken')
+        x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        x.send(params)
+
+    },
+    changePassword: function (passw) {
+
+        let x = new XMLHttpRequest()
+
+        let params = 'password=' + encodeURIComponent(passw)
+
+        x.open('POST', 'api.php?op=changePassword')
+        x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        x.send(params)
+
     }
 }
 

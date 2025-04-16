@@ -5,11 +5,13 @@
     session_start();
 
     $maxMinuteDelay = 5;        // Minutes of not updating for a save to be considered available
+    $maxTokenHours = 24;        // Hours of validity of a token
 
     if (!isset($_SESSION["user_id"])) {
         $_SESSION["user_id"] = "";
         $_SESSION["status"] = "";
         $_SESSION["lastSave"] = "";
+        $_SESSION["token"] = "";
     }
 
     try{
@@ -197,6 +199,91 @@
                     }
 
                     $ret=["error" => 0, "msg" => "Got status successfully", "status" => $_SESSION["status"], "saveSelected" => $_SESSION["lastSave"]];
+                } break;
+                case "requestToken":{
+
+                    if(!isset($_GET["username"])){
+                        $ret = ["error" => 1, "msg" => "Username not valid"];
+                        break;
+                    }
+
+                    $q = $conn->prepare("SELECT email FROM player WHERE username = ?");
+                    $q->bind_param("s", $_GET["username"]);
+                    $q->execute();
+                    $result = $q->get_result();
+                    if($result->num_rows < 1) {
+                        $ret = ["error" => 1, "msg" => "Username not found"];
+                        break;
+                    }
+                    while($r=$result->fetch_array()){
+                        $email = $r["email"];
+                    }
+
+                    $token = bin2hex(random_bytes(16));
+                    $expires = new DateTime();
+                    $expires->modify('+'.$maxTokenHours.' hours');
+
+                    $q=$conn->query("UPDATE player SET token = '".$token."', tokenExpires = DATE_ADD(NOW(), INTERVAL 1 DAY) WHERE email = '".$email."'");
+
+                    $to = $email;
+                    $subject = "Il Ciarnuro: GSMS - Reimposta password";
+                    $txt = "In questa email troverai un token da inserire nel riquadro apposito per procedere al cambiamento della password.\n
+                    Il token è valido per un singolo cambio di password fino a data(anno-mese-giorno) ".$expires->format('Y-m-d')." alle ore ".$expires->format('H:i')."\n
+                    \nNon condividere con nessuno il seguente codice:
+                    \nToken:\t".$token."
+                    \n\nQuesto messaggio è stato inviato automaticamente, per favore non rispondere.";
+                    $headers = "From: gcf5ia.lupopasinigames.com";
+
+                    $r = mail($to, $subject, $txt, $headers);
+                    $rr = 0;
+                    if(!$r){
+                        $rr = 1; 
+                    }
+
+                    $ret = ["error" => $rr, "msg" => "Email sent"];
+
+                } break;
+                case "verifyToken":{
+
+                    if(!isset($_POST["token"])){
+                        $ret = ["error" => 1, "msg" => "Token not valid"];
+                        break;
+                    }
+
+                    $q = $conn->prepare("SELECT * FROM player WHERE token = ? AND tokenExpires > NOW()");
+                    $q->bind_param("s", $_POST["token"]);
+                    $q->execute();
+                    $result = $q->get_result();
+                    if($result->num_rows > 0) {
+                        $ret = ["error" => 0, "msg" => "The token is valid"];
+                        $_SESSION["token"] = $_POST["token"];
+                    }else{
+                        $ret = ["error" => 1, "msg" => "Token not found or expired"];
+                    }
+                    $q->close();
+
+                } break;
+                case "changePassword":{
+
+                    if(!isset($_POST["password"])){
+                        $ret = ["error" => 1, "msg" => "Password not valid"];
+                        break;
+                    }
+
+                    if(!isset($_SESSION["token"]) || $_SESSION["token"] === ""){            // isset() func is pretty unreliable
+                        $ret = ["error" => 1, "msg" => "Invalid token"];
+                        break;
+                    }
+
+                    $password = hash("sha256", $_POST["password"]);
+
+                    $q = $conn->prepare("UPDATE player SET passwordHash = ?, token = NULL, tokenExpires = NULL WHERE token = ?");
+                    $q->bind_param("ss", $password, $_SESSION["token"]);
+                    $q->execute();
+                    $q->close();
+                    $_SESSION["token"] = "";
+
+                    $ret = ["error" => 0, "msg" => "Password changed successfully"];
                 } break;
                 default:{
                     $ret=["error" => 1, "msg" => "Undefined operation"];

@@ -553,4 +553,13 @@ function portfolioInfos() {
         portfolioInfos()
     }, GameManager.VALUESPERREALSECONDS * 1000)
 
+    function showPopup(id)    {
+        if (id === "buyButton"){
+
+        }else if (id === "sellButton"){
+
+        }else if (id === "all_in"){
+            
+        }
+    }
 }

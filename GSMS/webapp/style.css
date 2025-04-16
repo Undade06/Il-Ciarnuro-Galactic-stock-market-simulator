@@ -199,6 +199,16 @@ div.slide.hidden button{
     z-index: 9999;
 }
 
+#popup #purchase_info{
+    display: block;
+    width: 95%;
+    height: auto;
+    font-style: 'noto sans',sans-serif;
+    font-size: 1.5rem;
+    color: white;
+    padding: 0.5rem;
+}
+
 #popup_buttons{
     display: flex;
     justify-content: center;

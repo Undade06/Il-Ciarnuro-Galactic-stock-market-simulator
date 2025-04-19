@@ -1633,6 +1633,19 @@ GameManager.prototype = {
 
         let x = new XMLHttpRequest()
 
+        x.onload = function () {
+            try {
+                let j = JSON.parse(x.responseText)
+                if (j.error === 1) console.log("Server error: " + j.msg)
+                else console.log('Token sent successfully')
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        x.onerror = function () {
+            alert('Server error')
+        }
+
         x.open('GET', 'api.php?op=requestToken&username=' + encodeURIComponent(username))
         x.send()
 
@@ -1640,6 +1653,19 @@ GameManager.prototype = {
     verifyToken: function (token) {
 
         let x = new XMLHttpRequest()
+
+        x.onload = function () {
+            try {
+                let j = JSON.parse(x.responseText)
+                if (j.error === 1) console.log("Server error: " + j.msg)
+                else console.log('Token verified')
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        x.onerror = function () {
+            alert('Server error')
+        }
 
         let params = 'token=' + encodeURIComponent(token)
 
@@ -1651,6 +1677,19 @@ GameManager.prototype = {
     changePassword: function (passw) {
 
         let x = new XMLHttpRequest()
+
+        x.onload = function () {
+            try {
+                let j = JSON.parse(x.responseText)
+                if (j.error === 1) console.log("Server error: " + j.msg)
+                else alert('Password updated successfully')
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        x.onerror = function () {
+            alert('Server error')
+        }
 
         let params = 'password=' + encodeURIComponent(passw)
 

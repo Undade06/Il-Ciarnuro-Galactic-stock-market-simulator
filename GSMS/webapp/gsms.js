@@ -911,7 +911,22 @@ GameManager.prototype = {
         if (stock === undefined || amount === undefined) throw 'Undefined parameters'
         if (amount === 0) return
 
-        document.getElementById('purchase_info').innerText = 'Valore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + amount + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: -' + ((stock.value * amount + stock.commPerOperation)).toFixed(3) + ' Kr'
+        document.getElementById('confirm').disabled = false
+
+        let a = amount
+        if (a === -1) {
+            a = Math.floor(this.player.wallet / stock.value)
+            while (stock.value * a + stock.commPerOperation > this.player.wallet) a--
+        }
+
+        let info = document.getElementById('purchase_info').innerText = 'Valore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: -' + ((stock.value * a + stock.commPerOperation)).toFixed(3) + ' Kr'
+        
+        if (a === 0 || stock.value * a + stock.commPerOperation > this.player.wallet) {
+            info += '\nNon hai abbastanza soldi!'
+            document.getElementById('confirm').disabled = true
+        }
+        
+        document.getElementById('purchase_info').innerText = info
         showDisplay('popup')
 
         document.getElementById('confirm').onclick = () => {
@@ -949,11 +964,29 @@ GameManager.prototype = {
         if (stock === undefined || amount === undefined) throw 'Undefined parameters'
         if (amount === 0) return
 
+        document.getElementById('confirm').disabled = false
+
         let a = amount
         if (a === -1) {
             a = this.player.stocks[stock.acronym].amount
         }
-        document.getElementById('purchase_info').innerText = 'Valore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTasse: ' + stock.getTaxesCost(a).toFixed(3) + ' Kr\nTotale: +' + ((stock.value * a - stock.commPerOperation - stock.getTaxesCost(a))).toFixed(3) + ' Kr'
+
+        let info = 'Valore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTasse: ' + stock.getTaxesCost(a).toFixed(3) + ' Kr\nTotale: +' + ((stock.value * a - stock.commPerOperation - stock.getTaxesCost(a))).toFixed(3) + ' Kr'
+        
+        if (this.player.stocks[stock.acronym] === undefined) {
+            info = 'Non possiedi questa azione!'
+            document.getElementById('confirm').disabled = true
+        }
+        if (a > this.player.stocks[stock.acronym].amount){
+            info = 'Non hai così tante azioni!\nPossiedi: ' + this.player.stocks[stock.acronym].amount + ' azioni'
+            document.getElementById('confirm').disabled = true
+        }
+        if (stock.value * a - stock.commPerOperation - stock.getTaxesCost(a) < 0){
+            info += '\nNon puoi vendere così poche azioni!'
+            document.getElementById('confirm').disabled = true
+        }
+
+        document.getElementById('purchase_info').innerText = info
         showDisplay('popup')
 
         document.getElementById('confirm').onclick = () => {

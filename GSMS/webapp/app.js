@@ -43,6 +43,7 @@ function toSlide(id) {
         e2.tabIndex = "0";
     });
     gm.updateStatus(id, gm.saveSelected)
+    hideDisplay('popup')
 }
 function getCurrentSlide() {
     let s = document.getElementsByClassName("slide visible");

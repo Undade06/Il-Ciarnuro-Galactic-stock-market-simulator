@@ -252,7 +252,7 @@
 
             </div>
             <div id="popup_buttons">
-                <button id="cancel">Annulla</button>
+                <button id="cancel" onclick="hideDisplay('popup'); document.getElementById('confirm').onclick = () => {/* just to be sure*/}">Annulla</button>
                 <button id="confirm">Conferma</button>
             </div>
         </div>

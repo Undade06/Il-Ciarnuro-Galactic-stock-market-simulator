@@ -911,21 +911,28 @@ GameManager.prototype = {
         if (stock === undefined || amount === undefined) throw 'Undefined parameters'
         if (amount === 0) return
 
-        try {
+        document.getElementById('purchase_info').innerText = 'Valore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + amount + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: -' + ((stock.value * amount + stock.commPerOperation)).toFixed(3) + ' Kr'
+        showDisplay('popup')
 
-            if (amount === -1) this.player.allIn(stock)
-            else this.player.buy(stock, amount)
-            alert('Pagamento effettuato.\nValore azione: ' + (this.player.stocks[stock.acronym].purchaseValue).toFixed(3) + ' Kr\nQuantità: ' + this.player.stocks[stock.acronym].amount + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: -' + ((this.player.stocks[stock.acronym].purchaseValue * this.player.stocks[stock.acronym].amount + stock.commPerOperation)).toFixed(3) + ' Kr')
+        document.getElementById('confirm').onclick = () => {
+            try {
 
-            this.updateSaveInDB(this.saveSelected, this.player)
-        } catch (error) {
-            alert('Non hai abbastanza soldi!\nBilancio corrente: ' + this.player.wallet.toFixed(2) + ' Kr')
-        }
+                if (amount === -1) this.player.allIn(stock)
+                else this.player.buy(stock, amount)
 
-        try {
-            this.setDividendsPayment(stock.acronym)
-        } catch (error) {
-            console.log(stock.name + ' ' + error)
+                this.updateSaveInDB(this.saveSelected, this.player)
+                hideDisplay('popup')
+            } catch (error) {
+                console.log(stock.name + ': ' + error)
+                alert('Non hai abbastanza soldi!\nBilancio corrente: ' + this.player.wallet.toFixed(2) + ' Kr')
+            }
+
+            try {
+                this.setDividendsPayment(stock.acronym)
+            } catch (error) {
+                console.log(stock.name + ': ' + error)
+            }
+            hideDisplay('popup')
         }
 
     },
@@ -942,28 +949,29 @@ GameManager.prototype = {
         if (stock === undefined || amount === undefined) throw 'Undefined parameters'
         if (amount === 0) return
 
-        try {
-
-            let a
-            if (amount === -1) {
-                this.player.sellAll(stock)
-                a = this.player.stocks[stock.acronym].amount
-            }
-            else {
-                this.player.sell(stock, amount)
-                a = amount
-            }
-            alert('Vendita effettuata.\nValore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTasse: ' + stock.getTaxesCost(a).toFixed(3) + ' Kr\nTotale: +' + ((stock.value * a - stock.commPerOperation - stock.getTaxesCost(a))).toFixed(3) + ' Kr')
-
-            this.updateSaveInDB(this.saveSelected, this.player)
-            this.player.updateHonorGrade()
-            document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
-        } catch (error) {
-            console.log(error)
-            alert('Non hai così tante azioni!')
+        let a = amount
+        if (a === -1) {
+            a = this.player.stocks[stock.acronym].amount
         }
+        document.getElementById('purchase_info').innerText = 'Valore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTasse: ' + stock.getTaxesCost(a).toFixed(3) + ' Kr\nTotale: +' + ((stock.value * a - stock.commPerOperation - stock.getTaxesCost(a))).toFixed(3) + ' Kr'
+        showDisplay('popup')
 
+        document.getElementById('confirm').onclick = () => {
 
+            try {
+
+                if (amount === -1) this.player.sellAll(stock)
+                else this.player.sell(stock, amount)
+
+                this.updateSaveInDB(this.saveSelected, this.player)
+                this.player.updateHonorGrade()
+                document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
+            } catch (error) {
+                console.log(error)
+                alert('Non hai così tante azioni!')
+            }
+            hideDisplay('popup')
+        }
 
     },
     /**

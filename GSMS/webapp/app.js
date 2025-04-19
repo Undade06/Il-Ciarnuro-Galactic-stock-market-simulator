@@ -363,7 +363,7 @@ function risesAndFalls() {
 
 //profilePage
 document.addEventListener("DOMContentLoaded", () => {
-    let username = document.querySelectorAll('.log_reg_input')[0].value;// Sostituisci con la tua variabile dinamica
+    let username = document.querySelectorAll('.log_reg_input')[0].value;
     const profileNameElement = document.getElementById("profileName");
     profileNameElement.innerText = `Name: ${username}`;
 });
@@ -563,3 +563,6 @@ function portfolioInfos() {
         }
     }
 }
+
+function hideDisplay(id){document.getElementById(id).style.display = "none"}
+function showDisplay(id){document.getElementById(id).style.display = "block"}

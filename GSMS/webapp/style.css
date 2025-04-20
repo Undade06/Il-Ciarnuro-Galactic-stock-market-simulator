@@ -152,8 +152,11 @@ table tr:hover{
 }
 
 .errorText{
-    max-width:20rem;
-    height: auto;
+    position: relative;
+    top: 0.2rem;
+    width: 90%;
+    max-height: 3rem;
+    height: 90%;
     font-family: 'Xolonium_regular', sans-serif;
     font-weight: bold;
     color: red;
@@ -321,17 +324,14 @@ div.slide.visible #planetStatic2 {
 div.slide.visible #log_reg_back{
     position: fixed;
     left: 50%;
-    top: 50%;
+    top: 55%;
     transform: translate(-50%, -50%);
     background-color:rgba(0, 0, 0, 0.75);
     width: 100%;
     max-width: 30rem;
-    height: 90%;
-    max-height: 15rem;
     padding: 1rem;
     border-radius: 1.5rem;
     text-align: center;
-    margin: 1rem;
     z-index: 0;
 }
 
@@ -342,6 +342,8 @@ div.slide.hidden #log_reg_back .content{
 div.slide.visible #log_reg_back .content {
     opacity: 1;
     z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 div.slide.visible input.log_reg_input{
@@ -349,30 +351,43 @@ div.slide.visible input.log_reg_input{
     font-weight: bold;
     color: #FFFFFF;
     font-size: 1.3em;
+    max-height: 2rem;
     height: 100%;
     width: 90%;
     background-color: rgba(30, 30, 30, 0.85);
     border: none;
     padding: 2%;
     border-radius: 0.4rem;
-    margin-top: 6%;
+    margin-top: 1rem;
+}
+
+#loginError{
+    position: relative;
+    width: calc(100% - 3rem);
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    margin-top: 1rem;
+    height: 2rem;
+    font-family: 'Xolonium_regular', sans-serif;
+    font-weight: bold;
+    color: red;
+    opacity: 0;
 }
 
 div.slide.visible .buttons_log_reg{
-    position: absolute;
-    top: 85%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    margin: 0.5rem auto;
     width: 90%;
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
     z-index: 1;
 }
 
 div.slide.visible .buttons_log_reg button {
+    position: relative;
     flex: 0 1 auto;
-    min-width: fit-content;
 }
 
 div.slide.visible .buttons_log_reg button{
@@ -1323,16 +1338,50 @@ div.slide.visible #profileInfo{
 
 @media screen and (max-width:45rem) {
     #landingPageText{
-        font-size: 1rem;
+        font-size: 0.6rem;
     }
-    div.slide.visible #registerPage_back{
-        margin:0;
+
+    div.slide.visible #log_reg_back {
+        transform: translate(-50%, -50%);
+        top:55%;
+        width: 85%;
+        max-width: none;
+        margin: 0;
     }
-    div.slide.visible #log_reg_back{
-        margin-left: 0;
-        width: calc(100% - 2rem);
+
+    #loginError{
+        position: relative !important;
+        top: 0.2rem;
+        height: 2rem;
+        margin-bottom: 1rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        font-size: 0.6rem;
     }
+
+    .buttons_log_reg {
+        position: relative !important;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+        margin-top: 0;
+        width: 100%;
+        font-size: 0.7rem;
+    }
+  
+    .buttons_log_reg button {
+        position: relative !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box;
+        top: 0.1rem !important;
+        /* scale: 0.8;  RIMOSSO */
+    }
+
     input.log_reg_input{
+        position: relative !important;
         font-size: 1.0em;
         height: 100%;
         width: 90%;
@@ -1340,8 +1389,12 @@ div.slide.visible #profileInfo{
         padding: 2%;
         margin-top: 6%;
     }
+    div.slide.visible #registerPage_back{
+        margin:0;
+    }
     .errorText{
-        margin: 0;
+        margin: 0 0 0 0;
+        padding: 0;
         font-size: 1rem;
     }
 

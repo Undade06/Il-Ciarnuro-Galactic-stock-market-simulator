@@ -395,7 +395,7 @@ div.slide.visible .buttons_log_reg button{
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
-    font-size: 1.4rem;
+    font-size: 1rem;
     padding: 1rem;
     padding-right: 2.5rem;
     padding-left: 2.5rem;
@@ -420,8 +420,6 @@ div.slide.visible #registerPage_back{
     background-color: rgba(0, 0, 0, 0.75);
     width: 100%;
     max-width: 30rem;
-    height: 90%;
-    max-height: 25rem;
     padding: 1rem;
     border-radius: 2rem;
     text-align: center;
@@ -429,32 +427,53 @@ div.slide.visible #registerPage_back{
     z-index: 0;
 }
 
-div.slide.visible .content #registerPage_back{
+div.slide.visible #log_reg_back .content {
     opacity: 1;
     z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.register_buttons{
-    position: absolute;
-    top: 85%;
-    left: 50%;
-    width: 100%;
-    height: auto;
-    transform: translate(-50%, -50%);
+#registerError{
+    position: relative;
+    width: calc(100% - 3rem);
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    margin-top: 1rem;
+    height: 2rem;
+    font-family: 'Xolonium_regular', sans-serif;
+    font-weight: bold;
+    color: red;
+    opacity: 0;
+}
+
+div.slide.visible .register_buttons{
+    position: relative;
+    margin: 0.5rem auto;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     z-index: 1;
 }
 
-.register_buttons button{
+div.slide.visible .register_buttons button {
+    position: relative;
+    flex: 0 1 auto;
+}
+
+div.slide.visible .register_buttons button{
     background-color: #0A205A;
     color: white;
     font-family: 'Xolonium', sans-serif;
     font-weight: bold;
-    width: 40%;
-    height: 20%;
-    font-size: 1.4rem;
-    padding: 3%;
-    margin-right: 4%;
-    margin-left:  4%;
+    font-size: 1rem;
+    padding: 1rem;
+    padding-right: 2.5rem;
+    padding-left: 2.5rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
     border: none;
     border-radius: 0.4rem;
     z-index: 1;
@@ -1341,6 +1360,7 @@ div.slide.visible #profileInfo{
         font-size: 0.6rem;
     }
 
+    /*--- LoginPage ---*/
     div.slide.visible #log_reg_back {
         transform: translate(-50%, -50%);
         top:55%;
@@ -1389,9 +1409,52 @@ div.slide.visible #profileInfo{
         padding: 2%;
         margin-top: 6%;
     }
+
+    /*--- Register Page ---*/
+
     div.slide.visible #registerPage_back{
-        margin:0;
+        transform: translate(-50%, -50%);
+        top:60%;
+        width: 85%;
+        max-width: none;
+        margin: 0;
     }
+
+    .register_buttons button {
+        font-size: 0.7rem;
+    }
+
+    .register_buttons {
+        position: relative !important;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+        margin-top: 0;
+        width: 100%;
+        font-size: 0.7rem;
+    }
+  
+    .register_buttons button {
+        position: relative !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box;
+        top: 0.1rem !important;
+        /* scale: 0.8;  RIMOSSO */
+    }
+
+    .register_input{
+        position: relative !important;
+        font-size: 1.0em;
+        height: 100%;
+        width: 90%;
+        border: none;
+        padding: 2%;
+        margin-top: 6%;
+    }
+
     .errorText{
         margin: 0 0 0 0;
         padding: 0;

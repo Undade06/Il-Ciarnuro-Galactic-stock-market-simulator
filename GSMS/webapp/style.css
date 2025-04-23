@@ -1492,6 +1492,29 @@ div.slide.visible #profileInfo{
         font-size: 1.5rem;
         text-align: center;
     }
+    /*--- MarketHomePage---*/
+    .accessibility{
+        position: relative;
+    }
+    .graf {
+        width: 100%;
+        height: auto;
+        margin: 1rem auto;
+        margin-top: 1rem;
+        margin-left: auto;
+    }
+
+    .graf #bestStock_graf {
+        width: 100% !important;
+        height: auto !important;
+        max-height: none;
+        display: block !important;
+    }
+
+    div.slide.visible #rising_stocks, div.slide.visible #declining_stocks{
+        overflow-x: auto;
+        width: auto;
+    }
     
 }
 

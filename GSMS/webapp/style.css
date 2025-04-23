@@ -186,7 +186,22 @@ div.slide.hidden button{
     display: none;
 }
 
-/*--- Popup ---*/
+/*--- Popups ---*/
+
+#notification{
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    width: 20rem;
+    border: solid 0.3rem rgba(11, 21, 59, 0.85);
+    border-radius: 2rem;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    display: none;
+    padding: 1rem;
+    z-index: 9999;
+    transition: ease-in 0.5s;
+}
 
 #popup{
     position: absolute;
@@ -200,6 +215,7 @@ div.slide.hidden button{
     display: none;
     padding: 2rem;
     z-index: 9999;
+    transition: all 0.5s;
 }
 
 #popup #purchase_info{

@@ -775,7 +775,11 @@ GameManager.prototype = {
 
             }
 
-            alert(msg + 'Totale: +' + tot.toFixed(3) + ' Kr')
+            document.getElementById('notificationInfo').innerText = msg + 'Totale: +' + tot.toFixed(3) + ' Kr'
+            showDisplay('notification')
+            setTimeout(() => {
+                hideDisplay('notification')
+            }, 10000)
 
         }
 

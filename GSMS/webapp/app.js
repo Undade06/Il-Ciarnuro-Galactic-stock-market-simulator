@@ -198,7 +198,16 @@ function hideLoading() {
 function loadSave(id, slide = 'marketHomePage') {
     let save = saveSelection[id]
     if (save === undefined) throw 'Undefined save'
-    if(!save.available) throw 'Selected save is already in use'
+    if(!save.available){
+
+        document.getElementById('notificationInfo').innerText = 'Salvataggio già in uso, riprova tra qualche minuto'
+        showDisplay('notification')
+        setTimeout(() => {
+            hideDisplay('notification')
+        }, 5000)
+
+        return
+    }
     showLoading(); // Show the loading div
     setTimeout(() => {
         gm.saveSelected = id

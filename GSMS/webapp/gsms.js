@@ -920,12 +920,12 @@ GameManager.prototype = {
         }
 
         let info = document.getElementById('purchase_info').innerText = 'Valore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: -' + ((stock.value * a + stock.commPerOperation)).toFixed(3) + ' Kr'
-        
+
         if (a === 0 || stock.value * a + stock.commPerOperation > this.player.wallet) {
             info += '\nNon hai abbastanza soldi!'
             document.getElementById('confirm').disabled = true
         }
-        
+
         document.getElementById('purchase_info').innerText = info
         showDisplay('popup')
 
@@ -972,16 +972,16 @@ GameManager.prototype = {
         }
 
         let info = 'Valore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTasse: ' + stock.getTaxesCost(a).toFixed(3) + ' Kr\nTotale: +' + ((stock.value * a - stock.commPerOperation - stock.getTaxesCost(a))).toFixed(3) + ' Kr'
-        
+
         if (this.player.stocks[stock.acronym] === undefined) {
             info = 'Non possiedi questa azione!'
             document.getElementById('confirm').disabled = true
         }
-        if (a > this.player.stocks[stock.acronym].amount){
+        if (a > this.player.stocks[stock.acronym].amount) {
             info = 'Non hai così tante azioni!\nPossiedi: ' + this.player.stocks[stock.acronym].amount + ' azioni'
             document.getElementById('confirm').disabled = true
         }
-        if (stock.value * a - stock.commPerOperation - stock.getTaxesCost(a) < 0){
+        if (stock.value * a - stock.commPerOperation - stock.getTaxesCost(a) < 0) {
             info += '\nNon puoi vendere così poche azioni!'
             document.getElementById('confirm').disabled = true
         }
@@ -1489,25 +1489,34 @@ GameManager.prototype = {
         })
     },
     logout: function () {
-        let x = new XMLHttpRequest()
-        x.onload = function () {
-            try {
-                let j = JSON.parse(x.responseText)
-                if (j.error === 1) throw alert("Server error: " + j.msg)
-                if (j.error === 0) {
-                    gm.saveSelected = undefined
-                    toSlide('landingPage')
-                    saveSelection = []
+
+        document.getElementById('confirm').disabled = false
+
+        document.getElementById('purchase_info').innerText = 'Sei sicuro di voler uscire?'
+        showDisplay('popup')
+
+        document.getElementById('confirm').onclick = () => {
+            let x = new XMLHttpRequest()
+            x.onload = function () {
+                try {
+                    let j = JSON.parse(x.responseText)
+                    if (j.error === 1) throw alert("Server error: " + j.msg)
+                    if (j.error === 0) {
+                        gm.saveSelected = undefined
+                        toSlide('landingPage')
+                        saveSelection = []
+                    }
+                } catch (e) {
+                    console.log(e)
                 }
-            } catch (e) {
-                console.log(e)
             }
+            x.onerror = function () {
+                alert('Server error')
+            }
+            x.open('GET', 'api.php?op=logout')
+            x.send()
+            hideDisplay('popup')
         }
-        x.onerror = function () {
-            alert('Server error')
-        }
-        x.open('GET', 'api.php?op=logout')
-        x.send()
     },
     /**
      * Query database to obtain player's saves

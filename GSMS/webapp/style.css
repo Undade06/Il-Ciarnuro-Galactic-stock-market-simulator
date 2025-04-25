@@ -1,14 +1,14 @@
 /*--- FONT ---*/
 /*
 @font-face {
-    font-family: "Noto sans";
+    font-family: "Xolonium";
     src: url('fonts/Xolonium-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Noto sans";
+    font-family: "Xolonium_regular";
     src: url('fonts/Xolonium-Regular.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
@@ -186,27 +186,42 @@ div.slide.hidden button{
     display: none;
 }
 
-/*--- Popup ---*/
+/*--- Popups ---*/
+
+#notification{
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    width: 20rem;
+    border: solid 0.3rem rgba(11, 21, 59, 0.85);
+    border-radius: 2rem;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    display: none;
+    padding: 1rem;
+    z-index: 9999;
+    transition: ease-in 0.5s;
+}
 
 #popup{
     position: absolute;
     top: 20%;
     left: 33%;
-    width: 30vw;
-    height: 40vh;
+    width: 25vw;
     border: solid 0.3rem rgba(11, 21, 59, 0.85);
     border-radius: 2rem;
     background-color: rgba(0, 0, 0, 0.9);
     display: none;
-    padding: 2rem;
+    padding: 1.5rem;
     z-index: 9999;
+    transition: all 0.5s;
 }
 
-#popup #purchase_info{
+#purchase_info{
     display: block;
     width: 95%;
     height: auto;
-    font-style: 'noto sans',sans-serif;
+    font-family: 'noto sans', sans-serif;
     font-size: 1.5rem;
     color: white;
     padding: 0.5rem;
@@ -215,20 +230,21 @@ div.slide.hidden button{
 #popup_buttons{
     display: flex;
     justify-content: center;
-    gap: 3rem;
+    gap: 4rem;
+    margin-top: 2rem;
 }
 
 #popup button{
     background-color: #0A205A;
     color: white;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-family: 'noto sans', sans-serif;
     font-weight: bold;
     border: none;
     border-radius: 1rem;
     text-align: center;
-    padding: 0.5rem;
-    height: 4rem;
+    padding: 0.7rem;
+    height: auto;
     width: auto;
 }
 
@@ -1478,6 +1494,29 @@ div.slide.visible #profileInfo{
     #loading h2{
         font-size: 1.5rem;
         text-align: center;
+    }
+    /*--- MarketHomePage---*/
+    .accessibility{
+        position: relative;
+    }
+    .graf {
+        width: 100%;
+        height: auto;
+        margin: 1rem auto;
+        margin-top: 1rem;
+        margin-left: auto;
+    }
+
+    .graf #bestStock_graf {
+        width: 100% !important;
+        height: auto !important;
+        max-height: none;
+        display: block !important;
+    }
+
+    div.slide.visible #rising_stocks, div.slide.visible #declining_stocks{
+        overflow-x: auto;
+        width: auto;
     }
     
 }

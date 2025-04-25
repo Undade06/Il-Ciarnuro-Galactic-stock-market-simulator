@@ -775,7 +775,7 @@ GameManager.prototype = {
 
             }
 
-            alert(msg + 'Totale: +' + tot.toFixed(3) + ' Kr')
+            showNotification(msg + 'Totale: +' + tot.toFixed(3) + ' Kr', 10)
 
         }
 
@@ -920,12 +920,12 @@ GameManager.prototype = {
         }
 
         let info = document.getElementById('purchase_info').innerText = 'Valore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTotale: -' + ((stock.value * a + stock.commPerOperation)).toFixed(3) + ' Kr'
-        
+
         if (a === 0 || stock.value * a + stock.commPerOperation > this.player.wallet) {
             info += '\nNon hai abbastanza soldi!'
             document.getElementById('confirm').disabled = true
         }
-        
+
         document.getElementById('purchase_info').innerText = info
         showDisplay('popup')
 
@@ -939,7 +939,7 @@ GameManager.prototype = {
                 hideDisplay('popup')
             } catch (error) {
                 console.log(stock.name + ': ' + error)
-                alert('Non hai abbastanza soldi!\nBilancio corrente: ' + this.player.wallet.toFixed(2) + ' Kr')
+                showNotification('Non hai abbastanza soldi!\nBilancio corrente: ' + this.player.wallet.toFixed(2) + ' Kr')
             }
 
             try {
@@ -972,16 +972,16 @@ GameManager.prototype = {
         }
 
         let info = 'Valore azione: ' + (stock.value).toFixed(3) + ' Kr\nQuantità: ' + a + '\nCommissioni: ' + stock.commPerOperation + ' Kr\nTasse: ' + stock.getTaxesCost(a).toFixed(3) + ' Kr\nTotale: +' + ((stock.value * a - stock.commPerOperation - stock.getTaxesCost(a))).toFixed(3) + ' Kr'
-        
+
         if (this.player.stocks[stock.acronym] === undefined) {
             info = 'Non possiedi questa azione!'
             document.getElementById('confirm').disabled = true
         }
-        if (a > this.player.stocks[stock.acronym].amount){
+        if (a > this.player.stocks[stock.acronym].amount) {
             info = 'Non hai così tante azioni!\nPossiedi: ' + this.player.stocks[stock.acronym].amount + ' azioni'
             document.getElementById('confirm').disabled = true
         }
-        if (stock.value * a - stock.commPerOperation - stock.getTaxesCost(a) < 0){
+        if (stock.value * a - stock.commPerOperation - stock.getTaxesCost(a) < 0) {
             info += '\nNon puoi vendere così poche azioni!'
             document.getElementById('confirm').disabled = true
         }
@@ -1001,7 +1001,7 @@ GameManager.prototype = {
                 document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
             } catch (error) {
                 console.log(error)
-                alert('Non hai così tante azioni!')
+                showNotification('Non hai così tante azioni!')
             }
             hideDisplay('popup')
         }
@@ -1025,7 +1025,7 @@ GameManager.prototype = {
             if (this.player.stocks[sAcr] === undefined) return
 
             this.player.wallet += this.getStock(sAcr).dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount
-            alert(sAcr + ' dividends payment: ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount).toFixed(3) + ' Kr')
+            showNotification(sAcr + ' dividends payment: ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount).toFixed(3) + ' Kr')
 
             // But now it will
             let id = setInterval(() => {
@@ -1036,7 +1036,7 @@ GameManager.prototype = {
                 }
 
                 this.player.wallet += s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount
-                alert(sAcr + ' dividends payment:  ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount).toFixed(3) + ' Kr')
+                showNotification(sAcr + ' dividends payment:  ' + (s.dividendsPercentage * this.getStock(sAcr).value * this.player.stocks[sAcr].amount).toFixed(3) + ' Kr')
 
             }, s.daysDividendsFrequency * (((24 * 60 * 60) / GameManager.SECSPEEDUP) * 1000))
 
@@ -1401,7 +1401,7 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error !== 0) throw alert("Server error: " + j.msg)
+                if (j.error !== 0) showNotification("Errore del server: " + j.msg)
                 gm.loadSavesFromDB().then(r => {
                     r.forEach(s => {
                         saveSelection[s.save.saveId] = s
@@ -1415,7 +1415,7 @@ GameManager.prototype = {
             }
         }
         x.onerror = function () {
-            alert('Server error')
+            showNotification('Errore del server')
         }
 
         let data = 'username=' + encodeURIComponent(usrn) + '&password=' + encodeURIComponent(pasw)
@@ -1431,13 +1431,14 @@ GameManager.prototype = {
         let usrn = document.getElementById('usernameRegister').value, email = document.getElementById('emailRegister').value, pasw = document.getElementById('passwordRegister').value
 
         if (pasw !== document.getElementById('confirmPassword').value) throw 'Passwords doesn\'t match'
+        if (usrn === '' || email === '' || pasw === '') throw 'Some fields are empty'
 
         let x = new XMLHttpRequest()
 
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error === 1) throw alert("Server error: " + j.msg)
+                if (j.error === 1) showNotification("Errore del server: " + j.msg)
                 else {
                     console.log('Registered successfully')
                     gm.loadSavesFromDB().then(r => {
@@ -1454,7 +1455,7 @@ GameManager.prototype = {
             }
         }
         x.onerror = function () {
-            alert('Server error')
+            showNotification('Errore del server')
         }
 
         let data = 'username=' + encodeURIComponent(usrn) + '&email=' + encodeURIComponent(email) + '&password=' + (encodeURIComponent(pasw))
@@ -1489,25 +1490,34 @@ GameManager.prototype = {
         })
     },
     logout: function () {
-        let x = new XMLHttpRequest()
-        x.onload = function () {
-            try {
-                let j = JSON.parse(x.responseText)
-                if (j.error === 1) throw alert("Server error: " + j.msg)
-                if (j.error === 0) {
-                    gm.saveSelected = undefined
-                    toSlide('landingPage')
-                    saveSelection = []
+
+        document.getElementById('confirm').disabled = false
+
+        document.getElementById('purchase_info').innerText = 'Sei sicuro di voler uscire?'
+        showDisplay('popup')
+
+        document.getElementById('confirm').onclick = () => {
+            let x = new XMLHttpRequest()
+            x.onload = function () {
+                try {
+                    let j = JSON.parse(x.responseText)
+                    if (j.error === 1) showNotification("Errore del server: " + j.msg)
+                    if (j.error === 0) {
+                        gm.saveSelected = undefined
+                        toSlide('landingPage')
+                        saveSelection = []
+                    }
+                } catch (e) {
+                    console.log(e)
                 }
-            } catch (e) {
-                console.log(e)
             }
+            x.onerror = function () {
+                showNotification('Errore del server')
+            }
+            x.open('GET', 'api.php?op=logout')
+            x.send()
+            hideDisplay('popup')
         }
-        x.onerror = function () {
-            alert('Server error')
-        }
-        x.open('GET', 'api.php?op=logout')
-        x.send()
     },
     /**
      * Query database to obtain player's saves
@@ -1561,14 +1571,14 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error === 1) throw alert("Server error: " + j.msg)
+                if (j.error === 1) showNotification("Errore del server: " + j.msg)
                 else console.log('Save inserted successfully')
             } catch (e) {
                 console.log(e)
             }
         }
         x.onerror = function () {
-            alert('Server error')
+            showNotification('Errore del server')
         }
 
         let params = "saveSeeds=" + encodeURIComponent(JSON.stringify(this.saves[idSave].getSeeds())) + "&idSave=" + encodeURIComponent(idSave) + "&budget=" + encodeURIComponent(this.player.wallet) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks)) + "&realStartDate=" + encodeURIComponent(new Date().toISOString())
@@ -1583,14 +1593,14 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error === 1) alert("Server error: " + j.msg)
+                if (j.error === 1) showNotification("Errore del server: " + j.msg)
                 else console.log('Save deleted successfully')
             } catch (e) {
                 console.log(e)
             }
         }
         x.onerror = function () {
-            alert('Server error')
+            showNotification('Errore del server')
         }
 
         let params = "op=deleteSave&save=" + encodeURIComponent(idSave)
@@ -1604,14 +1614,14 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error === 1) alert("Server error: " + j.msg)
+                if (j.error === 1) showNotification("Errore del server: " + j.msg)
                 else console.log('Save updated successfully')
             } catch (e) {
                 console.log(e)
             }
         }
         x.onerror = function () {
-            alert('Server error')
+            showNotification('Errore del server')
         }
 
         let params = "idSave=" + encodeURIComponent(idSave) + "&budget=" + encodeURIComponent(player.wallet) + "&lastAccess=" + encodeURIComponent(new Date(GameManager.gameTimer()).toISOString()) + "&ownedStocks=" + encodeURIComponent(JSON.stringify(player.stocks))
@@ -1634,7 +1644,7 @@ GameManager.prototype = {
             }
         }
         x.onerror = function () {
-            alert('Server error')
+            showNotification('Errore del server')
         }
 
         let params = "status=" + encodeURIComponent(status) + "&saveSelected=" + encodeURIComponent(idSave)
@@ -1661,7 +1671,7 @@ GameManager.prototype = {
                 }
             }
             x.onerror = function () {
-                alert('Server error')
+                showNotification('Errore del server')
                 reject(j.msg)
             }
 
@@ -1684,7 +1694,7 @@ GameManager.prototype = {
             }
         }
         x.onerror = function () {
-            alert('Server error')
+            showNotification('Errore del server')
         }
 
         x.open('GET', 'api.php?op=requestToken&username=' + encodeURIComponent(username))
@@ -1705,7 +1715,7 @@ GameManager.prototype = {
             }
         }
         x.onerror = function () {
-            alert('Server error')
+            showNotification('Errore del server')
         }
 
         let params = 'token=' + encodeURIComponent(token)
@@ -1722,14 +1732,14 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error === 1) console.log("Server error: " + j.msg)
-                else alert('Password updated successfully')
+                if (j.error === 1) showNotification("Errore del server: " + j.msg)
+                else showNotification('Password cambiata correttamente')
             } catch (e) {
                 console.log(e)
             }
         }
         x.onerror = function () {
-            alert('Server error')
+            showNotification('Errore del server')
         }
 
         let params = 'password=' + encodeURIComponent(passw)

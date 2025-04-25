@@ -79,7 +79,7 @@ function loadSaves() {
             img.style.top = "0.2rem"
             img.style.right = "0.2rem"
             img.style.paddingTop = "0.45rem"
-            img.style.paddingRight= "0.45rem"
+            img.style.paddingRight = "0.45rem"
             img.alt = "Rimuovi Salvataggio"
             img.addEventListener("click", (event) => {
                 event.stopPropagation(); // Impedisce il click sull'immagine
@@ -137,7 +137,7 @@ function createNewSave() {
         let saveNumber  /*=arrayFirstIndexAvailable(saveSelection)
         if (saveNumber === -1) saveNumber = 0*/
         for (let i = 0; i < GameManager.MAXSAVES; i++) {
-            if(saveSelection[i] === undefined){
+            if (saveSelection[i] === undefined) {
                 saveNumber = i
                 break
             }
@@ -198,7 +198,10 @@ function hideLoading() {
 function loadSave(id, slide = 'marketHomePage') {
     let save = saveSelection[id]
     if (save === undefined) throw 'Undefined save'
-    if(!save.available) throw 'Selected save is already in use'
+    if (!save.available) {
+        showNotification('Salvataggio già in uso, riprova tra qualche minuto')
+        return
+    }
     showLoading(); // Show the loading div
     setTimeout(() => {
         gm.saveSelected = id
@@ -543,7 +546,7 @@ function portfolioInfos() {
         let row = document.createElement("tr")
         let name = document.createElement("td")
         name.innerText = "Non possiedi alcuna azione"
-        name.style.whiteSpace='nowrap'
+        name.style.whiteSpace = 'nowrap'
         row.appendChild(name)
         portfolioTable.appendChild(row)
     }
@@ -554,16 +557,24 @@ function portfolioInfos() {
         portfolioInfos()
     }, GameManager.VALUESPERREALSECONDS * 1000)
 
-    function showPopup(id)    {
-        if (id === "buyButton"){
+    function showPopup(id) {
+        if (id === "buyButton") {
 
-        }else if (id === "sellButton"){
+        } else if (id === "sellButton") {
 
-        }else if (id === "all_in"){
-            
+        } else if (id === "all_in") {
+
         }
     }
 }
 
-function hideDisplay(id){document.getElementById(id).style.display = "none"}
-function showDisplay(id){document.getElementById(id).style.display = "block"}
+function hideDisplay(id) { document.getElementById(id).style.display = "none" }
+function showDisplay(id) { document.getElementById(id).style.display = "block" }
+
+function showNotification(text, seconds = 5) {
+    document.getElementById('notificationInfo').innerText = text
+    showDisplay('notification')
+    setTimeout(() => {
+        hideDisplay('notification')
+    }, seconds * 1000)
+}

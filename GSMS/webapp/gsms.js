@@ -1680,24 +1680,28 @@ GameManager.prototype = {
 
         })
     },
-    requestToken: function (username) {
+    requestToken: function (usernameEmail) {
 
         let x = new XMLHttpRequest()
 
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error === 1) console.log("Server error: " + j.msg)
-                else console.log('Token sent successfully')
+                if (j.error === 1) showNotification('Errore del server: ' + j.msg)
+                else{
+                    showNotification('Token inviato correttamente all\'email: ' + j.email)
+                    hideDisplay('requestToken')
+                    showDisplay('verifyToken')
+                }
             } catch (e) {
                 console.log(e)
             }
         }
         x.onerror = function () {
-            showNotification('Errore del server')
+            showNotification('Errore del server. Riprovare più tardi')
         }
 
-        x.open('GET', 'api.php?op=requestToken&username=' + encodeURIComponent(username))
+        x.open('GET', 'api.php?op=requestToken&usernameEmail=' + encodeURIComponent(usernameEmail))
         x.send()
 
     },
@@ -1708,8 +1712,12 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error === 1) console.log("Server error: " + j.msg)
-                else console.log('Token verified')
+                if (j.error === 1) showNotification('Errore del server: ' + j.msg)
+                else{
+                    showNotification('Token verificato')
+                    hideDisplay('verifyToken')
+                    showDisplay('changePassword')
+                }
             } catch (e) {
                 console.log(e)
             }
@@ -1725,15 +1733,27 @@ GameManager.prototype = {
         x.send(params)
 
     },
-    changePassword: function (passw) {
+    changePassword: function () {
+
+        let passw = document.getElementById('newPassword').value, confirmPassw = document.getElementById('confirmNewPassword').value
+
+        if(passw !== confirmPassw){
+            showNotification('Le password non coincidono')
+            return
+        }
 
         let x = new XMLHttpRequest()
 
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error === 1) showNotification("Errore del server: " + j.msg)
-                else showNotification('Password cambiata correttamente')
+                if (j.error === 1) showNotification('Errore del server: ' + j.msg)
+                else{
+                    showNotification('Password cambiata correttamente')
+                    toSlide('login_register')
+                    showDisplay('requestToken')
+                    hideDisplay('changePassword')
+                }
             } catch (e) {
                 console.log(e)
             }

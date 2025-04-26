@@ -202,17 +202,17 @@
                 } break;
                 case "requestToken":{
 
-                    if(!isset($_GET["username"])){
-                        $ret = ["error" => 1, "msg" => "Username not valid"];
+                    if(!isset($_GET["usernameEmail"])){
+                        $ret = ["error" => 1, "msg" => "Username or email not valid"];
                         break;
                     }
 
-                    $q = $conn->prepare("SELECT email FROM player WHERE username = ?");
-                    $q->bind_param("s", $_GET["username"]);
+                    $q = $conn->prepare("SELECT email FROM player WHERE username = ? OR email = ?");
+                    $q->bind_param("ss", $_GET["usernameEmail"], $_GET["usernameEmail"]);
                     $q->execute();
                     $result = $q->get_result();
                     if($result->num_rows < 1) {
-                        $ret = ["error" => 1, "msg" => "Username not found"];
+                        $ret = ["error" => 1, "msg" => "Username or email not found"];
                         break;
                     }
                     while($r=$result->fetch_array()){
@@ -227,12 +227,16 @@
 
                     $to = $email;
                     $subject = "Il Ciarnuro: GSMS - Reimposta password";
-                    $txt = "In questa email troverai un token da inserire nel riquadro apposito per procedere al cambiamento della password.\n
-                    Il token è valido per un singolo cambio di password fino a data(anno-mese-giorno) ".$expires->format('Y-m-d')." alle ore ".$expires->format('H:i')."\n
+                    $txt = "In questa email troverai un token da inserire nel riquadro apposito per procedere al cambiamento della password.
+                    \nIl token è valido per un singolo cambio di password fino a data(anno-mese-giorno) ".$expires->format('Y-m-d')." alle ore ".$expires->format('H:i')."
                     \nNon condividere con nessuno il seguente codice:
                     \nToken:\t".$token."
+                    \nSe non sei stato tu a richiedere questo cambiamento, ignora questa email.
                     \n\nQuesto messaggio è stato inviato automaticamente, per favore non rispondere.";
-                    $headers = "From: gcf5ia.lupopasinigames.com";
+                    $headers = "From: gcf5ia.lupopasinigames.com\r\n";
+                    $headers .= "MIME-Version: 1.0\r\n";
+                    $headers .= "Content-type: text/plain; charset=UTF-8\r\n";
+
 
                     $r = mail($to, $subject, $txt, $headers);
                     $rr = 0;
@@ -240,7 +244,7 @@
                         $rr = 1; 
                     }
 
-                    $ret = ["error" => $rr, "msg" => "Email sent"];
+                    $ret = ["error" => $rr, "msg" => "Email sent", "email" => $email];
 
                 } break;
                 case "verifyToken":{

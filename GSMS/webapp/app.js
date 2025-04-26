@@ -571,10 +571,14 @@ function portfolioInfos() {
 function hideDisplay(id) { document.getElementById(id).style.display = "none" }
 function showDisplay(id) { document.getElementById(id).style.display = "block" }
 
+let timeoutPupup = undefined
 function showNotification(text, seconds = 5) {
     document.getElementById('notificationInfo').innerText = text
     showDisplay('notification')
-    setTimeout(() => {
+    if(timeoutPupup !== undefined) {
+        clearTimeout(timeoutPupup)
+    }
+    timeoutPupup = setTimeout(() => {
         hideDisplay('notification')
     }, seconds * 1000)
 }

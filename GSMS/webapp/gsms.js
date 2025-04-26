@@ -1401,7 +1401,10 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error !== 0) showNotification("Errore del server: " + j.msg)
+                if (j.error !== 0){
+                    showNotification("Errore del server: " + j.msg)
+                    return
+                }
                 gm.loadSavesFromDB().then(r => {
                     r.forEach(s => {
                         saveSelection[s.save.saveId] = s

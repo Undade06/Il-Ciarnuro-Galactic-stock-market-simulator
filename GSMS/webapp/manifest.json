@@ -5,9 +5,9 @@
     "description": "an investiment simulator",
     "icons": [
         {
-            "src": "pwaicon.png",
+            "src": "favicon.webp",
             "sizes": "512x512",
-            "type": "image/png",
+            "type": "image/webp",
             "purpose": "maskable any"
         }
     ],

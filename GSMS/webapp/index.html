@@ -40,8 +40,8 @@
                         <button onclick="gm.login()">Accedi</button>
                         <button onclick="toSlide('registerPage')">Registrati</button>
                     </div>
-                    <div>
-                        <button onclick="toSlide('changePasswordSlide')">Password dimenticata?</button>
+                    <div class="buttons_log_reg">
+                        <button onclick="toSlide('changePasswordSlide')" class="minorButton">Password dimenticata?</button>
                     </div>
                 </div>
             </div>
@@ -69,24 +69,28 @@
             <div class="back" id="changePassword_back">
                 <div id="requestToken">
                     <div class="content">
-                        <div>Inserisci l'username o la email con cui ti sei registrato su Il Ciarnuro: GSMS. Riceverai una mail con all'interno un codice per verificare la tua identità. Poi potrai procedere al cambio della password.</div>
+                        <div>Inserisci l'username o la email con cui ti sei registrato su <br>Il Ciarnuro: GSMS. Riceverai una mail con all'interno un codice per verificare la tua identità. <br>Poi potrai procedere al cambio della password.</div>
                         <input type="text" placeholder="Email o username" class="register_input" id="emailUsername">
-                        <button onclick="toSlide('login_register')">Indietro</button>
-                        <button onclick="gm.requestToken(document.getElementById('emailUsername').value)">Richiedi token</button>
+                        <div class="register_buttons">
+                            <button onclick="toSlide('login_register')">Indietro</button>
+                            <button onclick="gm.requestToken(document.getElementById('emailUsername').value)">Richiedi token</button>
+                        </div>
                     </div>
                 </div>
                 <div id="verifyToken" style="display:none">
                     <div class="content">
                         <input type="text" placeholder="Token" class="register_input" id="token">
-                        <button onclick="toSlide('login_register'); hideDisplay('verifyToken'); showDisplay('changePassword')">Indietro</button>
-                        <button onclick="gm.verifyToken(document.getElementById('token').value)">Verifica token</button>
+                        <div class="register_buttons">
+                            <button onclick="toSlide('login_register'); hideDisplay('verifyToken'); showDisplay('changePassword')">Indietro</button>
+                            <button onclick="gm.verifyToken(document.getElementById('token').value)">Verifica token</button>
+                        </div>
                     </div>
                 </div>
                 <div id="changePassword" style="display:none">
                     <div class="content">
                         <input type="password" placeholder="Nuova Password" class="register_input" id="newPassword">
                         <input type="password" placeholder="Conferma Password" class="register_input" id="confirmNewPassword">
-                        <div class="changePassword_buttons">
+                        <div class="changePassword_buttons register_buttons">
                             <button onclick="toSlide('login_register'); hideDisplay('changePassword'); showDisplay('changePassword')">Indietro</button>
                             <button onclick="gm.changePassword()">Conferma</button>
                         </div>

@@ -509,6 +509,45 @@ input.register_input{
     margin-top: 6%;
 }
 
+.minorButton{
+    background-color: rgba(0, 0, 0, 0) !important;
+    padding-top: 0.8rem !important;
+    padding-bottom: 0.2rem !important;
+}
+
+.minorButton:hover{
+    text-decoration: underline;
+}
+
+div.slide.visible #changePassword_back{
+    position: fixed;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%, -50%);
+    background-color:rgba(0, 0, 0, 0.75);
+    width: 100%;
+    max-width: 30rem;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    text-align: center;
+    z-index: 0;
+    font-family: 'Xolonium_regular', sans-serif;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+div.slide.visible #changePassword_back .content {
+    opacity: 1;
+    z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+div.slide.visible #changePassword_back .register_input {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 /*--- Save Page ---*/
 
 div.slide.visible #saves {

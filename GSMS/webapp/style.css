@@ -203,6 +203,13 @@ div.slide.hidden button{
     transition: ease-in 0.5s;
 }
 
+#notificationInfo{
+    width: fit-content;
+    padding: 0.3rem;
+    font-family: 'Xolonium', sans-serif;
+    font-size: 1rem;
+}
+
 #popup{
     position: absolute;
     top: 20%;
@@ -527,7 +534,7 @@ div.slide.visible #changePassword_back{
     background-color:rgba(0, 0, 0, 0.75);
     width: 100%;
     max-width: 30rem;
-    padding: 1rem;
+    padding: 2rem;
     border-radius: 1.5rem;
     text-align: center;
     z-index: 0;
@@ -544,8 +551,30 @@ div.slide.visible #changePassword_back .content {
 }
 
 div.slide.visible #changePassword_back .register_input {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.2rem;
+}
+
+div.slide.visible .passwordChange_buttons{
+    display: flex;
+    gap: 6rem;
+    padding: 0.5rem;
+    margin-left: 3rem;
+    margin-right: 2rem;
+}
+
+div.slide.visible .passwordChange_buttons button {
+    background-color: #0A205A;
+    color: white;
+    font-family: 'Xolonium', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 1rem;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    border: none;
+    border-radius: 0.4rem;
+    z-index: 1;
 }
 
 /*--- Save Page ---*/

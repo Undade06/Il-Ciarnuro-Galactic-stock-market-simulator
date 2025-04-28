@@ -69,9 +69,9 @@
             <div class="back" id="changePassword_back">
                 <div id="requestToken">
                     <div class="content">
-                        <div>Inserisci l'username o la email con cui ti sei registrato su <br>Il Ciarnuro: GSMS. Riceverai una mail con all'interno un codice per verificare la tua identità. <br>Poi potrai procedere al cambio della password.</div>
+                        <div id="passwordChange_instructions">Inserisci l'username o la email con cui ti sei registrato su <br>Il Ciarnuro: GSMS.<br>Riceverai una mail con all'interno un codice per verificare la tua identità, poi potrai procedere al cambio della password.</div>
                         <input type="text" placeholder="Email o username" class="register_input" id="emailUsername">
-                        <div class="register_buttons">
+                        <div class="passwordChange_buttons">
                             <button onclick="toSlide('login_register')">Indietro</button>
                             <button onclick="gm.requestToken(document.getElementById('emailUsername').value)">Richiedi token</button>
                         </div>

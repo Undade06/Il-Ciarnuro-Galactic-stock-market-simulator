@@ -81,7 +81,7 @@
                     <div class="content">
                         <input type="text" placeholder="Token" class="register_input" id="token">
                         <div class="register_buttons">
-                            <button onclick="toSlide('login_register'); hideDisplay('verifyToken'); showDisplay('changePassword')">Indietro</button>
+                            <button onclick="toSlide('login_register'); hideDisplay('verifyToken'); showDisplay('requestToken')">Indietro</button>
                             <button onclick="gm.verifyToken(document.getElementById('token').value)">Verifica token</button>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                         <input type="password" placeholder="Nuova Password" class="register_input" id="newPassword">
                         <input type="password" placeholder="Conferma Password" class="register_input" id="confirmNewPassword">
                         <div class="changePassword_buttons register_buttons">
-                            <button onclick="toSlide('login_register'); hideDisplay('changePassword'); showDisplay('changePassword')">Indietro</button>
+                            <button onclick="toSlide('login_register'); hideDisplay('changePassword'); showDisplay('requestToken')">Indietro</button>
                             <button onclick="gm.changePassword()">Conferma</button>
                         </div>
                     </div>

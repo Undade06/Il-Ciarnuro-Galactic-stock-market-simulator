@@ -188,19 +188,20 @@ div.slide.hidden button{
 
 /*--- Popups ---*/
 
-#notification{
+#notification {
     position: fixed;
     bottom: 1.5rem;
-    left: 1.5rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 20rem;
     border: solid 0.3rem rgba(11, 21, 59, 0.85);
     border-radius: 2rem;
     background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    display: none;
     padding: 1rem;
     z-index: 9999;
     transition: ease-in 0.5s;
+    display: none;
 }
 
 #notificationInfo{
@@ -524,6 +525,10 @@ input.register_input{
 
 .minorButton:hover{
     text-decoration: underline;
+}
+
+div.slide.hidden #changePassword_back{
+    display: none;
 }
 
 div.slide.visible #changePassword_back{
@@ -1557,6 +1562,78 @@ div.slide.visible #profileInfo{
         width: 18rem;
         padding: 1rem;
     }
+
+    /*--- Profile Page ---*/
+    div.slide.visible #profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        margin: 1rem auto;
+        height: auto;
+        max-width: 95%;
+    }
+
+    div.slide.visible .profile_back {
+        width: 90%;
+        margin: 1rem auto;
+        height: auto;
+        padding: 1rem;
+        background-color: rgba(11, 21, 59, 0.85);
+        border-radius: 1.5rem;
+    }
+
+    div.slide.visible #accessibility_profile {
+        position: fixed;
+        top: 2rem;
+        left: 2rem;
+        width: 100%;
+        margin: 1rem auto;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    div.slide.visible #logoProfile {
+        width: 80%;
+        height: auto;
+        margin: 1rem auto;
+    }
+
+    div.slide.visible #profileInfo {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin: 1rem auto;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+
+    .profile_back #riquadroInterno {
+        position: relative;
+        width: 100%;
+        height: auto;
+        margin: 1rem auto;
+        padding: 1rem;
+        background: rgba(21, 145, 234, 0.1);
+        border-radius: 1rem;
+    }
+
+    #riquadroInterno img {
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    #logoutButton {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin: 1rem auto;
+        width: 3rem;
+        height: 3rem;
+    }
+
     /*--- loading Responsive ---*/
 
     #loading h2{
@@ -1661,6 +1738,5 @@ div.slide.visible #profileInfo{
     div.slide.visible #rises_falls {
         flex-direction: column;
     }
-    
 }
 

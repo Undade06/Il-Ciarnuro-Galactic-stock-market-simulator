@@ -190,10 +190,11 @@ div.slide.hidden button{
 
 #notification {
     position: fixed;
-    bottom: 1.5rem;
+    bottom: 0.5rem;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 20rem;
+    width: auto;
+    max-width: 20rem;
     border: solid 0.3rem rgba(11, 21, 59, 0.85);
     border-radius: 2rem;
     background-color: rgba(0, 0, 0, 0.9);

@@ -1695,6 +1695,7 @@ GameManager.prototype = {
                     showNotification('Token inviato correttamente all\'email: ' + j.email)
                     hideDisplay('requestToken')
                     showDisplay('verifyToken')
+                    document.getElementById('emailUsername').value = ''
                 }
             } catch (e) {
                 console.log(e)

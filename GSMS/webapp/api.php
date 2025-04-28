@@ -232,6 +232,7 @@
                     \nNon condividere con nessuno il seguente codice:
                     \nToken:\t".$token."
                     \nSe non sei stato tu a richiedere questo cambiamento, ignora questa email.
+                    \nSe hai richiesto altri token, è valido soltanto il più recente.
                     \n\nQuesto messaggio è stato inviato automaticamente, per favore non rispondere.";
                     $headers = "From: IlCiarnuroGSMS\r\n";
                     $headers .= "MIME-Version: 1.0\r\n";

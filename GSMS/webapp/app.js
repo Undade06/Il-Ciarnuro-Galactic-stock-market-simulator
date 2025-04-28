@@ -574,12 +574,16 @@ function showDisplay(id) { document.getElementById(id).style.display = "block" }
 let timeoutPupup = undefined
 function showNotification(text, seconds = 5) {
     document.getElementById('notificationInfo').innerText = text
+    notification.style.opacity = 1
     showDisplay('notification')
-    if(timeoutPupup !== undefined) {
+    if (timeoutPupup !== undefined) {
         clearTimeout(timeoutPupup)
     }
     timeoutPupup = setTimeout(() => {
-        hideDisplay('notification')
-        document.getElementById('notificationInfo').innerText = ''
-    }, seconds * 1000)
+        notification.style.opacity = 0
+        setTimeout(() => {
+            hideDisplay('notification')
+            notificationInfo.innerText = ''
+        }, 750)
+    }, seconds * 1000 - 750)
 }

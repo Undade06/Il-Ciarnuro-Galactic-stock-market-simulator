@@ -213,7 +213,7 @@ div.slide.hidden button{
 }
 
 #popup{
-    position: absolute;
+    position: fixed;
     top: 20%;
     left: 33%;
     width: 25vw;
@@ -224,6 +224,7 @@ div.slide.hidden button{
     padding: 1.5rem;
     z-index: 9999;
     transition: all 0.5s;
+    box-shadow: #1E1E1E;
 }
 
 #purchase_info{
@@ -942,7 +943,7 @@ div.stock_header{
 .graf{
     display: block;
     width: 80rem;
-    height: 20rem;
+    height: 19rem;
     margin: 1rem;
     margin-top: 2rem;
     margin-left: 4rem;
@@ -952,7 +953,7 @@ div.stock_header{
     display: inline !important;
     width: auto !important;
     height: auto !important;
-    max-height: 20rem;
+    max-height: 19rem;
 }
 
 .trend{
@@ -1006,7 +1007,7 @@ table{
     display: inline !important;
     width: auto !important;
     height: auto !important;
-    max-height: 20rem;
+    max-height: 19rem;
 }
 
 .graf *{

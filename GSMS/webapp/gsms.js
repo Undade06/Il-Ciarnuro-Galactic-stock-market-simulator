@@ -935,6 +935,7 @@ GameManager.prototype = {
                 if (amount === -1) this.player.allIn(stock)
                 else this.player.buy(stock, amount)
 
+                showNotification('Acquisto effettuato')
                 this.updateSaveInDB(this.saveSelected, this.player)
                 hideDisplay('popup')
             } catch (error) {
@@ -996,6 +997,7 @@ GameManager.prototype = {
                 if (amount === -1) this.player.sellAll(stock)
                 else this.player.sell(stock, amount)
 
+                showNotification('Vendita effettuata')
                 this.updateSaveInDB(this.saveSelected, this.player)
                 this.player.updateHonorGrade()
                 document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade

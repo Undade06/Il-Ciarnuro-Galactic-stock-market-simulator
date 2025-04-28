@@ -228,12 +228,12 @@
                     $to = $email;
                     $subject = "Il Ciarnuro: GSMS - Reimposta password";
                     $txt = "In questa email troverai un token da inserire nel riquadro apposito per procedere al cambiamento della password.
-                    \nIl token è valido per un singolo cambio di password fino a data(anno-mese-giorno) ".$expires->format('Y-m-d')." alle ore ".$expires->format('H:i')."
+                    \nIl token è valido per un singolo cambio di password fino a data(anno-mese-giorno) ".$expires->format('Y-m-d')." alle ore ".$expires->format('H:i').".
                     \nNon condividere con nessuno il seguente codice:
                     \nToken:\t".$token."
                     \nSe non sei stato tu a richiedere questo cambiamento, ignora questa email.
                     \n\nQuesto messaggio è stato inviato automaticamente, per favore non rispondere.";
-                    $headers = "From: gcf5ia.lupopasinigames.com\r\n";
+                    $headers = "From: IlCiarnuroGSMS\r\n";
                     $headers .= "MIME-Version: 1.0\r\n";
                     $headers .= "Content-type: text/plain; charset=UTF-8\r\n";
 

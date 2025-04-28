@@ -190,26 +190,44 @@ div.slide.hidden button{
 
 #notification {
     position: fixed;
-    bottom: 0.5rem;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: auto;
+    bottom: 2rem;
+    left: 2rem;
     max-width: 20rem;
     border: solid 0.3rem rgba(11, 21, 59, 0.85);
     border-radius: 2rem;
     background-color: rgba(0, 0, 0, 0.9);
     color: white;
-    padding: 1rem;
+    padding: 1.3rem;
     z-index: 9999;
-    transition: ease-in 0.5s;
     display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: slidelft 1.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes slidelft {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+    
+}
+
+@keyframes slidedasx {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+    
 }
 
 #notificationInfo{
-    width: fit-content;
-    padding: 0.3rem;
+    width: 100%;
     font-family: 'Xolonium', sans-serif;
-    font-size: 1rem;
 }
 
 #popup{

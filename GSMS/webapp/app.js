@@ -580,5 +580,6 @@ function showNotification(text, seconds = 5) {
     }
     timeoutPupup = setTimeout(() => {
         hideDisplay('notification')
+        document.getElementById('notificationInfo').innerText = ''
     }, seconds * 1000)
 }

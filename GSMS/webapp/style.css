@@ -563,7 +563,7 @@ div.slide.visible #changePassword_back .register_input {
 
 div.slide.visible .passwordChange_buttons{
     display: flex;
-    gap: 6rem;
+    gap: 5rem;
     padding: 0.5rem;
     margin-left: 3rem;
     margin-right: 2rem;

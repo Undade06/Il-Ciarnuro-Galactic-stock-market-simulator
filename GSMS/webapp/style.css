@@ -763,7 +763,7 @@ div.slide.visible .market_back{
 div.slide.visible #best_stock,div.slide.visible #singleStock  {
     transform: none;
     margin-top: 3rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.7rem;
     height: auto;
     max-width: 96%;
     padding: 1.25rem;
@@ -961,7 +961,7 @@ div.stock_header{
 .graf{
     display: block;
     width: 80rem;
-    height: 19rem;
+    height: 20rem;
     margin: 1rem;
     margin-top: 2rem;
     margin-left: 4rem;
@@ -971,7 +971,7 @@ div.stock_header{
     display: inline !important;
     width: auto !important;
     height: auto !important;
-    max-height: 19rem;
+    max-height: 20rem;
 }
 
 .trend{
@@ -1025,7 +1025,7 @@ table{
     display: inline !important;
     width: auto !important;
     height: auto !important;
-    max-height: 19rem;
+    max-height: 18rem;
 }
 
 .graf *{

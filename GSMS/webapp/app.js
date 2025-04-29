@@ -301,12 +301,9 @@ function risesAndFalls() {
         trend.style.color = "green"
         row.appendChild(name)
         name.classList.add("bestStock_name")
-        if (stock.type === "ETF") {
-            typeETF.innerText = "ETF"
-        } else {
-            typeETF.innerText = "ETF"
-            typeETF.style.opacity = 0
-        }
+        typeETF.innerText = "ETF"
+        if (stock.type !== "ETF") typeETF.style.opacity = 0
+
         row.appendChild(typeETF)
         row.appendChild(value)
         row.appendChild(trend)

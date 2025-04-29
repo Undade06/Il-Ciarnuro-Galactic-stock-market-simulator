@@ -1115,6 +1115,17 @@ div.slide.visible #all_in, #infoButton {
     opacity: 0.8;
 }
 
+div.slide.visible #sell_all{
+    background-color: #0A205A;
+    color: white;
+    width: 11rem;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 1rem;
+    opacity: 0.8;
+}
+
 #infoButton {
     margin-left: auto;
     margin-right: 2rem;

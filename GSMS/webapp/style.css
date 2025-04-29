@@ -1745,6 +1745,17 @@ div.slide.visible #profileInfo{
         margin: 0.5rem;
     }
 
+    #rising,#falling{
+        width: 100%;
+    }
+    #rising tr,#falling tr{
+        font-size: 1.3rem;
+    }
+    #rising td,#falling td{
+        font-size: 1rem;
+        padding: 0.5rem;
+        width: 7rem;
+    }
     
 }
 @media (max-width: 30rem) {
@@ -1770,6 +1781,20 @@ div.slide.visible #profileInfo{
     
     div.slide.visible #rises_falls {
         flex-direction: column;
+    }
+
+    #rising,#falling{
+        width: 100%;
+        margin-top: 1rem;
+        margin-left: 0rem;
+    }
+    #rising tr,#falling tr{
+        font-size: 1rem;
+    }
+    #rising td,#falling td{
+        font-size: 0.7rem;
+        padding: 0.4rem;
+        width: 5rem;
     }
 }
 

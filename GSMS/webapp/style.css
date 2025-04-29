@@ -845,7 +845,8 @@ div.slide.visible #sessionInfo{
 }
 #my_balance{
     font-size: 1.2rem;
-    font-weight: bold;   
+    font-weight: bold;
+    padding-left: 2.5rem;
 }
 #my_stocks{
     background-color: #0A205A;
@@ -871,9 +872,9 @@ div.slide.visible #sessionInfo{
 }
 
 #logoHome{
-    margin-top: 0.5rem;
+    margin: 0.5rem auto 0 auto;
     width: 24rem;
-    top: 2%;
+    display: block;
 }
 
 .time_buttons{

@@ -751,7 +751,7 @@ GameManager.prototype = {
         let date = new Date(GameManager.gameTimer())
         document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
 
-        document.getElementById('my_balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
+        document.getElementById('my_balance').innerText = (this.player.wallet).toFixed(3) + ' Kr'
         document.getElementById('profileName').innerText = 'Nome: ' + this.player.name
         this.player.updateHonorGrade()
         document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
@@ -787,7 +787,7 @@ GameManager.prototype = {
             this.updateBestStock()
             date = new Date(GameManager.gameTimer())
             document.getElementById('cur_date').innerText = date.getFullYear() + '-' + numberTo2Digits(date.getMonth() + 1) + '-' + numberTo2Digits(date.getDate()) + ' ' + numberTo2Digits(date.getHours()) + ':' + numberTo2Digits(date.getMinutes()) + ':' + numberTo2Digits(date.getSeconds())
-            document.getElementById('my_balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
+            document.getElementById('my_balance').innerText = (this.player.wallet).toFixed(3) + ' Kr'
             document.getElementById('honorGrade').innerText = 'Onore: ' + this.player.honorGrade
             document.getElementById('balance').innerText = 'Bilancio: ' + (this.player.wallet).toFixed(3) + ' Kr'
             document.getElementById('equity').innerText = 'Equità: ' + (this.player.getEquity()).toFixed(3) + ' Kr'
@@ -1403,7 +1403,7 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error !== 0){
+                if (j.error !== 0) {
                     showNotification("Errore del server: " + j.msg)
                     return
                 }
@@ -1693,7 +1693,7 @@ GameManager.prototype = {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) showNotification('Errore del server: ' + j.msg)
-                else{
+                else {
                     showNotification('Token inviato correttamente all\'email: ' + j.email)
                     hideDisplay('requestToken')
                     showDisplay('verifyToken')
@@ -1719,7 +1719,7 @@ GameManager.prototype = {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) showNotification('Errore del server: ' + j.msg)
-                else{
+                else {
                     showNotification('Token verificato')
                     hideDisplay('verifyToken')
                     showDisplay('changePassword')
@@ -1743,7 +1743,7 @@ GameManager.prototype = {
 
         let passw = document.getElementById('newPassword').value, confirmPassw = document.getElementById('confirmNewPassword').value
 
-        if(passw !== confirmPassw){
+        if (passw !== confirmPassw) {
             showNotification('Le password non coincidono')
             return
         }
@@ -1754,7 +1754,7 @@ GameManager.prototype = {
             try {
                 let j = JSON.parse(x.responseText)
                 if (j.error === 1) showNotification('Errore del server: ' + j.msg)
-                else{
+                else {
                     showNotification('Password cambiata correttamente')
                     toSlide('login_register')
                     showDisplay('requestToken')

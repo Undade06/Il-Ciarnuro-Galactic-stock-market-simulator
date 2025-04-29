@@ -767,6 +767,7 @@ div.slide.visible #best_stock,div.slide.visible #singleStock  {
     height: auto;
     max-width: 96%;
     padding: 1.25rem;
+    padding-bottom: 0.5rem;
 }
 
 div.slide.visible #rising_stocks, div.slide.visible #declining_stocks{
@@ -961,7 +962,7 @@ div.stock_header{
 .graf{
     display: block;
     width: 80rem;
-    height: 20rem;
+    max-height: 20rem;
     margin: 1rem;
     margin-top: 2rem;
     margin-left: 4rem;

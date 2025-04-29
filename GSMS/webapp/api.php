@@ -231,7 +231,7 @@
                     \nIl token è valido per un singolo cambio di password fino a data(anno-mese-giorno) ".$expires->format('Y-m-d')." alle ore ".$expires->format('H:i').".
                     \nNon condividere con nessuno il seguente codice:
                     \nToken:\t".$token."
-                    \nSe non sei stato tu a richiedere questo cambiamento, ignora questa email.
+                    \nSe non sei stato tu a richiedere questo cambiamento non ti preoccupare, il tuo account non verrà compromesso, puoi ignorare quesat mail.
                     \nSe hai richiesto altri token, è valido soltanto il più recente.
                     \n\nQuesto messaggio è stato inviato automaticamente, per favore non rispondere.";
                     $headers = "From: IlCiarnuroGSMS\r\n";

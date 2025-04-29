@@ -4,7 +4,7 @@
 
     session_start();
 
-    $maxMinuteDelay = 5;        // Minutes of not updating for a save to be considered available
+    $maxMinuteDelay = 1;        // Minutes of not updating for a save to be considered available
     $maxTokenHours = 24;        // Hours of validity of a token
 
     if (!isset($_SESSION["user_id"])) {

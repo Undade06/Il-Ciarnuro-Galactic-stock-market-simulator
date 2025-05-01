@@ -218,6 +218,7 @@
                     <input type="number" id="n_actionsToSell"  min="1" placeholder="1" step="1">
                     <button id="sellButton" onclick="gm.playerSell(gm.stock, Number(document.getElementById('n_actionsToSell').value)); document.getElementById('n_actionsToSell').value = ''">Vendi</button>
                 </div>
+                <button id="sell_all" onclick="gm.playerSell(gm.stock, -1)">Vendi tutto</button>
                 <div id="infoPanel" class="sidepanel">
                     <label for="companyProfile" class="header" id="descHeader">Profilo azione</label>
                     <div id="companyProfile">

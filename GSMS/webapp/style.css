@@ -1016,6 +1016,12 @@ table{
     width: 10rem;
 }
 
+.etfBanner{
+    height: 2.5rem;
+    width: 4rem;
+    align-self: center;
+}
+
 /*--- StockPage ---*/
 
 #stockPage .market_back{

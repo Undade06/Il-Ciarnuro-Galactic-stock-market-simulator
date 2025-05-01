@@ -1,9 +1,9 @@
-const cacheName='GSMS'; //PWA id here
+const cacheName='GSMS';
 const appFiles=[
     'index.html',
     'app.js',
     'gsms.js',
-    'favicon.png',
+    'favicon.webp',
     'manifest.json',
     'pwaicon.png',
     'style.css',
@@ -13,10 +13,10 @@ const appFiles=[
     'pics/logo2.webp',
     'pics/planetEarth.webp',
     'pics/rimuoviSave.webp',
+    'pics/ETF.png',
     'fonts/Nunito.ttf',
     'fonts/Xolonium-Bolf.woff2',
     'fonts/Xolonium-Regular.woff2'
-    //add all PWA files here (except pwaversion.txt)
 ];
 
 // Caches all the PWA shell files (appFiles array) when the app is launched

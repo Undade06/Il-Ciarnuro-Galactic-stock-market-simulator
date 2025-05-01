@@ -301,7 +301,10 @@ function risesAndFalls() {
         trend.style.color = "green"
         row.appendChild(name)
         name.classList.add("bestStock_name")
-        typeETF.innerText = "ETF"
+        let etfimg = document.createElement("img")
+        etfimg.src = "pics/ETF.png"
+        etfimg.classList.add("etfBanner")
+        typeETF.appendChild(etfimg)
         if (stock.type !== "ETF") typeETF.style.opacity = 0
 
         row.appendChild(typeETF)
@@ -331,12 +334,12 @@ function risesAndFalls() {
         trend.style.color = "red"
         row.appendChild(name)
         name.classList.add("bestStock_name")
-        if (stock.type === "ETF") {
-            typeETF.innerText = "ETF"
-        } else {
-            typeETF.innerText = "ETF"
-            typeETF.style.opacity = 0
-        }
+        let etfimg = document.createElement("img")
+        etfimg.src = "pics/ETF.png"
+        etfimg.classList.add("etfBanner")
+        typeETF.appendChild(etfimg)
+        if (stock.type !== "ETF") typeETF.style.opacity = 0
+
         row.appendChild(typeETF)
         row.appendChild(value)
         row.appendChild(trend)

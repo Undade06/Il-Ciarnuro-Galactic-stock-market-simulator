@@ -218,12 +218,17 @@ function loadSave(id, slide = 'marketHomePage') {
 // Funzione per rimuovere un save
 function removeSave(id) {
     //console.log(id);
-    const saveIndex = saveSelection.findIndex((s) => s.save.saveId === id); // Trova l'indice del save tramite ID
-    gm.deleteSave(id)
-    console.log("saveIndex " + saveIndex)
-    saveSelection.splice(saveIndex, 1); // Rimuovi il save
-    loadSaves();
-    //alert(`Salvataggio eliminato!`);
+    try{
+        gm.deleteSave(id).then( r => {
+            saveIndex = saveSelection.findIndex((s) => s.save.saveId === id); // Trova l'indice del save tramite ID
+            saveSelection.splice(saveIndex, 1); // Rimuovi il save
+            loadSaves();
+        })
+        //alert(`Salvataggio eliminato!`);
+    }catch(ex){
+        showNotification('Non puoi cancellare un salvataggio al momento in uso')
+    }
+    
 }
 
 //registerPage

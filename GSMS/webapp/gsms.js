@@ -1604,13 +1604,9 @@ GameManager.prototype = {
     deleteSaveFromDB: function (idSave) {
         let x = new XMLHttpRequest()
         x.onload = function () {
-            try {
-                let j = JSON.parse(x.responseText)
-                if (j.error === 1) showNotification('Non puoi cancellare un salvataggio al momento in uso')
-                else console.log('Save deleted successfully')
-            } catch (e) {
-                console.log(e)
-            }
+            let j = JSON.parse(x.responseText)
+            if (j.error === 1) throw 'Salvataggio in uso'
+            else console.log('Save deleted successfully')
         }
         x.onerror = function () {
             showNotification('Errore del server')

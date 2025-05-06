@@ -961,9 +961,10 @@ div.stock_header{
 }
 
 .graf{
+
     display: block;
     width: 80rem;
-    max-height: 20rem;
+    height: 20rem;
     margin: 1rem;
     margin-top: 2rem;
     margin-left: 4rem;
@@ -1696,6 +1697,13 @@ div.slide.visible #profileInfo{
         height: auto !important;
         max-height: none;
         display: block !important;
+    }
+
+    .graf #stock_graf{
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        max-height: none;
     }
 
     div.slide.visible #rising_stocks, div.slide.visible #declining_stocks{

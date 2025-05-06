@@ -966,15 +966,14 @@ div.stock_header{
     max-height: 20rem;
     margin: 1rem;
     margin-top: 2rem;
-    margin-left: 7rem;
+    margin-left: 4rem;
 }
 
 .graf #bestStock_graf{
     display: inline !important;
     width: auto !important;
     height: auto !important;
-    max-height: 20rem;
-    padding: 1rem;
+    max-height: 18rem;
 }
 
 .trend{
@@ -1033,8 +1032,7 @@ table{
     display: inline !important;
     width: auto !important;
     height: auto !important;
-    max-height: 18rem;
-    padding: 1rem;
+    max-height: 18rem
 }
 
 .graf *{

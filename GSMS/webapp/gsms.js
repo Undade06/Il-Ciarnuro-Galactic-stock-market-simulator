@@ -1606,7 +1606,7 @@ GameManager.prototype = {
         x.onload = function () {
             try {
                 let j = JSON.parse(x.responseText)
-                if (j.error === 1) showNotification("Errore del server: " + j.msg)
+                if (j.error === 1) showNotification('Non puoi cancellare un salvataggio al momento in uso')
                 else console.log('Save deleted successfully')
             } catch (e) {
                 console.log(e)

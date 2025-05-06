@@ -107,10 +107,27 @@
                         $ret = ["error" => 1, "msg" => "Missing field/s"];
                         break;
                     }
-                    $q = $conn->prepare("DELETE FROM save WHERE idSave = ? AND idPlayer = (SELECT id FROM player WHERE username = ?)");
-                    $q->bind_param("ss", $idSave, $_SESSION["user_id"]);
+
+                    $q = $conn->prepare("SELECT * FROM save WHERE idPlayer = (SELECT id FROM player WHERE username = ?)");
+                    $q->bind_param("s", $_SESSION["user_id"]);
                     $q->execute();
-                    $ret = ["error" => 0, "msg" => "Save deleted successfully"];
+                    $q = $q->get_result();
+                    
+                    $saves=[];
+                    while($save=$q->fetch_array()){
+                        $now = new DateTime();
+                        $lastAccess = new DateTime($save["realLastAccess"]);
+                        if($now->getTimestamp() - $lastAccess->getTimestamp() > $maxMinuteDelay * 60 || $_SESSION["lastSave"] == $save["idSave"]){
+                            $q = $conn->prepare("DELETE FROM save WHERE idSave = ? AND idPlayer = (SELECT id FROM player WHERE username = ?)");
+                            $q->bind_param("ss", $idSave, $_SESSION["user_id"]);
+                            $q->execute();
+                            $ret = ["error" => 0, "msg" => "Save deleted successfully"];
+                        }else{
+                            $ret = ["error" => 1, "msg" => "Save in use"];
+                        }
+                        break;
+                    }
+
                     $q->close();
                 } break;
                 case "getSaves":{

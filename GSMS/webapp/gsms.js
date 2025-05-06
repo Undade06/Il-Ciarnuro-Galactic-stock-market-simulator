@@ -1331,6 +1331,10 @@ GameManager.prototype = {
                                 display: true,
                                 text: 'Data',
                             },
+                            grid: {
+                                color: 'rgb(255, 255, 255, 0.07)',
+                                lineWidth: 1,
+                            }
                         },
                         y: {
                             type: 'linear',
@@ -1338,6 +1342,10 @@ GameManager.prototype = {
                                 display: true,
                                 text: 'Kr',
                             },
+                            grid: {
+                                color: 'rgb(255, 255, 255, 0.15)',
+                                lineWidth: 1,
+                            }
                             /*min:0*/
                         }
                     },

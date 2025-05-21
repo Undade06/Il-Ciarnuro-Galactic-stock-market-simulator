@@ -1,4 +1,4 @@
-#https://gcf5ia.lupopasinigames.com/
+https://gcf5ia.lupopasinigames.com/
 
 
 # Il Ciarnuro: Galactic stock market simulator
